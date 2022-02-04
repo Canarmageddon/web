@@ -1,7 +1,8 @@
 import React from "react";
 import ReactMapGL, { Marker } from "react-map-gl";
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import MapboxGlLanguage from "@mapbox/mapbox-gl-language";
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiamJoYXJpIiwiYSI6ImNreXlmeWZsYzBqczEydnFrZjZoeDJqMmEifQ.7Z9vGxLMr0cWskUyVAZXZQ'; // Set your mapbox token here
 
@@ -13,10 +14,10 @@ function App() {
         bearing: 0,
         pitch: 0
   });
-
   const [listeMarkers, setListeMarkers] = useState([]);
+  const [mapContainer] = useState(React.createRef());
 
-  function addMarker(event) {
+  const addMarker = (event) => {
     const coordinates = {
       latitude: event.lngLat[1],
       longitude: event.lngLat[0]
@@ -31,6 +32,20 @@ function App() {
       </Marker>
   )};
 
+
+  useEffect(() => {
+    if (mapContainer.current) {
+      const mapInstance = mapContainer.current.getMap();
+      if (mapInstance) {
+        mapInstance.addControl(
+          new MapboxGlLanguage({
+            defaultLanguage: "fr",
+          })
+        );
+      }
+    }
+  }, [mapContainer]);
+  
   return (
     <div>
       <ReactMapGL
@@ -41,6 +56,7 @@ function App() {
         onViewportChange={(viewport) => setViewport(viewport)}
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onClick={addMarker}
+        ref={mapContainer}
       >
         {
           listeMarkers.map((marker, index) => {
