@@ -1,10 +1,12 @@
 import React from "react";
-import ReactMapGL, { Marker, Layer, Source } from "react-map-gl";
+import ReactMapGL, { Layer, Source } from "react-map-gl";
 import { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
+import "./style/map.css";
+import CustomMarker from "./compoonents/CustomMarker";
 
 const MAPBOX_TOKEN =
-  "pk.eyJ1IjoiamJoYXJpIiwiYSI6ImNreXlmeWZsYzBqczEydnFrZjZoeDJqMmEifQ.7Z9vGxLMr0cWskUyVAZXZQ"; // Set your mapbox token here
+  "pk.eyJ1IjoiamJoYXJpIiwiYSI6ImNreXlmeWZsYzBqczEydnFrZjZoeDJqMmEifQ.7Z9vGxLMr0cWskUyVAZXZQ";
 
 function App() {
   const [viewport, setViewport] = useState({
@@ -51,17 +53,7 @@ function App() {
     };
     setListeMarkers([...listeMarkers, coordinates]);
   }
-  const CustomMarker = ({ index, marker }) => {
-    return (
-      <Marker latitude={marker.latitude} longitude={marker.longitude}>
-        <div className="marker temporary-marker">
-          <span>
-            <b>{index + 1}</b>
-          </span>
-        </div>
-      </Marker>
-    );
-  };
+
   return (
     <div>
       <ReactMapGL
