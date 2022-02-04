@@ -28,9 +28,10 @@ function App() {
       coordinates: [],
     },
   });
-  const [description, setDescription] = useState("");
   const [markersList, setMarkersList] = useState([]);
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   useEffect(() => {
     fetch(
@@ -117,7 +118,14 @@ function App() {
               type="text"
               placeholder="Commentaire"
               value={description}
+              className="mb-3"
               onChange={(e) => setDescription(e.target.value)}
+            />
+            <Form.Control
+              type="file"
+              placeholder="Documents"
+              onChange={(e) => setSelectedFiles(e.target.files)}
+              multiple
             />
           </Form>
         </Modal.Body>
