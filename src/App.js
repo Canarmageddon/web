@@ -1,6 +1,9 @@
 import React from "react";
 import ReactMapGL, { Layer, Source } from "react-map-gl";
+import Form from "react-bootstrap/Form";
 import { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./style/map.css";
 import CustomMarker from "./compoonents/CustomMarker";
@@ -9,6 +12,7 @@ const MAPBOX_TOKEN =
   "pk.eyJ1IjoiamJoYXJpIiwiYSI6ImNreXlmeWZsYzBqczEydnFrZjZoeDJqMmEifQ.7Z9vGxLMr0cWskUyVAZXZQ";
 
 function App() {
+  const [showModal, setShowModal] = useState(false);
   const [viewport, setViewport] = useState({
     latitude: 48.85837,
     longitude: 2.294481,
@@ -24,6 +28,10 @@ function App() {
       coordinates: [],
     },
   });
+  const [description, setDescription] = useState("");
+  const [markersList, setMarkersList] = useState([]);
+  const [title, setTitle] = useState("");
+
   useEffect(() => {
     fetch(
       "https://api.mapbox.com/directions/v5/mapbox/driving/7.752075%2C48.573048%3B7.71442%2C48.524669.json?geometries=polyline&alternatives=true&steps=true&overview=full&access_token=pk.eyJ1IjoiamJoYXJpIiwiYSI6ImNreXlmeWZsYzBqczEydnFrZjZoeDJqMmEifQ.7Z9vGxLMr0cWskUyVAZXZQ",
@@ -44,16 +52,6 @@ function App() {
       });
   }, []);
 
-  const [listeMarkers, setListeMarkers] = useState([]);
-
-  function addMarker(event) {
-    const coordinates = {
-      latitude: event.lngLat[1],
-      longitude: event.lngLat[0],
-    };
-    setListeMarkers([...listeMarkers, coordinates]);
-  }
-
   return (
     <div>
       <ReactMapGL
@@ -65,10 +63,14 @@ function App() {
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onClick={addMarker}
       >
-        {listeMarkers.map((marker, index) => {
+        {markersList.map((marker, index) => {
           return (
             <React.Fragment key={index}>
-              <CustomMarker index={index} marker={marker} />
+              <CustomMarker
+                index={index}
+                marker={marker}
+                setShowModal={setShowModal}
+              />
             </React.Fragment>
           );
         })}
@@ -98,7 +100,45 @@ function App() {
           />
         </Source>
       </ReactMapGL>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Détails du point d'intérêt</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Control
+              type="text"
+              placeholder="Titre"
+              value={title}
+              className="mb-3"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <Form.Control
+              type="text"
+              placeholder="Commentaire"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Fermer
+          </Button>
+          <Button variant="primary" onClick={() => setShowModal(false)}>
+            Enregistrer
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
+
+  function addMarker(event) {
+    const coordinates = {
+      latitude: event.lngLat[1],
+      longitude: event.lngLat[0],
+    };
+    setMarkersList([...markersList, coordinates]);
+  }
 }
 export default App;
