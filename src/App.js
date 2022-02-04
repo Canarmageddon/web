@@ -1,6 +1,6 @@
 import React from "react";
 import ReactMapGL, { Marker, Layer, Source } from "react-map-gl";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 const MAPBOX_TOKEN =
@@ -8,12 +8,39 @@ const MAPBOX_TOKEN =
 
 function App() {
   const [viewport, setViewport] = useState({
-    latitude: 48.57,
-    longitude: 7.75,
+    latitude: 48.85837,
+    longitude: 2.294481,
     zoom: 12,
     bearing: 0,
     pitch: 0,
   });
+  const [dataOne, setDataOne] = useState({
+    type: "Feature",
+    properties: {},
+    geometry: {
+      type: "LineString",
+      coordinates: [],
+    },
+  });
+  useEffect(() => {
+    fetch(
+      "https://api.mapbox.com/directions/v5/mapbox/driving/7.752075%2C48.573048%3B7.71442%2C48.524669.json?geometries=polyline&alternatives=true&steps=true&overview=full&access_token=pk.eyJ1IjoiamJoYXJpIiwiYSI6ImNreXlmeWZsYzBqczEydnFrZjZoeDJqMmEifQ.7Z9vGxLMr0cWskUyVAZXZQ",
+      { method: "get", headers: { "Content-Type": "application/json" } }
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        let coordinates = [];
+        console.log(res.routes[1].legs[0].steps);
+        res.routes[0].legs[0].steps.forEach((data) => {
+          coordinates.push(data.maneuver.location);
+        });
+        setDataOne({
+          ...dataOne,
+          geometry: { type: "LineString", coordinates },
+        });
+        console.log(coordinates);
+      });
+  }, []);
 
   const [listeMarkers, setListeMarkers] = useState([]);
 
@@ -24,7 +51,6 @@ function App() {
     };
     setListeMarkers([...listeMarkers, coordinates]);
   }
-
   const CustomMarker = ({ index, marker }) => {
     return (
       <Marker latitude={marker.latitude} longitude={marker.longitude}>
@@ -35,18 +61,6 @@ function App() {
         </div>
       </Marker>
     );
-  };
-  const dataOne = {
-    type: "Feature",
-    properties: {},
-    geometry: {
-      type: "LineString",
-      coordinates: [
-        [-122.41510269913951, 37.77909036739809],
-        [39.5423, -77.0564],
-        [0, 0],
-      ],
-    },
   };
   return (
     <div>
@@ -65,7 +79,17 @@ function App() {
               <CustomMarker index={index} marker={marker} />
             </React.Fragment>
           );
-        })}{" "}
+        })}
+        <>
+          {/*           {travel.waypoints != undefined &&
+            travel.waypoints.map((marker, index) => {
+              return (
+                <React.Fragment key={index}>
+                  <CustomMarker index={index} marker={marker.location} />
+                </React.Fragment>
+              );
+            })} */}
+        </>
         <Source id="polylineLayer" type="geojson" data={dataOne}>
           <Layer
             id="lineLayer"
@@ -76,8 +100,8 @@ function App() {
               "line-cap": "round",
             }}
             paint={{
-              "line-color": "rgba(3, 170, 238, 0.5)",
-              "line-width": 5,
+              "line-color": "rgba(250, 0, 8, 1)",
+              "line-width": 20,
             }}
           />
         </Source>
