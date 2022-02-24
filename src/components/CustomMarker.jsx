@@ -1,13 +1,17 @@
 import React from "react";
 import { Marker } from "react-map-gl";
 
-const CustomMarker = ({ index, marker, setShowModal }) => {
+const CustomMarker = ({ index, marker, setShowModal, setFocusedMarker }) => {
+  console.log(marker);
   return (
     <>
       <Marker
         latitude={marker.latitude}
         longitude={marker.longitude}
-        onClick={() => setShowModal(true)}
+        onClick={() => {
+          setShowModal(true);
+          setFocusedMarker(marker);
+        }}
       >
         <div className="marker temporary-marker">
           <span>

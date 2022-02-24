@@ -6,13 +6,14 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./style/map.css";
-import CustomMarker from "./compoonents/CustomMarker";
+import CustomMarker from "./components/CustomMarker";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoiamJoYXJpIiwiYSI6ImNreXlmeWZsYzBqczEydnFrZjZoeDJqMmEifQ.7Z9vGxLMr0cWskUyVAZXZQ";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
+  const [focusedMarker, setFocusedMarker] = useState();
   const [viewport, setViewport] = useState({
     latitude: 48.85837,
     longitude: 2.294481,
@@ -71,6 +72,7 @@ function App() {
                 index={index}
                 marker={marker}
                 setShowModal={setShowModal}
+                setFocusedMarker={setFocusedMarker}
               />
             </React.Fragment>
           );
@@ -124,13 +126,19 @@ function App() {
             <Form.Control
               type="file"
               placeholder="Documents"
+              value={selectedFiles}
               onChange={(e) => setSelectedFiles(e.target.files)}
               multiple
             />
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button
+            variant="danger"
+            onClick={() =>
+              setMarkersList((oldList) => oldList.filter((m) => m))
+            }
+          >
             Fermer
           </Button>
           <Button variant="primary" onClick={() => setShowModal(false)}>
