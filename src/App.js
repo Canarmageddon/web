@@ -7,6 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./style/map.css";
 import CustomMarker from "./compoonents/CustomMarker";
+import ToDoLists from "./compoonents/toDoLists/ToDoLists";
 
 function App() {
   const MAPBOX_TOKEN =
@@ -15,6 +16,7 @@ function App() {
   const displayMap = () => createMap();
   return (
     <>
+      <ToDoLists />
       <button onClick={displayMap}>display map</button>
       <input type="checkbox" />
       <div id="map"></div>
