@@ -8,7 +8,6 @@ import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 
 const ToDoLists = ({ display }) => {
-  console.log("yo");
   const [toDoLists, setToDoLists] = useState(
     JSON.parse(localStorage.getItem("toDoLists"))
   );

@@ -5,7 +5,6 @@ import ToDoLists from "./compoonents/toDoLists/ToDoLists";
 import TravelsList from "./compoonents/travelList/TravelList";
 import NavBar from "./compoonents/navBar/NavBar";
 import SideMenu from "./compoonents/navBar/SideMenu";
-import Map from "./mapHandler/Map";
 import DestinationInput from "./mapHandler/DestinationInput";
 import Admin from "./compoonents/admin/Admin";
 function App() {
@@ -32,8 +31,8 @@ function App() {
           id="map"
         ></div>
         <ToDoLists display={contentPage === "toDoLists"} />
-        {contentPage === "travelList" && <TravelsList />}
-        {contentPage === "admin" && <Admin />}
+        <TravelsList display={contentPage === "travelList"} />
+        <Admin display={contentPage === "admin"} />
       </div>
       <SideMenu showMenu={showMenu} setContentPage={setContentPage} />
     </>
