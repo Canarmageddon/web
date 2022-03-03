@@ -16,12 +16,12 @@ const Admin = () => {
         return(
             <li key={member.name}>
                 {member.name}
-                <select value={role} onChange={handleRoleChange}>
+                <select value={role} onChange={handleRoleChange} className="list-role">
                     <option value="admin">Admin</option>
                     <option value="member">Membre</option>
                 </select>
                 <button className="delete">Supprimer</button>
-                <hr/>
+                <hr className="bar"/>
             </li>
             );
     })
@@ -29,22 +29,25 @@ const Admin = () => {
 
     return (
         <>
-            <h2>Membre de voyage</h2>
-            <form>
-                <span>Inviter membre</span>
-                <input placeholder="email" type="email"/>
-                <select>
-                    <option value="member">Membre</option>
-                    <option value="admin">Admin</option>
-                </select>
-                <button type="submit" className="button-new"></button>
+            <h2 className="main-title">Membre de voyage</h2>
+            <form className="admin-form">
+                <span className="invite-title">Inviter membre</span>
+                <hr/>
+                <div className="invite-div">
+                    <input placeholder="email" type="email" className="invite-input"/>
+                    <select className="invite-input">
+                        <option value="member">Membre</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <button type="submit" className="button-new">Inviter</button>
+                </div>
             </form>
-            <h3>Membres</h3>
-            <hr/>
-            <span>Nom</span>
-            <span>Role</span>
-            <hr/>
-            <ul>{listMembers}</ul>
+            <h3 className="sub-title">Membres</h3>
+            <hr className="bar"/>
+            <span className="nom">Nom</span>
+            <span className="role">Role</span>
+            <hr className="bar"/>
+            <ul className="list">{listMembers}</ul>
 
 
 
