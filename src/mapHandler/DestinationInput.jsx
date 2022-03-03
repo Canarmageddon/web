@@ -2,7 +2,7 @@ import Autosuggest from "react-autosuggest/dist/Autosuggest";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 
-function DestinationInput({ addLocation }) {
+function DestinationInput({ addLocation, showMenu }) {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   function escapeRegexCharacters(str) {
@@ -63,7 +63,7 @@ function DestinationInput({ addLocation }) {
         alignItems: "center",
         position: "absolute",
         top: 50,
-        left: 5,
+        left: showMenu ? 205 : 5,
         zIndex: 1,
       }}
     >

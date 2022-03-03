@@ -21,7 +21,7 @@ function App() {
       <ToDoLists />
       <div style={{ marginLeft: showMenu ? 200 : 0 }}>
         <NavBar setShowMenu={setShowMenu} />
-        {contentPage == "map" && <DestinationInput />}
+        {contentPage == "map" && <DestinationInput showMenu={showMenu} />}
 
         <div
           style={{
