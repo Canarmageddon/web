@@ -19,6 +19,8 @@ function App() {
     <>
       <div style={{ marginLeft: showMenu ? 250 : 0 }}>
         <NavBar setShowMenu={setShowMenu} />
+        <Map />
+
         <div
           id="map"
           style={{
@@ -26,12 +28,11 @@ function App() {
             display: contentPage === "map" ? "block" : "none",
           }}
         ></div>
-        <ToDoLists
+        {/*         <ToDoLists
           style={{ display: contentPage === "toDoLists" ? "block" : "none" }}
-        />
+        /> */}
       </div>
       <SideMenu showMenu={showMenu} setContentPage={setContentPage} />
-      <Map />
     </>
   );
 }

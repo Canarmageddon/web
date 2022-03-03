@@ -15,20 +15,17 @@ const Map = () => {
         setLstLocations(lstLocations.filter(e => e != loc))
     }
     return <>
-        <button onClick={displayMap}>display map</button>
         <input
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
         />
         <button onClick={handleClickLocation}>search</button>
-        <input type="checkbox" />
         {lstLocations.map((loc) =>
             <div>
                 <button onClick={() => removeElement(loc)}>X</button>
                 <li>{loc}</li>
             </div>)}
-        <div id="map"></div>
 
     </>
 }
