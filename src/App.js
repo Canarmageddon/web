@@ -7,6 +7,7 @@ import NavBar from "./compoonents/navBar/NavBar";
 import SideMenu from "./compoonents/navBar/SideMenu";
 import Map from "./mapHandler/Map";
 import DestinationInput from "./mapHandler/DestinationInput";
+import Admin from "./compoonents/admin/Admin";
 function App() {
   const [contentPage, setContentPage] = useState("map");
   const [showMenu, setShowMenu] = useState(false);
@@ -15,12 +16,12 @@ function App() {
   useEffect(() => {
     displayMap();
   }, []);
-
+  console.log(contentPage);
   return (
     <>
       <div style={{ marginLeft: showMenu ? 250 : 0 }}>
         <NavBar setShowMenu={setShowMenu} />
-        <Map />
+        {contentPage == "map" && <DestinationInput />}
 
         <div
           id="map"
@@ -29,12 +30,9 @@ function App() {
             display: contentPage === "map" ? "block" : "none",
           }}
         ></div>
-        {/*         <ToDoLists
-          style={{ display: contentPage === "toDoLists" ? "block" : "none" }}
-        /> */}
-        <DestinationInput
-          style={{ display: contentPage === "travelList" ? "block" : "none" }}
-        />
+        {contentPage === "todoList" && <ToDoLists />}
+        {contentPage === "travelList" && <TravelsList />}
+        {contentPage === "admin" && <Admin />}
       </div>
       <SideMenu showMenu={showMenu} setContentPage={setContentPage} />
     </>
