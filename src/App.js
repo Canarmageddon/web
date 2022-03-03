@@ -1,19 +1,37 @@
-import React from "react";
-import ReactMapGL, { Layer, Source } from "react-map-gl";
-import Form from "react-bootstrap/Form";
-import { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import React, { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./style/map.css";
-import CustomMarker from "./compoonents/CustomMarker";
 import ToDoLists from "./compoonents/toDoLists/ToDoLists";
-import Map from "./mapHandler/Map";
 
+import NavBar from "./compoonents/navBar/NavBar";
+import SideMenu from "./compoonents/navBar/SideMenu";
+import Map from "./mapHandler/Map";
 function App() {
+  const [contentPage, setContentPage] = useState("map");
+  const [showMenu, setShowMenu] = useState(false);
+  const displayMap = () => createMap();
+
+  useEffect(() => {
+    displayMap();
+  }, []);
+
   return (
     <>
-      <Map></Map>
+      <div style={{ marginLeft: showMenu ? 250 : 0 }}>
+        <NavBar setShowMenu={setShowMenu} />
+        <div
+          id="map"
+          style={{
+            width: "100%",
+            display: contentPage === "map" ? "block" : "none",
+          }}
+        ></div>
+        <ToDoLists
+          style={{ display: contentPage === "toDoLists" ? "block" : "none" }}
+        />
+      </div>
+      <SideMenu showMenu={showMenu} setContentPage={setContentPage} />
+      <Map />
     </>
   );
 }
