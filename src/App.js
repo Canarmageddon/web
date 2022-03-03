@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./style/map.css";
 import ToDoLists from "./compoonents/toDoLists/ToDoLists";
-
+import TravelsList from "./compoonents/travelList/TravelList";
 import NavBar from "./compoonents/navBar/NavBar";
 import SideMenu from "./compoonents/navBar/SideMenu";
 import Map from "./mapHandler/Map";
+import DestinationInput from "./mapHandler/DestinationInput";
 function App() {
   const [contentPage, setContentPage] = useState("map");
   const [showMenu, setShowMenu] = useState(false);
@@ -31,6 +32,9 @@ function App() {
         {/*         <ToDoLists
           style={{ display: contentPage === "toDoLists" ? "block" : "none" }}
         /> */}
+        <DestinationInput
+          style={{ display: contentPage === "travelList" ? "block" : "none" }}
+        />
       </div>
       <SideMenu showMenu={showMenu} setContentPage={setContentPage} />
     </>

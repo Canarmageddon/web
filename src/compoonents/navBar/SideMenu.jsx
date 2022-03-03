@@ -6,6 +6,7 @@ const SideMenu = ({ setContentPage, showMenu }) => {
     <div className="sidenav" style={{ width: showMenu ? 250 : 0 }}>
       <a onClick={() => setContentPage("map")}>Carte</a>
       <a onClick={() => setContentPage("toDoLists")}>Listes de tâches</a>
+      <a onClick={() => setContentPage("travelList")}>Liste des voyages</a>
     </div>
   );
 };
