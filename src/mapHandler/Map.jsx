@@ -1,26 +1,21 @@
 import { useState } from "react";
+import DestinationInput from './DestinationInput'
 const Map = () => {
-    const [location, setLocation] = useState("plobsheim");
     const [lstLocations, setLstLocations] = useState([]);
     const MAPBOX_TOKEN =
         "pk.eyJ1IjoiamJoYXJpIiwiYSI6ImNreXlmeWZsYzBqczEydnFrZjZoeDJqMmEifQ.7Z9vGxLMr0cWskUyVAZXZQ";
-    const displayMap = () => createMap();
-    const handleClickLocation = () => {
-        setLstLocations([...lstLocations, location])
-        searchPlace(location);
-        setLocation("");
+    const addLocation = (newLocation) => {
+        setLstLocations([...lstLocations, newLocation])
+        console.log(newLocation)
+        searchPlace(newLocation);
     };
     const removeElement = (loc) => {
         removePlace(lstLocations.indexOf(loc))
         setLstLocations(lstLocations.filter(e => e != loc))
     }
     return <>
-        <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-        />
-        <button onClick={handleClickLocation}>search</button>
+        <DestinationInput addLocation={addLocation} />
+
         {lstLocations.map((loc) =>
             <div>
                 <button onClick={() => removeElement(loc)}>X</button>
