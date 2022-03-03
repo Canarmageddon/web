@@ -89,10 +89,19 @@ const lngLatToString=(lngLat)=> {
 const searchPlace=async(location)=>{
   const resLocation=await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(location)}.json?access_token=${mapboxgl.accessToken}`).then(res=>res.json())
   console.log(resLocation)
+  map.flyTo({center:resLocation.features[0].center,zoom:13})
   lstDestination=[...lstDestination,resLocation.features[0]]
-  console.log(lstDestination)
+  generateRoute()
+}
+const removePlace=async(i)=>{
+  lstDestination.splice(i,1)
+  generateRoute()
 }
 const generateRoute = async () => {
+  if(lstDestination.length<2){
+    map.setLayoutProperty("theRoute", "visibility", "none");
+    return;
+  }
   let points="";
   for(let i=0;i<lstDestination.length;i++){
     points+=lngLatToString(lstDestination[i].center)+";"
@@ -102,7 +111,6 @@ const generateRoute = async () => {
   let route = await fetch(
      `https://api.mapbox.com/directions/v5/mapbox/driving/${points}.json?geometries=polyline&steps=true&overview=full&language=en&access_token=pk.eyJ1IjoiYXNsbmRza3ZucWRvZm1uIiwiYSI6ImNreWJyN3VkZzBpNnUydm4wcnJ5MmdvYm0ifQ.YNwpI3-HgF6nMhdaRRkKBg`
   ).then((res) => res.json());
-  console.log(route)
   route = route.routes[0];
   // Make each route visible
   map.setLayoutProperty("theRoute", "visibility", "visible");
@@ -157,10 +165,13 @@ const generateRoute = async () => {
 function createMap() {
   map = new mapboxgl.Map({
     container: "map", // Specify the container ID
-    style: "mapbox://styles/mapbox/light-v10", // Specify which map style to use
+    style: "mapbox://styles/mapbox/streets-v11", // Specify which map style to use
+
     center: [7.72583, 48.46972], // Specify the starting position [lng, lat]
-    zoom: 11, // Specify the starting zoom
+    zoom: 1, // Specify the starting zoom
   });
+  
+
 
   let i = 0;
   map.on("click", function (e) {
@@ -183,49 +194,55 @@ function createMap() {
     marker.addTo(map);
   });
 
-    map.on("load", () => {
-    map.addSource("theRoute", {
-      type: "geojson",
-      data: {
-        type: "Feature",
-      },
-    });
+      map.on("load", () => {
+      map.setLayoutProperty('country-label', 'text-field', ['get','name_fr']);
+      map.setLayoutProperty('state-label', 'text-field', ['get','name_fr']);
+      map.setLayoutProperty('settlement-label', 'text-field', ['get','name_fr']);
+      map.setLayoutProperty('settlement-subdivision-label', 'text-field', ['get','name_fr']);
+      map.addSource("theRoute", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+        },
+      });
 
-    map.addLayer({
-      id: "theRoute",
-      type: "line",
-      source: "theRoute",
-      layout: {
-        "line-join": "round",
-        "line-cap": "round",
-      },
-      paint: {
-        "line-color": "#cccccc",
-        "line-opacity": 0.5,
-        "line-width": 13,
-        "line-blur": 0.5,
-      },
-    });
+      map.addLayer({
+        id: "theRoute",
+        type: "line",
+        source: "theRoute",
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "#cccccc",
+          "line-opacity": 0.5,
+          "line-width": 13,
+          "line-blur": 0.5,
+        },
+      });
+      
 
-    // Source and layer for the bounding box
-    map.addSource("theBox", {
-      type: "geojson",
-      data: {
-        type: "Feature",
-      },
-    });
-    map.addLayer({
-      id: "theBox",
-      type: "fill",
-      source: "theBox",
-      layout: {},
-      paint: {
-        "fill-color": "#FFC300",
-        "fill-opacity": 0.5,
-        "fill-outline-color": "#FFC300",
-      },
-    });
+      // Source and layer for the bounding box
+      map.addSource("theBox", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+        },
+      });
+      map.addLayer({
+        id: "theBox",
+        type: "fill",
+        source: "theBox",
+        layout: {},
+        paint: {
+          "fill-color": "#FFC300",
+          "fill-opacity": 0.5,
+          "fill-outline-color": "#FFC300",
+        },
+      });  
   });
+
 }
 
   //Modale d'affichage
@@ -316,6 +333,7 @@ function createMap() {
         },
       },
     ],
+    
   };
 
   const obstacle = turf.buffer(clearances, 0.25, { units: "kilometers" });
