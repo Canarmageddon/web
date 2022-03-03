@@ -16,21 +16,22 @@ function App() {
   useEffect(() => {
     displayMap();
   }, []);
-  console.log(contentPage);
+
   return (
     <>
-      <div style={{ marginLeft: showMenu ? 250 : 0 }}>
+      <ToDoLists />
+      <div style={{ marginLeft: showMenu ? 200 : 0 }}>
         <NavBar setShowMenu={setShowMenu} />
         {contentPage == "map" && <DestinationInput />}
 
         <div
-          id="map"
           style={{
             width: "100%",
             display: contentPage === "map" ? "block" : "none",
           }}
+          id="map"
         ></div>
-        {contentPage === "todoList" && <ToDoLists />}
+        <ToDoLists display={contentPage === "toDoLists"} />
         {contentPage === "travelList" && <TravelsList />}
         {contentPage === "admin" && <Admin />}
       </div>

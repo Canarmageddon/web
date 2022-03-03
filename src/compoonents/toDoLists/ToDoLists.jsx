@@ -2,61 +2,72 @@ import React, { useState, useEffect } from "react";
 import ToDoList from "./ToDoList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import Button from "react-bootstrap/Button";
-import ListGroup from "react-bootstrap/ListGroup";
-import FormControl from "react-bootstrap/FormControl";
-import Stack from "react-bootstrap/Stack";
 
-const ToDoLists = () => {
+import FormControl from "react-bootstrap/FormControl";
+
+import "../../style/toDoLists.css";
+
+const ToDoLists = ({ display }) => {
+  console.log("yo");
   const [toDoLists, setToDoLists] = useState(
     JSON.parse(localStorage.getItem("toDoLists"))
   );
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
+  useEffect(() => {
+    localStorage.setItem("toDoLists", JSON.stringify([]));
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("toDoLists", JSON.stringify(toDoLists));
   }, [toDoLists]);
 
-  return (
-    <>
-      <Stack direction="horizontal" gap={3} className="d-flex mb-2">
-        <FontAwesomeIcon
-          icon={faPlusCircle}
-          size="2x"
-          onClick={() => setShowForm((oldValue) => !oldValue)}
-        />
-        {showForm && (
-          <>
-            <FormControl
-              placeholder="Nom"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              style={{ flex: 0.1 }}
-              type="text"
-            />
-            <Button
-              onClick={() => {
-                setToDoLists((oldList) => [
-                  ...oldList,
-                  { id: 10, title: title, tasks: [] },
-                ]);
-                setTitle("");
-              }}
-              style={{ flex: 0.1 }}
-            >
-              Ajouter
-            </Button>
-          </>
-        )}
-      </Stack>
+  const handleKeyPress = (e) => {
+    if (e.charCode === 13) {
+      setToDoLists((oldList) => {
+        let id = 0;
 
-      <ListGroup>
+        if (oldList.length > 0) {
+          id =
+            Math.max.apply(
+              Math,
+              oldList.map(function (o) {
+                return o.id;
+              })
+            ) + 1;
+        }
+        return [...oldList, { id: id, title: title, tasks: [] }];
+      });
+      setTitle("");
+      setShowForm(false);
+    }
+  };
+
+  return (
+    <div style={{ display: display ? "block" : "none" }}>
+      <FontAwesomeIcon
+        icon={faPlusCircle}
+        size="2x"
+        onClick={() => setShowForm((oldValue) => !oldValue)}
+        className="add-list-icon"
+      />
+      {showForm && (
+        <FormControl
+          placeholder="Nom"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          onKeyPress={(e) => handleKeyPress(e)}
+          className="add-list-input"
+          type="text"
+        />
+      )}
+
+      <div className="d-flex justify-content-around flex-wrap">
         {toDoLists.map((l) => (
           <ToDoList toDoList={l} setToDoLists={setToDoLists} key={l.id} />
         ))}
-      </ListGroup>
-    </>
+      </div>
+    </div>
   );
 };
 

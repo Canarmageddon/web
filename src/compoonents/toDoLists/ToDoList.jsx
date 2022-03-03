@@ -5,39 +5,46 @@ import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Stack from "react-bootstrap/Stack";
+import "../../style/toDoLists.css";
+import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
 
 const ToDoList = ({ toDoList, setToDoLists }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
-  return (
-    <ListGroup.Item onClick={() => setShowDetails((oldValue) => !oldValue)}>
-      <Stack direction="horizontal" gap={2} className="mb-2">
-        <h5>{toDoList.title}</h5>
-        <FontAwesomeIcon
-          icon={faTimesCircle}
-          size="2x"
-          onClick={() => {
-            setToDoLists((oldLists) => {
-              const index = oldLists.findIndex((ol) => ol.id === toDoList.id);
-              oldLists.splice(index, 1);
-              return [...oldLists];
-            });
-          }}
-        />
-      </Stack>
 
+  return (
+    <CardToDoList
+      onClick={() => setShowDetails((oldValue) => !oldValue)}
+      className="card-todo-list my-2"
+      showDetails={showDetails} // styling props
+    >
+      {toDoList.title}
       {showDetails && (
-        <div onClick={(e) => e.stopPropagation()}>
+        <div onClick={(e) => e.stopPropagation()} className="todo-detail">
+          <FontAwesomeIcon
+            icon={faTimesCircle}
+            size="lg"
+            onClick={() => {
+              setToDoLists((oldLists) => {
+                const index = oldLists.findIndex((ol) => ol.id === toDoList.id);
+                if (index !== -1) {
+                  oldLists.splice(index, 1);
+                }
+
+                return [...oldLists];
+              });
+            }}
+          />
           <FontAwesomeIcon
             icon={faPlusCircle}
-            size="2x"
+            size="lg"
             onClick={() => setShowForm((oldValue) => !oldValue)}
           />
 
           {showForm && (
-            <Stack direction="horizontal" gap={3} className="d-flex mb-2">
+            <div>
               <FormControl
                 placeholder="Nom"
                 value={title}
@@ -51,6 +58,7 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
                 onChange={(e) => setDate(e.target.value)}
                 style={{ flex: 0.1 }}
                 type="date"
+                className="mt-2"
               />
               <Button
                 onClick={() => {
@@ -58,8 +66,20 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
                     const index = oldLists.findIndex(
                       (ol) => ol.id === toDoList.id
                     );
+                    let id = 0;
+
+                    if (oldLists[index].tasks.length > 0) {
+                      id =
+                        Math.max.apply(
+                          Math,
+                          oldLists[index].tasks.map(function (o) {
+                            return o.id;
+                          })
+                        ) + 1;
+                    }
+
                     oldLists[index].tasks.push({
-                      id: 15,
+                      id: id,
                       title: title,
                       date: date != "" ? date : null,
                     });
@@ -68,40 +88,44 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
                   });
                   setTitle("");
                   setDate("");
+                  setShowForm(false);
                 }}
                 style={{ flex: 0.1 }}
               >
                 Ajouter
               </Button>
-            </Stack>
+            </div>
           )}
-          <ListGroup>
+          <div>
             {toDoList.tasks.map((t) => (
-              <ListGroup.Item key={t.id}>
-                <Stack direction="horizontal" gap={2}>
-                  <p>
-                    {t.date} : {t.title}
-                  </p>
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    size="2x"
-                    onClick={() => {
-                      setToDoLists((oldLists) => {
-                        const index = oldLists.findIndex(
-                          (ol) => ol.id === toDoList.id
-                        );
-                        oldLists.splice(index, 1);
-                        return [...oldLists];
-                      });
-                    }}
-                  />
-                </Stack>
-              </ListGroup.Item>
+              <CardItem key={t.id}>
+                <p style={{ marginBottom: 0 }}>
+                  {t.date} : {t.title}
+                </p>
+                <FontAwesomeIcon
+                  icon={faTimesCircle}
+                  size="lg"
+                  onClick={() => {
+                    setToDoLists((oldLists) => {
+                      const listIndex = oldLists.findIndex(
+                        (ol) => ol.id === toDoList.id
+                      );
+                      const taskIndex = oldLists[listIndex].tasks.findIndex(
+                        (task) => task.id === t.id
+                      );
+                      if (taskIndex !== -1) {
+                        oldLists[listIndex].tasks.splice(taskIndex, 1);
+                      }
+                      return [...oldLists];
+                    });
+                  }}
+                />
+              </CardItem>
             ))}
-          </ListGroup>
+          </div>
         </div>
       )}
-    </ListGroup.Item>
+    </CardToDoList>
   );
 };
 
