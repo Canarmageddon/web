@@ -1,0 +1,61 @@
+form.admin-form{
+    border: 1px solid gray;
+    margin: 5px;
+}
+div.invite-div{
+    display: flex;
+    flex-direction: column;
+    margin: 8px;
+}
+.invite-input{
+    margin: 5px;
+}
+div.invite-div button{
+    margin: 5px;
+    width: 60px;
+}
+form.admin-form hr{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+span.invite-title{
+    vertical-align: middle;
+    margin-left: 5px;
+}
+span.nom{
+    margin-left: 10px;
+}
+span.role{
+    margin-left: 45%;
+}
+h2.main-title{
+    margin-top: 5px;
+    font-size: larger;
+    margin-left: 5px;
+    margin-bottom: 20px;
+}
+h3.sub-title{
+    margin-top: 30px;
+    margin-left: 5px;
+    font-size: large;
+}
+hr.bar{
+    margin-left: 8px;
+    margin-right: 8px;
+}
+ul.list{
+    list-style-type: none;
+    padding-left: 8px;
+}
+li select.list-role{
+    margin-left: 45%;
+}
+li button.delete{
+    float: right;
+    margin-right: 10px;
+    background: none;
+    color:white;
+    background-color: rgb(214, 31, 31);
+    border: 0ch;
+    border-radius: 5px;
+}

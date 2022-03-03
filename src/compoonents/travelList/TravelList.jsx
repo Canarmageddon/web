@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Tabs, Tab, Container} from 'react-bootstrap';
+import {Tabs, Tab} from 'react-bootstrap';
 
 const travels = ['NY', 'Ukraine', 'Paris'];
 const listDest = travels.map((travel) => {
