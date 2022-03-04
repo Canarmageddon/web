@@ -14,14 +14,15 @@ const Map = () => {
         setLstLocations(lstLocations.filter(e => e != loc))
     }
     return <>
-        <DestinationInput addLocation={addLocation} />
+        <div style={{ display: "flex", flexDirection: "row" }}>
+            <DestinationInput addLocation={addLocation} />
 
-        {lstLocations.map((loc) =>
-            <div>
-                <button onClick={() => removeElement(loc)}>X</button>
-                <li>{loc}</li>
-            </div>)}
-
+            {lstLocations.map((loc) =>
+                <div>
+                    <button onClick={() => removeElement(loc)}>X</button>
+                    {loc}
+                </div>)}
+        </div>
     </>
 }
 export default Map;
