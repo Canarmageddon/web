@@ -3,7 +3,7 @@ import "../../style/nav.css";
 
 const SideMenu = ({ setContentPage, showMenu }) => {
   return (
-    <div className="sidenav" style={{ width: showMenu ? 250 : 0 }}>
+    <div className="sidenav" style={{ width: showMenu ? 200 : 0 }}>
       <a onClick={() => setContentPage("map")}>Carte</a>
       <a onClick={() => setContentPage("toDoLists")}>Listes de tâches</a>
       <a onClick={() => setContentPage("travelList")}>Liste des voyages</a>

@@ -6,7 +6,7 @@ import "../../style/nav.css";
 const NavBar = ({ setShowMenu }) => {
   return (
     <>
-      <div className="d-flex justify-content-between bg-primary">
+      <div className="d-flex justify-content-between bg-primary nav">
         <FontAwesomeIcon
           className="p-2 nav-icon"
           icon={faBars}
