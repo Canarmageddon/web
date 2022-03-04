@@ -9,8 +9,9 @@ import "../../style/toDoLists.css";
 
 const ToDoLists = ({ display }) => {
   const [toDoLists, setToDoLists] = useState(
-    //JSON.parse(localStorage.getItem("toDoLists"))
-    [] // Uncomment to initialize tasklist (and comment above line)
+    JSON.parse(localStorage.getItem("toDoLists")) !== null
+      ? JSON.parse(localStorage.getItem("toDoLists"))
+      : []
   );
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
