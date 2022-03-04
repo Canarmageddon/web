@@ -9,13 +9,11 @@ import "../../style/toDoLists.css";
 
 const ToDoLists = ({ display }) => {
   const [toDoLists, setToDoLists] = useState(
-    JSON.parse(localStorage.getItem("toDoLists"))
+    //JSON.parse(localStorage.getItem("toDoLists"))
+    [] // Uncomment to initialize tasklist (and comment above line)
   );
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
-  // useEffect(() => {
-  //   localStorage.setItem("toDoLists", JSON.stringify([]));
-  // }, []);
 
   useEffect(() => {
     localStorage.setItem("toDoLists", JSON.stringify(toDoLists));
