@@ -7,6 +7,7 @@ import NavBar from "./compoonents/navBar/NavBar";
 import SideMenu from "./compoonents/navBar/SideMenu";
 import DestinationInput from "./mapHandler/DestinationInput";
 import Admin from "./compoonents/admin/Admin";
+import Map from "./mapHandler/Map";
 function App() {
   const [contentPage, setContentPage] = useState("map");
   const [showMenu, setShowMenu] = useState(false);
@@ -18,7 +19,6 @@ function App() {
 
   return (
     <>
-      <ToDoLists />
       <div style={{ marginLeft: showMenu ? 200 : 0 }}>
         <NavBar setShowMenu={setShowMenu} />
         {contentPage == "map" && <Map showMenu={showMenu} />}
@@ -30,7 +30,8 @@ function App() {
           }}
           id="map"
         ></div>
-        <ToDoLists display={contentPage === "toDoLists"} />
+        {/* <ToDoLists display={contentPage === "toDoLists"} />
+         */}
         <TravelsList display={contentPage === "travelList"} />
         <Admin display={contentPage === "admin"} />
       </div>
