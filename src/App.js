@@ -30,8 +30,7 @@ function App() {
           }}
           id="map"
         ></div>
-        {/* <ToDoLists display={contentPage === "toDoLists"} />
-         */}
+        <ToDoLists display={contentPage === "toDoLists"} />
         <TravelsList display={contentPage === "travelList"} />
         <Admin display={contentPage === "admin"} />
       </div>

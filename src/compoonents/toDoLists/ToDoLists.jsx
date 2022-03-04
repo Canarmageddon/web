@@ -13,9 +13,9 @@ const ToDoLists = ({ display }) => {
   );
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
-  useEffect(() => {
-    localStorage.setItem("toDoLists", JSON.stringify([]));
-  }, []);
+  // useEffect(() => {
+  //   localStorage.setItem("toDoLists", JSON.stringify([]));
+  // }, []);
 
   useEffect(() => {
     localStorage.setItem("toDoLists", JSON.stringify(toDoLists));
@@ -43,22 +43,25 @@ const ToDoLists = ({ display }) => {
   };
 
   return (
-    <div style={{ display: display ? "block" : "none" }}>
+    <div style={{ display: display ? "block" : "none", textAlign: "center" }}>
       <FontAwesomeIcon
         icon={faPlusCircle}
         size="2x"
         onClick={() => setShowForm((oldValue) => !oldValue)}
         className="add-list-icon"
+        style={{ marginTop: -10, marginBottom: 5 }}
       />
       {showForm && (
-        <FormControl
-          placeholder="Nom"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          onKeyPress={(e) => handleKeyPress(e)}
-          className="add-list-input"
-          type="text"
-        />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <FormControl
+            placeholder="Nom"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onKeyPress={(e) => handleKeyPress(e)}
+            className="add-list-input"
+            type="text"
+          />
+        </div>
       )}
 
       <div className="d-flex justify-content-around flex-wrap">

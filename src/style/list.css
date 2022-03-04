@@ -2,13 +2,13 @@ div.root-list{
     margin: 5px;
 }
 h1.list-title{
-    color: aquamarine;
+    color: rgb(13, 110, 253, 1);
     display: inline;
 }
 button.button-new{
     background: none;
     color:white;
-    background-color: blue;
+    background-color: rgb(13, 110, 253, 1);
     border: 0ch;
     border-radius: 5px;
     float: right;
