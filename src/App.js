@@ -21,7 +21,7 @@ function App() {
     <>
       <div style={{ marginLeft: showMenu ? 250 : 0 }}>
         <NavBar setShowMenu={setShowMenu} />
-        {contentPage == "map" && <DestinationInput />}
+        {contentPage == "map" && <Map />}
 
         <div
           id="map"
