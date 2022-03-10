@@ -8,7 +8,6 @@ const Map = ({ showMenu }) => {
         "pk.eyJ1IjoiamJoYXJpIiwiYSI6ImNreXlmeWZsYzBqczEydnFrZjZoeDJqMmEifQ.7Z9vGxLMr0cWskUyVAZXZQ";
     const addLocation = (newLocation) => {
         setLstLocations([...lstLocations, newLocation]);
-        console.log(newLocation);
         searchPlace(newLocation);
     };
     const removeElement = (loc) => {
@@ -19,8 +18,6 @@ const Map = ({ showMenu }) => {
         <>
             <div
                 style={{
-                    display: "flex",
-                    flexDirection: "row",
                     alignItems: "center",
                     position: "absolute",
                     top: 50,

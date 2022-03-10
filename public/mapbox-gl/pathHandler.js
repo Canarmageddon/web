@@ -1,42 +1,58 @@
+const setTravelType = (newTravelType) => {
+  travelType = newTravelType;
+  console.log(travelType);
+  generateRoute();
+};
 const generateRoute = async () => {
   if (lstDestination.length < 2) {
     map.setLayoutProperty("theRoute", "visibility", "none");
     return;
   }
+  let route;
+  let routeLine;
   if (travelType == "none") {
-    map.setLayoutProperty("theRoute", "visibility", "none");
-    return;
+    let coordinates = [];
+    lstDestination.map((des) => {
+      coordinates = [...coordinates, des.center];
+    });
+    routeLine = { type: "LineString", coordinates };
+    map.getSource("theRoute").setData(routeLine);
+    map.setLayoutProperty("theRoute", "visibility", "visible");
+  } else {
+    let points = "";
+    for (let i = 0; i < lstDestination.length; i++) {
+      points += lngLatToString(lstDestination[i].center) + ";";
+    }
+    points = points.slice(0, -1);
+    route = await fetch(
+      `https://api.mapbox.com/directions/v5/mapbox/${travelType}/${points}.json?geometries=polyline&steps=true&overview=full&language=en&access_token=pk.eyJ1IjoiYXNsbmRza3ZucWRvZm1uIiwiYSI6ImNreWJyN3VkZzBpNnUydm4wcnJ5MmdvYm0ifQ.YNwpI3-HgF6nMhdaRRkKBg`
+    ).then((res) => res.json());
+    route = route.routes[0];
+    routeLine = polyline.toGeoJSON(route.geometry);
   }
-  let points = "";
-  for (let i = 0; i < lstDestination.length; i++) {
-    points += lngLatToString(lstDestination[i].center) + ";";
-  }
-  points = points.slice(0, -1);
-  let route = await fetch(
-    `https://api.mapbox.com/directions/v5/mapbox/${travelType}/${points}.json?geometries=polyline&steps=true&overview=full&language=en&access_token=pk.eyJ1IjoiYXNsbmRza3ZucWRvZm1uIiwiYSI6ImNreWJyN3VkZzBpNnUydm4wcnJ5MmdvYm0ifQ.YNwpI3-HgF6nMhdaRRkKBg`
-  ).then((res) => res.json());
-  route = route.routes[0];
+
   // Make each route visible
   map.setLayoutProperty("theRoute", "visibility", "visible");
   map.setLayoutProperty("theBox", "visibility", "visible");
   // Get GeoJSON LineString feature of route
-  const routeLine = polyline.toGeoJSON(route.geometry);
-  console.log(routeLine);
 
   // Create a bounding box around this route
   // The app will find a random point in the new bbox
+
   bbox = turf.bbox(routeLine);
   polygon = turf.bboxPolygon(bbox);
-
   // Update the data for the route
   // This will update the route line on the map
   map.getSource("theRoute").setData(routeLine);
 
   // Update the box
   map.getSource("theBox").setData(polygon);
+  if (travelType == "none") {
+    map.setLayoutProperty("theBox", "visibility", "none");
+    return;
+  }
 
   const clear = turf.booleanDisjoint(obstacle, routeLine);
-
   if (clear === true) {
     collision = "does not intersect any obstacles!";
     detail = `takes ${(route.duration / 60).toFixed(0)} minutes and avoids`;
