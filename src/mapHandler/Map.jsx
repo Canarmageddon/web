@@ -2,6 +2,7 @@ import { useState } from "react";
 import DestinationInput from "./DestinationInput";
 import Button from "react-bootstrap/Button";
 import TravelTransport from "./TravelTransport"
+import PopUpHandler from "./PopUpHandler";
 const Map = ({ showMenu }) => {
     const [lstLocations, setLstLocations] = useState([]);
     const MAPBOX_TOKEN =
@@ -34,6 +35,7 @@ const Map = ({ showMenu }) => {
                         {loc}
                     </div>
                 ))}
+                <PopUpHandler ref={(PopUpHandler => { window.PopUpHandler = PopUpHandler })} />
             </div>
         </>
     );

@@ -1,6 +1,5 @@
 const setTravelType = (newTravelType) => {
   travelType = newTravelType;
-  console.log(travelType);
   generateRoute();
 };
 const generateRoute = async () => {

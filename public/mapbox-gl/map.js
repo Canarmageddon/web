@@ -1,82 +1,50 @@
+let add = true;
+let id = 0;
+let currentMarker = null;
+const popup = new mapboxgl.Popup({
+  closeButton: false,
+  closeOnClick: false,
+});
 function createMap() {
   map = new mapboxgl.Map({
     container: "map", // Specify the container ID
     style: "mapbox://styles/mapbox/streets-v11", // Specify which map style to use
 
-    center: [7.72583, 48.46972], // Specify the starting position [lng, lat]
-    zoom: 1, // Specify the starting zoom
+    center: [-77.020945, 38.878241], // Specify the starting position [lng, lat]
+    zoom: 13, // Specify the starting zoom
   });
 
-  let i = 0;
   map.on("click", function (e) {
-    const coordinates = e.lngLat;
-    const marker = new mapboxgl.Marker()
-      .setLngLat(coordinates)
-      .setDraggable(true);
-    lstMarker = [...lstMarker, marker];
-    /* new mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML("you clicked here: <br/>" + coordinates)
-        .addTo(map); */
-    marker.getElement().addEventListener("click", (e) => {
-      marker.remove();
-      lstMarker = lstMarker.filter((i) => i != marker);
+    let data = map.getSource("places")._data;
+    if (add) {
+      let marker = {
+        type: "Feature",
+        id,
+        properties: {
+          description: "",
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [e.lngLat.lng, e.lngLat.lat],
+        },
+      };
+      PopUpHandler.setState({ display: true, idPopUp: id, description: "" });
 
-      // Without it, the click event on map if fired afterward
-      e.stopPropagation();
-    });
-    marker.addTo(map);
+      data.features.push(marker);
+      map.getSource("places").setData(data);
+      currentMarker = id;
+      id++;
+    } else {
+      popup.remove();
+      add = true;
+      features = data.features.filter((el) => el.id != currentMarker);
+      data.features = features;
+      map.getSource("places").setData(data);
+    }
   });
 
   map.on("load", () => {
-    map.setLayoutProperty("country-label", "text-field", ["get", "name_fr"]);
-    map.setLayoutProperty("state-label", "text-field", ["get", "name_fr"]);
-    map.setLayoutProperty("settlement-label", "text-field", ["get", "name_fr"]);
-    map.setLayoutProperty("settlement-subdivision-label", "text-field", [
-      "get",
-      "name_fr",
-    ]);
-    map.addSource("theRoute", {
-      type: "geojson",
-      data: {
-        type: "Feature",
-      },
-    });
-
-    map.addLayer({
-      id: "theRoute",
-      type: "line",
-      source: "theRoute",
-      layout: {
-        "line-join": "round",
-        "line-cap": "round",
-      },
-      paint: {
-        "line-color": "#cccccc",
-        "line-opacity": 0.5,
-        "line-width": 13,
-        "line-blur": 0.5,
-      },
-    });
-
-    // Source and layer for the bounding box
-    map.addSource("theBox", {
-      type: "geojson",
-      data: {
-        type: "Feature",
-      },
-    });
-    map.addLayer({
-      id: "theBox",
-      type: "fill",
-      source: "theBox",
-      layout: {},
-      paint: {
-        "fill-color": "#FFC300",
-        "fill-opacity": 0.5,
-        "fill-outline-color": "#FFC300",
-      },
-    });
+    initLayers();
   });
 }
 
