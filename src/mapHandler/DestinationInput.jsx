@@ -23,7 +23,6 @@ function DestinationInput({ addLocation }) {
     des.features.map((f) => {
       lstPlace = [...lstPlace, f.place_name];
     });
-    console.log(lstPlace);
     return lstPlace;
   };
 
