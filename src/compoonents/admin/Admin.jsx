@@ -28,7 +28,12 @@ const Admin = ({ display }) => {
   });
 
   return (
-    <div style={{ display: display ? "block" : "none" }}>
+    <div
+      style={{
+        display: display ? "block" : "none",
+        flex: 0.4,
+      }}
+    >
       <h2 className="main-title">Membre de voyage</h2>
       <form className="admin-form">
         <span className="invite-title">Inviter membre</span>
