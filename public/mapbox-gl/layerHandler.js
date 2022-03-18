@@ -85,18 +85,13 @@ function initLayers() {
     // Populate the popup and set its coordinates
     // based on the feature found.
     popup.setLngLat(coordinates).setHTML(description).addTo(map);
-    PopUpHandler.setState({
-      display: true,
-      idPopUp: e.features[0].id,
-      description: e.features[0].properties.description,
-    });
+    /*  */
   });
   map.on("mouseleave", "places", () => {
     map.getCanvas().style.cursor = "";
     popup.remove();
   });
-  map.on("preclick", "places", (e, a) => {
-    console.log(e);
+  map.on("preclick", "places", (e) => {
     add = false;
   });
   map.on("mouseleave", "places", () => {

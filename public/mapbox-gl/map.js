@@ -10,27 +10,19 @@ function createMap() {
     container: "map", // Specify the container ID
     style: "mapbox://styles/mapbox/streets-v11", // Specify which map style to use
 
-    center: [-77.020945, 38.878241], // Specify the starting position [lng, lat]
-    zoom: 13, // Specify the starting zoom
+    center: [7.7345492, 48.5850678], // Specify the starting position [lng, lat]
+    zoom: 10, // Specify the starting zoom
   });
 
   map.on("click", function (e) {
     let data = map.getSource("places")._data;
-    if (add) {
-      let marker = {
-        type: "Feature",
-        id,
-        properties: {
-          description: "",
-        },
-        geometry: {
-          type: "Point",
-          coordinates: [e.lngLat.lng, e.lngLat.lat],
-        },
-      };
-      PopUpHandler.setState({ display: true, idPopUp: id, description: "" });
+    //PoiHandler.addItem(id, "", e.lngLat.lng, e.lngLat.lat);
 
-      data.features.push(marker);
+    if (add) {
+      PopUpHandler.setState({ display: true, idPopUp: 100, description: "" });
+      PoiHandler.addItem(id, "", e.lngLat.lng, e.lngLat.lat);
+      data.features = PoiHandler.state.poiLayer.templateLayer;
+
       map.getSource("places").setData(data);
       currentMarker = id;
       id++;
@@ -40,6 +32,11 @@ function createMap() {
       features = data.features.filter((el) => el.id != currentMarker);
       data.features = features;
       map.getSource("places").setData(data);
+      PopUpHandler.setState({
+        display: false,
+        idPopUp: null,
+        description: null,
+      });
     }
   });
 

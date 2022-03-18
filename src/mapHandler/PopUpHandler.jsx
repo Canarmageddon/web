@@ -17,7 +17,6 @@ class PopUpHandler extends React.Component {
         this.setState({ display: false, idPopUp: null, description: null })
     }
     render() {
-        console.log(this.state.description)
         return (
             <>
                 {this.state.display &&

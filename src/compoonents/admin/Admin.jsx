@@ -12,7 +12,6 @@ const Admin = ({ display }) => {
     const handleRoleChange = (e) => {
       if (e.target.value !== role) {
         setRole(e.target.value);
-        console.log("Changing to " + e.target.value);
       }
     };
     return (

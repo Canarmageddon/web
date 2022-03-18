@@ -50,10 +50,11 @@ function DestinationInput({ addLocation }) {
     value,
     onChange,
   };
-  const handleClick = () => {
+  const add = () => {
     addLocation(value);
     setValue("");
   };
+
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <Autosuggest
@@ -64,8 +65,11 @@ function DestinationInput({ addLocation }) {
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />
-      <Button onClick={handleClick} style={{ marginLeft: 10 }}>
+      <Button onClick={() => goTo(value)} style={{ marginLeft: 10 }}>
         Rechercher
+      </Button>
+      <Button onClick={add} style={{ marginLeft: 10 }}>
+        Ajouter au trajet
       </Button>
     </div>
   );
