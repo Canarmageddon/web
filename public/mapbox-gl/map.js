@@ -1,17 +1,17 @@
 let add = true;
 let id = 0;
 let currentMarker = null;
-const popup = new mapboxgl.Popup({
-  closeButton: false,
-  closeOnClick: false,
-});
+const popup = new mapboxgl.Popup({closeButton: false, closeOnClick: false});
+
 function createMap() {
   map = new mapboxgl.Map({
     container: "map", // Specify the container ID
     style: "mapbox://styles/mapbox/streets-v11", // Specify which map style to use
 
-    center: [-77.020945, 38.878241], // Specify the starting position [lng, lat]
-    zoom: 13, // Specify the starting zoom
+    center: [
+      -77.020945, 38.878241
+    ], // Specify the starting position [lng, lat]
+    zoom: 13 // Specify the starting zoom
   });
 
   map.on("click", function (e) {
@@ -21,14 +21,14 @@ function createMap() {
         type: "Feature",
         id,
         properties: {
-          description: "",
+          description: ""
         },
         geometry: {
           type: "Point",
-          coordinates: [e.lngLat.lng, e.lngLat.lat],
-        },
+          coordinates: [e.lngLat.lng, e.lngLat.lat]
+        }
       };
-      PopUpHandler.setState({ display: true, idPopUp: id, description: "" });
+      PopUpHandler.setState({display: true, idPopUp: id, description: ""});
 
       data.features.push(marker);
       map.getSource("places").setData(data);
@@ -37,7 +37,7 @@ function createMap() {
     } else {
       popup.remove();
       add = true;
-      features = data.features.filter((el) => el.id != currentMarker);
+      features = data.features.filter(el => el.id != currentMarker);
       data.features = features;
       map.getSource("places").setData(data);
     }

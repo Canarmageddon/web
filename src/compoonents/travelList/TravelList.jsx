@@ -16,7 +16,13 @@ const TravelsList = ({ display }) => {
   const [role, setRole] = useState("admin");
 
   return (
-    <div className="root-list" style={{ display: display ? "block" : "none" }}>
+    <div
+      className="root-list"
+      style={{
+        display: display ? "block" : "none",
+        flex: 0.4,
+      }}
+    >
       <h1 className="list-title">Voyages</h1>
       <button className="button-new">Nouveau voyage</button>
       <hr style={{ marginBottom: 5 + "px" }} />
