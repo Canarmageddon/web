@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./style/map.css";
 import ToDoLists from "./compoonents/toDoLists/ToDoLists";
+import TravelsList from "./compoonents/travelList/TravelList";
 import NavBar from "./compoonents/navBar/NavBar";
 import SideMenu from "./compoonents/navBar/SideMenu";
-
+import DestinationInput from "./mapHandler/DestinationInput";
+import Admin from "./compoonents/admin/Admin";
+import Map from "./mapHandler/Map";
 function App() {
   const [contentPage, setContentPage] = useState("map");
   const [showMenu, setShowMenu] = useState(false);
@@ -16,18 +19,20 @@ function App() {
 
   return (
     <>
-      <div style={{ marginLeft: showMenu ? 250 : 0 }}>
+      <div style={{ marginLeft: showMenu ? 200 : 0 }}>
         <NavBar setShowMenu={setShowMenu} />
+        {contentPage == "map" && <Map showMenu={showMenu} />}
+
         <div
-          id="map"
           style={{
             width: "100%",
             display: contentPage === "map" ? "block" : "none",
           }}
+          id="map"
         ></div>
-        <ToDoLists
-          style={{ display: contentPage === "toDoLists" ? "block" : "none" }}
-        />
+        <ToDoLists display={contentPage === "toDoLists"} />
+        <TravelsList display={contentPage === "travelList"} />
+        <Admin display={contentPage === "admin"} />
       </div>
       <SideMenu showMenu={showMenu} setContentPage={setContentPage} />
     </>
