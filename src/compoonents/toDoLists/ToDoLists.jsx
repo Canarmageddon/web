@@ -42,7 +42,13 @@ const ToDoLists = ({ display }) => {
   };
 
   return (
-    <div style={{ display: display ? "block" : "none", textAlign: "center" }}>
+    <div
+      style={{
+        display: display ? "block" : "none",
+        flex: 0.4,
+        textAlign: "center",
+      }}
+    >
       <FontAwesomeIcon
         icon={faPlusCircle}
         size="2x"

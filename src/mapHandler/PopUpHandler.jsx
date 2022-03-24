@@ -62,6 +62,9 @@ class PopUpHandler extends React.Component {
       </Modal>
     );
   }
+  handleChangeDescription(e) {
+    this.setState({ description: e });
+  }
 }
 
 export default PopUpHandler;
