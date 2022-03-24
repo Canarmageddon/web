@@ -1,20 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, Tab } from "react-bootstrap";
+import { useTravel } from "../../context/TravelContext";
+import Travel from "../../factory/Travel"
+import Itinerary from "../../factory/Itinerary";
+import { fetchTravels } from "../../apiCaller";
 
-const travels = ["NY", "Ukraine", "Paris"];
-const listDest = travels.map((travel) => {
-  return (
-    <li key={travel}>
-      {travel}
-      <hr />
-    </li>
-  );
-});
+
 
 const TravelsList = ({ display }) => {
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
-
+  const [travel, setTravel] = useTravel()
+  const [lstTravel, setLstTravel] = useState([])
+  useEffect(async () => {
+    const data = await fetchTravels()
+    let res = [];
+    data.map((d) => {
+      let itinerary = new Itinerary(d.itinerary.description, d.itinerary.id)
+      let travel = new Travel(d.duration, d.id, itinerary);
+      res = [...res, travel];
+    })
+    setLstTravel(res)
+  }, [])
+  const displayLstTravel = () => {
+    return lstTravel.map((t) =>
+      <li key={t.id} onClick={() => setTravel(t)}>
+        {t.itinerary.description}
+      </li>)
+  }
   return (
     <div
       className="root-list"
@@ -48,8 +61,8 @@ const TravelsList = ({ display }) => {
         <Tab eventKey="admin" title="Admin"></Tab>
         <Tab eventKey="member" title="Membre"></Tab>
       </Tabs>
+      <ul>{displayLstTravel()}</ul>
 
-      <ul>{listDest}</ul>
     </div>
   );
 };
