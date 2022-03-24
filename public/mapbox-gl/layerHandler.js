@@ -2,12 +2,15 @@ function initLayers() {
   map.setLayoutProperty("country-label", "text-field", ["get", "name_fr"]);
   map.setLayoutProperty("state-label", "text-field", ["get", "name_fr"]);
   map.setLayoutProperty("settlement-label", "text-field", ["get", "name_fr"]);
-  map.setLayoutProperty("settlement-subdivision-label", "text-field", ["get", "name_fr"]);
+  map.setLayoutProperty("settlement-subdivision-label", "text-field", [
+    "get",
+    "name_fr",
+  ]);
   map.addSource("theRoute", {
     type: "geojson",
     data: {
-      type: "Feature"
-    }
+      type: "Feature",
+    },
   });
 
   map.addLayer({
@@ -16,22 +19,22 @@ function initLayers() {
     source: "theRoute",
     layout: {
       "line-join": "round",
-      "line-cap": "round"
+      "line-cap": "round",
     },
     paint: {
       "line-color": "#cccccc",
       "line-opacity": 0.5,
       "line-width": 13,
-      "line-blur": 0.5
-    }
+      "line-blur": 0.5,
+    },
   });
 
   // Source and layer for the bounding box
   map.addSource("theBox", {
     type: "geojson",
     data: {
-      type: "Feature"
-    }
+      type: "Feature",
+    },
   });
   map.addLayer({
     id: "theBox",
@@ -41,15 +44,15 @@ function initLayers() {
     paint: {
       "fill-color": "#FFC300",
       "fill-opacity": 0.5,
-      "fill-outline-color": "#FFC300"
-    }
+      "fill-outline-color": "#FFC300",
+    },
   });
   map.addSource("places", {
     type: "geojson",
     data: {
       type: "FeatureCollection",
-      features: []
-    }
+      features: [],
+    },
   });
 
   map.addLayer({
@@ -60,11 +63,11 @@ function initLayers() {
       "circle-color": "#4264fb",
       "circle-radius": 6,
       "circle-stroke-width": 2,
-      "circle-stroke-color": "#ffffff"
-    }
+      "circle-stroke-color": "#ffffff",
+    },
   });
 
-  map.on("mouseenter", "places", e => {
+  map.on("mouseenter", "places", (e) => {
     // Change the cursor style as a UI indicator.
     map.getCanvas().style.cursor = "pointer";
 
@@ -76,21 +79,23 @@ function initLayers() {
     // copies of the feature are visible, the popup appears
     // over the copy being pointed to.
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      coordinates[0] += e.lngLat.lng > coordinates[0]
-        ? 360
-        : -360;
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
     // Populate the popup and set its coordinates
     // based on the feature found.
     popup.setLngLat(coordinates).setHTML(description).addTo(map);
-    PopUpHandler.setState({display: true, idPopUp: e.features[0].id, description: e.features[0].properties.description});
+    PopUpHandler.setState({
+      display: true,
+      idPopUp: e.features[0].id,
+      description: e.features[0].properties.description,
+    });
   });
   map.on("mouseleave", "places", () => {
     map.getCanvas().style.cursor = "";
     popup.remove();
   });
-  map.on("preclick", "places", (e, a) => {
+  map.on("preclick", "places", (e) => {
     add = false;
   });
   map.on("mouseleave", "places", () => {
