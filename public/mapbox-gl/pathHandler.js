@@ -2,6 +2,7 @@ const setTravelType = (newTravelType) => {
   travelType = newTravelType;
   generateRoute();
 };
+
 const generateRoute = async () => {
   if (lstDestination.length < 2) {
     map.setLayoutProperty("theRoute", "visibility", "none");

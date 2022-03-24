@@ -12,11 +12,16 @@ class PopUpHandler extends React.Component {
       description: "",
     };
   }
-
+  
+  handleChangeDescription(e) {
+    this.setState({ description: e })
+  }
+  
   handleClick(id, description) {
     updatePlacesDescription(id, description);
     this.setState({ display: false, idPopUp: null, description: "" });
   }
+  
   render() {
     return (
       <Modal
@@ -61,9 +66,6 @@ class PopUpHandler extends React.Component {
         </Modal.Footer>
       </Modal>
     );
-  }
-  handleChangeDescription(e) {
-    this.setState({ description: e });
   }
 }
 
