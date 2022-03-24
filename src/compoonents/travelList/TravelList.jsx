@@ -4,7 +4,7 @@ import { useTravel } from "../../context/TravelContext";
 import Travel from "../../factory/Travel"
 import Itinerary from "../../factory/Itinerary";
 import { fetchTravels } from "../../apiCaller";
-
+import generateObject from "../../factory/ObjectFactory";
 
 
 const TravelsList = ({ display }) => {
@@ -14,12 +14,7 @@ const TravelsList = ({ display }) => {
   const [lstTravel, setLstTravel] = useState([])
   useEffect(async () => {
     const data = await fetchTravels()
-    let res = [];
-    data.map((d) => {
-      let itinerary = new Itinerary(d.itinerary.description, d.itinerary.id)
-      let travel = new Travel(d.duration, d.id, itinerary);
-      res = [...res, travel];
-    })
+    let res = generateObject(data)
     setLstTravel(res)
   }, [])
   const displayLstTravel = () => {
