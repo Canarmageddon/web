@@ -3,7 +3,7 @@ const setTravelType = (newTravelType) => {
   generateRoute();
 };
 
-const generateRoute = async () => {
+/* const generateRoute = async () => {
   if (lstDestination.length < 2) {
     map.setLayoutProperty("theRoute", "visibility", "none");
     return;
@@ -81,6 +81,21 @@ const generateRoute = async () => {
       randomWaypoint["features"][0].geometry.coordinates
     );
   }
+}; */
+const generateRoute = () => {
+  const stepLayer = LocationHandler.state.stepLayer;
+  if (stepLayer.length < 2) {
+    map.setLayoutProperty("theRoute", "visibility", "none");
+    return;
+  }
+  let route;
+  let routeLine;
+  let coordinates = [];
+
+  routeLine = { type: "LineString", coordinates: stepLayer.positions };
+  map.getSource("theRoute").setData(routeLine);
+  map.setLayoutProperty("theRoute", "visibility", "visible");
+  //map.setLayoutProperty("theBox", "visibility", "visible");
 };
 
 function clear() {

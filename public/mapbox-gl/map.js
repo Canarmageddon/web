@@ -9,18 +9,14 @@ function createMap() {
     style: "mapbox://styles/mapbox/streets-v11", // Specify which map style to use
 
     center: [-77.020945, 38.878241], // Specify the starting position [lng, lat]
-    zoom: 13, // Specify the starting zoom
+    zoom: 2, // Specify the starting zoom
   });
 
   map.on("click", function (e) {
     let data = map.getSource("places")._data;
-    //PoiHandler.addItem(id, "", e.lngLat.lng, e.lngLat.lat);
-
     if (add) {
-      PopUpHandler.setState({ display: true, idPopUp: 100, description: "" });
-      PoiHandler.addItem(id, "", e.lngLat.lng, e.lngLat.lat);
-      data.features = PoiHandler.state.poiLayer.templateLayer;
-
+      LocationHandler.addItem(id, "", e.lngLat.lng, e.lngLat.lat);
+      data.features = LocationHandler.state.poiLayer.templateLayer;
       map.getSource("places").setData(data);
       currentMarker = id;
       id++;
