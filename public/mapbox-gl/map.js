@@ -14,11 +14,9 @@ function createMap() {
 
   map.on("click", function (e) {
     let data = map.getSource("places")._data;
-    //PoiHandler.addItem(id, "", e.lngLat.lng, e.lngLat.lat);
-
     if (add) {
-      PoiHandler.addItem(id, "", e.lngLat.lng, e.lngLat.lat);
-      data.features = PoiHandler.state.poiLayer.templateLayer;
+      LocationHandler.addItem(id, "", e.lngLat.lng, e.lngLat.lat);
+      data.features = LocationHandler.state.poiLayer.templateLayer;
       map.getSource("places").setData(data);
       currentMarker = id;
       id++;
