@@ -36,6 +36,8 @@ function createMap() {
 
   map.on("load", () => {
     initLayers();
+    // on attend pour la fin du chargement de la carte avant de modifier les layers
+    LocationHandler.fetchLocations();
   });
 }
 
