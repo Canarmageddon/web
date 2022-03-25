@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    flex: space-between;
+    flex-wrap: wrap;
+    column-gap: 20px;
+    justify-content: space-around;
+}
+
+.travel{
+    border: solid;
+    border-color: black;
+    border-radius: 1px;
+    padding: 2px;
+    margin: 2px;
+}
