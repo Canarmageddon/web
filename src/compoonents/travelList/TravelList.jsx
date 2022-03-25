@@ -5,9 +5,11 @@ import Travel from "../../factory/Travel"
 import Itinerary from "../../factory/Itinerary";
 import { fetchTravels } from "../../apiCaller";
 import generateObject from "../../factory/ObjectFactory";
+import { useNavigate } from "react-router-dom";
 
 
 const TravelsList = ({ display }) => {
+  const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [travel, setTravel] = useTravel()
@@ -17,9 +19,13 @@ const TravelsList = ({ display }) => {
     let res = generateObject(data)
     setLstTravel(res)
   }, [])
+  const handleClick = (t) => {
+    setTravel(t)
+    navigate("/map")
+  }
   const displayLstTravel = () => {
     return lstTravel.map((t) =>
-      <li key={t.id} onClick={() => setTravel(t)}>
+      <li key={t.id} onClick={() => handleClick(t)}>
         {t.itinerary.description}
       </li>)
   }
