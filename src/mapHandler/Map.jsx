@@ -27,6 +27,7 @@ const Map = ({ showMenu }) => {
         }}
       >
         <input type="checkbox" onChange={() => setTypeLocation(!typeLocation)}></input>
+        <p>{typeLocation ? "Ajouter des points d'intérêts" : "Ajouter des étapes"}</p>
         <TravelTransport></TravelTransport>
         <DestinationInput addLocation={addLocation} />
 
