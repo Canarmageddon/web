@@ -2,8 +2,8 @@ import { useState } from "react";
 import DestinationInput from "./DestinationInput";
 import Button from "react-bootstrap/Button";
 import TravelTransport from "./TravelTransport";
-import PopUpHandler from "./PopUpHandler";
 import PoiHandler from "./PoiHandler";
+import { fetchTravels } from "../apiCaller";
 const Map = ({ showMenu }) => {
   const [lstLocations, setLstLocations] = useState([]);
   const MAPBOX_TOKEN =
@@ -17,16 +17,14 @@ const Map = ({ showMenu }) => {
     setLstLocations(lstLocations.filter((e) => e != loc));
   };
 
-
-
   return (
     <>
       <div
         style={{
           alignItems: "center",
           position: "absolute",
-          top: 50,
-          left: showMenu ? 205 : 5,
+          top: 10,
+          left: 10,
           zIndex: 1,
         }}
       >
@@ -40,7 +38,6 @@ const Map = ({ showMenu }) => {
           </div>
         ))}
         <PoiHandler ref={(PoiHandler => { window.PoiHandler = PoiHandler })}></PoiHandler>
-        <PopUpHandler ref={(PopUpHandler => { window.PopUpHandler = PopUpHandler })} />
       </div>
     </>
   );
