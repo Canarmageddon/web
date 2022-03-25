@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DestinationInput from "./DestinationInput";
 import Button from "react-bootstrap/Button";
 import TravelTransport from "./TravelTransport";
 import LocationHandler from "./LocationHandler";
 import { fetchTravels } from "../apiCaller";
 const Map = ({ showMenu }) => {
+  const displayMap = () => createMap();
   const [lstLocations, setLstLocations] = useState([]);
   const [typeLocation, setTypeLocation] = useState(false)
   const addLocation = (newLocation) => {
@@ -15,6 +16,9 @@ const Map = ({ showMenu }) => {
     removePlace(lstLocations.indexOf(loc));
     setLstLocations(lstLocations.filter((e) => e != loc));
   };
+  useEffect(() => {
+    displayMap();
+  }, []);
   return (
     <>
       <div

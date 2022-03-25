@@ -112,3 +112,8 @@ function updatePlacesDescription(index, description) {
   }
   map.getSource("places").setData(data);
 }
+
+function displayPOILayer() {
+  data.features = LocationHandler.state.poiLayer.templateLayer;
+  map.getSource("places").setData(data);
+}
