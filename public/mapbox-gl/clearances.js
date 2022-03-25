@@ -1,3 +1,4 @@
+// Utilisé par la génération des trajets en voiture, vélo et à pied
 const clearances = {
   type: "FeatureCollection",
   features: [

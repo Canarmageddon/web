@@ -50,10 +50,6 @@ function DestinationInput({ addLocation }) {
     value,
     onChange,
   };
-  const add = () => {
-    addLocation(value);
-    setValue("");
-  };
 
   return (
     <div style={{ display: "flex", flexDirection: "row", marginTop: 5 }}>
@@ -67,9 +63,6 @@ function DestinationInput({ addLocation }) {
       />
       <Button onClick={() => goTo(value)} style={{ marginLeft: 10 }}>
         Rechercher
-      </Button>
-      <Button onClick={add} style={{ marginLeft: 10 }}>
-        Ajouter au trajet
       </Button>
     </div>
   );

@@ -67,7 +67,12 @@ function initLayers() {
     },
   });
 
-  map.on("mouseenter", "places", (e) => {
+  // évènement lancé quand on clique sur un POI, on signal qu'il ne faut pas ajouter un POI additionnel
+  map.on("preclick", "places", (e) => {
+    add = false;
+  });
+
+  /*   map.on("mouseenter", "places", (e) => {
     // Change the cursor style as a UI indicator.
     map.getCanvas().style.cursor = "pointer";
 
@@ -85,18 +90,15 @@ function initLayers() {
     // Populate the popup and set its coordinates
     // based on the feature found.
     popup.setLngLat(coordinates).setHTML(description).addTo(map);
-  });
-  map.on("mouseleave", "places", () => {
+  }); */
+  /*   map.on("mouseleave", "places", () => {
     map.getCanvas().style.cursor = "";
     popup.remove();
-  });
-  map.on("preclick", "places", (e) => {
-    add = false;
-  });
-  map.on("mouseleave", "places", () => {
+  }); */
+  /*   map.on("mouseleave", "places", () => {
     map.getCanvas().style.cursor = "";
     popup.remove();
-  });
+  }); */
 }
 
 function updatePlacesDescription(index, description) {

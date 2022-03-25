@@ -1,4 +1,4 @@
-export default class PointOfInterest {
+export default class Location {
   constructor(id, description, longitude, latitude) {
     this.id = id;
     this.description = description;
