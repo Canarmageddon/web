@@ -9,7 +9,7 @@ import Admin from "./compoonents/admin/Admin";
 import Map from "./mapHandler/Map";
 import { TravelProvider } from "./context/TravelContext";
 import { Route, Routes, HashRouter } from "react-router-dom";
-
+import MapGl from "./mapHandler/MapGl";
 function App() {
   const [contentPage, setContentPage] = useState("map");
   const [showMenu, setShowMenu] = useState(false);
@@ -41,6 +41,7 @@ function App() {
                       }}
                       id="map"
                     >
+                      <MapGl displayFull={contentPage === "map"}></MapGl>
                       <Map showMenu={showMenu} />
                     </div>
                   </div>

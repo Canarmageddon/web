@@ -1,13 +1,12 @@
-import Layer from "./layers/Layer"
+import LayerUtile from "./layers/LayerUtile"
 import Location from "./layers/Location"
 import React from "react"
 import { fetchPointOfInterest, fetchStep } from "../apiCaller"
-export default class LocationHandler extends React.Component {
+export default class LocationHandler {
     constructor(props) {
-        super(props)
         this.state = {
-            poiLayer: new Layer(),
-            stepLayer: new Layer()
+            poiLayer: new LayerUtile(),
+            stepLayer: new LayerUtile()
         }
     }
     async fetchLocations() {
@@ -38,8 +37,5 @@ export default class LocationHandler extends React.Component {
     getTemplateLayer() {
         return this.state.poiLayer.getTemplateLayer;
     }
-    render() {
 
-        return <></>
-    }
 }

@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import DestinationInput from "./DestinationInput";
 import Button from "react-bootstrap/Button";
 import TravelTransport from "./TravelTransport";
-import LocationHandler from "./LocationHandler";
 import { fetchTravels } from "../apiCaller";
+import MapGl from "./MapGl";
 const Map = ({ showMenu }) => {
   const displayMap = () => createMap();
   const [lstLocations, setLstLocations] = useState([]);
@@ -17,7 +17,7 @@ const Map = ({ showMenu }) => {
     setLstLocations(lstLocations.filter((e) => e != loc));
   };
   useEffect(() => {
-    displayMap();
+    //    displayMap();
   }, []);
   return (
     <>
@@ -32,7 +32,7 @@ const Map = ({ showMenu }) => {
       >
         <input type="checkbox" onChange={() => setTypeLocation(!typeLocation)}></input>
         <p>{typeLocation ? "Ajouter des points d'intérêts" : "Ajouter des étapes"}</p>
-        <TravelTransport></TravelTransport>
+        <TravelTransport ></TravelTransport>
         <DestinationInput addLocation={addLocation} />
 
         {lstLocations.map((loc) => (
@@ -41,7 +41,7 @@ const Map = ({ showMenu }) => {
             {loc}
           </div>
         ))}
-        <LocationHandler ref={(LocationHandler => { window.LocationHandler = LocationHandler })} typeLocation={typeLocation}></LocationHandler>
+
       </div>
     </>
   );
