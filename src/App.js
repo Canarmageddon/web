@@ -38,6 +38,8 @@ function App() {
                     <div
                       style={{
                         flex: contentPage === "map" ? 1 : 0.6,
+                        width: "100%",
+                        height: "93vh",
                       }}
                       id="map"
                     >

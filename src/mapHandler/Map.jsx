@@ -25,8 +25,7 @@ const Map = ({ showMenu }) => {
         style={{
           alignItems: "center",
           position: "absolute",
-          top: 10,
-          left: 10,
+          top: '7vh',
           zIndex: 1,
         }}
       >

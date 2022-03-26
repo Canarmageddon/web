@@ -28,7 +28,7 @@ export default function MapGl(displayFull) {
         type: "circle",
         paint: {
             "circle-color": "#4264fb",
-            "circle-radius": 3,
+            "circle-radius": 6,
             "circle-stroke-width": 2,
             "circle-stroke-color": "#ffffff",
         },
