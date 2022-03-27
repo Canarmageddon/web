@@ -4,7 +4,7 @@ import LayerUtile from "./layers/LayerUtile";
 import Location from "./layers/Location";
 import LocationHandler from "./LocationHandler";
 import { fetchPointOfInterest, fetchStep } from "../apiCaller";
-export default function MapGl(displayFull) {
+export default function MapGl({ typeLocation }) {
     const [poiSource, setPoiSource] = useState(
         new LayerUtile()
     );
@@ -12,7 +12,6 @@ export default function MapGl(displayFull) {
         new LayerUtile()
     );
     useEffect(async () => {
-
         const poi = await fetchPointOfInterest();
         const step = await fetchStep();
         let lstPoi = []
@@ -33,6 +32,16 @@ export default function MapGl(displayFull) {
             "circle-stroke-color": "#ffffff",
         },
     };
+    const routeLayer2 = {
+        id: "route2",
+        type: "circle",
+        paint: {
+            "circle-color": "#000000",
+            "circle-radius": 4,
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#ffffff",
+        },
+    }
     const routeLayer = {
         id: "theRoute",
         type: "line",
@@ -40,7 +49,7 @@ export default function MapGl(displayFull) {
         paint: {
             "line-color": "#000000",
             "line-opacity": 1,
-            "line-width": 13,
+            "line-width": 4,
             "line-blur": 0.5,
         },
     }
@@ -53,8 +62,23 @@ export default function MapGl(displayFull) {
 
     });
     const handleClick = (e) => {
-        console.log(e)
-        setPoiSource(poiSource.addItem(new Location("", "", e.lngLat[0], e.lngLat[1])))
+        if (e.features[0] != undefined) {
+            if (e.features[0].source === typeLocation) {
+                if (typeLocation === "poi") {
+                    setPoiSource(poiSource.removeItem(e.features[0].id))
+                }
+                else {
+                    setRouteSource(routeSource.removeItem(e.features[0].id))
+                }
+                return
+            }
+        }
+        if (typeLocation === "poi") {
+            setPoiSource(poiSource.addItem(new Location(poiSource.newId, "", e.lngLat[0], e.lngLat[1])))
+        }
+        else {
+            setRouteSource(routeSource.addItem(new Location(routeSource.newId, "", e.lngLat[0], e.lngLat[1])))
+        }
     }
     return <ReactMapGL
         mapboxApiAccessToken={
@@ -65,13 +89,21 @@ export default function MapGl(displayFull) {
         {...viewport}
         onViewportChange={(viewport) => setViewport(viewport)}
         mapStyle="mapbox://styles/mapbox/streets-v11"
+
         onClick={(e) => handleClick(e)}
     >
         <Source id="poi" type="geojson" data={poiSource.templateSource} >
             <Layer {...poiLayer} />
         </Source>
-        <Source id="route" type="geojson" data={routeSource.route}>
+        {/* 
+            on affiche routeSource avec 2 layers parce que on n'a pas
+            l'id du point lors du clique avec un layer en ligne
+        */}
+        <Source id="routeLine" type="geojson" data={routeSource.route}>
             <Layer {...routeLayer} />
+        </Source>
+        <Source id="route" type="geojson" data={routeSource.templateSource}>
+            <Layer {...routeLayer2} />
         </Source>
     </ReactMapGL >
 }

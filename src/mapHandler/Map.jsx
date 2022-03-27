@@ -4,10 +4,9 @@ import Button from "react-bootstrap/Button";
 import TravelTransport from "./TravelTransport";
 import { fetchTravels } from "../apiCaller";
 import MapGl from "./MapGl";
-const Map = ({ showMenu }) => {
+const Map = ({ showMenu, typeLocation, setTypeLocation }) => {
   const displayMap = () => createMap();
   const [lstLocations, setLstLocations] = useState([]);
-  const [typeLocation, setTypeLocation] = useState(false)
   const addLocation = (newLocation) => {
     setLstLocations([...lstLocations, newLocation]);
     addLocationToMap(newLocation);
@@ -29,8 +28,8 @@ const Map = ({ showMenu }) => {
           zIndex: 1,
         }}
       >
-        <input type="checkbox" onChange={() => setTypeLocation(!typeLocation)}></input>
-        <p>{typeLocation ? "Ajouter des points d'intérêts" : "Ajouter des étapes"}</p>
+        <input type="checkbox" onChange={() => setTypeLocation(typeLocation === "poi" ? "route" : "poi")}></input>
+        <p>{typeLocation === "route" ? "Ajouter des points d'intérêts" : "Ajouter des étapes"}</p>
         <TravelTransport ></TravelTransport>
         <DestinationInput addLocation={addLocation} />
 

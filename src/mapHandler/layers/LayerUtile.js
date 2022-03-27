@@ -9,6 +9,14 @@ export default class LayerUtile {
     return [...this.listLocations];
   }
 
+  get newId() {
+    let max = 0;
+    this.listLocations.forEach((item) => {
+      if (item.id > max) max = item.id;
+    });
+    return max + 1;
+  }
+
   get templateSource() {
     let res = [];
     this.listLocations.forEach((element) => {

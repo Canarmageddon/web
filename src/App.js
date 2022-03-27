@@ -13,6 +13,7 @@ import MapGl from "./mapHandler/MapGl";
 function App() {
   const [contentPage, setContentPage] = useState("map");
   const [showMenu, setShowMenu] = useState(false);
+  const [typeLocation, setTypeLocation] = useState("route");
 
   return (
     <TravelProvider>
@@ -43,8 +44,12 @@ function App() {
                       }}
                       id="map"
                     >
-                      <MapGl displayFull={contentPage === "map"}></MapGl>
-                      <Map showMenu={showMenu} />
+                      <MapGl typeLocation={typeLocation}></MapGl>
+                      <Map
+                        showMenu={showMenu}
+                        typeLocation={typeLocation}
+                        setTypeLocation={setTypeLocation}
+                      />
                     </div>
                   </div>
                 </div>
