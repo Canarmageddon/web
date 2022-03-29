@@ -2,7 +2,7 @@ import Autosuggest from "react-autosuggest/dist/Autosuggest";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 
-function DestinationInput({ addLocation }) {
+function DestinationInput({ }) {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   function escapeRegexCharacters(str) {
