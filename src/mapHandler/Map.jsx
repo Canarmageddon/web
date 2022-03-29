@@ -5,6 +5,7 @@ import TravelTransport from "./TravelTransport";
 import { fetchTravels } from "../apiCaller";
 import MapGl from "./MapGl";
 const Map = ({ showMenu, typeLocation, setTypeLocation }) => {
+
   return (
     <>
       <div
@@ -15,8 +16,11 @@ const Map = ({ showMenu, typeLocation, setTypeLocation }) => {
           zIndex: 1,
         }}
       >
-        <input type="checkbox" onChange={() => setTypeLocation(typeLocation === "poi" ? "route" : "poi")}></input>
-        {typeLocation === "route" ? "Ajouter des points d'intérêts" : "Ajouter des étapes"}
+        <div >
+          <p>Que voulez-vous ajouter ?</p>
+          <input type="radio" value="poi" name="Point d'intérêt" checked={typeLocation === "poi"} onChange={e => setTypeLocation(e.target.value)} /> Point d'intérêt
+          <input type="radio" value="route" name="Etape" checked={typeLocation === "route"} onChange={e => setTypeLocation(e.target.value)} /> Etape
+        </div>
         <DestinationInput />
       </div>
     </>
