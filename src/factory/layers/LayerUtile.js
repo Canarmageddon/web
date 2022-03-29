@@ -52,6 +52,12 @@ export default class LayerUtile {
   addItem(item) {
     return new LayerUtile([...this.listLocations, item]);
   }
+  getItemById(id) {
+    for (let i = 0; i < this.listLocations; i++) {
+      if (this.listLocations[i].id === id) return this.listLocations[i];
+    }
+    return null;
+  }
 
   addItems(items) {
     return new LayerUtile(this.items.concat(items));

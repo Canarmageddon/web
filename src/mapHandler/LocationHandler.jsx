@@ -1,5 +1,5 @@
-import LayerUtile from "./layers/LayerUtile"
-import Location from "./layers/Location"
+import LayerUtile from "../factory/layers/LayerUtile"
+import Location from "../factory/layers/Location"
 import React from "react"
 import { fetchPointOfInterest, fetchStep } from "../apiCaller"
 export default class LocationHandler {

@@ -59,34 +59,6 @@ function App() {
         </Routes>
       </HashRouter>
     </TravelProvider>
-
-    /*  <>
-      <TravelProvider>
-        <div
-          style={{
-            marginLeft: showMenu ? 200 : 0,
-            transition: "0.5s",
-          }}
-        >
-          <NavBar setShowMenu={setShowMenu} />
-          <div style={{ display: "flex" }}>
-            <ToDoLists display={contentPage === "toDoLists"} />
-            <TravelsList display={contentPage === "travelList"} />
-            <Admin display={contentPage === "admin"} />
-
-            <div
-              style={{
-                flex: contentPage === "map" ? 1 : 0.6,
-              }}
-              id="map"
-            >
-              <Map showMenu={showMenu} />
-            </div>
-          </div>
-        </div>
-        <SideMenu showMenu={showMenu} setContentPage={setContentPage} />
-      </TravelProvider>
-    </> */
   );
 }
 export default App;

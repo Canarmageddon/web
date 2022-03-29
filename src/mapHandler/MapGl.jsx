@@ -1,7 +1,7 @@
 import ReactMapGL, { Layer, Source } from "react-map-gl";
 import { useState, useEffect } from "react";
-import LayerUtile from "./layers/LayerUtile";
-import Location from "./layers/Location";
+import LayerUtile from "../factory/layers/LayerUtile";
+import Location from "../factory/layers/Location";
 import LocationHandler from "./LocationHandler";
 import { fetchPointOfInterest, fetchStep } from "../apiCaller";
 export default function MapGl({ typeLocation }) {
@@ -37,9 +37,8 @@ export default function MapGl({ typeLocation }) {
         type: "circle",
         paint: {
             "circle-color": "#000000",
+            "circle-opacity": 0,
             "circle-radius": 4,
-            "circle-stroke-width": 2,
-            "circle-stroke-color": "#ffffff",
         },
     }
     const routeLayer = {
