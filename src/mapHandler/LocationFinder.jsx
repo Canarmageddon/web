@@ -1,37 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DestinationInput from "./DestinationInput";
+import Form from "react-bootstrap/Form";
 
-const LocationFinder = ({ typeLocation, setTypeLocation }) => {
+const LocationFinder = ({ setTypeLocation }) => {
+  const [switchChecked, setSwitchChecked] = useState(false);
+
+  useEffect(() => {
+    setTypeLocation(switchChecked ? "route" : "poi");
+  }, [switchChecked]);
+
   return (
     <>
       <div
         style={{
           alignItems: "center",
-          position: "relative",
-          height: 0,
+          position: "absolute",
           left: 10,
           top: 10,
           zIndex: 1,
+          padding: 12,
+          backgroundColor: "rgb(255,255,255)",
+          borderRadius: 8,
         }}
       >
         <div>
-          <p>Que voulez-vous ajouter ?</p>
-          <input
-            type="radio"
-            value="poi"
-            name="Point d'intérêt"
-            checked={typeLocation === "poi"}
-            onChange={(e) => setTypeLocation(e.target.value)}
+          <Form.Check
+            type="switch"
+            value={switchChecked}
+            label={switchChecked ? "Étape" : "Point d'intérêt"}
+            onChange={(e) => setSwitchChecked(e.target.checked)}
           />
-          Point d'intérêt
-          <input
-            type="radio"
-            value="route"
-            name="Etape"
-            checked={typeLocation === "route"}
-            onChange={(e) => setTypeLocation(e.target.value)}
-          />
-          Etape
         </div>
         <DestinationInput />
       </div>

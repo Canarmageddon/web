@@ -1,8 +1,10 @@
 import Autosuggest from "react-autosuggest/dist/Autosuggest";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
-function DestinationInput({ }) {
+function DestinationInput({}) {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   function escapeRegexCharacters(str) {
@@ -61,9 +63,12 @@ function DestinationInput({ }) {
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />
-      <Button onClick={() => goTo(value)} style={{ marginLeft: 10 }}>
-        Rechercher
-      </Button>
+      <FontAwesomeIcon
+        icon={faPlusCircle}
+        size="2x"
+        onClick={() => goTo(value)}
+        style={{ color: "#0d6efd", marginLeft: 5 }}
+      />
     </div>
   );
 }
