@@ -25,7 +25,7 @@ const TravelsList = ({ display }) => {
   }
   const displayLstTravel = () => {
     return lstTravel.map((t) =>
-      <div class="travel" key={t.id} onClick={() => handleClick(t)}>
+      <div className="travel" key={t.id} onClick={() => handleClick(t)}>
         <p>{t.itinerary.description}</p>
         <p>départ : {t.start}</p>
         <p>arrivée : {t.end}</p>
@@ -65,7 +65,7 @@ const TravelsList = ({ display }) => {
         <Tab eventKey="admin" title="Admin"></Tab>
         <Tab eventKey="member" title="Membre"></Tab>
       </Tabs>
-      <div class="container">
+      <div className="container">
         {displayLstTravel()}
       </div>
     </div>
