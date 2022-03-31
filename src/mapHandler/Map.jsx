@@ -1,42 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DestinationInput from "./DestinationInput";
 import Button from "react-bootstrap/Button";
 import TravelTransport from "./TravelTransport";
-import LocationHandler from "./LocationHandler";
 import { fetchTravels } from "../apiCaller";
-const Map = ({ showMenu }) => {
-  const [lstLocations, setLstLocations] = useState([]);
-  const [typeLocation, setTypeLocation] = useState(false)
-  const addLocation = (newLocation) => {
-    setLstLocations([...lstLocations, newLocation]);
-    addLocationToMap(newLocation);
-  };
-  const removeElement = (loc) => {
-    removePlace(lstLocations.indexOf(loc));
-    setLstLocations(lstLocations.filter((e) => e != loc));
-  };
+import MapGl from "./MapGl";
+const Map = ({ showMenu, typeLocation, setTypeLocation }) => {
+
   return (
     <>
       <div
         style={{
           alignItems: "center",
           position: "absolute",
-          top: 10,
-          left: 10,
+          top: '7vh',
           zIndex: 1,
         }}
       >
-        <input type="checkbox" onChange={() => setTypeLocation(!typeLocation)}></input>
-        <TravelTransport></TravelTransport>
-        <DestinationInput addLocation={addLocation} />
-
-        {lstLocations.map((loc) => (
-          <div style={{ marginLeft: 10 }}>
-            <Button onClick={() => removeElement(loc)}>X</Button>
-            {loc}
-          </div>
-        ))}
-        <LocationHandler ref={(LocationHandler => { window.LocationHandler = LocationHandler })} typeLocation={typeLocation}></LocationHandler>
+        <div >
+          <p>Que voulez-vous ajouter ?</p>
+          <input type="radio" value="poi" name="Point d'intérêt" checked={typeLocation === "poi"} onChange={e => setTypeLocation(e.target.value)} /> Point d'intérêt
+          <input type="radio" value="route" name="Etape" checked={typeLocation === "route"} onChange={e => setTypeLocation(e.target.value)} /> Etape
+        </div>
+        <DestinationInput />
       </div>
     </>
   );

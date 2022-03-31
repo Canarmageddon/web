@@ -5,9 +5,11 @@ import Travel from "../../factory/Travel"
 import Itinerary from "../../factory/Itinerary";
 import { fetchTravels } from "../../apiCaller";
 import generateObject from "../../factory/ObjectFactory";
-
+import { useNavigate } from "react-router-dom";
+import "../../style/travel.css"
 
 const TravelsList = ({ display }) => {
+  const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [travel, setTravel] = useTravel()
@@ -17,11 +19,18 @@ const TravelsList = ({ display }) => {
     let res = generateObject(data)
     setLstTravel(res)
   }, [])
+  const handleClick = (t) => {
+    setTravel(t)
+    navigate("/map")
+  }
   const displayLstTravel = () => {
     return lstTravel.map((t) =>
-      <li key={t.id} onClick={() => setTravel(t)}>
-        {t.itinerary.description}
-      </li>)
+      <div class="travel" key={t.id} onClick={() => handleClick(t)}>
+        <p>{t.itinerary.description}</p>
+        <p>départ : {t.start}</p>
+        <p>arrivée : {t.end}</p>
+        <p>durée : {t.duration} jours</p>
+      </div>)
   }
   return (
     <div
@@ -56,8 +65,9 @@ const TravelsList = ({ display }) => {
         <Tab eventKey="admin" title="Admin"></Tab>
         <Tab eventKey="member" title="Membre"></Tab>
       </Tabs>
-      <ul>{displayLstTravel()}</ul>
-
+      <div class="container">
+        {displayLstTravel()}
+      </div>
     </div>
   );
 };
