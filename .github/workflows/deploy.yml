@@ -13,7 +13,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-
+env:
+  REACT_APP_DATABASE_URL: http://api.26.muffin.pm/api
+  REACT_APP_MAPBOX_TOKEN: pk.eyJ1IjoiYXNsbmRza3ZucWRvZm1uIiwiYSI6ImNreWJyN3VkZzBpNnUydm4wcnJ5MmdvYm0ifQ.YNwpI3-HgF6nMhdaRRkKBg
+  
 
 jobs:
   front:
