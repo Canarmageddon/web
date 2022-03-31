@@ -34,7 +34,6 @@ function App() {
                   <NavBar setShowMenu={setShowMenu} />
                   <div style={{ display: "flex" }}>
                     <ToDoLists display={contentPage === "toDoLists"} />
-                    <TravelsList display={contentPage === "travelList"} />
                     <Admin display={contentPage === "admin"} />
                     <PoiInformation
                       display={contentPage === "poiInfo"}
