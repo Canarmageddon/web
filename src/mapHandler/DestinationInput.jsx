@@ -2,6 +2,7 @@ import Autosuggest from "react-autosuggest/dist/Autosuggest";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearchLocation } from "@fortawesome/free-solid-svg-icons";
+import "../style/destinationInput.css";
 
 function DestinationInput({}) {
   const [value, setValue] = useState("");
