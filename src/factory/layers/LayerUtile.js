@@ -11,50 +11,70 @@ export default class LayerUtile {
 
   get newId() {
     let max = 0;
-    this.listLocations.forEach((item) => {
-      if (item.id > max) max = item.id;
-    });
+    this.listLocations.forEach(item => {
+      if (item.id > max) 
+        max = item.id;
+      }
+    );
     return max + 1;
   }
 
   get templateSource() {
     let res = [];
-    this.listLocations.forEach((element) => {
-      res = [...res, element.formated];
+    this.listLocations.forEach(element => {
+      res = [
+        ...res,
+        element.formated
+      ];
     });
-    return { type: "FeatureCollection", features: res };
+    return {type: "FeatureCollection", features: res};
   }
 
   get route() {
     let res = [];
-    this.listLocations.forEach((element) => {
-      res = [...res, [element.longitude, element.latitude]];
+    this.listLocations.forEach(element => {
+      res = [
+        ...res,
+        [
+          element.longitude, element.latitude
+        ]
+      ];
     });
     return {
       type: "Feature",
       properties: {},
       geometry: {
         type: "LineString",
-        coordinates: res,
-      },
+        coordinates: res
+      }
     };
   }
 
   get positions() {
     let res = [];
-    this.listLocations.forEach((element) => {
-      res = [...res, [element.longitude, element.latitude]];
+    this.listLocations.forEach(element => {
+      res = [
+        ...res,
+        [
+          element.longitude, element.latitude
+        ]
+      ];
     });
     return res;
   }
 
   addItem(item) {
-    return new LayerUtile([...this.listLocations, item]);
+    return new LayerUtile([
+      ...this.listLocations,
+      item
+    ]);
   }
+
   getItemById(id) {
     for (let i = 0; i < this.listLocations.length; i++) {
-      if (this.listLocations[i].id === id) return this.listLocations[i];
-    }
+      if (this.listLocations[i].id === id) 
+        return this.listLocations[i];
+      }
     return null;
   }
 
@@ -63,8 +83,13 @@ export default class LayerUtile {
   }
 
   removeItem(id) {
+    return new LayerUtile([...this.listLocations.filter(elt => elt.id != id)]);
+  }
+
+  updateItem(item) {
     return new LayerUtile([
-      ...this.listLocations.filter((elt) => elt.id != id),
+      ...this.listLocations.filter(elt => elt.id != item.id),
+      item
     ]);
   }
 }
