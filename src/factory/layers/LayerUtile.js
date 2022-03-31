@@ -38,7 +38,6 @@ export default class LayerUtile {
         coordinates: res,
       },
     };
-    return { type: "LineString", coordinates: res };
   }
 
   get positions() {
@@ -53,7 +52,7 @@ export default class LayerUtile {
     return new LayerUtile([...this.listLocations, item]);
   }
   getItemById(id) {
-    for (let i = 0; i < this.listLocations; i++) {
+    for (let i = 0; i < this.listLocations.length; i++) {
       if (this.listLocations[i].id === id) return this.listLocations[i];
     }
     return null;
