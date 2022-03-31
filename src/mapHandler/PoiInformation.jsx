@@ -33,7 +33,7 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
         textAlign: "center",
       }}
     >
-      <h1>Détails du point d'intérêt</h1>
+      <h2>Détails du point d'intérêt</h2>
       <Form
         style={{
           display: "flex",
