@@ -14,8 +14,8 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
   }, [poiSource, poiId]);
 
   useEffect(() => {
-    setTitle(currentPoi?.title);
-    setDescription(currentPoi?.description);
+    setTitle(currentPoi?.title ? currentPoi.title : "");
+    setDescription(currentPoi?.description ? currentPoi.description : "");
   }, [currentPoi]);
 
   const handleClick = () => {
@@ -29,26 +29,35 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
     <div
       style={{
         display: display ? "block" : "none",
-        flex: 0.4,
+        flex: 0.3,
         textAlign: "center",
       }}
     >
       <h1>Détails du point d'intérêt</h1>
-      <Form>
+      <Form
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: 10,
+        }}
+      >
         <Form.Control
           type="text"
           placeholder="Titre"
           value={title}
           className="mb-3"
           onChange={(e) => setTitle(e.target.value)}
+          style={{ width: "70%", marginLeft: 10 }}
         />
         <Form.Control
           type="text"
           placeholder="Commentaire"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          style={{ width: "70%", marginLeft: 10 }}
         />
-        <Button type="button" onClick={handleClick}>
+        <Button type="button" onClick={handleClick} style={{ marginTop: 10 }}>
           Enregistrer
         </Button>
       </Form>

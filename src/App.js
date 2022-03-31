@@ -43,10 +43,11 @@ function App() {
                     />
                     <div
                       style={{
-                        flex: contentPage === "map" ? 1 : 0.6,
+                        flex: contentPage === "map" ? 1 : 0.7,
                         width: "100%",
                         height: "93vh",
                         overflow: "hidden",
+                        position: "relative",
                       }}
                     >
                       <MapGl

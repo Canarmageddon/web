@@ -110,10 +110,7 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
 
   return (
     <>
-      <LocationFinder
-        typeLocation={typeLocation}
-        setTypeLocation={setTypeLocation}
-      />
+      <LocationFinder setTypeLocation={setTypeLocation} />
       <ReactMapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         height="100%"
