@@ -47,7 +47,6 @@ test("get item by id", () => {
   let poi = new Location(0);
   layer = layer.addItem(poi);
   let foundPoi = layer.getItemById(0);
-  console.log(poi.id);
   expect(poi).toEqual(foundPoi);
 });
 
