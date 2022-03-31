@@ -8,7 +8,7 @@ import SideMenu from "./compoonents/navBar/SideMenu";
 import Admin from "./compoonents/admin/Admin";
 import Map from "./mapHandler/Map";
 import { TravelProvider } from "./context/TravelContext";
-import { Route, Routes, HashRouter, BrowserRouter } from "react-router-dom";
+import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 import MapGl from "./mapHandler/MapGl";
 import RequireAuth from "./context/requireAuth";
 function App() {
@@ -61,6 +61,7 @@ function App() {
               }
             />
           </Route>
+          <Route path="*" element={<Navigate to="/signin" />} />
         </Routes>
       </BrowserRouter>
     </TravelProvider>
