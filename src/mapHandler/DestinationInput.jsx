@@ -2,7 +2,7 @@ import Autosuggest from "react-autosuggest/dist/Autosuggest";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 
-function DestinationInput({ addLocation }) {
+function DestinationInput({ }) {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   function escapeRegexCharacters(str) {
@@ -50,10 +50,7 @@ function DestinationInput({ addLocation }) {
     value,
     onChange,
   };
-  const handleClick = () => {
-    addLocation(value);
-    setValue("");
-  };
+
   return (
     <div style={{ display: "flex", flexDirection: "row", marginTop: 5 }}>
       <Autosuggest
@@ -64,7 +61,7 @@ function DestinationInput({ addLocation }) {
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
       />
-      <Button onClick={handleClick} style={{ marginLeft: 10 }}>
+      <Button onClick={() => goTo(value)} style={{ marginLeft: 10 }}>
         Rechercher
       </Button>
     </div>
