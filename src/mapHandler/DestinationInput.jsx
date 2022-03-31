@@ -1,6 +1,5 @@
 import Autosuggest from "react-autosuggest/dist/Autosuggest";
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearchLocation } from "@fortawesome/free-solid-svg-icons";
 
