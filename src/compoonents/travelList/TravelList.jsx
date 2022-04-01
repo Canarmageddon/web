@@ -26,7 +26,7 @@ const TravelsList = ({ display }) => {
   const displayLstTravel = () => {
     return lstTravel.map((t) =>
       <div className="travel" key={t.id} onClick={() => handleClick(t)}>
-        <p>{t.itinerary.description}</p>
+        <p>{t.trip.description}</p>
         <p>départ : {t.start}</p>
         <p>arrivée : {t.end}</p>
         <p>durée : {t.duration} jours</p>
