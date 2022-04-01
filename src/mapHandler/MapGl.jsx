@@ -3,9 +3,13 @@ import { useState, useEffect } from "react";
 import LayerUtile from "../factory/layers/LayerUtile";
 import { usePoi } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
-import LocationHandler from "./LocationHandler";
 import { useTravel } from "../context/TravelContext";
 import { fetchPointOfInterest, fetchStep, fetchTripById } from "../apiCaller";
+// added the following 6 lines.
+import mapboxgl from "mapbox-gl";
+
+mapboxgl.workerClass =
+  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
 
 export default function MapGl({ setContentPage, contentPage, setPoiId }) {
@@ -22,18 +26,36 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
 
   const [travel, setTravel] = useTravel();
   useEffect(async () => {
-    const a = await fetchTripById(travel.trip.id)
+    const a = await fetchTripById(travel.trip.id);
     const poi = a.pointsOfInterest;
-    const step = a.steps
+    const step = a.steps;
     //const poi = await fetchPointOfInterest();
     //const step = await fetchStep();
-    let lstPoi = []
+    let lstPoi = [];
     let lstStep = [];
-    poi.map(item => lstPoi.push(new Location(item.id, item.description, item.location.longitude, item.location.latitude)));
-    step.map((item) => lstStep.push(new Location(item.id, item.description, item.location.longitude, item.location.latitude)));
+    poi.map((item) =>
+      lstPoi.push(
+        new Location(
+          item.id,
+          item.description,
+          item.location.longitude,
+          item.location.latitude
+        )
+      )
+    );
+    step.map((item) =>
+      lstStep.push(
+        new Location(
+          item.id,
+          item.description,
+          item.location.longitude,
+          item.location.latitude
+        )
+      )
+    );
     setPoiSource(new LayerUtile(lstPoi));
     setRouteSource(new LayerUtile(lstStep));
-  }, [])
+  }, []);
   const handleClick = (e) => {
     if (e.features[0] != undefined) {
       if (e.features[0].source === typeLocation) {
