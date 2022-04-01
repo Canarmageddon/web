@@ -7,29 +7,6 @@ import LocationHandler from "./LocationHandler";
 import { useTravel } from "../context/TravelContext";
 import { fetchPointOfInterest, fetchStep, fetchTripById } from "../apiCaller";
 import LocationFinder from "./LocationFinder";
-export default function MapGl({ typeLocation }) {
-    const [poiSource, setPoiSource] = useState(
-        new LayerUtile()
-    );
-    const [routeSource, setRouteSource] = useState(
-        new LayerUtile()
-    );
-    const [travel, setTravel] = useTravel();
-    useEffect(async () => {
-        const a = await fetchTripById(travel.trip.id)
-        const poi = a.pointsOfInterest;
-        const step = a.steps
-        //const poi = await fetchPointOfInterest();
-        //const step = await fetchStep();
-        let lstPoi = []
-        let lstStep = [];
-        poi.map(item => lstPoi.push(new Location(item.id, item.description, item.location.longitude, item.location.latitude)));
-        step.map((item) => lstStep.push(new Location(item.id, item.description, item.location.longitude, item.location.latitude)));
-        setPoiSource(new LayerUtile(lstPoi));
-        setRouteSource(new LayerUtile(lstStep));
-    }, [])
-
-
 
 export default function MapGl({ setContentPage, contentPage, setPoiId }) {
   const [poiSource, setPoiSource] = usePoi();
@@ -43,35 +20,20 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
     pitch: 0,
   });
 
+  const [travel, setTravel] = useTravel();
   useEffect(async () => {
-    const poi = await fetchPointOfInterest();
-    const step = await fetchStep();
-    let lstPoi = [];
+    const a = await fetchTripById(travel.trip.id)
+    const poi = a.pointsOfInterest;
+    const step = a.steps
+    //const poi = await fetchPointOfInterest();
+    //const step = await fetchStep();
+    let lstPoi = []
     let lstStep = [];
-    poi.map((item) =>
-      lstPoi.push(
-        new Location(
-          item.id,
-          item.description,
-          item.location.longitude,
-          item.location.latitude
-        )
-      )
-    );
-    step.map((item) =>
-      lstStep.push(
-        new Location(
-          item.id,
-          item.description,
-          item.location.longitude,
-          item.location.latitude
-        )
-      )
-    );
+    poi.map(item => lstPoi.push(new Location(item.id, item.description, item.location.longitude, item.location.latitude)));
+    step.map((item) => lstStep.push(new Location(item.id, item.description, item.location.longitude, item.location.latitude)));
     setPoiSource(new LayerUtile(lstPoi));
     setRouteSource(new LayerUtile(lstStep));
-  }, []);
-
+  }, [])
   const handleClick = (e) => {
     if (e.features[0] != undefined) {
       if (e.features[0].source === typeLocation) {
