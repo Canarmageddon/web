@@ -14,7 +14,6 @@ export default function MapGl({ typeLocation }) {
     );
     const [travel, setTravel] = useTravel();
     useEffect(async () => {
-        console.log(travel)
         const a = await fetchTripById(travel.trip.id)
         const poi = a.pointsOfInterest;
         const step = a.steps
