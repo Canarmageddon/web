@@ -1,4 +1,4 @@
-import ReactMapGL, { Layer, Source } from "react-map-gl";
+import ReactMapGL, { Layer, Source } from "!react-map-gl";
 import { useState, useEffect } from "react";
 import LayerUtile from "../factory/layers/LayerUtile";
 import { usePoi } from "../context/TravelContext";
