@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import LayerUtile from "../factory/layers/LayerUtile";
 import Location from "../factory/layers/Location";
 import LocationHandler from "./LocationHandler";
-import { fetchPointOfInterest, fetchStep } from "../apiCaller";
+import { useTravel } from "../context/TravelContext";
+import { fetchPointOfInterest, fetchStep, fetchTripById } from "../apiCaller";
 export default function MapGl({ typeLocation }) {
     const [poiSource, setPoiSource] = useState(
         new LayerUtile()
@@ -11,9 +12,14 @@ export default function MapGl({ typeLocation }) {
     const [routeSource, setRouteSource] = useState(
         new LayerUtile()
     );
+    const [travel, setTravel] = useTravel();
     useEffect(async () => {
-        const poi = await fetchPointOfInterest();
-        const step = await fetchStep();
+        console.log(travel)
+        const a = await fetchTripById(travel.trip.id)
+        const poi = a.pointsOfInterest;
+        const step = a.steps
+        //const poi = await fetchPointOfInterest();
+        //const step = await fetchStep();
         let lstPoi = []
         let lstStep = [];
         poi.map(item => lstPoi.push(new Location(item.id, item.description, item.location.longitude, item.location.latitude)));
