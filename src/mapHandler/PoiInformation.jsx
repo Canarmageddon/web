@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { usePoi } from "../context/TravelContext";
 import Form from "react-bootstrap/Form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import "../style/destinationInput.css";
 
 const PoiInformation = ({ display, poiId, setContentPage }) => {
   const [poiSource, setPoiSource] = usePoi();
@@ -22,6 +25,11 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
     currentPoi.title = title;
     currentPoi.description = description;
     setPoiSource(poiSource.updateItem(currentPoi));
+    setContentPage("map");
+  };
+
+  const handleDelete = () => {
+    setPoiSource(poiSource.removeItem(poiId));
     setContentPage("map");
   };
 
@@ -57,9 +65,22 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
           onChange={(e) => setDescription(e.target.value)}
           style={{ width: "70%", marginLeft: 10 }}
         />
-        <Button type="button" onClick={handleClick} style={{ marginTop: 10 }}>
-          Enregistrer
-        </Button>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Button type="button" onClick={handleClick} style={{ marginTop: 10 }}>
+            Enregistrer
+          </Button>
+          <FontAwesomeIcon
+            icon={faTrashAlt}
+            size="2x"
+            onClick={handleDelete}
+            style={{
+              backgroundColor: "white",
+              color: "#dc3545",
+              marginLeft: 30,
+              marginTop: 10,
+            }}
+          />
+        </div>
       </Form>
     </div>
   );
