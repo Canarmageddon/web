@@ -21,7 +21,7 @@ const TravelsList = ({ display }) => {
   }, [])
   const handleClick = (t) => {
     setTravel(t)
-    navigate("/map")
+    navigate(`/map/${t.trip.id}`)
   }
   const displayLstTravel = () => {
     return lstTravel.map((t) =>
