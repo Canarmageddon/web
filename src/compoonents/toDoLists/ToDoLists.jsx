@@ -54,7 +54,7 @@ const ToDoLists = ({ display }) => {
         size="2x"
         onClick={() => setShowForm((oldValue) => !oldValue)}
         className="add-list-icon"
-        style={{ marginTop: -10, marginBottom: 5 }}
+        style={{ marginTop: 5, marginBottom: 5 }}
       />
       {showForm && (
         <div style={{ display: "flex", justifyContent: "center" }}>

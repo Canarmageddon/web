@@ -1,17 +1,15 @@
-import { render, screen } from "@testing-library/react";
-import App from "../App";
-import Location from "../mapHandler/layers/Location";
-import Layer from "../mapHandler/layers/Layer";
+import LayerUtile from "../factory/layers/LayerUtile";
+import Location from "../factory/layers/Location";
 
 test("test init layer", () => {
   let poi = new Location();
-  let layer = new Layer([poi]);
+  let layer = new LayerUtile([poi]);
   const lenght = layer.items.length;
   expect(lenght).toBe(1);
 });
 
 test("add poi", () => {
-  let layer = new Layer();
+  let layer = new LayerUtile();
   let poi = new Location();
   layer = layer.addItem(poi);
   const lenght = layer.items.length;
@@ -19,29 +17,54 @@ test("add poi", () => {
 });
 
 test("add poi 2", () => {
-  let layer = new Layer();
+  let layer = new LayerUtile();
   let poi = new Location();
   let poi2 = new Location();
   layer = layer.addItem(poi);
   layer = layer.addItem(poi2);
-  const lenght = layer.items.length;
-  expect(lenght).toBe(2);
+  expect(layer.items.length).toBe(2);
 });
 
-test("remove poi", () => {
-  let poi = new Location();
-  let layer = new Layer([poi]);
-  layer.removeItem(poi);
-  const lenght = layer.items.length;
-  expect(lenght).toBe(1);
+test("remove item", () => {
+  let poi = new Location(1);
+  let layer = new LayerUtile([poi]);
+  layer = layer.removeItem(1);
+  expect(length).toBe(0);
 });
 
 test("template layer", () => {
-  let layer = new Layer();
+  let layer = new LayerUtile();
   let poi = new Location(0);
   let poi2 = new Location(1);
   layer = layer.addItem(poi);
   layer = layer.addItem(poi2);
-  const templateData = layer.templateLayer;
-  expect(templateData.length).toBe(2);
+  const templateData = layer.templateSource;
+  expect(Object.keys(templateData).length).toBe(2);
+});
+
+test("get item by id", () => {
+  let layer = new LayerUtile();
+  let poi = new Location(0);
+  layer = layer.addItem(poi);
+  let foundPoi = layer.getItemById(0);
+  expect(poi).toEqual(foundPoi);
+});
+
+test("get item not in list", () => {
+  let layer = new LayerUtile();
+  let poi = layer.getItemById(1);
+  expect(poi).toBe(null);
+});
+
+test("get new id when empty", () => {
+  let layer = new LayerUtile();
+  let newId = layer.newId;
+  expect(newId).toBe(1);
+});
+
+test("get new id when empty", () => {
+  let layer = new LayerUtile();
+  layer = layer.addItem(new Location(10));
+  let newId = layer.newId;
+  expect(newId).toBe(11);
 });
