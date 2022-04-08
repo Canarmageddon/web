@@ -4,8 +4,7 @@ import LayerUtile from "../factory/layers/LayerUtile";
 import { usePoi } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
 import { useTravel } from "../context/TravelContext";
-import { fetchPointOfInterest, fetchStep, fetchTripById, updatePoi } from "../apiCaller";
-// added the following 6 lines.
+import { fetchPointOfInterest, fetchStep, fetchTripById } from "../apiCaller";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
 
@@ -44,9 +43,8 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
           item.location.longitude,
           item.location.latitude
         )
-      )
-    }
-    );
+      );
+    });
     step.map((item) =>
       lstStep.push(
         new Location(
@@ -66,10 +64,10 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
       zoom: 7,
       bearing: 0,
       pitch: 0,
-    })
+    });
   }, []);
   const handleClick = (e) => {
-    if (!editing) return
+    if (!editing) return;
     if (e.features[0] != undefined) {
       if (e.features[0].source === typeLocation) {
         if (typeLocation === "poi") {
@@ -129,10 +127,14 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
       "line-blur": 0.5,
     },
   };
-  console.log(typeLocation, editing)
+
   return (
     <>
-      <LocationFinder typeLocation={typeLocation} setTypeLocation={setTypeLocation} setEditing={setEditing} />
+      <LocationFinder
+        typeLocation={typeLocation}
+        setTypeLocation={setTypeLocation}
+        setEditing={setEditing}
+      />
       <ReactMapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         height="100%"
