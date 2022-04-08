@@ -10,6 +10,7 @@ export const fetchTravels = async () => {
   const res = await fetch(`${url}trips`, {}).then((res) => res.json());
   return res["hydra:member"];
 };
+
 export const fetchLocation = async (location) =>
   await fetch(
     `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(
@@ -19,3 +20,16 @@ export const fetchLocation = async (location) =>
 
 export const fetchTripById = async (id) =>
   await fetch(`${url}trips/${id}`).then((res) => res.json());
+
+export const deletePoi = async (id) =>
+  await fetch(`${url}point_of_interests/${id}`, { method: "DELETE" }).then(
+    (res) => res.json()
+  );
+
+export const updatePoi = async (id, title, description) => {
+  fetch("http://localhost/point_of_interests/25", {
+    headers: { "Content-Type": "application/ld+json" },
+    method: "PUT",
+    body: {},
+  }).then((res) => res.json());
+};
