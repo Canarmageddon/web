@@ -5,7 +5,6 @@ import { usePoi } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
 import { useTravel } from "../context/TravelContext";
 import { fetchPointOfInterest, fetchStep, fetchTripById } from "../apiCaller";
-// added the following 6 lines.
 import mapboxgl from "mapbox-gl";
 
 mapboxgl.workerClass =
