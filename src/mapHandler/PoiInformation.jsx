@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "../style/destinationInput.css";
-
+import { deletePoi, updatePoi } from "../apiCaller";
 const PoiInformation = ({ display, poiId, setContentPage }) => {
   const [poiSource, setPoiSource] = usePoi();
   const [currentPoi, setCurrentPoi] = useState();
@@ -21,16 +21,18 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
     setDescription(currentPoi?.description ? currentPoi.description : "");
   }, [currentPoi]);
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    console.log(currentPoi)
     currentPoi.title = title;
     currentPoi.description = description;
     setPoiSource(poiSource.updateItem(currentPoi));
     setContentPage("map");
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     setPoiSource(poiSource.removeItem(poiId));
     setContentPage("map");
+    const a = await deletePoi(poiId)
   };
 
   return (

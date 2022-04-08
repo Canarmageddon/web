@@ -22,7 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<TravelsList display={true} />} />
           <Route
-            path="/map"
+            path="/map/:id"
             element={
               <>
                 <div
