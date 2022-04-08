@@ -22,7 +22,6 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
   }, [currentPoi]);
 
   const handleClick = async () => {
-    console.log(currentPoi)
     currentPoi.title = title;
     currentPoi.description = description;
     setPoiSource(poiSource.updateItem(currentPoi));
@@ -32,7 +31,7 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
   const handleDelete = async () => {
     setPoiSource(poiSource.removeItem(poiId));
     setContentPage("map");
-    const a = await deletePoi(poiId)
+    const a = await deletePoi(poiId);
   };
 
   return (

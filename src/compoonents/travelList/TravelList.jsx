@@ -11,7 +11,6 @@ const TravelsList = ({ display }) => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
-  const [travel, setTravel] = useTravel();
   const [lstTrips, setLstTrips] = useState([]);
 
   useEffect(async () => {
@@ -30,8 +29,7 @@ const TravelsList = ({ display }) => {
   }, []);
 
   const handleClick = (t) => {
-    setTravel(t);
-    navigate("/map");
+    navigate(`/map/${t.id}`);
   };
 
   const displayLstTravel = () => {
