@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import DestinationInput from "./DestinationInput";
 import Form from "react-bootstrap/Form";
 
-const LocationFinder = ({ setTypeLocation }) => {
+const LocationFinder = ({ typeLocation, setTypeLocation, setEditing }) => {
   const [switchChecked, setSwitchChecked] = useState(false);
-
   useEffect(() => {
-    setTypeLocation(switchChecked ? "route" : "poi");
+    setEditing(switchChecked);
   }, [switchChecked]);
 
   return (
@@ -30,6 +29,17 @@ const LocationFinder = ({ setTypeLocation }) => {
             label={switchChecked ? "Étape" : "Point d'intérêt"}
             onChange={(e) => setSwitchChecked(e.target.checked)}
           />
+          {switchChecked &&
+            <Form>
+              <div key="radio">
+                <Form.Check type="radio" name="group1" checked={"route" == typeLocation}
+                  value="route" label="Étape" onChange={(e) => setTypeLocation(e.target.value)} />
+                <Form.Check type="radio" name="group1" checked={"poi" == typeLocation}
+                  value="poi" label="Point d'intérêt" onChange={(e) => setTypeLocation(e.target.value)} />
+              </div>
+            </Form>}
+
+
         </div>
         <DestinationInput />
       </div>

@@ -6,6 +6,7 @@ import Location from "../factory/layers/Location";
 import { useTravel } from "../context/TravelContext";
 import { fetchPointOfInterest, fetchStep, fetchTripById } from "../apiCaller";
 import mapboxgl from "mapbox-gl";
+import { useParams } from "react-router-dom";
 
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
@@ -14,6 +15,7 @@ import LocationFinder from "./LocationFinder";
 export default function MapGl({ setContentPage, contentPage, setPoiId }) {
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useState(new LayerUtile());
+  const [editing, setEditing] = useState(true);
   const [typeLocation, setTypeLocation] = useState("route");
   const [viewport, setViewport] = useState({
     latitude: 48.85837,
@@ -22,31 +24,34 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
     bearing: 0,
     pitch: 0,
   });
-
+  const { id } = useParams();
   const [travel, setTravel] = useTravel();
   useEffect(async () => {
-    const a = await fetchTripById(travel.trip.id);
+    const a = await fetchTripById(id);
     const poi = a.pointsOfInterest;
     const step = a.steps;
     //const poi = await fetchPointOfInterest();
     //const step = await fetchStep();
     let lstPoi = [];
     let lstStep = [];
-    poi.map((item) =>
+    poi.map((item) => {
       lstPoi.push(
         new Location(
           item.id,
           item.description,
+          item.title,
           item.location.longitude,
           item.location.latitude
         )
       )
+    }
     );
     step.map((item) =>
       lstStep.push(
         new Location(
           item.id,
           item.description,
+          "",
           item.location.longitude,
           item.location.latitude
         )
@@ -54,8 +59,16 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
     );
     setPoiSource(new LayerUtile(lstPoi));
     setRouteSource(new LayerUtile(lstStep));
+    setViewport({
+      latitude: lstStep[lstStep.length - 1].latitude,
+      longitude: lstStep[lstStep.length - 1].longitude,
+      zoom: 7,
+      bearing: 0,
+      pitch: 0,
+    })
   }, []);
   const handleClick = (e) => {
+    if (!editing) return
     if (e.features[0] != undefined) {
       if (e.features[0].source === typeLocation) {
         if (typeLocation === "poi") {
@@ -115,10 +128,10 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
       "line-blur": 0.5,
     },
   };
-
+  console.log(typeLocation, editing)
   return (
     <>
-      <LocationFinder setTypeLocation={setTypeLocation} />
+      <LocationFinder typeLocation={typeLocation} setTypeLocation={setTypeLocation} setEditing={setEditing} />
       <ReactMapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         height="100%"
