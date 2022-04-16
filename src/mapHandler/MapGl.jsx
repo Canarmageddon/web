@@ -6,7 +6,7 @@ import Location from "../factory/layers/Location";
 import { useTravel } from "../context/TravelContext";
 import User from "../factory/User";
 import Task from "../factory/lists/Task";
-import { fetchPointOfInterest, fetchStep, fetchTripById, updatePoi } from "../apiCaller";
+import { fetchPointOfInterest, fetchStep, fetchTripById, updatePoi, createPoi } from "../apiCaller";
 // added the following 6 lines.
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
@@ -90,6 +90,7 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
     });
   }, []);
   const handleClick = (e) => {
+    createPoi(25, 25);
     if (!editing) return;
     if (e.features[0] != undefined) {
       if (e.features[0].source === typeLocation) {

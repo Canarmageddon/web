@@ -30,7 +30,7 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
     currentPoi.description = description;
     setPoiSource(poiSource.updateItem(currentPoi));
     setContentPage("map");
-    updatePoi("", "", "", lstFile)
+    updatePoi(currentPoi.id, title, description, lstFile)
   };
 
 
