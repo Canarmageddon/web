@@ -56,9 +56,8 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
           item.location.latitude,
           item?.step?.id
         )
-      )
-    }
-    );
+      );
+    });
     step.map((item) =>
       lstStep.push(
         new Location(
@@ -88,10 +87,10 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
       zoom: 7,
       bearing: 0,
       pitch: 0,
-    })
+    });
   }, []);
   const handleClick = (e) => {
-    if (!editing) return
+    if (!editing) return;
     if (e.features[0] != undefined) {
       if (e.features[0].source === typeLocation) {
         if (typeLocation === "poi") {
@@ -153,7 +152,11 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
   };
   return (
     <>
-      <LocationFinder typeLocation={typeLocation} setTypeLocation={setTypeLocation} setEditing={setEditing} />
+      <LocationFinder
+        typeLocation={typeLocation}
+        setTypeLocation={setTypeLocation}
+        setEditing={setEditing}
+      />
       <ReactMapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         height="100%"
