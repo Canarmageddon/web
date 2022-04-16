@@ -24,12 +24,16 @@ export const fetchTripById = async (id) => await fetch(`${url}trips/${id}`).then
 
 export const deletePoi = async (id) => await fetch(`${url}point_of_interests/${id}`, { method: 'DELETE' }).then(res => res.json());
 
-export const updatePoi = async (id, title, description) => {
-    fetch('http://localhost/point_of_interests/25', {
-        headers: { "Content-Type": "application/ld+json" },
-        method: 'PUT',
-        body: {
-
-        },
-    }).then(res => res.json())
+export const updatePoi = async (id, title, description, files) => {
+    const formData = new FormData();
+    console.log(files)
+    formData.append("file", files)
+    console.log(formData)
+    /*   fetch('http://localhost/point_of_interests/25', {
+          headers: { "Content-Type": "application/ld+json" },
+          method: 'PUT',
+          body: {
+  
+          },
+      }).then(res => res.json()) */
 }
