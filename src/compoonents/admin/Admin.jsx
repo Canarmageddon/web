@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import Member from "./Member";
 const Admin = ({ display }) => {
   const members = [
     { name: "user1", role: "admin" },
@@ -8,25 +8,10 @@ const Admin = ({ display }) => {
   ];
 
   const listMembers = members.map((member) => {
-    const [role, setRole] = useState(member.role);
-    const handleRoleChange = (e) => {
-      if (e.target.value !== role) {
-        setRole(e.target.value);
-      }
-    };
-    return (
-      <li key={member.name}>
-        {member.name}
-        <select value={role} onChange={handleRoleChange} className="list-role">
-          <option value="admin">Admin</option>
-          <option value="member">Membre</option>
-        </select>
-        <button className="delete">Supprimer</button>
-        <hr className="bar" />
-      </li>
-    );
+    return <Member key={member.name} member={member} />
   });
-
+  const [newEmail, setNewEmail] = useState("");
+  const [newRole, setNewRole] = useState("member")
   return (
     <div
       style={{
@@ -39,10 +24,10 @@ const Admin = ({ display }) => {
         <span className="invite-title">Inviter membre</span>
         <hr />
         <div className="invite-div">
-          <input placeholder="email" type="email" className="invite-input" />
-          <select className="invite-input">
-            <option value="member">Membre</option>
+          <input placeholder="email" type="email" className="invite-input" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} />
+          <select value={newRole} onChange={(e) => setNewRole(e.target.value)} className="invite-input">
             <option value="admin">Admin</option>
+            <option value="member">Membre</option>
           </select>
           <button type="submit" className="button-new">
             Inviter

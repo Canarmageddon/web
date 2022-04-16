@@ -26,10 +26,28 @@ export const deletePoi = async (id) =>
     (res) => res.json()
   );
 
+export const createPoi = async (longitude, latitude) => {
+
+  return await fetch(`${url}point_of_interests`, {
+    method: 'POST',
+    headers: {
+      'accept': 'application/ld+json',
+      'Content-Type': 'application/ld+json'
+    },
+    body: JSON.stringify({
+      longitude, latitude
+    })
+  }).then(res => res.json());
+}
 export const updatePoi = async (id, title, description) => {
-  fetch("http://localhost/point_of_interests/25", {
-    headers: { "Content-Type": "application/ld+json" },
-    method: "PUT",
-    body: {},
-  }).then((res) => res.json());
+  return await fetch(`${url}point_of_interests/${id}`, {
+    method: 'PUT',
+    headers: {
+      'accept': 'application/ld+json',
+      'Content-Type': 'application/ld+json'
+    },
+    body: JSON.stringify({
+      title, description
+    })
+  }).then(res => res.json());
 };
