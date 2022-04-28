@@ -10,6 +10,8 @@ import { TravelProvider } from "./context/TravelContext";
 import { Route, Routes, HashRouter } from "react-router-dom";
 import MapGl from "./mapHandler/MapGl";
 import PoiInformation from "./mapHandler/PoiInformation";
+import Login from "./compoonents/login/Login";
+import Signup from "./compoonents/login/Signup";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
@@ -20,7 +22,9 @@ function App() {
     <TravelProvider>
       <HashRouter>
         <Routes>
-          <Route path="/" element={<TravelsList display={true} />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/trips" element={<TravelsList />} />
           <Route
             path="/map/:id"
             element={

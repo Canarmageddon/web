@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Tab } from "react-bootstrap";
-import { useTravel } from "../../context/TravelContext";
 import { fetchTravels } from "../../apiCaller";
-import generateObject from "../../factory/ObjectFactory";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../../style/travel.css";
 
-const TravelsList = ({ display }) => {
+const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
@@ -112,7 +110,6 @@ const TravelsList = ({ display }) => {
     <div
       className="root-list"
       style={{
-        display: display ? "block" : "none",
         flex: 0.4,
       }}
     >
