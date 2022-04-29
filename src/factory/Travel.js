@@ -1,8 +1,8 @@
 export default class Travel {
-  constructor(duration, id, itinerary, start, end) {
+  constructor(duration, id, trip, start, end) {
     this.duration = duration;
     this.id = id;
-    this.itinerary = itinerary;
+    this.trip = trip;
     this.start = start;
     this.end = end;
   }

@@ -1,37 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DestinationInput from "./DestinationInput";
+import Form from "react-bootstrap/Form";
 
-const LocationFinder = ({ typeLocation, setTypeLocation }) => {
+const LocationFinder = ({ typeLocation, setTypeLocation, setEditing }) => {
+  const [switchChecked, setSwitchChecked] = useState(false);
+  useEffect(() => {
+    setEditing(switchChecked);
+  }, [switchChecked]);
+
   return (
     <>
       <div
         style={{
           alignItems: "center",
-          position: "relative",
-          height: 0,
+          position: "absolute",
           left: 10,
           top: 10,
           zIndex: 1,
+          padding: 12,
+          backgroundColor: "rgb(255,255,255)",
+          borderRadius: 8,
         }}
       >
         <div>
-          <p>Que voulez-vous ajouter ?</p>
-          <input
-            type="radio"
-            value="poi"
-            name="Point d'intérêt"
-            checked={typeLocation === "poi"}
-            onChange={(e) => setTypeLocation(e.target.value)}
+          <Form.Check
+            type="switch"
+            value={switchChecked}
+            label={switchChecked ? "Edition" : "Lecture"}
+            onChange={(e) => setSwitchChecked(e.target.checked)}
           />
-          Point d'intérêt
-          <input
-            type="radio"
-            value="route"
-            name="Etape"
-            checked={typeLocation === "route"}
-            onChange={(e) => setTypeLocation(e.target.value)}
-          />
-          Etape
+          {switchChecked &&
+            <Form>
+              <div key="radio">
+                <Form.Check type="radio" name="group1" checked={"route" == typeLocation}
+                  value="route" label="Étape" onChange={(e) => setTypeLocation(e.target.value)} />
+                <Form.Check type="radio" name="group1" checked={"poi" == typeLocation}
+                  value="poi" label="Point d'intérêt" onChange={(e) => setTypeLocation(e.target.value)} />
+              </div>
+            </Form>}
+
+
         </div>
         <DestinationInput />
       </div>
