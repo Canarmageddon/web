@@ -6,7 +6,13 @@ import Location from "../factory/layers/Location";
 import { useTravel } from "../context/TravelContext";
 import User from "../factory/User";
 import Task from "../factory/lists/Task";
-import { fetchPointOfInterest, fetchStep, fetchTripById, updatePoi, createPoi } from "../apiCaller";
+import {
+  fetchPointOfInterest,
+  fetchStep,
+  fetchTripById,
+  updatePoi,
+  createPoi,
+} from "../apiCaller";
 // added the following 6 lines.
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
@@ -16,7 +22,12 @@ mapboxgl.workerClass =
 import LocationFinder from "./LocationFinder";
 import TaskListUtile from "../factory/lists/TaskListUtile";
 import { useTaskList } from "../context/TravelContext";
-export default function MapGl({ setContentPage, contentPage, setPoiId, setTravelers }) {
+export default function MapGl({
+  setContentPage,
+  contentPage,
+  setPoiId,
+  setTravelers,
+}) {
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);
@@ -44,14 +55,14 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
     let lstPoi = [];
     let lstStep = [];
     let lstTodoList = [];
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       setWidth("100%");
       setHeight("100%");
-    })
+    });
 
     user.map((item) => {
       lstUser.push(new User(item.id, item.firstname, item.name, item.email));
-    })
+    });
     poi.map((item) => {
       lstPoi.push(
         new Location(
@@ -78,11 +89,19 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
     todoLists.map((taskList) => {
       let tasks = [];
       //  let tasks = new TaskList(taskList.id, taskList.name);
-      taskList.tasks.map((item) => {
-        tasks.push(new Task(item.id, item.creator, item.name, item.description, new Date(item.date).toLocaleDateString()))
-      })
+      taskList?.tasks?.map((item) => {
+        tasks.push(
+          new Task(
+            item.id,
+            item.creator,
+            item.name,
+            item.description,
+            new Date(item.date).toLocaleDateString()
+          )
+        );
+      });
       lstTodoList.push(new TaskListUtile(taskList.id, taskList.name, tasks));
-    })
+    });
     setTaskList(lstTodoList);
     setTravelers(lstUser);
     setPoiSource(new LayerUtile(lstPoi));
@@ -112,7 +131,7 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
     if (contentPage === "poiInfo") {
       setContentPage("map");
     } else if (typeLocation === "poi") {
-      createPoi(e.lngLat[1], e.lngLat[0], id)
+      createPoi(e.lngLat[1], e.lngLat[0], id);
       setPoiSource(
         poiSource.addItem(
           new Location(poiSource.newId, "", "", e.lngLat[0], e.lngLat[1])

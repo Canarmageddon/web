@@ -5,7 +5,8 @@ import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
-import TaskListUtile from "../../factory/lists/TaskListUtile";
+import { keyframes } from "styled-components";
+
 const ToDoList = ({ toDoList, setToDoLists }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -95,7 +96,7 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
             </div>
           )}
           <div>
-            {toDoList.listTasks.map((t) => (
+            {toDoList.listTasks?.map((t) => (
               <CardItem key={t.id}>
                 <p style={{ marginBottom: 0 }}>
                   {t.date} : {t.name}

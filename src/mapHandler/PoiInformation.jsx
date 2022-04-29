@@ -14,25 +14,24 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [lstFile, setLstFile] = useState([]);
-  const [selectedStep, setSelectedStep] = useState(null);
+  const [selectedStep, setSelectedStep] = useState("");
   useEffect(() => {
     setCurrentPoi(poi.getItemById(poiId));
   }, [poi, poiId]);
   useEffect(() => {
     setTitle(currentPoi?.title ? currentPoi.title : "");
     setDescription(currentPoi?.description ? currentPoi.description : "");
-    setSelectedStep(currentPoi?.step ? currentPoi.step : null)
+    setSelectedStep(currentPoi?.step ? currentPoi.step : "");
   }, [currentPoi]);
 
   const handleClick = async () => {
     currentPoi.title = title;
     currentPoi.description = description;
-    currentPoi.step = selectedStep
+    currentPoi.step = selectedStep;
     setpoi(poi.updateItem(currentPoi));
     setContentPage("map");
-    updatePoi(currentPoi.id, title, description, selectedStep)
+    updatePoi(currentPoi.id, title, description, selectedStep);
   };
-
 
   const handleDelete = async () => {
     setpoi(poi.removeItem(poiId));
@@ -41,7 +40,7 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
   };
   const handleChange = (e) => {
     setSelectedStep(e.target.value);
-  }
+  };
   return (
     <div
       style={{
@@ -78,8 +77,12 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
         Associer à une étape
         <select value={selectedStep} onChange={(e) => handleChange(e)}>
           <option value={null}></option>
-          {routeSource.listLocations.map(step => {
-            return <option key={step.id} value={step.id}>{step.description}</option>
+          {routeSource.listLocations.map((step) => {
+            return (
+              <option key={step.id} value={step.id}>
+                {step.description}
+              </option>
+            );
           })}
         </select>
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -97,7 +100,6 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
               marginTop: 10,
             }}
           />
-
         </div>
       </Form>
     </div>
