@@ -7,6 +7,7 @@ const SideMenu = ({ setContentPage, showMenu }) => {
       <a onClick={() => setContentPage("map")}>Carte</a>
       <a onClick={() => setContentPage("toDoLists")}>Listes de tâches</a>
       <a onClick={() => setContentPage("admin")}>Administration</a>
+      <a onClick={() => setContentPage("details")}>Details</a>
     </div>
   );
 };

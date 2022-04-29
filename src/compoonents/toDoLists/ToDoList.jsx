@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
-
+import TaskListUtile from "../../factory/lists/TaskListUtile";
 const ToDoList = ({ toDoList, setToDoLists }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -18,7 +18,7 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
       className="card-todo-list my-2"
       showDetails={showDetails} // styling props
     >
-      {toDoList.title}
+      {toDoList.name}
       {showDetails && (
         <div onClick={(e) => e.stopPropagation()} className="todo-detail">
           <FontAwesomeIcon
@@ -95,10 +95,10 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
             </div>
           )}
           <div>
-            {toDoList.tasks.map((t) => (
+            {toDoList.listTasks.map((t) => (
               <CardItem key={t.id}>
                 <p style={{ marginBottom: 0 }}>
-                  {t.date} : {t.title}
+                  {t.date} : {t.name}
                 </p>
                 <FontAwesomeIcon
                   icon={faTimesCircle}
