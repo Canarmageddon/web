@@ -8,7 +8,7 @@ import "../style/destinationInput.css";
 import { deletePoi, updatePoi } from "../apiCaller";
 import FileUploader from "./FileUploader";
 const PoiInformation = ({ display, poiId, setContentPage }) => {
-  const [poiSource, setPoiSource] = usePoi();
+  const [poi, setpoi] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [currentPoi, setCurrentPoi] = useState();
   const [title, setTitle] = useState("");
@@ -16,28 +16,29 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
   const [lstFile, setLstFile] = useState([]);
   const [selectedStep, setSelectedStep] = useState(null);
   useEffect(() => {
-    setCurrentPoi(poiSource.getItemById(poiId));
-  }, [poiSource, poiId]);
-
+    setCurrentPoi(poi.getItemById(poiId));
+  }, [poi, poiId]);
   useEffect(() => {
     setTitle(currentPoi?.title ? currentPoi.title : "");
     setDescription(currentPoi?.description ? currentPoi.description : "");
     setSelectedStep(currentPoi?.step ? currentPoi.step : null)
+    console.log(currentPoi)
   }, [currentPoi]);
 
   const handleClick = async () => {
     currentPoi.title = title;
     currentPoi.description = description;
-    setPoiSource(poiSource.updateItem(currentPoi));
+    currentPoi.step = selectedStep
+    setpoi(poi.updateItem(currentPoi));
     setContentPage("map");
-    updatePoi(currentPoi.id, title, description, lstFile)
+    updatePoi(currentPoi.id, title, description, selectedStep)
   };
 
 
   const handleDelete = async () => {
-    setPoiSource(poiSource.removeItem(poiId));
+    setpoi(poi.removeItem(poiId));
     setContentPage("map");
-    const a = await deletePoi(poiId);
+    await deletePoi(poiId);
   };
   const handleChange = (e) => {
     setSelectedStep(e.target.value);
@@ -79,9 +80,7 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
         <select value={selectedStep} onChange={(e) => handleChange(e)}>
           <option value={null}></option>
           {routeSource.listLocations.map(step => {
-            return <>
-              <option value={step.id}>{step.description}</option>
-            </>
+            return <option key={step.id} value={step.id}>{step.description}</option>
           })}
         </select>
         <div style={{ display: "flex", alignItems: "center" }}>

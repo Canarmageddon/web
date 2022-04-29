@@ -10,6 +10,7 @@ import { TravelProvider } from "./context/TravelContext";
 import { Route, Routes, HashRouter } from "react-router-dom";
 import MapGl from "./mapHandler/MapGl";
 import PoiInformation from "./mapHandler/PoiInformation";
+import Details from "./compoonents/Details";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
@@ -44,6 +45,10 @@ function App() {
                       display={contentPage === "poiInfo"}
                       setContentPage={setContentPage}
                       poiId={poiId}
+                    />
+                    <Details
+                      display={contentPage === "details"}
+                      setContentPage={setContentPage}
                     />
                     <div
                       style={{

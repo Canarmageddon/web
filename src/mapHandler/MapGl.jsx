@@ -22,6 +22,8 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
   const [editing, setEditing] = useState(true);
   const [typeLocation, setTypeLocation] = useState("route");
   const [taskList, setTaskList] = useTaskList();
+  const [height, setHeight] = useState("100%");
+  const [width, setWidth] = useState("100%");
   const [viewport, setViewport] = useState({
     latitude: 48.85837,
     longitude: 2.294481,
@@ -32,6 +34,7 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
   const { id } = useParams();
   useEffect(async () => {
     const a = await fetchTripById(id);
+    console.log(a)
     const user = a.travelers;
     const poi = a.pointsOfInterest;
     const step = a.steps;
@@ -42,6 +45,10 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
     let lstPoi = [];
     let lstStep = [];
     let lstTodoList = [];
+    window.addEventListener('resize', () => {
+      setWidth("100%");
+      setHeight("100%");
+    })
 
     user.map((item) => {
       lstUser.push(new User(item.id, item.firstname, item.name, item.email));
@@ -90,7 +97,6 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
     });
   }, []);
   const handleClick = (e) => {
-    createPoi(25, 25);
     if (!editing) return;
     if (e.features[0] != undefined) {
       if (e.features[0].source === typeLocation) {
@@ -107,6 +113,7 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
     if (contentPage === "poiInfo") {
       setContentPage("map");
     } else if (typeLocation === "poi") {
+      createPoi(e.lngLat[1], e.lngLat[0], id)
       setPoiSource(
         poiSource.addItem(
           new Location(poiSource.newId, "", "", e.lngLat[0], e.lngLat[1])
@@ -160,8 +167,8 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
       />
       <ReactMapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-        height="100%"
-        width="100%"
+        height={height}
+        width={width}
         {...viewport}
         onViewportChange={(viewport) => setViewport(viewport)}
         mapStyle="mapbox://styles/mapbox/streets-v11"
