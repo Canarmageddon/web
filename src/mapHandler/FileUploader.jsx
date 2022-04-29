@@ -6,7 +6,6 @@ export default function FileUploader({ setLstFile }) {
         for (let i = 0; i < e.target.files.length; i++) {
             lstFile.push(e.target.files[i])
         }
-        console.log(lstFile)
         setLstFile(lstFile);
     }
     return <>

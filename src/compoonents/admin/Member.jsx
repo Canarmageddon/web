@@ -1,6 +1,6 @@
 import { useState } from "react";
 export default function Member({ member }) {
-    const [role, setRole] = useState(null);
+    const [role, setRole] = useState(member.role);
     const handleRoleChange = (e) => {
         if (e.target.value !== role) {
             setRole(e.target.value);

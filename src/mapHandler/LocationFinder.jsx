@@ -26,7 +26,7 @@ const LocationFinder = ({ typeLocation, setTypeLocation, setEditing }) => {
           <Form.Check
             type="switch"
             value={switchChecked}
-            label={switchChecked ? "Étape" : "Point d'intérêt"}
+            label={switchChecked ? "Edition" : "Lecture"}
             onChange={(e) => setSwitchChecked(e.target.checked)}
           />
           {switchChecked &&
