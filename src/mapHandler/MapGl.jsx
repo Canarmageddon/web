@@ -34,7 +34,6 @@ export default function MapGl({ setContentPage, contentPage, setPoiId, setTravel
   const { id } = useParams();
   useEffect(async () => {
     const a = await fetchTripById(id);
-    console.log(a)
     const user = a.travelers;
     const poi = a.pointsOfInterest;
     const step = a.steps;

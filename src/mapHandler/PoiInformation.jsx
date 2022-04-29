@@ -22,7 +22,6 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
     setTitle(currentPoi?.title ? currentPoi.title : "");
     setDescription(currentPoi?.description ? currentPoi.description : "");
     setSelectedStep(currentPoi?.step ? currentPoi.step : null)
-    console.log(currentPoi)
   }, [currentPoi]);
 
   const handleClick = async () => {
