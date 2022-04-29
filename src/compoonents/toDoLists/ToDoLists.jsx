@@ -7,13 +7,12 @@ import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import TaskListUtile from "../../factory/lists/TaskListUtile";
 const ToDoLists = ({ display }) => {
-
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
-  const [TaskList, setTaskList] = useTaskList()
+  const [TaskList, setTaskList] = useTaskList();
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
-      setTaskList([...TaskList, new TaskListUtile("", title, [])])
+      setTaskList([...TaskList, new TaskListUtile("", title, [])]);
       setTitle("");
       setShowForm(false);
     }
@@ -48,8 +47,8 @@ const ToDoLists = ({ display }) => {
       )}
 
       <div className="d-flex justify-content-around flex-wrap">
-        {TaskList.map((l) => (
-          <ToDoList toDoList={l} setToDoLists={setTaskList} key={l.id} />
+        {TaskList.map((l, key) => (
+          <ToDoList toDoList={l} setToDoLists={setTaskList} key={key} />
         ))}
       </div>
     </div>
