@@ -45,7 +45,7 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
     <div
       style={{
         display: display ? "block" : "none",
-        flex: 0.3,
+        flex: 0.4,
         textAlign: "center",
       }}
     >
