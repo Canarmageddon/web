@@ -10,19 +10,25 @@ import { TravelProvider } from "./context/TravelContext";
 import { Route, Routes, HashRouter } from "react-router-dom";
 import MapGl from "./mapHandler/MapGl";
 import PoiInformation from "./mapHandler/PoiInformation";
+import Login from "./compoonents/login/Login";
+import Signup from "./compoonents/login/Signup";
+import Details from "./compoonents/Details";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
   const [showMenu, setShowMenu] = useState(false);
   const [poiId, setPoiId] = useState(false);
+  const [travelers, setTravelers] = useState([]);
 
   return (
     <TravelProvider>
       <HashRouter>
         <Routes>
-          <Route path="/" element={<TravelsList display={true} />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/trips" element={<TravelsList />} />
           <Route
-            path="/map/:id"
+            path='/map/:id'
             element={
               <>
                 <div
@@ -34,11 +40,19 @@ function App() {
                   <NavBar setShowMenu={setShowMenu} />
                   <div style={{ display: "flex" }}>
                     <ToDoLists display={contentPage === "toDoLists"} />
-                    <Admin display={contentPage === "admin"} />
+                    <Admin
+                      display={contentPage === "admin"}
+                      travelers={travelers}
+                      setTravelers={setTravelers}
+                    />
                     <PoiInformation
                       display={contentPage === "poiInfo"}
                       setContentPage={setContentPage}
                       poiId={poiId}
+                    />
+                    <Details
+                      display={contentPage === "details"}
+                      setContentPage={setContentPage}
                     />
                     <div
                       style={{
@@ -53,6 +67,7 @@ function App() {
                         setContentPage={setContentPage}
                         contentPage={contentPage}
                         setPoiId={setPoiId}
+                        setTravelers={setTravelers}
                       />
                     </div>
                   </div>

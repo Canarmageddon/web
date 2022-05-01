@@ -1,22 +1,40 @@
 import ReactMapGL, { Layer, Source } from "react-map-gl";
 import { useState, useEffect } from "react";
 import LayerUtile from "../factory/layers/LayerUtile";
-import { usePoi } from "../context/TravelContext";
+import { usePoi, useRoute } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
 import { useTravel } from "../context/TravelContext";
-import { fetchPointOfInterest, fetchStep, fetchTripById } from "../apiCaller";
+import User from "../factory/User";
+import Task from "../factory/lists/Task";
+import {
+  fetchPointOfInterest,
+  fetchStep,
+  fetchTripById,
+  updatePoi,
+  createPoi,
+} from "../apiCaller";
+// added the following 6 lines.
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
 
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
-
-export default function MapGl({ setContentPage, contentPage, setPoiId }) {
+import TaskListUtile from "../factory/lists/TaskListUtile";
+import { useTaskList } from "../context/TravelContext";
+export default function MapGl({
+  setContentPage,
+  contentPage,
+  setPoiId,
+  setTravelers,
+}) {
   const [poiSource, setPoiSource] = usePoi();
-  const [routeSource, setRouteSource] = useState(new LayerUtile());
+  const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);
   const [typeLocation, setTypeLocation] = useState("route");
+  const [taskList, setTaskList] = useTaskList();
+  const [height, setHeight] = useState("100%");
+  const [width, setWidth] = useState("100%");
   const [viewport, setViewport] = useState({
     latitude: 48.85837,
     longitude: 2.294481,
@@ -25,15 +43,26 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
     pitch: 0,
   });
   const { id } = useParams();
-  const [travel, setTravel] = useTravel();
   useEffect(async () => {
     const a = await fetchTripById(id);
+    const user = a.travelers;
     const poi = a.pointsOfInterest;
     const step = a.steps;
+    const todoLists = a.toDoLists;
     //const poi = await fetchPointOfInterest();
     //const step = await fetchStep();
+    let lstUser = [];
     let lstPoi = [];
     let lstStep = [];
+    let lstTodoList = [];
+    window.addEventListener("resize", () => {
+      setWidth("100%");
+      setHeight("100%");
+    });
+
+    user.map((item) => {
+      lstUser.push(new User(item.id, item.firstname, item.name, item.email));
+    });
     poi.map((item) => {
       lstPoi.push(
         new Location(
@@ -41,7 +70,8 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
           item.description,
           item.title,
           item.location.longitude,
-          item.location.latitude
+          item.location.latitude,
+          item?.step?.id
         )
       );
     });
@@ -56,6 +86,24 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
         )
       )
     );
+    todoLists.map((taskList) => {
+      let tasks = [];
+      //  let tasks = new TaskList(taskList.id, taskList.name);
+      taskList?.tasks?.map((item) => {
+        tasks.push(
+          new Task(
+            item.id,
+            item.creator,
+            item.name,
+            item.description,
+            new Date(item.date).toLocaleDateString()
+          )
+        );
+      });
+      lstTodoList.push(new TaskListUtile(taskList.id, taskList.name, tasks));
+    });
+    setTaskList(lstTodoList);
+    setTravelers(lstUser);
     setPoiSource(new LayerUtile(lstPoi));
     setRouteSource(new LayerUtile(lstStep));
     setViewport({
@@ -83,6 +131,7 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
     if (contentPage === "poiInfo") {
       setContentPage("map");
     } else if (typeLocation === "poi") {
+      createPoi(e.lngLat[1], e.lngLat[0], id);
       setPoiSource(
         poiSource.addItem(
           new Location(poiSource.newId, "", "", e.lngLat[0], e.lngLat[1])
@@ -127,7 +176,6 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
       "line-blur": 0.5,
     },
   };
-
   return (
     <>
       <LocationFinder
@@ -137,8 +185,8 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
       />
       <ReactMapGL
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-        height="100%"
-        width="100%"
+        height={height}
+        width={width}
         {...viewport}
         onViewportChange={(viewport) => setViewport(viewport)}
         mapStyle="mapbox://styles/mapbox/streets-v11"

@@ -2,40 +2,17 @@ import React, { useState, useEffect } from "react";
 import ToDoList from "./ToDoList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-
+import { useTaskList } from "../../context/TravelContext";
 import FormControl from "react-bootstrap/FormControl";
-
 import "../../style/toDoLists.css";
-
+import TaskListUtile from "../../factory/lists/TaskListUtile";
 const ToDoLists = ({ display }) => {
-  const [toDoLists, setToDoLists] = useState(
-    JSON.parse(localStorage.getItem("toDoLists")) !== null
-      ? JSON.parse(localStorage.getItem("toDoLists"))
-      : []
-  );
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
-
-  useEffect(() => {
-    localStorage.setItem("toDoLists", JSON.stringify(toDoLists));
-  }, [toDoLists]);
-
+  const [TaskList, setTaskList] = useTaskList();
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
-      setToDoLists((oldList) => {
-        let id = 0;
-
-        if (oldList.length > 0) {
-          id =
-            Math.max.apply(
-              Math,
-              oldList.map(function (o) {
-                return o.id;
-              })
-            ) + 1;
-        }
-        return [...oldList, { id: id, title: title, tasks: [] }];
-      });
+      setTaskList([...TaskList, new TaskListUtile("", title, [])]);
       setTitle("");
       setShowForm(false);
     }
@@ -70,8 +47,8 @@ const ToDoLists = ({ display }) => {
       )}
 
       <div className="d-flex justify-content-around flex-wrap">
-        {toDoLists.map((l) => (
-          <ToDoList toDoList={l} setToDoLists={setToDoLists} key={l.id} />
+        {TaskList.map((l, key) => (
+          <ToDoList toDoList={l} setToDoLists={setTaskList} key={key} />
         ))}
       </div>
     </div>
