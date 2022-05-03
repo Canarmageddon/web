@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Tab } from "react-bootstrap";
-import { fetchTravels } from "../../apiCaller";
+import { fetchTravels, deleteTrip } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "../../style/travel.css";
 
 const TravelsList = () => {
@@ -29,6 +31,11 @@ const TravelsList = () => {
   const handleClick = (t) => {
     navigate(`/map/${t.id}`);
   };
+  const handleDelete = async (event, t) => {
+    event.stopPropagation();
+    setLstTrips((oldList) => oldList.filter((trip) => trip.id !== t.id));
+    await deleteTrip(t.id);
+  };
 
   const displayLstTravel = () => {
     return (
@@ -39,7 +46,7 @@ const TravelsList = () => {
             marginBottom: 1,
             marginTop: 10,
             alignItems: "center",
-            justifyContent: "space-evenly",
+            justifyContent: "center",
           }}
           className="nav-item"
         >
@@ -86,9 +93,9 @@ const TravelsList = () => {
                 marginBottom: 10,
                 marginTop: 10,
                 alignItems: "center",
-                justifyContent: "space-evenly",
+                justifyContent: "center",
               }}
-              onClick={() => handleClick(t)}
+              onClick={(e) => handleClick(e)}
             >
               <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                 {t.name}
@@ -99,6 +106,14 @@ const TravelsList = () => {
               <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                 {t.end}
               </p>
+              <FontAwesomeIcon
+                icon={faTrashAlt}
+                size="2x"
+                onClick={(event) => handleDelete(event, t)}
+                style={{
+                  color: "#dc3545",
+                }}
+              />
             </div>
             <Dropdown.Divider />
           </React.Fragment>
@@ -125,8 +140,6 @@ const TravelsList = () => {
         <Tab eventKey="planned" title="Voyages planifies"></Tab>
         <Tab eventKey="past" title="Historique"></Tab>
       </Tabs>
-      {/* <button class="button-tab">Voyages planifies</button>
-            <button class="button-tab">Historique</button> */}
       <Tabs
         id="tabs-role"
         activeKey={role}
