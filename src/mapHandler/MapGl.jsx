@@ -44,11 +44,11 @@ export default function MapGl({
   });
   const { id } = useParams();
   useEffect(async () => {
-    const a = await fetchTripById(id);
-    const user = a.travelers;
-    const poi = a.pointsOfInterest;
-    const step = a.steps;
-    const todoLists = a.toDoLists;
+    const tripData = await fetchTripById(id);
+    const user = tripData.travelers;
+    const poi = tripData.pointsOfInterest;
+    const step = tripData.steps;
+    const todoLists = tripData.toDoLists;
     //const poi = await fetchPointOfInterest();
     //const step = await fetchStep();
     let lstUser = [];
@@ -60,10 +60,10 @@ export default function MapGl({
       setHeight("100%");
     });
 
-    user.map((item) => {
+    user?.map((item) => {
       lstUser.push(new User(item.id, item.firstname, item.name, item.email));
     });
-    poi.map((item) => {
+    poi?.map((item) => {
       lstPoi.push(
         new Location(
           item.id,
@@ -75,7 +75,7 @@ export default function MapGl({
         )
       );
     });
-    step.map((item) =>
+    step?.map((item) =>
       lstStep.push(
         new Location(
           item.id,
@@ -86,7 +86,7 @@ export default function MapGl({
         )
       )
     );
-    todoLists.map((taskList) => {
+    todoLists?.map((taskList) => {
       let tasks = [];
       //  let tasks = new TaskList(taskList.id, taskList.name);
       taskList?.tasks?.map((item) => {
@@ -100,15 +100,15 @@ export default function MapGl({
           )
         );
       });
-      lstTodoList.push(new TaskListUtile(taskList.id, taskList.name, tasks));
+      lstTodoList.push(new TaskListUtile(taskList?.id, taskList?.name, tasks));
     });
     setTaskList(lstTodoList);
     setTravelers(lstUser);
     setPoiSource(new LayerUtile(lstPoi));
     setRouteSource(new LayerUtile(lstStep));
     setViewport({
-      latitude: lstStep.length <= 0 ? 48.85837 : lstStep[lstStep.length - 1].latitude,
-      longitude: lstStep.length <= 0 ? 2.294481 : lstStep[lstStep.length - 1].longitude,
+      latitude: lstStep[lstStep.length - 1]?.latitude,
+      longitude: lstStep[lstStep.length - 1]?.longitude,
       zoom: 7,
       bearing: 0,
       pitch: 0,
