@@ -6,13 +6,17 @@ import { useTaskList } from "../../context/TravelContext";
 import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import TaskListUtile from "../../factory/lists/TaskListUtile";
+import ListPicker from "./ListPicker";
+
 const ToDoLists = ({ display }) => {
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
-  const [TaskList, setTaskList] = useTaskList();
+  const [taskList, setTaskList] = useTaskList();
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
-      setTaskList([...TaskList, new TaskListUtile("", title, [])]);
+      setTaskList([...taskList, new TaskListUtile("", title, [])]);
       setTitle("");
       setShowForm(false);
     }
@@ -22,16 +26,27 @@ const ToDoLists = ({ display }) => {
     <div
       style={{
         display: display ? "block" : "none",
+        position: "relative",
         flex: 0.4,
         textAlign: "center",
       }}
     >
+      <ListPicker
+        listTitle={
+          taskList[currentIndex]
+            ? taskList[currentIndex].name
+            : "Liste introuvable"
+        }
+        currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
+        listLength={taskList.length}
+      />
       <FontAwesomeIcon
         icon={faPlusCircle}
         size="2x"
         onClick={() => setShowForm((oldValue) => !oldValue)}
         className="add-list-icon"
-        style={{ marginTop: 5, marginBottom: 5 }}
+        style={{ position: "absolute", top: 5, right: 5 }}
       />
       {showForm && (
         <div style={{ display: "flex", justifyContent: "center" }}>
@@ -46,11 +61,12 @@ const ToDoLists = ({ display }) => {
         </div>
       )}
 
-      <div className="d-flex justify-content-around flex-wrap">
-        {TaskList.map((l, key) => (
-          <ToDoList toDoList={l} setToDoLists={setTaskList} key={key} />
-        ))}
-      </div>
+      {taskList.length > 0 && (
+        <ToDoList
+          toDoList={taskList[currentIndex]}
+          setToDoLists={setTaskList}
+        />
+      )}
     </div>
   );
 };

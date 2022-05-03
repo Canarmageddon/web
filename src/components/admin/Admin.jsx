@@ -1,33 +1,35 @@
 import React, { useState } from "react";
 import Member from "./Member";
-import { fetchUserByEmail } from "../../apiCaller"
+import { fetchUserByEmail } from "../../apiCaller";
 const Admin = ({ display }) => {
   const [members, setMembers] = useState([
     { name: "user1", role: "admin" },
     { name: "user2", role: "member" },
     { name: "user3", role: "member" },
-  ])
-
+  ]);
 
   const listMembers = members.map((member) => {
-    return <Member key={member.name} member={member} />
+    return <Member key={member.name} member={member} />;
   });
   const [newEmail, setNewEmail] = useState("");
-  const [newRole, setNewRole] = useState("member")
+  const [newRole, setNewRole] = useState("member");
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    let newMember = await fetchUserByEmail(newEmail)
-    setMembers([...members, {
-      name: `${newMember.lastName} ${newMember.firstName}`,
-      role: newRole
-    }])
+    e.preventDefault();
+    let newMember = await fetchUserByEmail(newEmail);
+    setMembers([
+      ...members,
+      {
+        name: `${newMember.lastName} ${newMember.firstName}`,
+        role: newRole,
+      },
+    ]);
     setNewEmail("");
-  }
+  };
   return (
     <div
       style={{
         display: display ? "block" : "none",
-        flex: 0.4,
+        flex: 1,
       }}
     >
       <h2 className="main-title">Membre de voyage</h2>
@@ -35,8 +37,18 @@ const Admin = ({ display }) => {
         <span className="invite-title">Inviter membre</span>
         <hr />
         <div className="invite-div">
-          <input placeholder="email" type="email" className="invite-input" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} />
-          <select value={newRole} onChange={(e) => setNewRole(e.target.value)} className="invite-input">
+          <input
+            placeholder="email"
+            type="email"
+            className="invite-input"
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value)}
+          />
+          <select
+            value={newRole}
+            onChange={(e) => setNewRole(e.target.value)}
+            className="invite-input"
+          >
             <option value="admin">Admin</option>
             <option value="member">Membre</option>
           </select>

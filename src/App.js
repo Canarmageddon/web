@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./style/map.css";
-import ToDoLists from "./compoonents/toDoLists/ToDoLists";
-import TravelsList from "./compoonents/travelList/TravelList";
-import NavBar from "./compoonents/navBar/NavBar";
-import SideMenu from "./compoonents/navBar/SideMenu";
-import Admin from "./compoonents/admin/Admin";
+import ToDoLists from "./components/toDoLists/ToDoLists";
+import TravelsList from "./components/travelList/TravelList";
+import NavBar from "./components/navBar/NavBar";
+import SideMenu from "./components/navBar/SideMenu";
+import Admin from "./components/admin/Admin";
 import { TravelProvider } from "./context/TravelContext";
 import { Route, Routes, HashRouter } from "react-router-dom";
 import MapGl from "./mapHandler/MapGl";
 import PoiInformation from "./mapHandler/PoiInformation";
-import Login from "./compoonents/login/Login";
-import Signup from "./compoonents/login/Signup";
-import Details from "./compoonents/Details";
+import Login from "./components/login/Login";
+import Signup from "./components/login/Signup";
+import Details from "./components/Details";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
@@ -28,7 +28,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/trips" element={<TravelsList />} />
           <Route
-            path='/map/:id'
+            path="/map/:id"
             element={
               <>
                 <div
@@ -56,7 +56,13 @@ function App() {
                     />
                     <div
                       style={{
-                        flex: contentPage === "map" ? 1 : 0.7,
+                        flex:
+                          contentPage === "map"
+                            ? 1
+                            : contentPage === "details" ||
+                              contentPage === "admin"
+                            ? 0
+                            : 0.7,
                         width: "100%",
                         height: "93vh",
                         overflow: "hidden",
