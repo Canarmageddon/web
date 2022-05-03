@@ -18,18 +18,18 @@ export function useRoute() {
 }
 
 export function useTaskList() {
-  return useContext(TaskListContext)
+  return useContext(TaskListContext);
 }
 export function TravelProvider({ children }) {
   const [travel, setTravel] = useState(null);
   const [poiSource, setPoiSource] = useState(new LayerUtile());
   const [routeSource, setRouteSource] = useState(new LayerUtile());
-  const [TaskLists, setTaskLists] = useState([]);
+  const [taskLists, setTaskLists] = useState([]);
   return (
     <TravelContext.Provider value={[travel, setTravel]}>
       <PoiContext.Provider value={[poiSource, setPoiSource]}>
         <RouteContext.Provider value={[routeSource, setRouteSource]}>
-          <TaskListContext.Provider value={[TaskLists, setTaskLists]}>
+          <TaskListContext.Provider value={[taskLists, setTaskLists]}>
             {children}
           </TaskListContext.Provider>
         </RouteContext.Provider>
