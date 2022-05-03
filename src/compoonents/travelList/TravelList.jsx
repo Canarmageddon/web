@@ -4,7 +4,7 @@ import { fetchTravels } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "../../style/travel.css";
-
+import NewTravel from "../NewTravel";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
@@ -114,7 +114,7 @@ const TravelsList = () => {
       }}
     >
       <h1 className="list-title">Voyages</h1>
-      <button className="button-new">Nouveau voyage</button>
+      <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
       <hr style={{ marginBottom: 5 + "px" }} />
       <Tabs
         id="tabs-timing"

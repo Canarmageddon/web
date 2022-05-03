@@ -37,6 +37,19 @@ export const fetchLocation = async (location) =>
 export const fetchTripById = async (id) =>
   await fetch(`${url}trips/${id}`).then((res) => res.json());
 
+export const createTrip = async (name) => {
+  return await fetch(`${url}trips/new`, {
+    method: 'POST',
+    headers: {
+      'accept': 'application/ld+json',
+      'Content-Type': 'application/ld+json'
+    },
+    body: JSON.stringify({
+      name
+    })
+  }).then(res => res.json());
+}
+
 export const deletePoi = async (id) =>
   await fetch(`${url}point_of_interests/${id}`, { method: "DELETE" }).then(
     (res) => res.json()

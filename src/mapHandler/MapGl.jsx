@@ -107,26 +107,29 @@ export default function MapGl({
     setPoiSource(new LayerUtile(lstPoi));
     setRouteSource(new LayerUtile(lstStep));
     setViewport({
-      latitude: lstStep[lstStep.length - 1].latitude,
-      longitude: lstStep[lstStep.length - 1].longitude,
+      latitude: lstStep.length <= 0 ? 48.85837 : lstStep[lstStep.length - 1].latitude,
+      longitude: lstStep.length <= 0 ? 2.294481 : lstStep[lstStep.length - 1].longitude,
       zoom: 7,
       bearing: 0,
       pitch: 0,
     });
   }, []);
   const handleClick = (e) => {
-    if (!editing) return;
-    if (e.features[0] != undefined) {
-      if (e.features[0].source === typeLocation) {
-        if (typeLocation === "poi") {
-          setContentPage("poiInfo");
-          setPoiId(e.features[0].id);
-        } else {
-          //TODO(Gautier) Show Route details
-          setRouteSource(routeSource.removeItem(e.features[0].id));
+    if (!editing) {
+
+      if (e.features[0] != undefined) {
+        if (e.features[0].source === typeLocation) {
+          if (typeLocation === "poi") {
+            setContentPage("poiInfo");
+            setPoiId(e.features[0].id);
+          } else {
+            //TODO(Gautier) Show Route details
+            setRouteSource(routeSource.removeItem(e.features[0].id));
+          }
+          return;
         }
-        return;
       }
+      return
     }
     if (contentPage === "poiInfo") {
       setContentPage("map");
@@ -161,7 +164,6 @@ export default function MapGl({
     type: "circle",
     paint: {
       "circle-color": "#000000",
-      "circle-opacity": 0,
       "circle-radius": 4,
     },
   };
@@ -202,7 +204,7 @@ export default function MapGl({
         <Source id="routeLine" type="geojson" data={routeSource.route}>
           <Layer {...routeLayer} />
         </Source>
-        <Source id="route" type="geojson" data={routeSource.templateSource}>
+        <Source id="route2" type="geojson" data={routeSource.templateSource}>
           <Layer {...routeLayer2} />
         </Source>
       </ReactMapGL>
