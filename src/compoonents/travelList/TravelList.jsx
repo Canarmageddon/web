@@ -31,6 +31,7 @@ const TravelsList = () => {
   const handleClick = (t) => {
     navigate(`/map/${t.id}`);
   };
+
   const handleDelete = async (event, t) => {
     event.stopPropagation();
     setLstTrips((oldList) => oldList.filter((trip) => trip.id !== t.id));
@@ -112,6 +113,7 @@ const TravelsList = () => {
                 onClick={(event) => handleDelete(event, t)}
                 style={{
                   color: "#dc3545",
+                  cursor: "pointer",
                 }}
               />
             </div>

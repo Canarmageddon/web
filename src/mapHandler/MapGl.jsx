@@ -60,10 +60,10 @@ export default function MapGl({
       setHeight("100%");
     });
 
-    user.map((item) => {
+    user?.map((item) => {
       lstUser.push(new User(item.id, item.firstname, item.name, item.email));
     });
-    poi.map((item) => {
+    poi?.map((item) => {
       lstPoi.push(
         new Location(
           item.id,
@@ -75,7 +75,7 @@ export default function MapGl({
         )
       );
     });
-    step.map((item) =>
+    step?.map((item) =>
       lstStep.push(
         new Location(
           item.id,
@@ -86,7 +86,7 @@ export default function MapGl({
         )
       )
     );
-    todoLists.map((taskList) => {
+    todoLists?.map((taskList) => {
       let tasks = [];
       //  let tasks = new TaskList(taskList.id, taskList.name);
       taskList?.tasks?.map((item) => {
