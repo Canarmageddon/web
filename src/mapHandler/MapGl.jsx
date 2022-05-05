@@ -44,11 +44,11 @@ export default function MapGl({
   });
   const { id } = useParams();
   useEffect(async () => {
-    const a = await fetchTripById(id);
-    const user = a.travelers;
-    const poi = a.pointsOfInterest;
-    const step = a.steps;
-    const todoLists = a.toDoLists;
+    const tripData = await fetchTripById(id);
+    const user = tripData.travelers;
+    const poi = tripData.pointsOfInterest;
+    const step = tripData.steps;
+    const todoLists = tripData.toDoLists;
     //const poi = await fetchPointOfInterest();
     //const step = await fetchStep();
     let lstUser = [];
@@ -100,15 +100,15 @@ export default function MapGl({
           )
         );
       });
-      lstTodoList.push(new TaskListUtile(taskList.id, taskList.name, tasks));
+      lstTodoList.push(new TaskListUtile(taskList?.id, taskList?.name, tasks));
     });
     setTaskList(lstTodoList);
     setTravelers(lstUser);
     setPoiSource(new LayerUtile(lstPoi));
     setRouteSource(new LayerUtile(lstStep));
     setViewport({
-      latitude: lstStep[lstStep.length - 1].latitude,
-      longitude: lstStep[lstStep.length - 1].longitude,
+      latitude: lstStep[lstStep.length - 1]?.latitude,
+      longitude: lstStep[lstStep.length - 1]?.longitude,
       zoom: 7,
       bearing: 0,
       pitch: 0,
