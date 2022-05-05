@@ -29,15 +29,14 @@ const LocationFinder = ({ typeLocation, setTypeLocation, setEditing }) => {
             label={switchChecked ? "Edition" : "Lecture"}
             onChange={(e) => setSwitchChecked(e.target.checked)}
           />
-          {switchChecked &&
-            <Form>
-              <div key="radio">
-                <Form.Check type="radio" name="group1" checked={"route" == typeLocation}
-                  value="route" label="Étape" onChange={(e) => setTypeLocation(e.target.value)} />
-                <Form.Check type="radio" name="group1" checked={"poi" == typeLocation}
-                  value="poi" label="Point d'intérêt" onChange={(e) => setTypeLocation(e.target.value)} />
-              </div>
-            </Form>}
+          <Form>
+            <div key="radio">
+              <Form.Check type="radio" name="group1" checked={"route" == typeLocation}
+                value="route" label="Étape" onChange={(e) => setTypeLocation(e.target.value)} />
+              <Form.Check type="radio" name="group1" checked={"poi" == typeLocation}
+                value="poi" label="Point d'intérêt" onChange={(e) => setTypeLocation(e.target.value)} />
+            </div>
+          </Form>
 
 
         </div>
