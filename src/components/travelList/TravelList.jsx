@@ -6,7 +6,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "../../style/travel.css";
-
+import NewTravel from "../NewTravel";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
@@ -96,7 +96,7 @@ const TravelsList = () => {
                 alignItems: "center",
                 justifyContent: "center",
               }}
-              onClick={(e) => handleClick(e)}
+              onClick={(e) => handleClick(t)}
             >
               <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                 {t.name}
@@ -131,7 +131,7 @@ const TravelsList = () => {
       }}
     >
       <h1 className="list-title">Voyages</h1>
-      <button className="button-new">Nouveau voyage</button>
+      <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
       <hr style={{ marginBottom: 5 + "px" }} />
       <Tabs
         id="tabs-timing"
