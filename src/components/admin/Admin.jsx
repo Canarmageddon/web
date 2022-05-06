@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import Member from "./Member";
 import { fetchUserByEmail } from "../../apiCaller";
+import { useParams } from "react-router-dom";
+
 const Admin = ({ display }) => {
+  const { id } = useParams();
+
   const [members, setMembers] = useState([
     { name: "user1", role: "admin" },
     { name: "user2", role: "member" },
