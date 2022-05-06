@@ -3,17 +3,10 @@ import { useState, useEffect } from "react";
 import LayerUtile from "../factory/layers/LayerUtile";
 import { usePoi, useRoute } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
-import { useTravel } from "../context/TravelContext";
 import User from "../factory/User";
 import Task from "../factory/lists/Task";
-import {
-  fetchPointOfInterest,
-  fetchStep,
-  fetchTripById,
-  updatePoi,
-  createPoi,
-} from "../apiCaller";
-// added the following 6 lines.
+import { fetchTripById, createPoi } from "../apiCaller";
+import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
 
@@ -26,6 +19,7 @@ export default function MapGl({
   setContentPage,
   contentPage,
   setPoiId,
+  setStepId,
   setTravelers,
 }) {
   const [poiSource, setPoiSource] = usePoi();
@@ -43,6 +37,25 @@ export default function MapGl({
     pitch: 0,
   });
   const { id } = useParams();
+
+  const _mapRef = createRef();
+  useEffect(() => {
+    const map = _mapRef.current.getMap();
+    map.loadImage(
+      "http://vm-26.iutrs.unistra.fr/api/pictures/file/1",
+      (error, image) => {
+        if (error) throw error;
+        // Add the loaded image to the style's sprite with the ID 'poiImage'.
+        map.addImage("poiImage", image);
+      }
+    );
+    map.loadImage("http://placekitten.com/50/50", (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage("stepImage", image);
+    });
+  }, []);
+
   useEffect(async () => {
     const tripData = await fetchTripById(id);
     const user = tripData.travelers;
@@ -114,33 +127,53 @@ export default function MapGl({
       pitch: 0,
     });
   }, []);
-  const handleClick = (e) => {
-    if (!editing) return;
-    if (e.features[0] != undefined) {
-      if (e.features[0].source === typeLocation) {
-        if (typeLocation === "poi") {
-          setContentPage("poiInfo");
-          setPoiId(e.features[0].id);
-        } else {
-          //TODO(Gautier) Show Route details
-          setRouteSource(routeSource.removeItem(e.features[0].id));
+  const handleClick = async (e) => {
+    if (!editing) {
+      if (e.features[0] != undefined) {
+        console.log(e.features[0].source);
+        if (e.features[0].source === typeLocation) {
+          if (typeLocation === "poi") {
+            setContentPage("poiInfo");
+            setPoiId(e.features[0].id);
+          } else {
+            //TODO(Gautier) Show Route details
+            setContentPage("stepInfo");
+            setStepId(e.features[0].id);
+            //            setRouteSource(routeSource.removeItem(e.features[0].id));
+          }
+          return;
         }
-        return;
       }
+      setContentPage("map");
+      return;
     }
     if (contentPage === "poiInfo") {
       setContentPage("map");
     } else if (typeLocation === "poi") {
-      createPoi(e.lngLat[1], e.lngLat[0], id);
+      let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id);
+      console.log(newPoi);
       setPoiSource(
         poiSource.addItem(
-          new Location(poiSource.newId, "", "", e.lngLat[0], e.lngLat[1])
+          new Location(
+            newPoi.id,
+            "",
+            "",
+            newPoi.location.longitude,
+            newPoi.location.longitude
+          )
         )
       );
     } else {
+      let newStep = await createStep(e.lngLat[1], e.lngLat[0], id);
       setRouteSource(
         routeSource.addItem(
-          new Location(routeSource.newId, "", "", e.lngLat[0], e.lngLat[1])
+          new Location(
+            routeSource.newId,
+            "",
+            "",
+            newStep.location.longitude,
+            newStep.location.longitude
+          )
         )
       );
     }
@@ -148,21 +181,18 @@ export default function MapGl({
 
   const poiLayer = {
     id: "places",
-    type: "circle",
-    paint: {
-      "circle-color": "#4264fb",
-      "circle-radius": 6,
-      "circle-stroke-width": 2,
-      "circle-stroke-color": "#ffffff",
+    type: "symbol",
+    layout: {
+      "icon-image": "poiImage", // reference the image
+      "icon-size": 0.25,
     },
   };
   const routeLayer2 = {
     id: "route2",
-    type: "circle",
-    paint: {
-      "circle-color": "#000000",
-      "circle-opacity": 0,
-      "circle-radius": 4,
+    type: "symbol",
+    layout: {
+      "icon-image": "stepImage", // reference the image
+      "icon-size": 0.25,
     },
   };
   const routeLayer = {
@@ -184,6 +214,7 @@ export default function MapGl({
         setEditing={setEditing}
       />
       <ReactMapGL
+        ref={_mapRef}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         height={height}
         width={width}
