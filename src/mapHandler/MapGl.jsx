@@ -1,15 +1,41 @@
 import ReactMapGL, { Layer, Source } from "react-map-gl";
 import { useState, useEffect } from "react";
 import LayerUtile from "../factory/layers/LayerUtile";
-import { usePoi } from "../context/TravelContext";
+import { usePoi, useRoute } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
-import LocationFinder from "./LocationFinder";
-import { fetchPointOfInterest, fetchStep } from "../apiCaller";
+import { useTravel } from "../context/TravelContext";
+import User from "../factory/User";
+import Task from "../factory/lists/Task";
+import {
+  fetchPointOfInterest,
+  fetchStep,
+  fetchTripById,
+  updatePoi,
+  createPoi,
+} from "../apiCaller";
+import { createRef } from "react";
+import mapboxgl from "mapbox-gl";
+import { useParams } from "react-router-dom";
 
-export default function MapGl({ setContentPage, contentPage, setPoiId }) {
+mapboxgl.workerClass =
+  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+import LocationFinder from "./LocationFinder";
+import TaskListUtile from "../factory/lists/TaskListUtile";
+import { useTaskList } from "../context/TravelContext";
+export default function MapGl({
+  setContentPage,
+  contentPage,
+  setPoiId,
+  setStepId,
+  setTravelers,
+}) {
   const [poiSource, setPoiSource] = usePoi();
-  const [routeSource, setRouteSource] = useState(new LayerUtile());
+  const [routeSource, setRouteSource] = useRoute();
+  const [editing, setEditing] = useState(true);
   const [typeLocation, setTypeLocation] = useState("route");
+  const [taskList, setTaskList] = useTaskList();
+  const [height, setHeight] = useState("100%");
+  const [width, setWidth] = useState("100%");
   const [viewport, setViewport] = useState({
     latitude: 48.85837,
     longitude: 2.294481,
@@ -17,61 +43,131 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
     bearing: 0,
     pitch: 0,
   });
+  const { id } = useParams();
+
+
+  const _mapRef = createRef();
+  useEffect(() => {
+    const map = _mapRef.current.getMap();
+    map.loadImage('http://vm-26.iutrs.unistra.fr/api/pictures/file/1', (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage('poiImage', image);
+    });
+    map.loadImage('http://placekitten.com/50/50', (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage('stepImage', image);
+    });
+  }, []);
+
 
   useEffect(async () => {
-    const poi = await fetchPointOfInterest();
-    const step = await fetchStep();
+    const tripData = await fetchTripById(id);
+    const user = tripData.travelers;
+    const poi = tripData.pointsOfInterest;
+    const step = tripData.steps;
+    const todoLists = tripData.toDoLists;
+    //const poi = await fetchPointOfInterest();
+    //const step = await fetchStep();
+    let lstUser = [];
     let lstPoi = [];
     let lstStep = [];
-    poi.map((item) =>
+    let lstTodoList = [];
+    window.addEventListener("resize", () => {
+      setWidth("100%");
+      setHeight("100%");
+    });
+
+    user?.map((item) => {
+      lstUser.push(new User(item.id, item.firstname, item.name, item.email));
+    });
+    poi?.map((item) => {
       lstPoi.push(
         new Location(
           item.id,
           item.description,
+          item.title,
           item.location.longitude,
-          item.location.latitude
+          item.location.latitude,
+          item?.step?.id
         )
-      )
-    );
-    step.map((item) =>
+      );
+    });
+    step?.map((item) =>
       lstStep.push(
         new Location(
           item.id,
           item.description,
+          "",
           item.location.longitude,
           item.location.latitude
         )
       )
     );
+    todoLists?.map((taskList) => {
+      let tasks = [];
+      //  let tasks = new TaskList(taskList.id, taskList.name);
+      taskList?.tasks?.map((item) => {
+        tasks.push(
+          new Task(
+            item.id,
+            item.creator,
+            item.name,
+            item.description,
+            new Date(item.date).toLocaleDateString()
+          )
+        );
+      });
+      lstTodoList.push(new TaskListUtile(taskList?.id, taskList?.name, tasks));
+    });
+    setTaskList(lstTodoList);
+    setTravelers(lstUser);
     setPoiSource(new LayerUtile(lstPoi));
     setRouteSource(new LayerUtile(lstStep));
+    setViewport({
+      latitude: lstStep[lstStep.length - 1]?.latitude,
+      longitude: lstStep[lstStep.length - 1]?.longitude,
+      zoom: 7,
+      bearing: 0,
+      pitch: 0,
+    });
   }, []);
-
-  const handleClick = (e) => {
-    if (e.features[0] != undefined) {
-      if (e.features[0].source === typeLocation) {
-        if (typeLocation === "poi") {
-          setContentPage("poiInfo");
-          setPoiId(e.features[0].id);
-        } else {
-          //TODO(Gautier) Show Route details
-          setRouteSource(routeSource.removeItem(e.features[0].id));
+  const handleClick = async (e) => {
+    if (!editing) {
+      if (e.features[0] != undefined) {
+        console.log(e.features[0].source)
+        if (e.features[0].source === typeLocation) {
+          if (typeLocation === "poi") {
+            setContentPage("poiInfo");
+            setPoiId(e.features[0].id);
+          } else {
+            //TODO(Gautier) Show Route details
+            setContentPage("stepInfo");
+            setStepId(e.features[0].id);
+            //            setRouteSource(routeSource.removeItem(e.features[0].id));
+          }
+          return;
         }
-        return;
       }
+      setContentPage("map");
+      return
     }
     if (contentPage === "poiInfo") {
       setContentPage("map");
     } else if (typeLocation === "poi") {
+      let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id);
+      console.log(newPoi)
       setPoiSource(
         poiSource.addItem(
-          new Location(poiSource.newId, "", "", e.lngLat[0], e.lngLat[1])
+          new Location(newPoi.id, "", "", newPoi.location.longitude, newPoi.location.longitude)
         )
       );
     } else {
+      let newStep = await createStep(e.lngLat[1], e.lngLat[0], id)
       setRouteSource(
         routeSource.addItem(
-          new Location(routeSource.newId, "", "", e.lngLat[0], e.lngLat[1])
+          new Location(routeSource.newId, "", "", newStep.location.longitude, newStep.location.longitude)
         )
       );
     }
@@ -79,22 +175,19 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
 
   const poiLayer = {
     id: "places",
-    type: "circle",
-    paint: {
-      "circle-color": "#4264fb",
-      "circle-radius": 6,
-      "circle-stroke-width": 2,
-      "circle-stroke-color": "#ffffff",
-    },
+    type: 'symbol',
+    layout: {
+      'icon-image': 'poiImage', // reference the image
+      'icon-size': 0.25
+    }
   };
   const routeLayer2 = {
     id: "route2",
-    type: "circle",
-    paint: {
-      "circle-color": "#000000",
-      "circle-opacity": 0,
-      "circle-radius": 4,
-    },
+    type: "symbol",
+    layout: {
+      'icon-image': 'stepImage', // reference the image
+      'icon-size': 0.25
+    }
   };
   const routeLayer = {
     id: "theRoute",
@@ -107,14 +200,18 @@ export default function MapGl({ setContentPage, contentPage, setPoiId }) {
       "line-blur": 0.5,
     },
   };
-
   return (
     <>
-      <LocationFinder setTypeLocation={setTypeLocation} />
+      <LocationFinder
+        typeLocation={typeLocation}
+        setTypeLocation={setTypeLocation}
+        setEditing={setEditing}
+      />
       <ReactMapGL
+        ref={_mapRef}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-        height="100%"
-        width="100%"
+        height={height}
+        width={width}
         {...viewport}
         onViewportChange={(viewport) => setViewport(viewport)}
         mapStyle="mapbox://styles/mapbox/streets-v11"

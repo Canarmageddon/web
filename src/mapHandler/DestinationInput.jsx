@@ -1,8 +1,8 @@
 import Autosuggest from "react-autosuggest/dist/Autosuggest";
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faSearchLocation } from "@fortawesome/free-solid-svg-icons";
+import "../style/destinationInput.css";
 
 function DestinationInput({}) {
   const [value, setValue] = useState("");
@@ -54,7 +54,14 @@ function DestinationInput({}) {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "row", marginTop: 5 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        marginTop: 5,
+        alignItems: "center",
+      }}
+    >
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={onSuggestionsFetchRequested}
@@ -64,10 +71,15 @@ function DestinationInput({}) {
         inputProps={inputProps}
       />
       <FontAwesomeIcon
-        icon={faPlusCircle}
-        size="2x"
+        icon={faSearchLocation}
+        size="1x"
         onClick={() => goTo(value)}
-        style={{ color: "#0d6efd", marginLeft: 5 }}
+        style={{
+          backgroundColor: "white",
+          color: "#0d6efd",
+          marginLeft: 5,
+          fontSize: 25,
+        }}
       />
     </div>
   );
