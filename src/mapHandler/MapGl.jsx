@@ -5,6 +5,7 @@ import { usePoi, useRoute } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
 import User from "../factory/User";
 import Task from "../factory/lists/Task";
+import { useNavigate } from "react-router-dom";
 import {
   fetchTripById,
   createPoi,
@@ -26,6 +27,8 @@ export default function MapGl({
   setStepId,
   setTravelers,
 }) {
+  const navigate = useNavigate()
+  const [redirect, setRedirect] = useState(false)
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);
@@ -62,6 +65,9 @@ export default function MapGl({
 
   useEffect(async () => {
     const tripData = await fetchTripById(id);
+    if (tripData == -1) {
+      setRedirect(true)
+    }
     const user = tripData.travelers;
     const poi = tripData.pointsOfInterest;
     const step = tripData.steps;
@@ -155,7 +161,6 @@ export default function MapGl({
       setContentPage("map");
     } else if (typeLocation === "poi") {
       let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id);
-      console.log(newPoi);
       setPoiSource(
         poiSource.addItem(
           new Location(
@@ -163,7 +168,7 @@ export default function MapGl({
             "",
             "",
             newPoi.location.longitude,
-            newPoi.location.longitude
+            newPoi.location.latitude
           )
         )
       );
@@ -210,6 +215,7 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
+  if (redirect) navigate("/")
   return (
     <>
       <LocationFinder

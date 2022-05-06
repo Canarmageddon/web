@@ -190,7 +190,11 @@ export const deleteTravel = async (id) =>
 export const fetchTripById = async (id) =>
   await fetch(`${url}trips/${id}`, {
     method: "GET",
-  }).then((res) => res.json());
+  }).then((res) => {
+    if (res.status == 404) {
+      return -1
+    } else { return res.json() }
+  });
 
 export const deleteTrip = async (id) =>
   await fetch(`${url}trips/${id}`, {
