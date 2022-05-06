@@ -1,0 +1,19 @@
+.travel{
+    border: solid;
+    border-color: black;
+    border-radius: 1px;
+    padding: 2px;
+    margin: 2px;
+}
+
+.travel-list-item {
+    display: "flex";
+    margin-bottom: 10;
+    margin-top: 10;
+    align-items: "center";
+    justify-content: "center";
+}
+
+.travel-list-item:hover {
+    background-color: rgba(13, 110, 253, 0.6);
+}
