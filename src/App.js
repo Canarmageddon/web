@@ -13,22 +13,24 @@ import PoiInformation from "./mapHandler/PoiInformation";
 import Login from "./components/login/Login";
 import Signup from "./components/login/Signup";
 import Details from "./components/Details";
+import StepInfo from "./mapHandler/StepInfo";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
   const [showMenu, setShowMenu] = useState(false);
   const [poiId, setPoiId] = useState(false);
+  const [stepId, setStepId] = useState(false);
   const [travelers, setTravelers] = useState([]);
 
   return (
     <TravelProvider>
       <HashRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/trips" element={<TravelsList />} />
+          <Route path='/' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/trips' element={<TravelsList />} />
           <Route
-            path="/map/:id"
+            path='/map/:id'
             element={
               <>
                 <div
@@ -49,6 +51,11 @@ function App() {
                       display={contentPage === "poiInfo"}
                       setContentPage={setContentPage}
                       poiId={poiId}
+                    />
+                    <StepInfo
+                      display={contentPage === "stepInfo"}
+                      setContentPage={setContentPage}
+                      stepId={stepId}
                     />
                     <Details
                       display={contentPage === "details"}
@@ -73,6 +80,7 @@ function App() {
                         setContentPage={setContentPage}
                         contentPage={contentPage}
                         setPoiId={setPoiId}
+                        setStepId={setStepId}
                         setTravelers={setTravelers}
                       />
                     </div>

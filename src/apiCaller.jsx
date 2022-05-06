@@ -6,7 +6,7 @@ export const fetchStep = async () =>
   await fetch(`${url}step`).then((res) => res.json());
 
 export const createStep = async (latitude, longitude, id) =>
-  await fetch(`${url}steps/new`, {
+  await fetch(`${url}step/new`, {
     method: "POST",
     headers: {
       accept: "applicaiton/ld+json",
@@ -20,7 +20,7 @@ export const createStep = async (latitude, longitude, id) =>
   });
 
 export const deleteStep = async (id) =>
-  await fetch(`${url}step/${id}`, { method: "DELETE" }).then((res) =>
+  await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res) =>
     res.json()
   );
 
@@ -83,8 +83,18 @@ export const updatePoi = async (id, title, description, step) => {
 
 /* ------------ USER -----------------------*/
 
-export const fetchUserByEmail = async (email) =>
-  await fetch(`${url}users/${email}/email`).then((res) => res.json());
+export const fetchUserByEmail = async (email, id) =>
+  await fetch(`${url}trips/addUser`, {
+    method: "POST",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+    },
+    body: JSON.stringify({
+      emailUser: email,
+      idTrip: id,
+    }),
+  }).then((res) => res.json());
 
 export const deleteUser = async (id) =>
   await fetch(`${url}users/${id}`, { method: "DELETE" }).then((res) =>
