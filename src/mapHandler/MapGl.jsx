@@ -12,6 +12,7 @@ import {
   fetchTripById,
   updatePoi,
   createPoi,
+  createStep
 } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
@@ -165,9 +166,10 @@ export default function MapGl({
       );
     } else {
       let newStep = await createStep(e.lngLat[1], e.lngLat[0], id)
+      console.log(newStep)
       setRouteSource(
         routeSource.addItem(
-          new Location(routeSource.newId, "", "", newStep.location.longitude, newStep.location.longitude)
+          new Location(newStep.id, "", "", newStep.location.longitude, newStep.location.latitude)
         )
       );
     }

@@ -40,7 +40,6 @@ const LocationFinder = ({ typeLocation, setTypeLocation, setEditing }) => {
 
 
         </div>
-        <DestinationInput />
       </div>
     </>
   );
