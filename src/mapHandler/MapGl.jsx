@@ -140,7 +140,6 @@ export default function MapGl({
   const handleClick = async (e) => {
     if (!editing) {
       if (e.features[0] != undefined) {
-        console.log(e.features[0].source);
         if (e.features[0].source === typeLocation) {
           if (typeLocation === "poi") {
             setContentPage("poiInfo");
