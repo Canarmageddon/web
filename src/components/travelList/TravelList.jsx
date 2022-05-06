@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import "../../style/travel.css";
-import NewTravel from "../NewTravel";
+import "./travel.css";
+import NewTravel from "./NewTravel";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
@@ -31,6 +31,7 @@ const TravelsList = () => {
   const handleClick = (t) => {
     navigate(`/map/${t.id}`);
   };
+
   const handleDelete = async (event, t) => {
     event.stopPropagation();
     setLstTrips((oldList) => oldList.filter((trip) => trip.id !== t.id));
@@ -84,19 +85,11 @@ const TravelsList = () => {
             Arrivée
           </p>
         </div>
+
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />
         {lstTrips.map((t) => (
           <React.Fragment key={t.id}>
-            <div
-              style={{
-                display: "flex",
-                marginBottom: 10,
-                marginTop: 10,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              onClick={(e) => handleClick(t)}
-            >
+            <div className="travel-list-item" onClick={(e) => handleClick(t)}>
               <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                 {t.name}
               </p>
@@ -112,6 +105,7 @@ const TravelsList = () => {
                 onClick={(event) => handleDelete(event, t)}
                 style={{
                   color: "#dc3545",
+                  cursor: "pointer",
                 }}
               />
             </div>
