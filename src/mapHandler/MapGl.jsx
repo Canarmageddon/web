@@ -3,14 +3,10 @@ import { useState, useEffect } from "react";
 import LayerUtile from "../factory/layers/LayerUtile";
 import { usePoi, useRoute } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
-import { useTravel } from "../context/TravelContext";
 import User from "../factory/User";
 import Task from "../factory/lists/Task";
 import {
-  fetchPointOfInterest,
-  fetchStep,
   fetchTripById,
-  updatePoi,
   createPoi,
   createStep
 } from "../apiCaller";
@@ -46,22 +42,23 @@ export default function MapGl({
   });
   const { id } = useParams();
 
-
   const _mapRef = createRef();
   useEffect(() => {
     const map = _mapRef.current.getMap();
-    map.loadImage('http://vm-26.iutrs.unistra.fr/api/pictures/file/1', (error, image) => {
+    map.loadImage(
+      "http://vm-26.iutrs.unistra.fr/api/pictures/file/1",
+      (error, image) => {
+        if (error) throw error;
+        // Add the loaded image to the style's sprite with the ID 'poiImage'.
+        map.addImage("poiImage", image);
+      }
+    );
+    map.loadImage("http://placekitten.com/50/50", (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
-      map.addImage('poiImage', image);
-    });
-    map.loadImage('http://placekitten.com/50/50', (error, image) => {
-      if (error) throw error;
-      // Add the loaded image to the style's sprite with the ID 'poiImage'.
-      map.addImage('stepImage', image);
+      map.addImage("stepImage", image);
     });
   }, []);
-
 
   useEffect(async () => {
     const tripData = await fetchTripById(id);
@@ -137,7 +134,7 @@ export default function MapGl({
   const handleClick = async (e) => {
     if (!editing) {
       if (e.features[0] != undefined) {
-        console.log(e.features[0].source)
+        console.log(e.features[0].source);
         if (e.features[0].source === typeLocation) {
           if (typeLocation === "poi") {
             setContentPage("poiInfo");
@@ -152,24 +149,35 @@ export default function MapGl({
         }
       }
       setContentPage("map");
-      return
+      return;
     }
     if (contentPage === "poiInfo") {
       setContentPage("map");
     } else if (typeLocation === "poi") {
       let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id);
-      console.log(newPoi)
+      console.log(newPoi);
       setPoiSource(
         poiSource.addItem(
-          new Location(newPoi.id, "", "", newPoi.location.longitude, newPoi.location.longitude)
+          new Location(
+            newPoi.id,
+            "",
+            "",
+            newPoi.location.longitude,
+            newPoi.location.longitude
+          )
         )
       );
     } else {
-      let newStep = await createStep(e.lngLat[1], e.lngLat[0], id)
-      console.log(newStep)
+      let newStep = await createStep(e.lngLat[1], e.lngLat[0], id);
       setRouteSource(
         routeSource.addItem(
-          new Location(newStep.id, "", "", newStep.location.longitude, newStep.location.latitude)
+          new Location(
+            routeSource.newId,
+            "",
+            "",
+            newStep.location.longitude,
+            newStep.location.latitude
+          )
         )
       );
     }
@@ -177,19 +185,19 @@ export default function MapGl({
 
   const poiLayer = {
     id: "places",
-    type: 'symbol',
+    type: "symbol",
     layout: {
-      'icon-image': 'poiImage', // reference the image
-      'icon-size': 0.25
-    }
+      "icon-image": "poiImage", // reference the image
+      "icon-size": 0.25,
+    },
   };
   const routeLayer2 = {
     id: "route2",
     type: "symbol",
     layout: {
-      'icon-image': 'stepImage', // reference the image
-      'icon-size': 0.25
-    }
+      "icon-image": "stepImage", // reference the image
+      "icon-size": 0.25,
+    },
   };
   const routeLayer = {
     id: "theRoute",
