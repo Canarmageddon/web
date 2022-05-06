@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Member from "./Member";
-import { fetchUserByEmail } from "../../apiCaller";
+import { addUser } from "../../apiCaller";
 import { useParams } from "react-router-dom";
 
 const Admin = ({ display }) => {
@@ -19,7 +19,7 @@ const Admin = ({ display }) => {
   const [newRole, setNewRole] = useState("member");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let newMember = await fetchUserByEmail(newEmail);
+    let newMember = await addUser(newEmail, id);
     setMembers([
       ...members,
       {

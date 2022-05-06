@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { deleteUser } from "../../apiCaller";
 export default function Member({ member }) {
     const [role, setRole] = useState(member.role);
     const handleRoleChange = (e) => {
@@ -12,7 +13,7 @@ export default function Member({ member }) {
             <option value="admin">Admin</option>
             <option value="member">Membre</option>
         </select>
-        <button className="delete">Supprimer</button>
+        <button className="delete" onClick={() => deleteUser(member.email)}>Supprimer</button>
         <hr className="bar" />
     </li>
 } 
