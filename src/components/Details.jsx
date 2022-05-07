@@ -37,11 +37,13 @@ export default function ({ display, setContentPage }) {
     >
       {route.listLocations.map((step) => {
         return (
-          <div key={step.id} onClick={() => handleClick(step.id)}
-            style={{ cursor: "pointer" }}>
+          <div
+            key={step.id}
+            onClick={() => handleClick(step.id)}
+            style={{ cursor: "pointer" }}
+          >
             {" "}
             {step.description}
-
             <FontAwesomeIcon
               icon={faPen}
               onClick={() => setContentPage("stepInfo")}
@@ -63,7 +65,7 @@ export default function ({ display, setContentPage }) {
               }}
             />
             {currentRoute == step.id && (
-              <div style={{ "margin-left": "2rem" }}>
+              <div style={{ marginLeft: "2rem" }}>
                 {currentPoi.map((e) => (
                   <div
                     style={{ display: "flex", flexDirection: "row" }}

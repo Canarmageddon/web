@@ -39,16 +39,16 @@ export const fetchPointOfInterest = async () =>
 
 export const createTrip = async (name) => {
   return await fetch(`${url}trips/new`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'accept': 'application/ld+json',
-      'Content-Type': 'application/ld+json'
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({
-      name
-    })
-  }).then(res => res.json());
-}
+      name,
+    }),
+  }).then((res) => res.json());
+};
 
 export const deletePoi = async (id) =>
   await fetch(`${url}point_of_interests/${id}`, { method: "DELETE" }).then(
@@ -131,33 +131,32 @@ export const createTodoList = async (title, id) =>
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({
-      title,
-      trip: `api/trip/${id}`,
+      name: title,
+      trip: parseInt(id),
     }),
   });
 
 export const deleteTodoList = async (id) =>
-  await fetch(`${url}to_do_lists/${id}`, { method: "DELETE" }).then((res) =>
-    res.json()
-  );
+  await fetch(`${url}to_do_lists/${id}`, { method: "DELETE" });
 
-export const createTask = async (title, id) =>
-  await fetch(`${url}tasks/new`, {
+export const createTask = async (title, id, date) =>
+  await fetch(`${url}task/new`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({
-      title,
-      to_do_list: `api/to_do_list/${id}`,
+      name: title,
+      description: "", //TODO
+      creator: 1, //TODO User connecté
+      toDoList: id,
+      date: date,
     }),
   });
 
 export const deleteTask = async (id) =>
-  await fetch(`${url}tasks/${id}`, { method: "DELETE" }).then((res) =>
-    res.json()
-  );
+  await fetch(`${url}tasks/${id}`, { method: "DELETE" });
 
 /* -------------------------------------------*/
 

@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
+import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
 
 const ToDoList = ({ toDoList, setToDoLists }) => {
   const [showForm, setShowForm] = useState(false);
@@ -19,6 +20,7 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
           size="lg"
           onClick={() => {
             setToDoLists((oldLists) => {
+              deleteTodoList(toDoList.id);
               const index = oldLists.findIndex((ol) => ol.id === toDoList?.id);
               if (index !== -1) {
                 oldLists.splice(index, 1);
@@ -54,25 +56,24 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
             <Button
               onClick={() => {
                 setToDoLists((oldLists) => {
+                  createTask(title, toDoList.id, date);
                   const index = oldLists.findIndex(
                     (ol) => ol.id === toDoList?.id
                   );
                   let id = 0;
 
-                  if (oldLists[index]?.tasks?.length > 0) {
+                  if (oldLists[index]?.listTasks?.length > 0) {
                     id =
                       Math.max.apply(
                         Math,
-                        oldLists[index].tasks?.map(function (o) {
+                        oldLists[index].listTasks?.map(function (o) {
                           return o.id;
                         })
                       ) + 1;
                   }
-
-                  oldLists[index]?.tasks?.push({
-                    // TODO CallAPI
+                  oldLists[index]?.listTasks?.push({
                     id: id,
-                    title: title,
+                    name: title,
                     date: date != "" ? date : null,
                   });
 
@@ -98,15 +99,18 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
                 icon={faTimesCircle}
                 size="lg"
                 onClick={() => {
+                  deleteTask(t.id);
                   setToDoLists((oldLists) => {
                     const listIndex = oldLists.findIndex(
                       (ol) => ol.id === toDoList?.id
                     );
-                    const taskIndex = oldLists[listIndex].tasks.findIndex(
+
+                    const taskIndex = oldLists[listIndex].listTasks?.findIndex(
                       (task) => task.id === t.id
                     );
+
                     if (taskIndex !== -1) {
-                      oldLists[listIndex].tasks?.splice(taskIndex, 1);
+                      oldLists[listIndex].listTasks?.splice(taskIndex, 1);
                     }
                     return [...oldLists];
                   });
