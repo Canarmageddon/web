@@ -7,8 +7,11 @@ import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import TaskListUtile from "../../factory/lists/TaskListUtile";
 import ListPicker from "./ListPicker";
+import { createTodoList } from "../../apiCaller";
+import { useParams } from "react-router-dom";
 
 const ToDoLists = ({ display }) => {
+  const { id } = useParams();
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
   const [taskList, setTaskList] = useTaskList();
@@ -19,6 +22,8 @@ const ToDoLists = ({ display }) => {
       setTaskList([...taskList, new TaskListUtile("", title, [])]);
       setTitle("");
       setShowForm(false);
+      setCurrentIndex(taskList.length);
+      createTodoList(title, id);
     }
   };
 
@@ -41,15 +46,22 @@ const ToDoLists = ({ display }) => {
         setCurrentIndex={setCurrentIndex}
         listLength={taskList.length}
       />
-      <FontAwesomeIcon
-        icon={faPlusCircle}
-        size="2x"
-        onClick={() => setShowForm((oldValue) => !oldValue)}
-        className="add-list-icon"
-        style={{ position: "absolute", top: 5, right: 5 }}
-      />
-      {showForm && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: 20,
+        }}
+      >
+        <FontAwesomeIcon
+          icon={faPlusCircle}
+          size="2x"
+          onClick={() => setShowForm((oldValue) => !oldValue)}
+          className="add-list-icon"
+          style={{ marginRight: 15 }}
+        />
+        {showForm && (
           <FormControl
             placeholder="Nom"
             value={title}
@@ -58,8 +70,8 @@ const ToDoLists = ({ display }) => {
             className="add-list-input"
             type="text"
           />
-        </div>
-      )}
+        )}
+      </div>
 
       {taskList.length > 0 && (
         <ToDoList

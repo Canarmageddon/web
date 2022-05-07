@@ -130,7 +130,6 @@ export default function MapGl({
   const handleClick = async (e) => {
     if (!editing) {
       if (e.features[0] != undefined) {
-        console.log(e.features[0].source);
         if (e.features[0].source === typeLocation) {
           if (typeLocation === "poi") {
             setContentPage("poiInfo");
@@ -151,7 +150,6 @@ export default function MapGl({
       setContentPage("map");
     } else if (typeLocation === "poi") {
       let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id);
-      console.log(newPoi);
       setPoiSource(
         poiSource.addItem(
           new Location(

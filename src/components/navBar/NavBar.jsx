@@ -8,7 +8,7 @@ const NavBar = ({ setShowMenu }) => {
     <>
       <div
         className="d-flex justify-content-between bg-primary nav"
-        style={{ height: "7vh" }}
+        style={{ height: "fit-content" }}
       >
         <FontAwesomeIcon
           className="p-2 nav-icon"
