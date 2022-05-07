@@ -15,13 +15,19 @@ export const createStep = async (latitude, longitude, id) =>
     body: JSON.stringify({
       longitude,
       latitude,
-      trip: `api/trips/${id}`,
+      trip: parseInt(id),
+      description: "",
+      creator: 4
     }),
-  });
+  }).then(res => res.json());
 
 export const deleteStep = async (id) =>
-  await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res) =>
-    res.json()
+  await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res) => {
+    if (res.statusCode != 204) {
+      return res.json()
+    }
+    return null;
+  }
   );
 
 /* -------------------------------------------*/
@@ -74,7 +80,7 @@ export const updatePoi = async (id, title, description, step) => {
     body: JSON.stringify({
       title,
       description,
-      step: `api/steps/${step}`,
+      step,
     }),
   }).then((res) => res.json());
 };
@@ -83,7 +89,7 @@ export const updatePoi = async (id, title, description, step) => {
 
 /* ------------ USER -----------------------*/
 
-export const fetchUserByEmail = async (email, id) =>
+export const addUser = async (email, id) =>
   await fetch(`${url}trips/addUser`, {
     method: "POST",
     headers: {
@@ -91,11 +97,23 @@ export const fetchUserByEmail = async (email, id) =>
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({
-      emailUser: email,
-      idTrip: id,
+      email,
+      trip: id
     }),
   }).then((res) => res.json());
 
+export const removeUser = async (email, id) =>
+  await fetch(`${url}trips/removeUser`, {
+    method: "POST",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+    },
+    body: JSON.stringify({
+      email: email,
+      trip: 6,
+    }).then((res) => res.json)
+  })
 export const deleteUser = async (id) =>
   await fetch(`${url}users/${id}`, { method: "DELETE" }).then((res) =>
     res.json()
@@ -171,7 +189,11 @@ export const deleteTravel = async (id) =>
 export const fetchTripById = async (id) =>
   await fetch(`${url}trips/${id}`, {
     method: "GET",
-  }).then((res) => res.json());
+  }).then((res) => {
+    if (res.status == 404) {
+      return -1
+    } else { return res.json() }
+  });
 
 export const deleteTrip = async (id) =>
   await fetch(`${url}trips/${id}`, {

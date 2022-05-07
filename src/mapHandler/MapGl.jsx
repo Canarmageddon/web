@@ -5,7 +5,12 @@ import { usePoi, useRoute } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
 import User from "../factory/User";
 import Task from "../factory/lists/Task";
-import { fetchTripById, createPoi } from "../apiCaller";
+import { useNavigate } from "react-router-dom";
+import {
+  fetchTripById,
+  createPoi,
+  createStep
+} from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
@@ -22,6 +27,8 @@ export default function MapGl({
   setStepId,
   setTravelers,
 }) {
+  const navigate = useNavigate()
+  const [redirect, setRedirect] = useState(false)
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);
@@ -58,6 +65,9 @@ export default function MapGl({
 
   useEffect(async () => {
     const tripData = await fetchTripById(id);
+    if (tripData == -1) {
+      setRedirect(true)
+    }
     const user = tripData.travelers;
     const poi = tripData.pointsOfInterest;
     const step = tripData.steps;
@@ -157,7 +167,7 @@ export default function MapGl({
             "",
             "",
             newPoi.location.longitude,
-            newPoi.location.longitude
+            newPoi.location.latitude
           )
         )
       );
@@ -170,7 +180,7 @@ export default function MapGl({
             "",
             "",
             newStep.location.longitude,
-            newStep.location.longitude
+            newStep.location.latitude
           )
         )
       );
@@ -204,6 +214,7 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
+  if (redirect) navigate("/")
   return (
     <>
       <LocationFinder
