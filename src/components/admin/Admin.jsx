@@ -1,33 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Member from "./Member";
-import { addUser } from "../../apiCaller";
+import { addUser, fetchAllUser } from "../../apiCaller";
 import { useParams } from "react-router-dom";
 
 const Admin = ({ display }) => {
   const { id } = useParams();
+  const intId = parseInt(id);
+  useEffect(async () => {
+    setMembers(await fetchAllUser(intId))
+  }, [])
 
-  const [members, setMembers] = useState([
-    { name: "user1", role: "admin" },
-    { name: "user2", role: "member" },
-    { name: "user3", role: "member" },
-  ]);
-
+  const [members, setMembers] = useState([]);
   const listMembers = members.map((member) => {
-    return <Member key={member.name} member={member} />;
+    return <Member key={member.name} member={member} setMembers={setMembers} id={intId} />;
   });
   const [newEmail, setNewEmail] = useState("");
   const [newRole, setNewRole] = useState("member");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let newMember = await addUser(newEmail, id);
-    setMembers([
-      ...members,
-      {
-        name: `${newMember.lastName} ${newMember.firstName}`,
-        role: newRole,
-      },
-    ]);
-    setNewEmail("");
+    try {
+
+      const res = await addUser(newEmail, intId);
+      setMembers(await fetchAllUser(intId))
+      setNewEmail("");
+    }
+    catch (e) {
+      alert(e)
+    }
   };
   return (
     <div
@@ -53,8 +52,8 @@ const Admin = ({ display }) => {
             onChange={(e) => setNewRole(e.target.value)}
             className="invite-input"
           >
-            <option value="admin">Admin</option>
-            <option value="member">Membre</option>
+            <option value="editor">Editeur</option>
+            <option value="guest">Invité</option>
           </select>
           <button type="submit" className="button-new">
             Inviter
