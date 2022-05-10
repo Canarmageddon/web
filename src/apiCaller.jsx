@@ -89,6 +89,9 @@ export const updatePoi = async (id, title, description, step) => {
 
 /* ------------ USER -----------------------*/
 
+export const fetchAllUser = async (id) =>
+  await fetch(`${url}trips/${id}/users`).then(res => res.json())
+
 export const addUser = async (email, id) =>
   await fetch(`${url}trips/addUser`, {
     method: "POST",
@@ -100,7 +103,8 @@ export const addUser = async (email, id) =>
       email,
       trip: id
     }),
-  }).then((res) => res.json());
+  }).then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 export const removeUser = async (email, id) =>
   await fetch(`${url}trips/removeUser`, {
@@ -111,9 +115,9 @@ export const removeUser = async (email, id) =>
     },
     body: JSON.stringify({
       email: email,
-      trip: 6,
-    }).then((res) => res.json)
-  })
+      trip: id,
+    })
+  }).then((res) => res.json)
 export const deleteUser = async (id) =>
   await fetch(`${url}users/${id}`, { method: "DELETE" }).then((res) =>
     res.json()
@@ -213,3 +217,17 @@ export const deleteDocument = async (id) =>
   await fetch(`${url}documents/${id}`, { method: "DELETE" }).then((res) =>
     res.json()
   );
+
+/* -------------------------------------------*/
+
+const checkStatus = async (response) => {
+  if (response.ok) {
+    return response;
+  } else {
+
+    return response.json()
+      .then((text) => {
+        throw new Error(text.message);
+      });
+  }
+}
