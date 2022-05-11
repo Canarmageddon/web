@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
-
+import { useUser } from "../../context/userContext";
 const Login = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [showLockIcon, setShowLockIcon] = useState(true);
   const [showUserIcon, setShowUserIcon] = useState(true);
-
+  if (user != "" && user != null) {
+    return <Navigate to="/home/trips" replace={true} />
+  }
   return (
     <form
       style={{

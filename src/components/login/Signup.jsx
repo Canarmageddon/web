@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { Navigate, useNavigate } from "react-router-dom";
+import { useUser } from "../../context/userContext";
 const CreateAccount = () => {
   const navigate = useNavigate();
+  const [user] = useUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [allUsers, setAllUsers] = useState([]);
-
+  if (user != "" && user != null) {
+    return <Navigate to="/home/trips" replace={true} />
+  }
   useEffect(() => {
     // useFetch(() => {
     //   return API.getUsers();
