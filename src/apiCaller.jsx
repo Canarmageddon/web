@@ -3,10 +3,10 @@ const url = process.env.REACT_APP_DATABASE_URL;
 /* ------------ STEP -----------------------*/
 
 export const fetchStep = async () =>
-  await fetch(`${url}step`).then((res) => res.json());
+  await fetch(`${url}steps`).then((res) => res.json());
 
 export const createStep = async (latitude, longitude, id) =>
-  await fetch(`${url}step/new`, {
+  await fetch(`${url}steps/new`, {
     method: "POST",
     headers: {
       accept: "applicaiton/ld+json",
@@ -65,7 +65,8 @@ export const createPoi = async (latitude, longitude, id) => {
     body: JSON.stringify({
       longitude,
       latitude,
-      trip: `api/trips/${id}`,
+      trip: parseInt(id),
+      creator: 1,
     }),
   }).then((res) => res.json());
 };

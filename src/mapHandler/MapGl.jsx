@@ -44,7 +44,6 @@ export default function MapGl({
     pitch: 0,
   });
   const { id } = useParams();
-
   const _mapRef = createRef();
   useEffect(() => {
     const map = _mapRef.current.getMap();

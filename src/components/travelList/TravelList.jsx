@@ -12,7 +12,6 @@ const TravelsList = () => {
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [lstTrips, setLstTrips] = useState([]);
-
   useEffect(async () => {
     const data = await fetchTravels();
     let res = [];
