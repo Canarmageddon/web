@@ -48,7 +48,7 @@ export default function MapGl({
   useEffect(() => {
     const map = _mapRef.current.getMap();
     map.loadImage(
-      "http://vm-26.iutrs.unistra.fr/api/pictures/file/1",
+      "http://placekitten.com/50/50",
       (error, image) => {
         if (error) throw error;
         // Add the loaded image to the style's sprite with the ID 'poiImage'.
