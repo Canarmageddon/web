@@ -7,7 +7,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "../style/destinationInput.css";
 import { deletePoi, updatePoi } from "../apiCaller";
 import FileUploader from "./FileUploader";
-const PoiInformation = ({ display, poiId, setContentPage }) => {
+const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
   const [poi, setpoi] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [currentPoi, setCurrentPoi] = useState();
@@ -100,6 +100,9 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
               marginTop: 10,
             }}
           />
+          <Button type="button" onClick={() => setMovingPoi(currentPoi.id)} style={{ marginTop: 10 }}>
+            Déplacer
+          </Button>
         </div>
       </Form>
     </div>

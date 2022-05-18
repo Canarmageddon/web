@@ -10,7 +10,9 @@ import { useUser } from "../context/userContext"
 import {
   fetchTripById,
   createPoi,
-  createStep
+  createStep,
+  movePoi,
+  moveStep
 } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
@@ -26,6 +28,10 @@ export default function MapGl({
   setPoiId,
   setStepId,
   setTravelers,
+  movingPoi,
+  setMovingPoi,
+  movingStep,
+  setMovingStep
 }) {
   const [user] = useUser();
   const navigate = useNavigate()
@@ -137,6 +143,16 @@ export default function MapGl({
     });
   }, []);
   const handleClick = async (e) => {
+    if (movingPoi != null) {
+      movePoi(movingPoi, e.lngLat[1], e.lngLat[0])
+      setMovingPoi(null);
+      return
+    }
+    if (movingStep != null) {
+      moveStep(movingStep, e.lngLat[1], e.lngLat[0])
+      setMovingStep(null);
+      return
+    }
     if (!editing) {
       if (e.features[0] != undefined) {
         if (e.features[0].source === typeLocation) {
@@ -146,6 +162,7 @@ export default function MapGl({
           } else {
             //TODO(Gautier) Show Route details
             setContentPage("stepInfo");
+            console.log(e.features[0])
             setStepId(e.features[0].id);
             //            setRouteSource(routeSource.removeItem(e.features[0].id));
           }

@@ -7,23 +7,23 @@ import { useRoute } from "../context/TravelContext";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import FileUploader from "./FileUploader";
 
-export default function ({ display, stepId, setContentPage }) {
+export default function ({ display, stepId, setContentPage, setMovingStep }) {
   const [routeSource, setRouteSource] = useRoute();
   const [description, setDescription] = useState("");
   const [currentRoute, setCurrentRoute] = useState();
   const [lstFile, setLstFile] = useState([]);
 
   useEffect(() => {
-    setDescription(currentRoute?.title ? currentRoute.title : "");
-  }, [currentRoute]);
+    setCurrentRoute(routeSource.getItemById(stepId));
+    setDescription(routeSource.getItemById(stepId)?.title ? routeSource.getItemById(stepId).title : "");
 
+  }, [currentRoute]);
   const handleClick = async () => {
     currentRoute.description = description;
     setRouteSource(routeSource.updateItem(currentRoute));
     setContentPage("map");
     updatePoi(currentRoute.id, description);
   };
-
   const handleDelete = async () => {
     setRouteSource(routeSource.removeItem(stepId));
     setContentPage("map");
@@ -70,6 +70,9 @@ export default function ({ display, stepId, setContentPage }) {
               marginTop: 10,
             }}
           />
+          <Button type="button" onClick={() => setMovingStep(currentRoute.id)} style={{ marginTop: 10 }}>
+            Déplacer
+          </Button>
         </div>
       </Form>
     </div>
