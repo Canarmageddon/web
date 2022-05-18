@@ -7,26 +7,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
+import { useQuery } from "react-query";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [lstTrips, setLstTrips] = useState([]);
-  useEffect(async () => {
-    const data = await fetchTravels();
-    let res = [];
-    data.map((d) => {
-      res.push({
-        id: d.id,
-        name: d.name,
-        start: d.travels[0]?.start?.name,
-        end: d.travels[d.travels.length - 1]?.end?.name,
+  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery("trips", fetchTravels, {
+    staleTime: 60 * 1000
+  })
+  /*   useEffect(async () => {
+      const data = await fetchTravels();
+      let res = [];
+      data.map((d) => {
+        res.push({
+          id: d.id,
+          name: d.name,
+          start: d.travels[0]?.start?.name,
+          end: d.travels[d.travels.length - 1]?.end?.name,
+        });
       });
-    });
-
-    setLstTrips(res);
-  }, []);
-
+  
+      setLstTrips(res);
+    }, []);
+   */
   const handleClick = (t) => {
     navigate(`/map/${t.id}`);
   };
@@ -86,7 +90,7 @@ const TravelsList = () => {
         </div>
 
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />
-        {lstTrips.map((t) => (
+        {!isLoadingTravels && dataTravels.map((t) => (
           <React.Fragment key={t.id}>
             <div className="travel-list-item" onClick={(e) => handleClick(t)}>
               <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>

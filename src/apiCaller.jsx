@@ -5,7 +5,7 @@ const url = process.env.REACT_APP_DATABASE_URL;
 export const fetchStep = async () =>
   await fetch(`${url}steps`).then((res) => res.json());
 
-export const createStep = async (latitude, longitude, id) =>
+export const createStep = async ({ latitude, longitude, id }) => {
   await fetch(`${url}steps/new`, {
     method: "POST",
     headers: {
@@ -20,6 +20,7 @@ export const createStep = async (latitude, longitude, id) =>
       creator: 4
     }),
   }).then(res => res.json());
+}
 
 export const deleteStep = async (id) =>
   await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res) => {
@@ -29,13 +30,16 @@ export const deleteStep = async (id) =>
     return null;
   }
   );
+export const fetchSteps = async (id) => await fetch(`${url}trips/${id}/steps`)
+  .then(res => checkStatus(res))
+  .then(res => res.json())
 
 /* -------------------------------------------*/
 
 /* ------------ POI -----------------------*/
 
 export const fetchPointOfInterest = async () =>
-  await fetch(`${url}point_of_interest`).then((res) => res.json());
+  await fetch(`${url}point_of_interest`).then(res => checkStatus(res)).then((res) => res.json());
 
 export const createTrip = async (name) => {
   return await fetch(`${url}trips/new`, {
@@ -55,7 +59,7 @@ export const deletePoi = async (id) =>
     (res) => res.json()
   );
 
-export const createPoi = async (latitude, longitude, id) => {
+export const createPoi = async ({ latitude, longitude, id }) => {
   return await fetch(`${url}point_of_interests/new`, {
     method: "POST",
     headers: {
@@ -85,16 +89,20 @@ export const updatePoi = async (id, title, description, step) => {
     }),
   }).then((res) => res.json());
 };
+export const fetchPois = async (id) => await fetch(`${url}trips/${id}/poi`)
+  .then(res => checkStatus(res))
+  .then(res => res.json())
 
 /* -------------------------------------------*/
 
 /* ------------ USER -----------------------*/
 
 export const fetchAllUser = async (id) =>
-  await fetch(`${url}trips/${id}/users`).then(res => res.json())
+  await fetch(`${url}trips/${id}/users`).then(res => checkStatus(res))
+    .then(res => res.json())
 
-export const addUser = async (email, id) =>
-  await fetch(`${url}trips/addUser`, {
+export const addUser = async ({ email, id }) => {
+  return await fetch(`${url}trips/addUser`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -106,9 +114,10 @@ export const addUser = async (email, id) =>
     }),
   }).then((res) => checkStatus(res))
     .then((res) => res.json());
+}
 
-export const removeUser = async (email, id) =>
-  await fetch(`${url}trips/removeUser`, {
+export const removeUser = async ({ email, id }) => {
+  return await fetch(`${url}trips/removeUser`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -119,6 +128,7 @@ export const removeUser = async (email, id) =>
       trip: id,
     })
   }).then((res) => res.json)
+}
 export const deleteUser = async (id) =>
   await fetch(`${url}users/${id}`, { method: "DELETE" }).then((res) =>
     res.json()
@@ -127,6 +137,12 @@ export const deleteUser = async (id) =>
 /* -------------------------------------------*/
 
 /* ------------ TO DO LIST -----------------------*/
+
+export const fetchTodoLists = async (id) => {
+  return await fetch(`${url}trips/${id}/toDoLists`)
+    .then(res => checkStatus(res))
+    .then(res => res.json())
+}
 
 export const createTodoList = async (title, id) =>
   await fetch(`${url}to_do_lists/new`, {
@@ -144,7 +160,7 @@ export const createTodoList = async (title, id) =>
 export const deleteTodoList = async (id) =>
   await fetch(`${url}to_do_lists/${id}`, { method: "DELETE" });
 
-export const createTask = async (title, id, date) =>
+export const createTask = async ({ title, id, date }) =>
   await fetch(`${url}task/new`, {
     method: "POST",
     headers: {
@@ -225,7 +241,6 @@ const checkStatus = async (response) => {
   if (response.ok) {
     return response;
   } else {
-
     return response.json()
       .then((text) => {
         throw new Error(text.message);

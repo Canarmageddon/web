@@ -6,11 +6,38 @@ import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
 import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
-
-const ToDoList = ({ toDoList, setToDoLists }) => {
+import { useMutation, useQueryClient } from "react-query";
+const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
+  const queryClient = useQueryClient()
   const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
+  const mutationDeleteTodoList = useMutation(deleteTodoList, {
+    onMutate: (data) => {
+      /*       const oldData = queryClient.getQueryData(["toDoLists", idTrip])
+            queryClient.setQueryData(["toDoLists", idTrip], old => old.filter(item => item.id != data))
+            return oldData */
+    },
+    onSettled: () => { queryClient.invalidateQueries(["toDoLists", idTrip]) }
+  })
+  const mutationAddTask = useMutation(createTask, {
+    onMutate: (data) => {
+      /*       const oldData = queryClient.getQueryData(["toDoLists", idTrip])
+            queryClient.setQueryData(["toDoLists", idTrip], [...old, { title: data.title, data: data.date }])
+            return oldData */
+    },
+    onSettled: () => { queryClient.invalidateQueries(["toDoLists", idTrip]) }
+
+  });
+  const mutationDeleteTask = useMutation(deleteTask, {
+    onMutate: (data) => {
+      const oldData = queryClient.getQueryData(["toDoLists", idTrip])
+      console.log(oldData)// queryClient.setQueryData(["toDoLists", idTrip], [...old, { title: data.title, data: data.date }])
+      return oldData
+    },
+    onSettled: () => { queryClient.invalidateQueries(["toDoLists", idTrip]) }
+  }
+  );
 
   return (
     <CardToDoList className="card-todo-list">
@@ -19,7 +46,8 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
           icon={faTimesCircle}
           size="lg"
           onClick={() => {
-            setToDoLists((oldLists) => {
+            mutationDeleteTodoList.mutate(toDoList.id)
+            /* setToDoLists((oldLists) => {
               deleteTodoList(toDoList.id);
               const index = oldLists.findIndex((ol) => ol.id === toDoList?.id);
               if (index !== -1) {
@@ -27,7 +55,7 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
               }
 
               return [...oldLists];
-            });
+            }); */
           }}
         />
         <FontAwesomeIcon
@@ -55,30 +83,31 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
             />
             <Button
               onClick={() => {
-                setToDoLists((oldLists) => {
-                  createTask(title, toDoList.id, date);
-                  const index = oldLists.findIndex(
-                    (ol) => ol.id === toDoList?.id
-                  );
-                  let id = 0;
-
-                  if (oldLists[index]?.listTasks?.length > 0) {
-                    id =
-                      Math.max.apply(
-                        Math,
-                        oldLists[index].listTasks?.map(function (o) {
-                          return o.id;
-                        })
-                      ) + 1;
-                  }
-                  oldLists[index]?.listTasks?.push({
-                    id: id,
-                    name: title,
-                    date: date != "" ? date : null,
-                  });
-
-                  return [...oldLists];
-                });
+                mutationAddTask.mutate({ title, id: toDoList.id, date })
+                /*                 setToDoLists((oldLists) => {
+                                  createTask(title, toDoList.id, date);
+                                  const index = oldLists.findIndex(
+                                    (ol) => ol.id === toDoList?.id
+                                  );
+                                  let id = 0;
+                
+                                  if (oldLists[index]?.listTasks?.length > 0) {
+                                    id =
+                                      Math.max.apply(
+                                        Math,
+                                        oldLists[index].listTasks?.map(function (o) {
+                                          return o.id;
+                                        })
+                                      ) + 1;
+                                  }
+                                  oldLists[index]?.listTasks?.push({
+                                    id: id,
+                                    name: title,
+                                    date: date != "" ? date : null,
+                                  });
+                
+                                  return [...oldLists];
+                                }); */
                 setTitle("");
                 setDate("");
                 setShowForm(false);
@@ -90,30 +119,31 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
           </div>
         )}
         <div>
-          {toDoList?.listTasks?.map((t) => (
+          {toDoList?.tasks?.map((t) => (
             <CardItem key={t.id}>
               <p style={{ marginBottom: 0 }}>
-                {t.date} : {t.name}
+                {new Date(t.date).toLocaleDateString()} : {t.name}
               </p>
               <FontAwesomeIcon
                 icon={faTimesCircle}
                 size="lg"
                 onClick={() => {
-                  deleteTask(t.id);
-                  setToDoLists((oldLists) => {
-                    const listIndex = oldLists.findIndex(
-                      (ol) => ol.id === toDoList?.id
-                    );
-
-                    const taskIndex = oldLists[listIndex].listTasks?.findIndex(
-                      (task) => task.id === t.id
-                    );
-
-                    if (taskIndex !== -1) {
-                      oldLists[listIndex].listTasks?.splice(taskIndex, 1);
-                    }
-                    return [...oldLists];
-                  });
+                  mutationDeleteTask.mutate(t.id)
+                  /*                   deleteTask(t.id);
+                                    setToDoLists((oldLists) => {
+                                      const listIndex = oldLists.findIndex(
+                                        (ol) => ol.id === toDoList?.id
+                                      );
+                  
+                                      const taskIndex = oldLists[listIndex].listTasks?.findIndex(
+                                        (task) => task.id === t.id
+                                      );
+                  
+                                      if (taskIndex !== -1) {
+                                        oldLists[listIndex].listTasks?.splice(taskIndex, 1);
+                                      }
+                                      return [...oldLists];
+                                    }); */
                 }}
               />
             </CardItem>
