@@ -6,6 +6,7 @@ import Location from "../factory/layers/Location";
 import User from "../factory/User";
 import Task from "../factory/lists/Task";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/userContext"
 import {
   fetchTripById,
   createPoi,
@@ -14,7 +15,6 @@ import {
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
-
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
@@ -27,6 +27,7 @@ export default function MapGl({
   setStepId,
   setTravelers,
 }) {
+  const [user] = useUser();
   const navigate = useNavigate()
   const [redirect, setRedirect] = useState(false)
   const [poiSource, setPoiSource] = usePoi();
@@ -158,7 +159,7 @@ export default function MapGl({
     if (contentPage === "poiInfo") {
       setContentPage("map");
     } else if (typeLocation === "poi") {
-      let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id);
+      let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id, user);
       setPoiSource(
         poiSource.addItem(
           new Location(
@@ -171,7 +172,7 @@ export default function MapGl({
         )
       );
     } else {
-      let newStep = await createStep(e.lngLat[1], e.lngLat[0], id);
+      let newStep = await createStep(e.lngLat[1], e.lngLat[0], id, user);
       setRouteSource(
         routeSource.addItem(
           new Location(

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { signup } from "../../apiCaller";
 import { useUser } from "../../context/userContext";
 const CreateAccount = () => {
   const navigate = useNavigate();
   const [user] = useUser();
-  const [username, setUsername] = useState("");
+  const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   if (user != "" && user != null) {
@@ -20,12 +23,28 @@ const CreateAccount = () => {
   return (
     <>
       <form>
-        <label htmlFor="username">E-mail</label>
+        <label htmlFor="email">E-mail</label>
         <input
           type="text"
-          name="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          name="email"
+          value={email}
+          onChange={(e) => setemail(e.target.value)}
+        />
+        <br />
+        <label htmlFor="firstName">Prénom</label>
+        <input
+          type="text"
+          name="firstName"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <br />
+        <label htmlFor="lastName">Nom</label>
+        <input
+          type="text"
+          name="lastName"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
         />
         <br />
         <label htmlFor="password">Mot de passe :</label>
@@ -47,22 +66,20 @@ const CreateAccount = () => {
         <button type="button" onClick={checkInfo}>
           Créer mon compte
         </button>
+        <button type="button" onClick={() => navigate("/")}>connexion</button>
       </form>
     </>
   );
 
-  function checkInfo() {
-    if (allUsers.filter((user) => user.name === username).length === 0) {
+  async function checkInfo() {
+    try {
       if (password === confirmPassword) {
+        await signup(email, password, firstName, lastName)
         navigate("/");
-        // useFetch(() => {
-        //   return API.createUser(username, password);
-        // }).then(() => navigate("/signin"));
-      } else {
-        alert("Les mots de passes ne correspondent pas !");
+
       }
-    } else {
-      alert("L'utilisateur existe déjà");
+    } catch (error) {
+
     }
   }
 };

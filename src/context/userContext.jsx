@@ -6,8 +6,12 @@ export function useUser() {
 }
 export function UserProvider({ children }) {
     const [user, setUser] = useState(localStorage.getItem("user"));
+    const updateUser = (newUser) => {
+        localStorage.setItem("user", newUser)
+        setUser(newUser);
+    }
     return (
-        <UserContext.Provider value={[user, setUser]}>
+        <UserContext.Provider value={[user, updateUser]}>
             {children}
         </UserContext.Provider>
     );

@@ -6,11 +6,12 @@ import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
 import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
-
+import { useUser } from "../../context/userContext"
 const ToDoList = ({ toDoList, setToDoLists }) => {
   const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
+  const [user] = useUser()
 
   return (
     <CardToDoList className="card-todo-list">
@@ -56,7 +57,7 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
             <Button
               onClick={() => {
                 setToDoLists((oldLists) => {
-                  createTask(title, toDoList.id, date);
+                  createTask(title, toDoList.id, date, user);
                   const index = oldLists.findIndex(
                     (ol) => ol.id === toDoList?.id
                   );

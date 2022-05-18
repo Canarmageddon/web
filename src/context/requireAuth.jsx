@@ -1,7 +1,7 @@
 import { useUser } from "./userContext";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 export default function RequireAuth() {
-    const [user, token] = useUser();
+    const [user, setUser] = useUser();
     let location = useLocation();
     if (user == null || user == "") {
         // Redirect them to the /login page, but save the current location they were
@@ -14,6 +14,7 @@ export default function RequireAuth() {
     return (
         <>
             <Outlet />
+            <button onClick={() => setUser(null)}>déconnexion</button>
         </>
     );
 }

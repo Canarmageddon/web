@@ -6,12 +6,12 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import { useUser } from "../../context/userContext";
+import { checkCredentials } from "../../apiCaller";
 const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [allUsers, setAllUsers] = useState([]);
   const [showLockIcon, setShowLockIcon] = useState(true);
   const [showUserIcon, setShowUserIcon] = useState(true);
   if (user != "" && user != null) {
@@ -104,20 +104,12 @@ const Login = () => {
     </form>
   );
 
-  function checkConnexionInfo() {
-    let isConnected = false;
-
-    allUsers.map((user) => {
-      if (user.name === email && user.password === password) {
-        setCurrentUser(user);
-        isConnected = true;
-      }
-    });
-
-    if (isConnected) {
-      //navigate("/");
-    } else {
-      alert("incorrect email/password");
+  async function checkConnexionInfo() {
+    try {
+      const userData = await checkCredentials(email, password)
+      setUser(userData.id)
+    } catch (error) {
+      alert(error)
     }
   }
 };
