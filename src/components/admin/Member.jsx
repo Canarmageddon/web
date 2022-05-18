@@ -11,15 +11,15 @@ export default function Member({ member, setMembers, id }) {
         await removeUser(email, id);
         setMembers(await fetchAllUser(id))
     }
-    return <li key={member.name}>
-        {member.firstName} {member.lastName}
+    return <li key={member.user.name}>
+        {member.user.firstName} {member.user.lastName}
         "                 "
-        {member.tripUsers[0].role}
+        {member.user.tripUsers && member.user.tripUsers[0].role}
         {/*  <select value={role} onChange={handleRoleChange} className="list-role">
             <option value="editor">Editeur</option>
             <option value="guest">Invité</option>
         </select> */}
-        <button className="delete" onClick={() => handleClick(member.email)}>Supprimer</button>
+        <button className="delete" onClick={() => handleClick(member.user.email)}>Supprimer</button>
         <hr className="bar" />
     </li>
 } 

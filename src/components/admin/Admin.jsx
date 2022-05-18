@@ -9,17 +9,16 @@ const Admin = ({ display }) => {
   useEffect(async () => {
     setMembers(await fetchAllUser(intId))
   }, [])
-
   const [members, setMembers] = useState([]);
-  const listMembers = members.map((member) => {
-    return <Member key={member.name} member={member} setMembers={setMembers} id={intId} />;
+  const listMembers = members.map((member, index) => {
+    return <Member key={index} member={member} setMembers={setMembers} id={intId} />;
   });
   const [newEmail, setNewEmail] = useState("");
   const [newRole, setNewRole] = useState("member");
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-
+      
       const res = await addUser(newEmail, intId);
       setMembers(await fetchAllUser(intId))
       setNewEmail("");
@@ -30,7 +29,7 @@ const Admin = ({ display }) => {
   };
   return (
     <div
-      style={{
+    style={{
         display: display ? "block" : "none",
         flex: 1,
       }}
@@ -67,6 +66,7 @@ const Admin = ({ display }) => {
       <hr className="bar" />
       <ul className="list">{listMembers}</ul>
     </div>
+    
   );
 };
 
