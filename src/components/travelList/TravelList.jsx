@@ -16,7 +16,6 @@ const TravelsList = () => {
   const [user] = useUser()
   useEffect(async () => {
     const data = await fetchTravels(user);
-    console.log(data)
     let res = [];
     data.map((d) => {
       res.push({
@@ -31,7 +30,7 @@ const TravelsList = () => {
   }, []);
 
   const handleClick = (t) => {
-    navigate(`/map/${t.id}`);
+    navigate(`/home/map/${t.id}`);
   };
 
   const handleDelete = async (event, t) => {

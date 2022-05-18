@@ -62,7 +62,6 @@ export default function MapGl({
       map.addImage("stepImage", image);
     });
   }, []);
-
   useEffect(async () => {
     const tripData = await fetchTripById(id);
     if (tripData == -1) {
