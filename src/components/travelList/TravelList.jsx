@@ -7,13 +7,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
+import { useUser } from "../../context/userContext";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [lstTrips, setLstTrips] = useState([]);
+  const [user] = useUser()
   useEffect(async () => {
-    const data = await fetchTravels();
+    const data = await fetchTravels(user);
     let res = [];
     data.map((d) => {
       res.push({
@@ -28,7 +30,7 @@ const TravelsList = () => {
   }, []);
 
   const handleClick = (t) => {
-    navigate(`/map/${t.id}`);
+    navigate(`/home/map/${t.id}`);
   };
 
   const handleDelete = async (event, t) => {
