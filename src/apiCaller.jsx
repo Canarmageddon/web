@@ -30,7 +30,21 @@ export const deleteStep = async (id) =>
   }
   );
 
-/* -------------------------------------------*/
+export const moveStep = async (id, latitude, longitude) => {
+  return await fetch(`${url}steps/${id}/edit`, {
+    method: "PUT",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+    },
+    body: JSON.stringify({
+      longitude,
+      latitude,
+
+    }),
+  }).then((res) => res.json());
+
+};/* -------------------------------------------*/
 
 /* ------------ POI -----------------------*/
 
@@ -58,8 +72,23 @@ export const createPoi = async (latitude, longitude, id, creator) => {
   }).then((res) => res.json());
 };
 
+export const movePoi = async (id, latitude, longitude) => {
+  return await fetch(`${url}point_of_interests/${id}/edit`, {
+    method: "PUT",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+    },
+    body: JSON.stringify({
+      longitude,
+      latitude,
+
+    }),
+  }).then((res) => res.json());
+};
+
 export const updatePoi = async (id, title, description, step) => {
-  return await fetch(`${url}point_of_interests/${id}`, {
+  return await fetch(`${url}point_of_interests/${id}/edit`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
