@@ -109,7 +109,7 @@ export const updatePoi = async (id, title, description, step) => {
 };
 
 export const getDocumentsFromPoi = async (id) =>
-  await fetch(`http://vm-26.iutrs.unistra.fr/api/steps/1/documents`)
+  await fetch(`${url}point_of_interests/${id}/documents`)
     .then(res => checkStatus(res))
     .then(res => res.json())
 
