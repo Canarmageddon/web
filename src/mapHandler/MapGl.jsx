@@ -162,7 +162,6 @@ export default function MapGl({
           } else {
             //TODO(Gautier) Show Route details
             setContentPage("stepInfo");
-            console.log(e.features[0])
             setStepId(e.features[0].id);
             //            setRouteSource(routeSource.removeItem(e.features[0].id));
           }
