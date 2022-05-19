@@ -11,7 +11,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
   const [routeSource, setRouteSource] = useRoute();
   const [description, setDescription] = useState("");
   const [currentRoute, setCurrentRoute] = useState();
-  const [File, setFile] = useState([]);
+  const [file, setFile] = useState([]);
 
   useEffect(() => {
     setCurrentRoute(routeSource.getItemById(stepId));
