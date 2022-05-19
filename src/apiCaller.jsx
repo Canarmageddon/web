@@ -44,7 +44,13 @@ export const moveStep = async (id, latitude, longitude) => {
     }),
   }).then((res) => res.json());
 
-};/* -------------------------------------------*/
+};
+export const getDocumentsFromStep = async (id) =>
+  await fetch(`${url}steps/${id}/documents`)
+    .then(res => checkStatus(res))
+    .then(res => res.json())
+
+/* -------------------------------------------*/
 
 /* ------------ POI -----------------------*/
 
@@ -101,6 +107,11 @@ export const updatePoi = async (id, title, description, step) => {
     }),
   }).then((res) => res.json());
 };
+
+export const getDocumentsFromPoi = async (id) =>
+  await fetch(`http://vm-26.iutrs.unistra.fr/api/steps/1/documents`)
+    .then(res => checkStatus(res))
+    .then(res => res.json())
 
 /* -------------------------------------------*/
 
@@ -264,12 +275,31 @@ export const deleteTrip = async (id) =>
 
 /* -------------------------------------------*/
 
-export const fetchLocation = async (location) =>
-  await fetch(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(
-      location
-    )}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
-  ).then((res) => res.json());
+export const addDocument = async (file, creator, mapElement, name) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("creator", creator),
+    formData.append("mapElement", mapElement)
+  formData.append("name", name)
+  return await fetch(`${url}documents`, {
+    method: "POST",
+    body: formData
+  })
+}
+
+export const getDocument = async (id, name) => {
+  fetch(`${url}documents/file/${id}`)
+    .then(response => {
+      response.blob().then(blob => {
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        a.click();
+      });
+    });
+}
+
 
 export const deleteDocument = async (id) =>
   await fetch(`${url}documents/${id}`, { method: "DELETE" }).then((res) =>
@@ -289,3 +319,10 @@ const checkStatus = async (response) => {
       });
   }
 }
+
+export const fetchLocation = async (location) =>
+  await fetch(
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(
+      location
+    )}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+  ).then((res) => res.json());

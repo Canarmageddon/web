@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "react-bootstrap/Button";
 import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
-import { deleteStep } from "../apiCaller";
+import { deleteStep, getDocumentsFromStep } from "../apiCaller";
 import { useRoute } from "../context/TravelContext";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import FileUploader from "./FileUploader";
@@ -11,7 +11,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
   const [routeSource, setRouteSource] = useRoute();
   const [description, setDescription] = useState("");
   const [currentRoute, setCurrentRoute] = useState();
-  const [lstFile, setLstFile] = useState([]);
+  const [File, setFile] = useState([]);
 
   useEffect(() => {
     setCurrentRoute(routeSource.getItemById(stepId));
@@ -54,7 +54,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
           onChange={(e) => setDescription(e.target.value)}
           style={{ width: "70%", marginLeft: 10 }}
         />
-        <FileUploader setLstFile={setLstFile} />
+        <FileUploader file={file} setFile={setFile} mapElement={currentRoute} getDocumentFromElement={getDocumentsFromStep} />
         <div style={{ display: "flex", alignItems: "center" }}>
           <Button type="button" onClick={handleClick} style={{ marginTop: 10 }}>
             Enregistrer
