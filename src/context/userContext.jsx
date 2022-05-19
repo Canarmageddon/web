@@ -7,7 +7,8 @@ export function useUser() {
 export function UserProvider({ children }) {
     const [user, setUser] = useState(localStorage.getItem("user"));
     const updateUser = (newUser) => {
-        localStorage.setItem("user", newUser)
+        if (newUser == null) localStorage.removeItem("user")
+        else localStorage.setItem("user", newUser)
         setUser(newUser);
     }
     return (
