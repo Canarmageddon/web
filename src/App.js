@@ -14,8 +14,6 @@ import Login from "./components/login/Login";
 import Signup from "./components/login/Signup";
 import Details from "./components/Details";
 import StepInfo from "./mapHandler/StepInfo";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
@@ -23,91 +21,77 @@ function App() {
   const [poiId, setPoiId] = useState(false);
   const [stepId, setStepId] = useState(false);
   const [travelers, setTravelers] = useState([]);
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 5000,
-        refetchOnWindowFocus: "always",
-      },
-    },
-  });
   return (
-    <QueryClientProvider client={queryClient} contextSharing={true}>
-      <TravelProvider>
-        <HashRouter>
-          <Routes>
-            <Route path='/' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/trips' element={<TravelsList />} />
-            <Route
-              path='/map/:id'
-              element={
-                <>
-                  <div
-                    style={{
-                      marginLeft: showMenu ? 200 : 0,
-                      transition: "0.5s",
-                    }}
-                  >
-                    <NavBar setShowMenu={setShowMenu} />
-                    <div style={{ display: "flex" }}>
-                      <ToDoLists display={contentPage === "toDoLists"} />
-                      <Admin
-                        display={contentPage === "admin"}
-                        travelers={travelers}
+    <TravelProvider>
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/trips" element={<TravelsList />} />
+          <Route
+            path="/map/:id"
+            element={
+              <>
+                <div
+                  style={{
+                    marginLeft: showMenu ? 200 : 0,
+                    transition: "0.5s",
+                  }}
+                >
+                  <NavBar setShowMenu={setShowMenu} />
+                  <div style={{ display: "flex" }}>
+                    <ToDoLists display={contentPage === "toDoLists"} />
+                    <Admin
+                      display={contentPage === "admin"}
+                      travelers={travelers}
+                      setTravelers={setTravelers}
+                    />
+                    <PoiInformation
+                      display={contentPage === "poiInfo"}
+                      setContentPage={setContentPage}
+                      poiId={poiId}
+                    />
+                    <StepInfo
+                      display={contentPage === "stepInfo"}
+                      setContentPage={setContentPage}
+                      stepId={stepId}
+                    />
+                    <Details
+                      display={contentPage === "details"}
+                      setContentPage={setContentPage}
+                    />
+                    <div
+                      style={{
+                        flex:
+                          contentPage === "map"
+                            ? 1
+                            : contentPage === "details" ||
+                              contentPage === "admin"
+                            ? 0
+                            : 0.7,
+                        width: "100%",
+                        height: "93vh",
+                        overflow: "hidden",
+                        position: "relative",
+                      }}
+                    >
+                      <MapGl
+                        setContentPage={setContentPage}
+                        contentPage={contentPage}
+                        setPoiId={setPoiId}
+                        setStepId={setStepId}
                         setTravelers={setTravelers}
                       />
-                      <PoiInformation
-                        display={contentPage === "poiInfo"}
-                        setContentPage={setContentPage}
-                        poiId={poiId}
-                      />
-                      <StepInfo
-                        display={contentPage === "stepInfo"}
-                        setContentPage={setContentPage}
-                        stepId={stepId}
-                      />
-                      <Details
-                        display={contentPage === "details"}
-                        setContentPage={setContentPage}
-                      />
-                      <div
-                        style={{
-                          flex:
-                            contentPage === "map"
-                              ? 1
-                              : contentPage === "details" ||
-                                contentPage === "admin"
-                              ? 0
-                              : 0.7,
-                          width: "100%",
-                          height: "93vh",
-                          overflow: "hidden",
-                          position: "relative",
-                        }}
-                      >
-                        <MapGl
-                          setContentPage={setContentPage}
-                          contentPage={contentPage}
-                          setPoiId={setPoiId}
-                          setStepId={setStepId}
-                          setTravelers={setTravelers}
-                        />
-                      </div>
                     </div>
                   </div>
-                  <SideMenu
-                    showMenu={showMenu}
-                    setContentPage={setContentPage}
-                  />
-                </>
-              }
-            />
-          </Routes>
-        </HashRouter>
-      </TravelProvider>
-      <ReactQueryDevtools initialIsOpen={true} />
-    </QueryClientProvider>
+                </div>
+                <SideMenu showMenu={showMenu} setContentPage={setContentPage} />
+              </>
+            }
+          />
+        </Routes>
+      </HashRouter>
+    </TravelProvider>
   );
 }
 export default App;

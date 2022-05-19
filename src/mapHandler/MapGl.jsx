@@ -12,7 +12,7 @@ import {
   createPoi,
   createStep,
   fetchSteps,
-  fetchPois
+  fetchPois,
 } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
@@ -32,8 +32,8 @@ export default function MapGl({
 }) {
   const queryClient = useQueryClient();
 
-  const navigate = useNavigate()
-  const [redirect, setRedirect] = useState(false)
+  const navigate = useNavigate();
+  const [redirect, setRedirect] = useState(false);
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);
@@ -50,98 +50,105 @@ export default function MapGl({
   });
   const { id } = useParams();
   const _mapRef = createRef();
-  const { isLoading: isLoadingSteps, isError: isErrorSteps, error: errorSteps, data: dataSteps }
-    = useQuery(["steps", id], () => fetchSteps(id), {
-      retry: false,
-      onSuccess: (data) => {
-        let lstStep = [];
-        data.map((item) => {
-          lstStep.push(
-            new Location(
-              item.id,
-              item.description,
-              item.title,
-              item.location.longitude,
-              item.location.latitude,
-              item?.step?.id
-            )
-          );
-        });
-        setRouteSource(new LayerUtile(lstStep));
-      },
-    })
-  const { isLoading: isLoadingPoi, isError: isErrorPoi, error: errorPoi, data: dataPoi }
-    = useQuery(["poi", id], () => fetchPois(id), {
-      retry: false,
-      onSuccess: (data) => {
-        let lstPoi = [];
-        data.map((item) => {
-          lstPoi.push(new Location(
+  const {
+    isLoading: isLoadingSteps,
+    isError: isErrorSteps,
+    error: errorSteps,
+    data: dataSteps,
+  } = useQuery(["steps", id], () => fetchSteps(id), {
+    retry: false,
+    onSuccess: (data) => {
+      let lstStep = [];
+      data.map((item) => {
+        lstStep.push(
+          new Location(
             item.id,
             item.description,
             item.title,
             item.location.longitude,
             item.location.latitude,
-            item?.step?.id))
-        })
-        setPoiSource(new LayerUtile(lstPoi))
-      }
-    })
+            item?.step?.id
+          )
+        );
+      });
+      setRouteSource(new LayerUtile(lstStep));
+    },
+  });
+  const {
+    isLoading: isLoadingPoi,
+    isError: isErrorPoi,
+    error: errorPoi,
+    data: dataPoi,
+  } = useQuery(["poi", id], () => fetchPois(id), {
+    retry: false,
+    onSuccess: (data) => {
+      let lstPoi = [];
+      data.map((item) => {
+        lstPoi.push(
+          new Location(
+            item.id,
+            item.description,
+            item.title,
+            item.location.longitude,
+            item.location.latitude,
+            item?.step?.id
+          )
+        );
+      });
+      setPoiSource(new LayerUtile(lstPoi));
+    },
+  });
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
       setRouteSource(
         routeSource.addItem(
-          new Location(
-            data.id,
-            "",
-            "",
-            data.longitude,
-            data.latitude
-          )
+          new Location(data.id, "", "", data.longitude, data.latitude)
         )
       );
-      const oldData = queryClient.getQueryData(["steps", id])
-      console.log(oldData)
-      queryClient.setQueryData(["steps", id], old => [...old, { location: { longitude: data.longitude, latitude: data.latitude }, id: routeSource.newId }])
-      return { oldData }
+      const oldData = queryClient.getQueryData(["steps", id]);
+      queryClient.setQueryData(["steps", id], (old) => [
+        ...old,
+        {
+          location: { longitude: data.longitude, latitude: data.latitude },
+          id: routeSource.newId,
+        },
+      ]);
+      return { oldData };
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["steps", id])
+      queryClient.invalidateQueries(["steps", id]);
     },
-  })
+  });
   const mutationPoi = useMutation(createPoi, {
     onMutate: (data) => {
       setPoiSource(
         poiSource.addItem(
-          new Location(
-            data.id,
-            "",
-            "",
-            data.longitude,
-            data.latitude
-          )
+          new Location(data.id, "", "", data.longitude, data.latitude)
         )
       );
-      const oldData = queryClient.getQueryData(["poi", id])
-      queryClient.setQueryData(["poi", id], old => [...old, { location: { longitude: data.longitude, latitude: data.latitude }, id: routeSource.newId }])
-      return { oldData }
+      const oldData = queryClient.getQueryData(["poi", id]);
+      queryClient.setQueryData(["poi", id], (old) => [
+        ...old,
+        {
+          location: { longitude: data.longitude, latitude: data.latitude },
+          id: routeSource.newId,
+        },
+      ]);
+      return { oldData };
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["poi", id])
+      queryClient.invalidateQueries(["poi", id]);
     },
-  })
+  });
 
   useEffect(() => {
     const map = _mapRef.current.getMap();
-    map.loadImage(
-      "http://placekitten.com/50/50",
-      (error, image) => {
-        if (error) throw error;
-        // Add the loaded image to the style's sprite with the ID 'poiImage'.
-        map.addImage("poiImage", image);
-      }
-    );
+    map.loadImage("http://placekitten.com/50/50", (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage("poiImage", image);
+    });
     map.loadImage("http://placekitten.com/50/50", (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
@@ -245,7 +252,7 @@ export default function MapGl({
     if (contentPage === "poiInfo") {
       setContentPage("map");
     } else if (typeLocation === "poi") {
-      mutationPoi.mutate({ latitude: e.lngLat[1], longitude: e.lngLat[0], id })
+      mutationPoi.mutate({ latitude: e.lngLat[1], longitude: e.lngLat[0], id });
       /*   let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id);
         setPoiSource(
           poiSource.addItem(
@@ -259,7 +266,11 @@ export default function MapGl({
           )
         ); */
     } else {
-      mutationStep.mutate({ latitude: e.lngLat[1], longitude: e.lngLat[0], id })
+      mutationStep.mutate({
+        latitude: e.lngLat[1],
+        longitude: e.lngLat[0],
+        id,
+      });
       /*       let newStep = await createStep(e.lngLat[1], e.lngLat[0], id);
             setRouteSource(
               routeSource.addItem(
@@ -302,7 +313,7 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
-  if (redirect) navigate("/")
+  if (redirect) navigate("/");
   return (
     <>
       <LocationFinder
@@ -320,24 +331,25 @@ export default function MapGl({
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onClick={(e) => handleClick(e)}
       >
-        {!isLoadingPoi && !isErrorPoi &&
+        {!isLoadingPoi && !isErrorPoi && (
           <Source id="poi" type="geojson" data={poiSource.templateSource}>
             <Layer {...poiLayer} />
           </Source>
-        }
+        )}
         {/* 
             on affiche routeSource avec 2 layers parce que on n'a pas
             l'id du point lors du clique avec un layer en ligne
         */}
-        {!isLoadingSteps && !isErrorSteps && <>
-          <Source id="routeLine" type="geojson" data={routeSource.route}>
-            <Layer {...routeLayer} />
-          </Source>
-          <Source id="route" type="geojson" data={routeSource.templateSource}>
-            <Layer {...routeLayer2} />
-          </Source>
-        </>
-        }
+        {!isLoadingSteps && !isErrorSteps && (
+          <>
+            <Source id="routeLine" type="geojson" data={routeSource.route}>
+              <Layer {...routeLayer} />
+            </Source>
+            <Source id="route" type="geojson" data={routeSource.templateSource}>
+              <Layer {...routeLayer2} />
+            </Source>
+          </>
+        )}
       </ReactMapGL>
     </>
   );

@@ -8,7 +8,7 @@ import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
 import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
 import { useMutation, useQueryClient } from "react-query";
 const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
@@ -18,26 +18,30 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
             queryClient.setQueryData(["toDoLists", idTrip], old => old.filter(item => item.id != data))
             return oldData */
     },
-    onSettled: () => { queryClient.invalidateQueries(["toDoLists", idTrip]) }
-  })
+    onSettled: () => {
+      queryClient.invalidateQueries(["toDoLists", idTrip]);
+    },
+  });
   const mutationAddTask = useMutation(createTask, {
     onMutate: (data) => {
       /*       const oldData = queryClient.getQueryData(["toDoLists", idTrip])
             queryClient.setQueryData(["toDoLists", idTrip], [...old, { title: data.title, data: data.date }])
             return oldData */
     },
-    onSettled: () => { queryClient.invalidateQueries(["toDoLists", idTrip]) }
-
+    onSettled: () => {
+      queryClient.invalidateQueries(["toDoLists", idTrip]);
+    },
   });
   const mutationDeleteTask = useMutation(deleteTask, {
     onMutate: (data) => {
-      const oldData = queryClient.getQueryData(["toDoLists", idTrip])
-      console.log(oldData)// queryClient.setQueryData(["toDoLists", idTrip], [...old, { title: data.title, data: data.date }])
-      return oldData
+      const oldData = queryClient.getQueryData(["toDoLists", idTrip]);
+      // queryClient.setQueryData(["toDoLists", idTrip], [...old, { title: data.title, data: data.date }])
+      return oldData;
     },
-    onSettled: () => { queryClient.invalidateQueries(["toDoLists", idTrip]) }
-  }
-  );
+    onSettled: () => {
+      queryClient.invalidateQueries(["toDoLists", idTrip]);
+    },
+  });
 
   return (
     <CardToDoList className="card-todo-list">
@@ -46,7 +50,7 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
           icon={faTimesCircle}
           size="lg"
           onClick={() => {
-            mutationDeleteTodoList.mutate(toDoList.id)
+            mutationDeleteTodoList.mutate(toDoList.id);
             /* setToDoLists((oldLists) => {
               deleteTodoList(toDoList.id);
               const index = oldLists.findIndex((ol) => ol.id === toDoList?.id);
@@ -83,7 +87,7 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
             />
             <Button
               onClick={() => {
-                mutationAddTask.mutate({ title, id: toDoList.id, date })
+                mutationAddTask.mutate({ title, id: toDoList.id, date });
                 /*                 setToDoLists((oldLists) => {
                                   createTask(title, toDoList.id, date);
                                   const index = oldLists.findIndex(
@@ -128,7 +132,7 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
                 icon={faTimesCircle}
                 size="lg"
                 onClick={() => {
-                  mutationDeleteTask.mutate(t.id)
+                  mutationDeleteTask.mutate(t.id);
                   /*                   deleteTask(t.id);
                                     setToDoLists((oldLists) => {
                                       const listIndex = oldLists.findIndex(
