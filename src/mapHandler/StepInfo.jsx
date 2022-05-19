@@ -16,8 +16,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
   useEffect(() => {
     setCurrentRoute(routeSource.getItemById(stepId));
     setDescription(routeSource.getItemById(stepId)?.title ? routeSource.getItemById(stepId).title : "");
-
-  }, [currentRoute]);
+  }, [routeSource, stepId]);
   const handleClick = async () => {
     currentRoute.description = description;
     setRouteSource(routeSource.updateItem(currentRoute));
@@ -29,6 +28,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
     setContentPage("map");
     let res = await deleteStep(stepId);
   };
+  console.log(currentRoute, stepId)
   return (
     <div
       style={{

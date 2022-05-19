@@ -13,12 +13,10 @@ export default function FileUploader({ file, setFile, mapElement, getDocumentFro
             setLstDocuments(await getDocumentFromElement(mapElement.id))
         }
     }, [mapElement])
-
     const [user] = useUser()
     const handleUpload = (file) => {
         setFile(file);
     }
-    console.log(lstDocuments)
     return <>
         {lstDocuments.map((document) => <div key={document.id}>
             {document.name}
