@@ -28,7 +28,6 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
     setContentPage("map");
     let res = await deleteStep(stepId);
   };
-  console.log(currentRoute, stepId)
   return (
     <div
       style={{
