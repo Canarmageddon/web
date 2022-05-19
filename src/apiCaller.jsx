@@ -17,29 +17,31 @@ export const createStep = async ({ latitude, longitude, id }) => {
       latitude,
       trip: parseInt(id),
       description: "",
-      creator: 4
+      creator: 4,
     }),
-  }).then(res => res.json());
-}
+  }).then((res) => res.json());
+};
 
 export const deleteStep = async (id) =>
   await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res) => {
     if (res.statusCode != 204) {
-      return res.json()
+      return res.json();
     }
     return null;
-  }
-  );
-export const fetchSteps = async (id) => await fetch(`${url}trips/${id}/steps`)
-  .then(res => checkStatus(res))
-  .then(res => res.json())
+  });
+export const fetchSteps = async (id) =>
+  await fetch(`${url}trips/${id}/steps`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
 /* ------------ POI -----------------------*/
 
 export const fetchPointOfInterest = async () =>
-  await fetch(`${url}point_of_interest`).then(res => checkStatus(res)).then((res) => res.json());
+  await fetch(`${url}point_of_interest`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 export const createTrip = async (name) => {
   return await fetch(`${url}trips/new`, {
@@ -89,17 +91,19 @@ export const updatePoi = async (id, title, description, step) => {
     }),
   }).then((res) => res.json());
 };
-export const fetchPois = async (id) => await fetch(`${url}trips/${id}/poi`)
-  .then(res => checkStatus(res))
-  .then(res => res.json())
+export const fetchPois = async (id) =>
+  await fetch(`${url}trips/${id}/poi`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
 /* ------------ USER -----------------------*/
 
 export const fetchAllUser = async (id) =>
-  await fetch(`${url}trips/${id}/users`).then(res => checkStatus(res))
-    .then(res => res.json())
+  await fetch(`${url}trips/${id}/users`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 export const addUser = async ({ email, id }) => {
   return await fetch(`${url}trips/addUser`, {
@@ -110,11 +114,12 @@ export const addUser = async ({ email, id }) => {
     },
     body: JSON.stringify({
       email,
-      trip: id
+      trip: id,
     }),
-  }).then((res) => checkStatus(res))
+  })
+    .then((res) => checkStatus(res))
     .then((res) => res.json());
-}
+};
 
 export const removeUser = async ({ email, id }) => {
   return await fetch(`${url}trips/removeUser`, {
@@ -126,9 +131,9 @@ export const removeUser = async ({ email, id }) => {
     body: JSON.stringify({
       email: email,
       trip: id,
-    })
-  }).then((res) => res.json)
-}
+    }),
+  }).then((res) => res.json);
+};
 export const deleteUser = async (id) =>
   await fetch(`${url}users/${id}`, { method: "DELETE" }).then((res) =>
     res.json()
@@ -140,11 +145,13 @@ export const deleteUser = async (id) =>
 
 export const fetchTodoLists = async (id) => {
   return await fetch(`${url}trips/${id}/toDoLists`)
-    .then(res => checkStatus(res))
-    .then(res => res.json())
-}
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
+};
 
-export const createTodoList = async (title, id) =>
+export const createTodoList = async ({ title, id }) => {
+  console.log(title);
+  console.log(id);
   await fetch(`${url}to_do_lists/new`, {
     method: "POST",
     headers: {
@@ -156,12 +163,13 @@ export const createTodoList = async (title, id) =>
       trip: parseInt(id),
     }),
   });
+};
 
 export const deleteTodoList = async (id) =>
   await fetch(`${url}to_do_lists/${id}`, { method: "DELETE" });
 
-export const createTask = async ({ title, id, date }) =>
-  await fetch(`${url}task/new`, {
+export const createTask = async ({ title, id, date }) => {
+  await fetch(`${url}tasks/new`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -175,6 +183,7 @@ export const createTask = async ({ title, id, date }) =>
       date: date,
     }),
   });
+};
 
 export const deleteTask = async (id) =>
   await fetch(`${url}tasks/${id}`, { method: "DELETE" });
@@ -212,8 +221,10 @@ export const fetchTripById = async (id) =>
     method: "GET",
   }).then((res) => {
     if (res.status == 404) {
-      return -1
-    } else { return res.json() }
+      return -1;
+    } else {
+      return res.json();
+    }
   });
 
 export const deleteTrip = async (id) =>
@@ -241,9 +252,8 @@ const checkStatus = async (response) => {
   if (response.ok) {
     return response;
   } else {
-    return response.json()
-      .then((text) => {
-        throw new Error(text.message);
-      });
+    return response.json().then((text) => {
+      throw new Error(text.message);
+    });
   }
-}
+};

@@ -19,31 +19,50 @@ const ToDoLists = ({ display }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const queryClient = useQueryClient();
-  const { isLoading: isLoadingToDoLists, isError: isErrorToDoLists, error: errorToDoLists,
-    data: dataToDoLists } = useQuery(["toDoLists", id], () => fetchTodoLists(id), {
-      onSuccess: (data) => {
-        let lstTodoList = [];
-        data?.map((taskList) => {
-          let tasks = [];
-          taskList?.tasks?.map((item) => {
-            tasks.push(new Task(
+  const {
+    isLoading: isLoadingToDoLists,
+    isError: isErrorToDoLists,
+    error: errorToDoLists,
+    data: dataToDoLists,
+  } = useQuery(["toDoLists", id], () => fetchTodoLists(id), {
+    onSuccess: (data) => {
+      let lstTodoList = [];
+      data?.map((taskList) => {
+        let tasks = [];
+        taskList?.tasks?.map((item) => {
+          tasks.push(
+            new Task(
               item.id,
               item.creator,
               item.name,
               item.description,
-              item.date))
-          })
-          lstTodoList.push(new TaskListUtile(taskList?.id, taskList?.name, tasks));
-        })
-      },
-    })
+              item.date
+            )
+          );
+        });
+        lstTodoList.push(
+          new TaskListUtile(taskList?.id, taskList?.name, tasks)
+        );
+      });
+    },
+  });
+
+  const mutationAddToDoList = useMutation(createTodoList, {
+    onMutate: (data) => {},
+    onSettled: () => {
+      queryClient.invalidateQueries(["toDoLists", id]);
+    },
+  });
+
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
-      setTaskList([...taskList, new TaskListUtile("", title, [])]);
-      setTitle("");
-      setShowForm(false);
-      setCurrentIndex(taskList.length);
-      createTodoList(title, id);
+      if (title !== "") {
+        setTaskList([...taskList, new TaskListUtile("", title, [])]);
+        setTitle("");
+        setShowForm(false);
+        setCurrentIndex(taskList.length);
+        mutationAddToDoList.mutate({ title, id });
+      }
     }
   };
   return (
@@ -55,19 +74,18 @@ const ToDoLists = ({ display }) => {
         textAlign: "center",
       }}
     >
-      {!isLoadingToDoLists && !isErrorToDoLists &&
+      {!isLoadingToDoLists && !isErrorToDoLists && (
         <ListPicker
           listTitle={
             dataToDoLists[currentIndex]
               ? dataToDoLists[currentIndex].name
               : "Liste introuvable"
           }
-
           currentIndex={currentIndex}
           setCurrentIndex={setCurrentIndex}
           listLength={dataToDoLists.length}
         />
-      }
+      )}
       <div
         style={{
           display: "flex",
@@ -95,14 +113,13 @@ const ToDoLists = ({ display }) => {
         )}
       </div>
 
-      {!isLoadingToDoLists && !isErrorToDoLists &&
-        dataToDoLists.length > 0 && (
-          <ToDoList
-            toDoList={dataToDoLists[currentIndex]}
-            setToDoLists={setTaskList}
-            idTrip={id}
-          />
-        )}
+      {!isLoadingToDoLists && !isErrorToDoLists && dataToDoLists.length > 0 && (
+        <ToDoList
+          toDoList={dataToDoLists[currentIndex]}
+          setToDoLists={setTaskList}
+          idTrip={id}
+        />
+      )}
     </div>
   );
 };
