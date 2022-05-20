@@ -11,7 +11,7 @@ export default function RequireAuth() {
         // than dropping them off on the home page.
         return <Navigate to="/" state={{ from: location }} replace={true} />;
     }
-
+    console.log(user)
     return (
         <>
             <Outlet />

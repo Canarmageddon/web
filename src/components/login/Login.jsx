@@ -11,6 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useUser();
   const [email, setEmail] = useState("");
+  const [rememberMe, setRememberMe] = useState(false)
   const [password, setPassword] = useState("");
   const [showLockIcon, setShowLockIcon] = useState(true);
   const [showUserIcon, setShowUserIcon] = useState(true);
@@ -86,6 +87,11 @@ const Login = () => {
           justifyContent: "space-around",
         }}
       >
+        <label>
+          Rester connecter
+          <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(!rememberMe)}>
+          </input>
+        </label>
         <Button type="button" size="sm" onClick={checkConnexionInfo}>
           Se connecter
         </Button>
@@ -111,7 +117,7 @@ const Login = () => {
       setUser(userData.id)
       console.log(await fetch("http://localhost/api/whoami").then(res => res.json()))
     } catch (error) {
-      alert(error)
+      console.log(error)
     }
   }
 };

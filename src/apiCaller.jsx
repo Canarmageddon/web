@@ -87,22 +87,21 @@ export const signup = async (email, password, firstName, lastName) =>
     body: JSON.stringify({
       email, password, firstName, lastName
     }),
-  }).then((res) => checkStatus(res))
-    .then((res) => res.json());
+  }).then((res) => res.json());
 
 
-export const checkCredentials = async (email, password) =>
-  await fetch(`${url}users/checkCredentials`, {
+export const checkCredentials = async (email, password, _remember_me
+) => {
+  let formData = new FormData();
+  formData.append("email", email);
+  formData.append("_remember_me", _remember_me);
+  formData.append("password", password);
+  return await fetch(`http://localhost/api/login`, {
     method: "POST",
-    headers: {
-      accept: "application/ld+json",
-      "Content-Type": "application/ld+json",
-    },
-    body: JSON.stringify({
-      email, password
-    }),
-  }).then((res) => checkStatus(res))
-    .then((res) => res.json());
+    body: formData,
+  }).then((res) => checkStatus(res)).then(res => res.json().then(res => console.log(res)))
+
+}
 
 
 export const fetchAllUser = async (id) =>
@@ -253,7 +252,6 @@ const checkStatus = async (response) => {
   if (response.ok) {
     return response;
   } else {
-
     return response.json()
       .then((text) => {
         throw new Error(text.message);
