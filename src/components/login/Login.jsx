@@ -107,7 +107,9 @@ const Login = () => {
   async function checkConnexionInfo() {
     try {
       const userData = await checkCredentials(email, password)
+      console.log(userData)
       setUser(userData.id)
+      console.log(await fetch("http://localhost/api/whoami").then(res => res.json()))
     } catch (error) {
       alert(error)
     }
