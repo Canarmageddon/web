@@ -7,8 +7,10 @@ import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import { useUser } from "../../context/userContext";
 import { checkCredentials } from "../../apiCaller";
+import { useToken } from "../../context/userContext";
 const Login = () => {
   const navigate = useNavigate();
+  const [token, setToken] = useToken();
   const [user, setUser] = useUser();
   const [email, setEmail] = useState("");
   const [rememberMe, setRememberMe] = useState(false)
@@ -112,10 +114,10 @@ const Login = () => {
 
   async function checkConnexionInfo() {
     try {
-      const userData = await checkCredentials(email, password)
-      console.log(userData)
-      setUser(userData.id)
-      console.log(await fetch("http://localhost/api/whoami").then(res => res.json()))
+      const tokens = await checkCredentials(email, password)
+      window.localStorage.setItem("token", tokens.token)
+      window.localStorage.setItem("refresh_token", tokens.refresh_token)
+      setToken(tokens.token)
     } catch (error) {
       console.log(error)
     }

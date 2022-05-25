@@ -90,19 +90,32 @@ export const signup = async (email, password, firstName, lastName) =>
   }).then((res) => res.json());
 
 
-export const checkCredentials = async (email, password, _remember_me
-) => {
-  let formData = new FormData();
-  formData.append("email", email);
-  formData.append("_remember_me", _remember_me);
-  formData.append("password", password);
-  return await fetch(`http://localhost/api/login`, {
+export const checkCredentials = async (email, password) => {
+  return await fetch(`${url}login`, {
     method: "POST",
-    body: formData,
-  }).then((res) => checkStatus(res)).then(res => res.json().then(res => console.log(res)))
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+    },
+    body: JSON.stringify({ email, password }),
+  }).then((res) => checkStatus(res)).then(res => res.json())
 
 }
 
+export const whoAmI = async (token) =>
+  await fetch(`${url}whoami`, {
+    headers: { "Authorization": `Bearer ${token}` },
+  }).then(res => checkStatus(res)).then(res => res.json())
+
+export const refresh = async (refresh_token) =>
+  await fetch(`${url}refresh`, {
+    method: "POST",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+    },
+    body: JSON.stringify({ refresh_token })
+  }).then(res => checkStatus).then(res => res.json())
 
 export const fetchAllUser = async (id) =>
   await fetch(`${url}trips/${id}/users`).then(res => res.json())
@@ -248,10 +261,13 @@ export const deleteDocument = async (id) =>
 
 /* -------------------------------------------*/
 
-const checkStatus = async (response) => {
+const checkStatus = async (response, data, callback) => {
   if (response.ok) {
     return response;
-  } else {
+  } else if (response.status == 401) {
+    refresh(window.localStorage.getItem("refresh_token"))
+  }
+  else {
     return response.json()
       .then((text) => {
         throw new Error(text.message);
