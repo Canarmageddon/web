@@ -6,6 +6,7 @@ import { deleteStep, getDocumentsFromStep } from "../apiCaller";
 import { useRoute } from "../context/TravelContext";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import FileUploader from "./FileUploader";
+import TrashAlt from "../components/icons/TrashAlt";
 
 export default function ({ display, stepId, setContentPage, setMovingStep }) {
   const [routeSource, setRouteSource] = useRoute();
@@ -58,17 +59,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
           <Button type="button" onClick={handleClick} style={{ marginTop: 10 }}>
             Enregistrer
           </Button>
-          <FontAwesomeIcon
-            icon={faTrashAlt}
-            size="2x"
-            onClick={handleDelete}
-            style={{
-              backgroundColor: "white",
-              color: "#dc3545",
-              marginLeft: 30,
-              marginTop: 10,
-            }}
-          />
+          {TrashAlt(handleDelete)}
           <Button type="button" onClick={() => setMovingStep(currentRoute.id)} style={{ marginTop: 10 }}>
             Déplacer
           </Button>

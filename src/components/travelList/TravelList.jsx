@@ -8,6 +8,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
 import { useUser } from "../../context/userContext";
+import TrashAlt from "../icons/TrashAlt";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
@@ -100,15 +101,8 @@ const TravelsList = () => {
               <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                 {t.end}
               </p>
-              <FontAwesomeIcon
-                icon={faTrashAlt}
-                size="2x"
-                onClick={(event) => handleDelete(event, t)}
-                style={{
-                  color: "#dc3545",
-                  cursor: "pointer",
-                }}
-              />
+              {TrashAlt(handleDelete, t)}
+
             </div>
             <Dropdown.Divider />
           </React.Fragment>

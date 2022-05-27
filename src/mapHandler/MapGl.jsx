@@ -31,7 +31,8 @@ export default function MapGl({
   movingPoi,
   setMovingPoi,
   movingStep,
-  setMovingStep
+  setMovingStep,
+  exploring
 }) {
   const [user] = useUser();
   const navigate = useNavigate()
@@ -131,7 +132,7 @@ export default function MapGl({
       lstTodoList.push(new TaskListUtile(taskList?.id, taskList?.name, tasks));
     });
     setTaskList(lstTodoList);
-    setTravelers(lstUser);
+    if (!exploring) setTravelers(lstUser);
     setPoiSource(new LayerUtile(lstPoi));
     setRouteSource(new LayerUtile(lstStep));
     setViewport({
@@ -143,6 +144,7 @@ export default function MapGl({
     });
   }, []);
   const handleClick = async (e) => {
+    if (exploring) return
     if (movingPoi != null) {
       movePoi(movingPoi, e.lngLat[1], e.lngLat[0])
       setMovingPoi(null);
@@ -232,11 +234,11 @@ export default function MapGl({
   if (redirect) navigate("/")
   return (
     <>
-      <LocationFinder
+      {!exploring && <LocationFinder
         typeLocation={typeLocation}
         setTypeLocation={setTypeLocation}
         setEditing={setEditing}
-      />
+      />}
       <ReactMapGL
         ref={_mapRef}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}

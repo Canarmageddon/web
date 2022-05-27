@@ -7,6 +7,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "../style/destinationInput.css";
 import { deletePoi, getDocument, getDocumentsFromPoi, updatePoi } from "../apiCaller";
 import FileUploader from "./FileUploader";
+import TrashAlt from "../components/icons/TrashAlt";
 const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
   const [poi, setpoi] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
@@ -90,17 +91,7 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
           <Button type="button" onClick={handleClick} style={{ marginTop: 10 }}>
             Enregistrer
           </Button>
-          <FontAwesomeIcon
-            icon={faTrashAlt}
-            size="2x"
-            onClick={handleDelete}
-            style={{
-              backgroundColor: "white",
-              color: "#dc3545",
-              marginLeft: 30,
-              marginTop: 10,
-            }}
-          />
+          {TrashAlt(handleDelete)}
           <Button type="button" onClick={() => setMovingPoi(currentPoi.id)} style={{ marginTop: 10 }}>
             Déplacer
           </Button>
