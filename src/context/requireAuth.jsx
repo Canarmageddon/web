@@ -1,5 +1,5 @@
 import { useToken, useUser } from "./userContext";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { refresh } from "../apiCaller";
@@ -12,9 +12,8 @@ export default function RequireAuth() {
         window.localStorage.clear()
         setToken("")
     }
-
     if (user == undefined) {
-        navigate("/")
+        return <Navigate to="/" />
     }
 
     useEffect(() => {

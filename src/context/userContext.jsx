@@ -13,7 +13,8 @@ export function useToken() {
 }
 
 export function UserProvider({ children }) {
-    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState(undefined);
     const [token, setToken] = useState(window.localStorage.getItem("token"))
     const updateUser = (newUser) => {
         setUser(newUser);
@@ -24,11 +25,11 @@ export function UserProvider({ children }) {
             updateToken({ setToken, token: res.token, refresh_token: res.refresh_token })
             const whoami = await whoAmI(token)
             setUser(whoami.user.id)
-
         }
         else {
             setUser(undefined)
         }
+        setLoading(false)
     }, [token])
 
 
@@ -36,7 +37,7 @@ export function UserProvider({ children }) {
     return (
         <TokenContext.Provider value={[token, setToken]}>
             <UserContext.Provider value={[user, updateUser]}>
-                {children}
+                {loading ? <p>loading</p> : children}
             </UserContext.Provider>
         </TokenContext.Provider>
     );
