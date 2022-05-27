@@ -21,7 +21,7 @@ export default function RequireAuth() {
         const interval = setInterval(async () => {
             const res = await refresh(window.localStorage.getItem("refresh_token"))
             updateToken({ setToken, token: res.token, refresh_token: res.refresh_token })
-        }, 2 * 1000);// refresh toutes les 55 minutes
+        }, 55 * 60 * 1000);// refresh toutes les 55 minutes
         return () => {
             clearInterval(interval);
         };
