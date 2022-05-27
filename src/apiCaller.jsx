@@ -150,8 +150,6 @@ export const fetchTodoLists = async (id) => {
 };
 
 export const createTodoList = async ({ title, id }) => {
-  console.log(title);
-  console.log(id);
   await fetch(`${url}to_do_lists/new`, {
     method: "POST",
     headers: {
