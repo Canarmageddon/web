@@ -108,14 +108,14 @@ export const whoAmI = async (token) =>
   }).then(res => checkStatus(res)).then(res => res.json())
 
 export const refresh = async (refresh_token) =>
-  await fetch(`${url}refresh`, {
+  await fetch(`${url}token/refresh`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({ refresh_token })
-  }).then(res => checkStatus).then(res => res.json())
+  }).then(res => checkStatus(res)).then(res => res.json())
 
 export const fetchAllUser = async (id) =>
   await fetch(`${url}trips/${id}/users`).then(res => res.json())
@@ -264,8 +264,6 @@ export const deleteDocument = async (id) =>
 const checkStatus = async (response, data, callback) => {
   if (response.ok) {
     return response;
-  } else if (response.status == 401) {
-    refresh(window.localStorage.getItem("refresh_token"))
   }
   else {
     return response.json()

@@ -1,23 +1,31 @@
 import { useToken, useUser } from "./userContext";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { refresh } from "../apiCaller";
+import updateToken from "../updateTokens";
 export default function RequireAuth() {
     const navigate = useNavigate()
     const [token, setToken] = useToken()
     const [user, setUser] = useUser();
     const logout = () => {
-        window.localStorage.setItem("token", "")
-        window.localStorage.setItem("refresh_token", "")
+        window.localStorage.clear()
         setToken("")
     }
 
     if (user == undefined) {
-        // Redirect them to the /login page, but save the current location they were
-        // trying to go to when they were redirected. This allows us to send them
-        // along to that page after they login, which is a nicer user experience
-        // than dropping them off on the home page.
-        return <Navigate to="/" replace={true} />;
+        navigate("/")
     }
+
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            const res = await refresh(window.localStorage.getItem("refresh_token"))
+            updateToken({ setToken, token: res.token, refresh_token: res.refresh_token })
+        }, 2 * 1000);// refresh toutes les 55 minutes
+        return () => {
+            clearInterval(interval);
+        };
+    }, [])
     return (
         <>
             <Outlet />

@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import { useUser } from "../../context/userContext";
 import { checkCredentials } from "../../apiCaller";
 import { useToken } from "../../context/userContext";
+import updateToken from "../../updateTokens";
 const Login = () => {
   const navigate = useNavigate();
   const [token, setToken] = useToken();
@@ -115,9 +116,7 @@ const Login = () => {
   async function checkConnexionInfo() {
     try {
       const tokens = await checkCredentials(email, password)
-      window.localStorage.setItem("token", tokens.token)
-      window.localStorage.setItem("refresh_token", tokens.refresh_token)
-      setToken(tokens.token)
+      updateToken({ setToken, token: tokens.token, refresh_token: tokens.refresh_token })
     } catch (error) {
       console.log(error)
     }
