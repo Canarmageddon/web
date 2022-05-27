@@ -6,6 +6,7 @@ import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
 import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
+import { useUser } from "../../context/userContext"
 import { useMutation, useQueryClient } from "react-query";
 const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
   const queryClient = useQueryClient();
@@ -42,6 +43,7 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
       queryClient.invalidateQueries(["toDoLists", idTrip]);
     },
   });
+  const [user] = useUser()
 
   return (
     <CardToDoList className="card-todo-list">

@@ -8,6 +8,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
 import { useQuery } from "react-query";
+import { useUser } from "../../context/userContext";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
@@ -26,13 +27,14 @@ const TravelsList = () => {
           start: d.travels[0]?.start?.name,
           end: d.travels[d.travels.length - 1]?.end?.name,
         });
+  const [user] = useUser()
       });
   
       setLstTrips(res);
     }, []);
    */
   const handleClick = (t) => {
-    navigate(`/map/${t.id}`);
+    navigate(`/home/map/${t.id}`);
   };
 
   const handleDelete = async (event, t) => {

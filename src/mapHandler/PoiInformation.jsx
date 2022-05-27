@@ -5,16 +5,17 @@ import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "../style/destinationInput.css";
-import { deletePoi, updatePoi } from "../apiCaller";
+import { deletePoi, getDocument, getDocumentsFromPoi, updatePoi } from "../apiCaller";
 import FileUploader from "./FileUploader";
-const PoiInformation = ({ display, poiId, setContentPage }) => {
+const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
   const [poi, setpoi] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [currentPoi, setCurrentPoi] = useState();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [lstFile, setLstFile] = useState([]);
+  const [file, setFile] = useState([]);
   const [selectedStep, setSelectedStep] = useState("");
+
   useEffect(() => {
     setCurrentPoi(poi.getItemById(poiId));
   }, [poi, poiId]);
@@ -73,7 +74,7 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
           onChange={(e) => setDescription(e.target.value)}
           style={{ width: "70%", marginLeft: 10 }}
         />
-        <FileUploader setLstFile={setLstFile} />
+        <FileUploader file={file} setFile={setFile} mapElement={currentPoi} getDocumentFromElement={getDocumentsFromPoi} />
         Associer à une étape
         <select value={selectedStep} onChange={(e) => handleChange(e)}>
           <option value={null}></option>
@@ -100,6 +101,9 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
               marginTop: 10,
             }}
           />
+          <Button type="button" onClick={() => setMovingPoi(currentPoi.id)} style={{ marginTop: 10 }}>
+            Déplacer
+          </Button>
         </div>
       </Form>
     </div>

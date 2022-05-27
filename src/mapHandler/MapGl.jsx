@@ -13,11 +13,12 @@ import {
   createStep,
   fetchSteps,
   fetchPois,
+  movePoi,
+  moveStep
 } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
-
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
@@ -29,11 +30,16 @@ export default function MapGl({
   setPoiId,
   setStepId,
   setTravelers,
+  movingPoi,
+  setMovingPoi,
+  movingStep,
+  setMovingStep
 }) {
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
+  const [user] = useUser();
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);
@@ -231,6 +237,16 @@ export default function MapGl({
       });
     }, []); */
   const handleClick = async (e) => {
+    if (movingPoi != null) {
+      movePoi(movingPoi, e.lngLat[1], e.lngLat[0])
+      setMovingPoi(null);
+      return
+    }
+    if (movingStep != null) {
+      moveStep(movingStep, e.lngLat[1], e.lngLat[0])
+      setMovingStep(null);
+      return
+    }
     if (!editing) {
       if (e.features[0] != undefined) {
         if (e.features[0].source === typeLocation) {
