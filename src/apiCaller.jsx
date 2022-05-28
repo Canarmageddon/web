@@ -17,10 +17,9 @@ export const createStep = async (latitude, longitude, id, creator) =>
       latitude,
       trip: parseInt(id),
       description: "",
-      creator
+      creator,
     }),
   }).then((res) => res.json());
-};
 
 export const deleteStep = async (id) =>
   await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res) => {
@@ -44,15 +43,13 @@ export const moveStep = async (id, latitude, longitude) => {
     body: JSON.stringify({
       longitude,
       latitude,
-
     }),
   }).then((res) => res.json());
-
 };
 export const getDocumentsFromStep = async (id) =>
   await fetch(`${url}steps/${id}/documents`)
-    .then(res => checkStatus(res))
-    .then(res => res.json())
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
@@ -77,7 +74,7 @@ export const createPoi = async (latitude, longitude, id, creator) => {
       longitude,
       latitude,
       trip: parseInt(id),
-      creator
+      creator,
     }),
   }).then((res) => res.json());
 };
@@ -92,7 +89,6 @@ export const movePoi = async (id, latitude, longitude) => {
     body: JSON.stringify({
       longitude,
       latitude,
-
     }),
   }).then((res) => res.json());
 };
@@ -118,8 +114,8 @@ export const fetchPois = async (id) =>
 
 export const getDocumentsFromPoi = async (id) =>
   await fetch(`${url}point_of_interests/${id}/documents`)
-    .then(res => checkStatus(res))
-    .then(res => res.json())
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
@@ -133,11 +129,14 @@ export const signup = async (email, password, firstName, lastName) =>
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({
-      email, password, firstName, lastName
+      email,
+      password,
+      firstName,
+      lastName,
     }),
-  }).then((res) => checkStatus(res))
+  })
+    .then((res) => checkStatus(res))
     .then((res) => res.json());
-
 
 export const checkCredentials = async (email, password) =>
   await fetch(`${url}users/checkCredentials`, {
@@ -147,11 +146,12 @@ export const checkCredentials = async (email, password) =>
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({
-      email, password
+      email,
+      password,
     }),
-  }).then((res) => checkStatus(res))
+  })
+    .then((res) => checkStatus(res))
     .then((res) => res.json());
-
 
 export const fetchAllUser = async (id) =>
   await fetch(`${url}trips/${id}/users`)
@@ -184,8 +184,9 @@ export const removeUser = async ({ email, id }) => {
     body: JSON.stringify({
       email: email,
       trip: id,
-    })
-  }).then((res) => res.json)
+    }),
+  }).then((res) => res.json);
+};
 
 export const deleteUser = async (id) =>
   await fetch(`${url}users/${id}`, { method: "DELETE" }).then((res) =>
@@ -234,7 +235,6 @@ export const createTask = async (title, id, date, creator) =>
       date: date,
     }),
   });
-};
 
 export const deleteTask = async (id) =>
   await fetch(`${url}tasks/${id}`, { method: "DELETE" });
@@ -245,7 +245,6 @@ export const deleteTask = async (id) =>
 
 export const fetchTravels = async (id) =>
   await fetch(`${url}users/${id}/trips`, {}).then((res) => res.json());
-
 
 export const createTravel = async (title, id) =>
   await fetch(`${url}travel/new`, {
@@ -301,27 +300,25 @@ export const addDocument = async (file, creator, mapElement, name) => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("creator", creator),
-    formData.append("mapElement", mapElement)
-  formData.append("name", name)
+    formData.append("mapElement", mapElement);
+  formData.append("name", name);
   return await fetch(`${url}documents`, {
     method: "POST",
-    body: formData
-  })
-}
+    body: formData,
+  });
+};
 
 export const getDocument = async (id, name) => {
-  fetch(`${url}documents/file/${id}`)
-    .then(response => {
-      response.blob().then(blob => {
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = name;
-        a.click();
-      });
+  fetch(`${url}documents/file/${id}`).then((response) => {
+    response.blob().then((blob) => {
+      let url = window.URL.createObjectURL(blob);
+      let a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      a.click();
     });
-}
-
+  });
+};
 
 export const deleteDocument = async (id) =>
   await fetch(`${url}documents/${id}`, { method: "DELETE" }).then((res) =>
