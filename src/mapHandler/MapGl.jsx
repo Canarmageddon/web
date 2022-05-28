@@ -6,11 +6,13 @@ import Location from "../factory/layers/Location";
 import User from "../factory/User";
 import Task from "../factory/lists/Task";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../context/userContext"
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import {
   fetchTripById,
   createPoi,
   createStep,
+  fetchSteps,
+  fetchPois,
   movePoi,
   moveStep
 } from "../apiCaller";
@@ -33,9 +35,11 @@ export default function MapGl({
   movingStep,
   setMovingStep
 }) {
+  const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
+  const [redirect, setRedirect] = useState(false);
   const [user] = useUser();
-  const navigate = useNavigate()
-  const [redirect, setRedirect] = useState(false)
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);
@@ -52,96 +56,186 @@ export default function MapGl({
   });
   const { id } = useParams();
   const _mapRef = createRef();
+  const {
+    isLoading: isLoadingSteps,
+    isError: isErrorSteps,
+    error: errorSteps,
+    data: dataSteps,
+  } = useQuery(["steps", id], () => fetchSteps(id), {
+    retry: false,
+    onSuccess: (data) => {
+      let lstStep = [];
+      data.map((item) => {
+        lstStep.push(
+          new Location(
+            item.id,
+            item.description,
+            item.title,
+            item.location.longitude,
+            item.location.latitude,
+            item?.step?.id
+          )
+        );
+      });
+      setRouteSource(new LayerUtile(lstStep));
+    },
+  });
+  const {
+    isLoading: isLoadingPoi,
+    isError: isErrorPoi,
+    error: errorPoi,
+    data: dataPoi,
+  } = useQuery(["poi", id], () => fetchPois(id), {
+    retry: false,
+    onSuccess: (data) => {
+      let lstPoi = [];
+      data.map((item) => {
+        lstPoi.push(
+          new Location(
+            item.id,
+            item.description,
+            item.title,
+            item.location.longitude,
+            item.location.latitude,
+            item?.step?.id
+          )
+        );
+      });
+      setPoiSource(new LayerUtile(lstPoi));
+    },
+  });
+
+  const mutationStep = useMutation(createStep, {
+    onMutate: (data) => {
+      setRouteSource(
+        routeSource.addItem(
+          new Location(data.id, "", "", data.longitude, data.latitude)
+        )
+      );
+      const oldData = queryClient.getQueryData(["steps", id]);
+      queryClient.setQueryData(["steps", id], (old) => [
+        ...old,
+        {
+          location: { longitude: data.longitude, latitude: data.latitude },
+          id: routeSource.newId,
+        },
+      ]);
+      return { oldData };
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["steps", id]);
+    },
+  });
+  const mutationPoi = useMutation(createPoi, {
+    onMutate: (data) => {
+      setPoiSource(
+        poiSource.addItem(
+          new Location(data.id, "", "", data.longitude, data.latitude)
+        )
+      );
+      const oldData = queryClient.getQueryData(["poi", id]);
+      queryClient.setQueryData(["poi", id], (old) => [
+        ...old,
+        {
+          location: { longitude: data.longitude, latitude: data.latitude },
+          id: routeSource.newId,
+        },
+      ]);
+      return { oldData };
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["poi", id]);
+    },
+  });
+
   useEffect(() => {
     const map = _mapRef.current.getMap();
-    map.loadImage(
-      "http://placekitten.com/50/50",
-      (error, image) => {
-        if (error) throw error;
-        // Add the loaded image to the style's sprite with the ID 'poiImage'.
-        map.addImage("poiImage", image);
-      }
-    );
+    map.loadImage("http://placekitten.com/50/50", (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage("poiImage", image);
+    });
     map.loadImage("http://placekitten.com/50/50", (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("stepImage", image);
     });
   }, []);
-  useEffect(async () => {
-    const tripData = await fetchTripById(id);
-    if (tripData == -1) {
-      setRedirect(true)
-    }
-    const user = tripData.travelers;
-    const poi = tripData.pointsOfInterest;
-    const step = tripData.steps;
-    const todoLists = tripData.toDoLists;
-    //const poi = await fetchPointOfInterest();
-    //const step = await fetchStep();
-    let lstUser = [];
-    let lstPoi = [];
-    let lstStep = [];
-    let lstTodoList = [];
-    window.addEventListener("resize", () => {
-      setWidth("100%");
-      setHeight("100%");
-    });
 
-    user?.map((item) => {
-      lstUser.push(new User(item.id, item.firstname, item.name, item.email));
-    });
-    poi?.map((item) => {
-      lstPoi.push(
-        new Location(
-          item.id,
-          item.description,
-          item.title,
-          item.location.longitude,
-          item.location.latitude,
-          item?.step?.id
-        )
-      );
-    });
-    step?.map((item) =>
-      lstStep.push(
-        new Location(
-          item.id,
-          item.description,
-          "",
-          item.location.longitude,
-          item.location.latitude
-        )
-      )
-    );
-    todoLists?.map((taskList) => {
-      let tasks = [];
-      //  let tasks = new TaskList(taskList.id, taskList.name);
-      taskList?.tasks?.map((item) => {
-        tasks.push(
-          new Task(
+  /*   useEffect(async () => {
+      const tripData = await fetchTripById(id);
+      if (tripData == -1) {
+        setRedirect(true)
+      }
+      const user = tripData.travelers;
+      const poi = tripData.pointsOfInterest;
+      const step = tripData.steps;
+      const todoLists = tripData.toDoLists;
+      //const poi = await fetchPointOfInterest();
+      //const step = await fetchStep();
+      let lstUser = [];
+      let lstPoi = [];
+      let lstStep = [];
+      let lstTodoList = [];
+      window.addEventListener("resize", () => {
+        setWidth("100%");
+        setHeight("100%");
+      });
+  
+      user?.map((item) => {
+        lstUser.push(new User(item.id, item.firstname, item.name, item.email));
+      });
+      poi?.map((item) => {
+        lstPoi.push(
+          new Location(
             item.id,
-            item.creator,
-            item.name,
             item.description,
-            new Date(item.date).toLocaleDateString()
+            item.title,
+            item.location.longitude,
+            item.location.latitude,
+            item?.step?.id
           )
         );
       });
-      lstTodoList.push(new TaskListUtile(taskList?.id, taskList?.name, tasks));
-    });
-    setTaskList(lstTodoList);
-    setTravelers(lstUser);
-    setPoiSource(new LayerUtile(lstPoi));
-    setRouteSource(new LayerUtile(lstStep));
-    setViewport({
-      latitude: lstStep[lstStep.length - 1]?.latitude,
-      longitude: lstStep[lstStep.length - 1]?.longitude,
-      zoom: 7,
-      bearing: 0,
-      pitch: 0,
-    });
-  }, []);
+      step?.map((item) =>
+        lstStep.push(
+          new Location(
+            item.id,
+            item.description,
+            "",
+            item.location.longitude,
+            item.location.latitude
+          )
+        )
+      );
+      todoLists?.map((taskList) => {
+        let tasks = [];
+        //  let tasks = new TaskList(taskList.id, taskList.name);
+        taskList?.tasks?.map((item) => {
+          tasks.push(
+            new Task(
+              item.id,
+              item.creator,
+              item.name,
+              item.description,
+              new Date(item.date).toLocaleDateString()
+            )
+          );
+        });
+        lstTodoList.push(new TaskListUtile(taskList?.id, taskList?.name, tasks));
+      });
+      setTaskList(lstTodoList);
+      setTravelers(lstUser);
+      setPoiSource(new LayerUtile(lstPoi));
+      //setRouteSource(new LayerUtile(lstStep));
+      setViewport({
+        latitude: lstStep[lstStep.length - 1]?.latitude,
+        longitude: lstStep[lstStep.length - 1]?.longitude,
+        zoom: 7,
+        bearing: 0,
+        pitch: 0,
+      });
+    }, []); */
   const handleClick = async (e) => {
     if (movingPoi != null) {
       movePoi(movingPoi, e.lngLat[1], e.lngLat[0])
@@ -174,31 +268,37 @@ export default function MapGl({
     if (contentPage === "poiInfo") {
       setContentPage("map");
     } else if (typeLocation === "poi") {
-      let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id, user);
-      setPoiSource(
-        poiSource.addItem(
-          new Location(
-            newPoi.id,
-            "",
-            "",
-            newPoi.location.longitude,
-            newPoi.location.latitude
+      mutationPoi.mutate({ latitude: e.lngLat[1], longitude: e.lngLat[0], id });
+      /*   let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id);
+        setPoiSource(
+          poiSource.addItem(
+            new Location(
+              newPoi.id,
+              "",
+              "",
+              newPoi.location.longitude,
+              newPoi.location.latitude
+            )
           )
-        )
-      );
+        ); */
     } else {
-      let newStep = await createStep(e.lngLat[1], e.lngLat[0], id, user);
-      setRouteSource(
-        routeSource.addItem(
-          new Location(
-            routeSource.newId,
-            "",
-            "",
-            newStep.location.longitude,
-            newStep.location.latitude
-          )
-        )
-      );
+      mutationStep.mutate({
+        latitude: e.lngLat[1],
+        longitude: e.lngLat[0],
+        id,
+      });
+      /*       let newStep = await createStep(e.lngLat[1], e.lngLat[0], id);
+            setRouteSource(
+              routeSource.addItem(
+                new Location(
+                  routeSource.newId,
+                  "",
+                  "",
+                  newStep.location.longitude,
+                  newStep.location.latitude
+                )
+              )
+            ); */
     }
   };
 
@@ -229,7 +329,7 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
-  if (redirect) navigate("/")
+  if (redirect) navigate("/");
   return (
     <>
       <LocationFinder
@@ -247,19 +347,25 @@ export default function MapGl({
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onClick={(e) => handleClick(e)}
       >
-        <Source id="poi" type="geojson" data={poiSource.templateSource}>
-          <Layer {...poiLayer} />
-        </Source>
+        {!isLoadingPoi && !isErrorPoi && (
+          <Source id="poi" type="geojson" data={poiSource.templateSource}>
+            <Layer {...poiLayer} />
+          </Source>
+        )}
         {/* 
             on affiche routeSource avec 2 layers parce que on n'a pas
             l'id du point lors du clique avec un layer en ligne
         */}
-        <Source id="routeLine" type="geojson" data={routeSource.route}>
-          <Layer {...routeLayer} />
-        </Source>
-        <Source id="route" type="geojson" data={routeSource.templateSource}>
-          <Layer {...routeLayer2} />
-        </Source>
+        {!isLoadingSteps && !isErrorSteps && (
+          <>
+            <Source id="routeLine" type="geojson" data={routeSource.route}>
+              <Layer {...routeLayer} />
+            </Source>
+            <Source id="route" type="geojson" data={routeSource.templateSource}>
+              <Layer {...routeLayer2} />
+            </Source>
+          </>
+        )}
       </ReactMapGL>
     </>
   );

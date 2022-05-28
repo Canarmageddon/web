@@ -3,28 +3,42 @@ import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
 import { createTrip } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "react-query";
 export default function ({ lstTrips, setLstTrips }) {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const handleClose = () => setShow(false);
+  const queryClient = useQueryClient()
   const handleShow = () => {
     setName("");
     setShow(true);
   };
+  const mutationNewTrip = useMutation(createTrip, {
+    onMutate: (data) => {
+      setShow(false);
+      setName("");
+      const oldData = queryClient.getQueryData("trips")
+      queryClient.setQueryData("trips", old => [...old, { name: data.name }])
+      return { oldData }
+
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("trips")
+    },
+  })
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setShow(false);
-    const newTrip = await createTrip(name);
-    setLstTrips([
-      ...lstTrips,
-      {
-        id: newTrip.id,
-        name: newTrip.name,
-        start: newTrip.travels[0]?.start?.name,
-        end: newTrip.travels[newTrip.travels.length - 1]?.end?.name,
-      },
-    ]);
-    setName("");
+    mutationNewTrip.mutate(name)
+    /*     const newTrip = await createTrip(name);
+        setLstTrips([
+          ...lstTrips,
+          {
+            id: newTrip.id,
+            name: newTrip.name,
+            start: newTrip.travels[0]?.start?.name,
+            end: newTrip.travels[newTrip.travels.length - 1]?.end?.name,
+          },
+        ]); */
   };
   return (
     <>
