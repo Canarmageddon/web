@@ -14,7 +14,7 @@ const NavBar = ({ setShowMenu }) => {
           className="p-2 nav-icon"
           icon={faBars}
           size="2x"
-          onClick={() => setShowMenu((oldValue) => !oldValue)}
+          onClick={() => { setShowMenu((oldValue) => !oldValue) }}
         />
         <FontAwesomeIcon className="p-2 nav-icon" icon={faUser} size="2x" />
       </div>

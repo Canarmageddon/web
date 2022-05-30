@@ -17,18 +17,39 @@ export const createStep = async (latitude, longitude, id, creator) =>
       latitude,
       trip: parseInt(id),
       description: "",
-      creator
+      creator,
     }),
-  }).then(res => res.json());
+  }).then((res) => res.json());
 
 export const deleteStep = async (id) =>
   await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res) => {
     if (res.statusCode != 204) {
-      return res.json()
+      return res.json();
     }
     return null;
-  }
-  );
+  });
+export const fetchSteps = async (id) =>
+  await fetch(`${url}trips/${id}/steps`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
+
+export const moveStep = async (id, latitude, longitude) => {
+  return await fetch(`${url}steps/${id}/edit`, {
+    method: "PUT",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+    },
+    body: JSON.stringify({
+      longitude,
+      latitude,
+    }),
+  }).then((res) => res.json());
+};
+export const getDocumentsFromStep = async (id) =>
+  await fetch(`${url}steps/${id}/documents`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
@@ -53,13 +74,27 @@ export const createPoi = async (latitude, longitude, id, creator) => {
       longitude,
       latitude,
       trip: parseInt(id),
-      creator
+      creator,
+    }),
+  }).then((res) => res.json());
+};
+
+export const movePoi = async (id, latitude, longitude) => {
+  return await fetch(`${url}point_of_interests/${id}/edit`, {
+    method: "PUT",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+    },
+    body: JSON.stringify({
+      longitude,
+      latitude,
     }),
   }).then((res) => res.json());
 };
 
 export const updatePoi = async (id, title, description, step) => {
-  return await fetch(`${url}point_of_interests/${id}`, {
+  return await fetch(`${url}point_of_interests/${id}/edit`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
@@ -72,6 +107,15 @@ export const updatePoi = async (id, title, description, step) => {
     }),
   }).then((res) => res.json());
 };
+export const fetchPois = async (id) =>
+  await fetch(`${url}trips/${id}/poi`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
+
+export const getDocumentsFromPoi = async (id) =>
+  await fetch(`${url}point_of_interests/${id}/documents`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
@@ -85,9 +129,13 @@ export const signup = async (email, password, firstName, lastName) =>
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({
-      email, password, firstName, lastName
+      email,
+      password,
+      firstName,
+      lastName,
     }),
-  }).then((res) => res.json());
+  }).then(res => checkStatus(res))
+    .then((res) => res.json());
 
 
 export const checkCredentials = async (email, password) => {
@@ -98,7 +146,8 @@ export const checkCredentials = async (email, password) => {
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({ email, password }),
-  }).then((res) => checkStatus(res)).then(res => res.json())
+  }).then(res => checkStatus(res))
+    .then((res) => checkStatus(res)).then(res => res.json())
 
 }
 
@@ -118,10 +167,12 @@ export const refresh = async (refresh_token) =>
   }).then(res => checkStatus(res)).then(res => res.json())
 
 export const fetchAllUser = async (id) =>
-  await fetch(`${url}trips/${id}/users`).then(res => res.json())
+  await fetch(`${url}trips/${id}/users`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
-export const addUser = async (email, id) =>
-  await fetch(`${url}trips/addUser`, {
+export const addUser = async ({ email, id }) => {
+  return await fetch(`${url}trips/addUser`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -129,13 +180,15 @@ export const addUser = async (email, id) =>
     },
     body: JSON.stringify({
       email,
-      trip: id
+      trip: id,
     }),
-  }).then((res) => checkStatus(res))
+  })
+    .then((res) => checkStatus(res))
     .then((res) => res.json());
+};
 
-export const removeUser = async (email, id) =>
-  await fetch(`${url}trips/removeUser`, {
+export const removeUser = async ({ email, id }) => {
+  return await fetch(`${url}trips/removeUser`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -144,8 +197,9 @@ export const removeUser = async (email, id) =>
     body: JSON.stringify({
       email: email,
       trip: id,
-    })
-  }).then((res) => res.json)
+    }),
+  }).then((res) => res.json);
+};
 
 export const deleteUser = async (id) =>
   await fetch(`${url}users/${id}`, { method: "DELETE" }).then((res) =>
@@ -156,7 +210,13 @@ export const deleteUser = async (id) =>
 
 /* ------------ TO DO LIST -----------------------*/
 
-export const createTodoList = async (title, id) =>
+export const fetchTodoLists = async (id) => {
+  return await fetch(`${url}trips/${id}/toDoLists`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
+};
+
+export const createTodoList = async ({ title, id }) => {
   await fetch(`${url}to_do_lists/new`, {
     method: "POST",
     headers: {
@@ -168,6 +228,7 @@ export const createTodoList = async (title, id) =>
       trip: parseInt(id),
     }),
   });
+};
 
 export const deleteTodoList = async (id) =>
   await fetch(`${url}to_do_lists/${id}`, { method: "DELETE" });
@@ -197,7 +258,6 @@ export const deleteTask = async (id) =>
 
 export const fetchTravels = async (id) =>
   await fetch(`${url}users/${id}/trips`, {}).then((res) => res.json());
-
 
 export const createTravel = async (title, id) =>
   await fetch(`${url}travel/new`, {
@@ -236,8 +296,10 @@ export const fetchTripById = async (id) =>
     method: "GET",
   }).then((res) => {
     if (res.status == 404) {
-      return -1
-    } else { return res.json() }
+      return -1;
+    } else {
+      return res.json();
+    }
   });
 
 export const deleteTrip = async (id) =>
@@ -247,12 +309,29 @@ export const deleteTrip = async (id) =>
 
 /* -------------------------------------------*/
 
-export const fetchLocation = async (location) =>
-  await fetch(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(
-      location
-    )}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
-  ).then((res) => res.json());
+export const addDocument = async (file, creator, mapElement, name) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("creator", creator),
+    formData.append("mapElement", mapElement);
+  formData.append("name", name);
+  return await fetch(`${url}documents`, {
+    method: "POST",
+    body: formData,
+  });
+};
+
+export const getDocument = async (id, name) => {
+  fetch(`${url}documents/file/${id}`).then((response) => {
+    response.blob().then((blob) => {
+      let url = window.URL.createObjectURL(blob);
+      let a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      a.click();
+    });
+  });
+};
 
 export const deleteDocument = async (id) =>
   await fetch(`${url}documents/${id}`, { method: "DELETE" }).then((res) =>
@@ -264,11 +343,16 @@ export const deleteDocument = async (id) =>
 const checkStatus = async (response, data, callback) => {
   if (response.ok) {
     return response;
+  } else {
+    return response.json().then((text) => {
+      throw new Error(text.message);
+    });
   }
-  else {
-    return response.json()
-      .then((text) => {
-        throw new Error(text.message);
-      });
-  }
-}
+};
+
+export const fetchLocation = async (location) =>
+  await fetch(
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(
+      location
+    )}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+  ).then((res) => res.json());

@@ -7,10 +7,42 @@ import "../../style/toDoLists.css";
 import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
 import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
 import { useUser } from "../../context/userContext"
-const ToDoList = ({ toDoList, setToDoLists }) => {
+import { useMutation, useQueryClient } from "react-query";
+const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
+  const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
+  const mutationDeleteTodoList = useMutation(deleteTodoList, {
+    onMutate: (data) => {
+      /*       const oldData = queryClient.getQueryData(["toDoLists", idTrip])
+            queryClient.setQueryData(["toDoLists", idTrip], old => old.filter(item => item.id != data))
+            return oldData */
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["toDoLists", idTrip]);
+    },
+  });
+  const mutationAddTask = useMutation(createTask, {
+    onMutate: (data) => {
+      /*       const oldData = queryClient.getQueryData(["toDoLists", idTrip])
+            queryClient.setQueryData(["toDoLists", idTrip], [...old, { title: data.title, data: data.date }])
+            return oldData */
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["toDoLists", idTrip]);
+    },
+  });
+  const mutationDeleteTask = useMutation(deleteTask, {
+    onMutate: (data) => {
+      const oldData = queryClient.getQueryData(["toDoLists", idTrip]);
+      // queryClient.setQueryData(["toDoLists", idTrip], [...old, { title: data.title, data: data.date }])
+      return oldData;
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["toDoLists", idTrip]);
+    },
+  });
   const [user] = useUser()
 
   return (
@@ -20,7 +52,8 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
           icon={faTimesCircle}
           size="lg"
           onClick={() => {
-            setToDoLists((oldLists) => {
+            mutationDeleteTodoList.mutate(toDoList.id);
+            /* setToDoLists((oldLists) => {
               deleteTodoList(toDoList.id);
               const index = oldLists.findIndex((ol) => ol.id === toDoList?.id);
               if (index !== -1) {
@@ -28,7 +61,7 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
               }
 
               return [...oldLists];
-            });
+            }); */
           }}
         />
         <FontAwesomeIcon
@@ -56,33 +89,12 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
             />
             <Button
               onClick={() => {
-                setToDoLists((oldLists) => {
-                  createTask(title, toDoList.id, date, user);
-                  const index = oldLists.findIndex(
-                    (ol) => ol.id === toDoList?.id
-                  );
-                  let id = 0;
-
-                  if (oldLists[index]?.listTasks?.length > 0) {
-                    id =
-                      Math.max.apply(
-                        Math,
-                        oldLists[index].listTasks?.map(function (o) {
-                          return o.id;
-                        })
-                      ) + 1;
-                  }
-                  oldLists[index]?.listTasks?.push({
-                    id: id,
-                    name: title,
-                    date: date != "" ? date : null,
-                  });
-
-                  return [...oldLists];
-                });
-                setTitle("");
-                setDate("");
-                setShowForm(false);
+                if (title !== "") {
+                  mutationAddTask.mutate({ title, id: toDoList.id, date });
+                  setTitle("");
+                  setDate("");
+                  setShowForm(false);
+                }
               }}
               style={{ flex: 0.1 }}
             >
@@ -91,31 +103,24 @@ const ToDoList = ({ toDoList, setToDoLists }) => {
           </div>
         )}
         <div>
-          {toDoList?.listTasks?.map((t) => (
-            <CardItem key={t.id}>
-              <p style={{ marginBottom: 0 }}>
-                {t.date} : {t.name}
-              </p>
+          {toDoList?.tasks?.map((t) => (
+            <CardItem
+              key={t.id}
+              style={{ position: "relative", justifyContent: "normal" }}
+            >
+              {t.date && (
+                <p style={{ marginBottom: 0, marginLeft: 5 }}>
+                  : {new Date(t.date).toLocaleDateString()}
+                </p>
+              )}
+              <p style={{ marginBottom: 0 }}>{t.name}</p>
               <FontAwesomeIcon
                 icon={faTimesCircle}
                 size="lg"
                 onClick={() => {
-                  deleteTask(t.id);
-                  setToDoLists((oldLists) => {
-                    const listIndex = oldLists.findIndex(
-                      (ol) => ol.id === toDoList?.id
-                    );
-
-                    const taskIndex = oldLists[listIndex].listTasks?.findIndex(
-                      (task) => task.id === t.id
-                    );
-
-                    if (taskIndex !== -1) {
-                      oldLists[listIndex].listTasks?.splice(taskIndex, 1);
-                    }
-                    return [...oldLists];
-                  });
+                  mutationDeleteTask.mutate(t.id);
                 }}
+                style={{ position: "absolute", right: 5 }}
               />
             </CardItem>
           ))}

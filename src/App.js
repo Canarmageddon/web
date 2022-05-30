@@ -29,6 +29,8 @@ function App() {
   const [poiId, setPoiId] = useState(false);
   const [stepId, setStepId] = useState(false);
   const [travelers, setTravelers] = useState([]);
+  const [movingStep, setMovingStep] = useState(null);
+  const [movingPoi, setMovingPoi] = useState(null);
 
   return (
     <BrowserRouter>
@@ -61,11 +63,13 @@ function App() {
                           display={contentPage === "poiInfo"}
                           setContentPage={setContentPage}
                           poiId={poiId}
+                          setMovingPoi={setMovingPoi}
                         />
                         <StepInfo
                           display={contentPage === "stepInfo"}
                           setContentPage={setContentPage}
                           stepId={stepId}
+                          setMovingStep={setMovingStep}
                         />
                         <Details
                           display={contentPage === "details"}
@@ -92,6 +96,10 @@ function App() {
                             setPoiId={setPoiId}
                             setStepId={setStepId}
                             setTravelers={setTravelers}
+                            movingPoi={movingPoi}
+                            setMovingPoi={setMovingPoi}
+                            movingStep={movingStep}
+                            setMovingStep={setMovingStep}
                           />
                         </div>
                       </div>
