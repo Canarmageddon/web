@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { refresh } from "../apiCaller";
 import updateToken from "../updateTokens";
+import { useQuery } from "react-query";
 export default function RequireAuth() {
-    const navigate = useNavigate()
-    const [token, setToken] = useToken()
     const [user, setUser] = useUser();
+    const [token, setToken] = useToken();
     const logout = () => {
         window.localStorage.clear()
         setToken("")
@@ -16,15 +16,9 @@ export default function RequireAuth() {
         return <Navigate to="/" />
     }
 
-    useEffect(() => {
-        const interval = setInterval(async () => {
-            const res = await refresh(window.localStorage.getItem("refresh_token"))
-            updateToken({ setToken, token: res.token, refresh_token: res.refresh_token })
-        }, 55 * 60 * 1000);// refresh toutes les 55 minutes
-        return () => {
-            clearInterval(interval);
-        };
-    }, [])
+    const { isLoading, isError, error, data } = useQuery("refresh", refresh, {
+        refetchInterval: 55 * 60 * 1000 //refresh toutes les 55 minutes
+    })
     return (
         <>
             <Outlet />

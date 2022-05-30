@@ -24,6 +24,7 @@ mapboxgl.workerClass =
 import LocationFinder from "./LocationFinder";
 import TaskListUtile from "../factory/lists/TaskListUtile";
 import { useTaskList } from "../context/TravelContext";
+import { useUser } from "../context/userContext";
 export default function MapGl({
   setContentPage,
   contentPage,
@@ -39,7 +40,7 @@ export default function MapGl({
 
   const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
-  const [user] = useUser();
+  const [user] = useUser()
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);

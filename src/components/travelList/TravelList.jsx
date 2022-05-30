@@ -14,25 +14,11 @@ const TravelsList = () => {
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [lstTrips, setLstTrips] = useState([]);
-  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery("trips", fetchTravels, {
+  const [user] = useUser()
+  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery("trips", () => fetchTravels(user), {
     staleTime: 60 * 1000
   })
-  /*   useEffect(async () => {
-      const data = await fetchTravels();
-      let res = [];
-      data.map((d) => {
-        res.push({
-          id: d.id,
-          name: d.name,
-          start: d.travels[0]?.start?.name,
-          end: d.travels[d.travels.length - 1]?.end?.name,
-        });
-  const [user] = useUser()
-      });
-  
-      setLstTrips(res);
-    }, []);
-   */
+
   const handleClick = (t) => {
     navigate(`/home/map/${t.id}`);
   };

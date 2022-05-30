@@ -9,6 +9,7 @@ import { useUser } from "../../context/userContext";
 import { checkCredentials } from "../../apiCaller";
 import { useToken } from "../../context/userContext";
 import updateToken from "../../updateTokens";
+import { useQueryClient } from "react-query";
 const Login = () => {
   const navigate = useNavigate();
   const [token, setToken] = useToken();
@@ -18,6 +19,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showLockIcon, setShowLockIcon] = useState(true);
   const [showUserIcon, setShowUserIcon] = useState(true);
+  const queryClient = useQueryClient();
   if (user != "" && user != null) {
     return <Navigate to="/home/trips" replace={true} />
   }
@@ -116,7 +118,8 @@ const Login = () => {
   async function checkConnexionInfo() {
     try {
       const tokens = await checkCredentials(email, password)
-      updateToken({ setToken, token: tokens.token, refresh_token: tokens.refresh_token })
+      await updateToken({ setToken, token: tokens.token, refresh_token: tokens.refresh_token })
+      queryClient.invalidateQueries('whoami')
     } catch (error) {
       console.log(error)
     }

@@ -156,8 +156,9 @@ export const whoAmI = async (token) =>
     headers: { "Authorization": `Bearer ${token}` },
   }).then(res => checkStatus(res)).then(res => res.json())
 
-export const refresh = async (refresh_token) =>
-  await fetch(`${url}token/refresh`, {
+export const refresh = async () => {
+  const refresh_token = window.localStorage.getItem("refresh_token");
+  return await fetch(`${url}token/refresh`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -165,7 +166,7 @@ export const refresh = async (refresh_token) =>
     },
     body: JSON.stringify({ refresh_token })
   }).then(res => checkStatus(res)).then(res => res.json())
-
+}
 export const fetchAllUser = async (id) =>
   await fetch(`${url}trips/${id}/users`)
     .then((res) => checkStatus(res))
