@@ -44,6 +44,7 @@ function App() {
             <Route path='/' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/home/' element={<RequireAuth />}>
+              <Route path='album/:id' element={<p></p>} />
               <Route path='explore/' element={<ExploreRoute />}>
                 <Route path='list' element={<ExploreTrips />} />
                 <Route
