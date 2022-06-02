@@ -3,13 +3,14 @@ import Member from "./Member";
 import { addUser, fetchAllUser } from "../../apiCaller";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { useUser } from "../../context/userContext";
+import { useToken, useUser } from "../../context/userContext";
 
 const Admin = ({ display }) => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const intId = parseInt(id);
-  const [user] = useUser()
+  const [user] = useUser();
+  const [token] = useToken()
   const { isLoading: isLoadingMembers, isError: isErrorMembers,
     error: errorMembers, data: dataMembers, refetch: refetchMembers }
     = useQuery(["members", intId], () => fetchAllUser({ token, id }))
