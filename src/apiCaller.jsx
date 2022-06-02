@@ -263,11 +263,12 @@ export const deleteTodoList = async ({ token, id }) =>
   });
 
 export const createTask = async ({ token, title, id, date, creator }) =>
-  await fetch(`${url}task/new`, {
+  await fetch(`${url}tasks/new`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
+      "Authorization": `Bearer ${token}`,
     },
     body: JSON.stringify({
       name: title,
