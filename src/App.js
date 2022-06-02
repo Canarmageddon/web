@@ -22,6 +22,10 @@ import Signup from "./components/login/Signup";
 import Details from "./components/Details";
 import StepInfo from "./mapHandler/StepInfo";
 import RequireAuth from "./context/requireAuth";
+import ExploreTrips from "./explore/ExploreTrips";
+import ExploringNavBar from "./components/navBar/ExploringNavBar";
+import ExploreRoute from "./explore/ExploreRoute";
+import ExploringMapNavBar from "./components/navBar/ExploringMapNavBar";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
@@ -40,6 +44,26 @@ function App() {
             <Route path='/' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/home/' element={<RequireAuth />}>
+              <Route path='explore/' element={<ExploreRoute />}>
+                <Route path='list' element={<ExploreTrips />} />
+                <Route
+                  path='map/:id'
+                  element={
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "93vh",
+                        overflow: "hidden",
+                        position: "relative",
+                      }}
+                    >
+                      <ExploringMapNavBar />
+                      <MapGl exploring={true} />
+                    </div>
+                  }
+                />
+              </Route>
+
               <Route path='trips' element={<TravelsList />} />
               <Route
                 path='map/:id'

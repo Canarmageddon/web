@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Tab } from "react-bootstrap";
+import { Tabs, Tab, Button } from "react-bootstrap";
 import { fetchTravels, deleteTrip } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
+import TrashAlt from "../icons/TrashAlt";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
 const TravelsList = () => {
@@ -97,15 +98,8 @@ const TravelsList = () => {
               <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                 {t.end}
               </p>
-              <FontAwesomeIcon
-                icon={faTrashAlt}
-                size="2x"
-                onClick={(event) => handleDelete(event, t)}
-                style={{
-                  color: "#dc3545",
-                  cursor: "pointer",
-                }}
-              />
+              {TrashAlt(handleDelete, t)}
+
             </div>
             <Dropdown.Divider />
           </React.Fragment>
@@ -121,6 +115,7 @@ const TravelsList = () => {
       }}
     >
       <h1 className="list-title">Voyages</h1>
+      <Button onClick={() => navigate("/home/explore/list")}>Explorer</Button>
       <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
       <hr style={{ marginBottom: 5 + "px" }} />
       <Tabs
