@@ -6,13 +6,14 @@ import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
 import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
-import { useUser } from "../../context/userContext"
+import { useToken, useUser } from "../../context/userContext"
 import { useMutation, useQueryClient } from "react-query";
 const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
+  const [token] = useToken()
   const mutationDeleteTodoList = useMutation(deleteTodoList, {
     onMutate: (data) => {
       /*       const oldData = queryClient.getQueryData(["toDoLists", idTrip])
@@ -97,21 +98,20 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
           {toDoList?.tasks?.map((t) => (
             <CardItem
               key={t.id}
-              style={{ position: "relative", justifyContent: "normal" }}
+              style={{ position: "relative", justifyContent: "space-between", paddingTop: "50px", paddingBottom: "50px", whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
             >
               {t.date && (
-                <p style={{ marginBottom: 0, marginLeft: 5 }}>
-                  : {new Date(t.date).toLocaleDateString()}
+                <p style={{ margin: 5 }}>
+                  {new Date(t.date).toLocaleDateString()} : {t.name}
                 </p>
               )}
-              <p style={{ marginBottom: 0 }}>{t.name}</p>
               <FontAwesomeIcon
                 icon={faTimesCircle}
                 size="lg"
                 onClick={() => {
                   mutationDeleteTask.mutate({ token, id: t.id });
                 }}
-                style={{ position: "absolute", right: 5 }}
+                style={{ position: "relative", right: 5 }}
               />
             </CardItem>
           ))}
