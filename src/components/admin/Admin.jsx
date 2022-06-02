@@ -2,34 +2,34 @@ import React, { useState, useEffect } from "react";
 import Member from "./Member";
 import { addUser, fetchAllUser } from "../../apiCaller";
 import { useParams } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useUser } from "../../context/userContext";
 
 const Admin = ({ display }) => {
+  const queryClient = useQueryClient();
   const { id } = useParams();
   const intId = parseInt(id);
-  useEffect(async () => {
-    setMembers(await fetchAllUser(intId))
-  }, [])
-  const [members, setMembers] = useState([]);
-  const listMembers = members.map((member, index) => {
-    return <Member key={index} member={member} setMembers={setMembers} id={intId} />;
-  });
+  const [user] = useUser()
+  const { isLoading: isLoadingMembers, isError: isErrorMembers,
+    error: errorMembers, data: dataMembers, refetch: refetchMembers }
+    = useQuery(["members", intId], () => fetchAllUser({ token, id }))
+  const mutationAddUser = useMutation(addUser, {
+    onSuccess: () => {
+      setNewEmail("");
+      refetchMembers()
+    }
+  })
+
   const [newEmail, setNewEmail] = useState("");
   const [newRole, setNewRole] = useState("member");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      
-      const res = await addUser(newEmail, intId);
-      setMembers(await fetchAllUser(intId))
-      setNewEmail("");
-    }
-    catch (e) {
-      alert(e)
-    }
+    mutationAddUser.mutate({ token, email: newEmail, id: intId })
+
   };
   return (
     <div
-    style={{
+      style={{
         display: display ? "block" : "none",
         flex: 1,
       }}
@@ -64,9 +64,13 @@ const Admin = ({ display }) => {
       <span className="nom">Nom</span>
       <span className="role">Role</span>
       <hr className="bar" />
-      <ul className="list">{listMembers}</ul>
+      {!isLoadingMembers && !isErrorMembers &&
+        <ul className="list">{dataMembers.map((member, index) =>
+          <Member key={index} member={member} id={intId} refetchMembers={refetchMembers} />
+        )}</ul>
+      }
     </div>
-    
+
   );
 };
 

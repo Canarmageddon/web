@@ -1,20 +1,26 @@
-import { useUser } from "./userContext";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useToken, useUser } from "./userContext";
+import { Navigate, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { refresh } from "../apiCaller";
+import updateToken from "../updateTokens";
+import { useQuery } from "react-query";
 export default function RequireAuth() {
     const [user, setUser] = useUser();
-    let location = useLocation();
-    if (user == null || user == "") {
-        // Redirect them to the /login page, but save the current location they were
-        // trying to go to when they were redirected. This allows us to send them
-        // along to that page after they login, which is a nicer user experience
-        // than dropping them off on the home page.
-        return <Navigate to="/" state={{ from: location }} replace={true} />;
+    const [token, setToken] = useToken();
+    const logout = () => {
+        window.localStorage.clear()
+        setToken("")
     }
+    if (user == undefined) {
+        return <Navigate to="/" />
+    }
+
 
     return (
         <>
             <Outlet />
-            <button onClick={() => setUser(null)}>déconnexion</button>
+            <button onClick={() => logout()}>déconnexion</button>
         </>
     );
 }
