@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
-import { useUser } from "../../context/userContext";
 import TrashAlt from "../icons/TrashAlt";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
