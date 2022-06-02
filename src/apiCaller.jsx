@@ -351,6 +351,15 @@ export const deleteTrip = async ({ token, id }) =>
     method: "DELETE",
   }).then((res) => res.json());
 
+export const fetchAllTrips = async (page) =>
+  await fetch(`${url}trips?page=${page}`, {
+    headers: {
+      accept: "application/ld+json",
+    }
+  })
+    .then(res => checkStatus(res))
+    .then(res => res.json())
+
 /* -------------------------------------------*/
 
 export const addDocument = async (token, file, creator, mapElement, name) => {

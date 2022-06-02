@@ -34,7 +34,8 @@ export default function MapGl({
   movingPoi,
   setMovingPoi,
   movingStep,
-  setMovingStep
+  setMovingStep,
+  exploring
 }) {
   const queryClient = useQueryClient();
 
@@ -181,7 +182,63 @@ export default function MapGl({
     });
   }, []);
 
+  /*    user?.map((item) => {
+        lstUser.push(new User(item.id, item.firstname, item.name, item.email));
+      });
+      poi?.map((item) => {
+        lstPoi.push(
+          new Location(
+            item.id,
+            item.description,
+            item.title,
+            item.location.longitude,
+            item.location.latitude,
+            item?.step?.id
+          )
+        );
+      });
+      step?.map((item) =>
+        lstStep.push(
+          new Location(
+            item.id,
+            item.description,
+            "",
+            item.location.longitude,
+            item.location.latitude
+          )
+        )
+      );
+      todoLists?.map((taskList) => {
+        let tasks = [];
+        //  let tasks = new TaskList(taskList.id, taskList.name);
+        taskList?.tasks?.map((item) => {
+          tasks.push(
+            new Task(
+              item.id,
+              item.creator,
+              item.name,
+              item.description,
+              new Date(item.date).toLocaleDateString()
+            )
+          );
+        });
+        lstTodoList.push(new TaskListUtile(taskList?.id, taskList?.name, tasks));
+      });
+      setTaskList(lstTodoList);
+      if (!exploring) setTravelers(lstUser);
+      setPoiSource(new LayerUtile(lstPoi));
+      setRouteSource(new LayerUtile(lstStep));
+      setViewport({
+        latitude: lstStep[lstStep.length - 1]?.latitude,
+        longitude: lstStep[lstStep.length - 1]?.longitude,
+        zoom: 7,
+        bearing: 0,
+        pitch: 0,
+      });
+    }, []);
+    */
   const handleClick = async (e) => {
+    if (exploring) return
     if (movingPoi != null) {
       mutationPoiLocation.mutate({
         token, id: movingPoi, latitude: e.lngLat[1], longitude: e.lngLat[0]
@@ -256,11 +313,11 @@ export default function MapGl({
   if (redirect) navigate("/");
   return (
     <>
-      <LocationFinder
+      {!exploring && <LocationFinder
         typeLocation={typeLocation}
         setTypeLocation={setTypeLocation}
         setEditing={setEditing}
-      />
+      />}
       <ReactMapGL
         ref={_mapRef}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}

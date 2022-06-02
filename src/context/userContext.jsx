@@ -32,8 +32,6 @@ export function UserProvider({ children }) {
     })
 
 
-
-
     return (
         <TokenContext.Provider value={[token, setToken]}>
             <UserContext.Provider value={[user, updateUser]}>
