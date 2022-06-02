@@ -6,6 +6,7 @@ import { deleteStep } from "../apiCaller";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Tabs, Tab } from "react-bootstrap";
 import PoiInformation from "../mapHandler/PoiInformation";
+import TrashAlt from "./icons/TrashAlt";
 
 export default function ({ display, setContentPage }) {
   const [poi, setPoi] = usePoi();
@@ -54,16 +55,7 @@ export default function ({ display, setContentPage }) {
                 marginTop: 10,
               }}
             />
-            <FontAwesomeIcon
-              icon={faTrashAlt}
-              onClick={() => handleDeleteStep(step.id)}
-              style={{
-                backgroundColor: "white",
-                color: "#000000",
-                marginLeft: 30,
-                marginTop: 10,
-              }}
-            />
+            {TrashAlt(handleDeleteStep, step.id)}
             {currentRoute == step.id && (
               <div style={{ marginLeft: "2rem" }}>
                 {currentPoi.map((e) => (
@@ -83,16 +75,8 @@ export default function ({ display, setContentPage }) {
                         marginTop: 10,
                       }}
                     />
-                    <FontAwesomeIcon
-                      icon={faTrashAlt}
-                      onClick={() => handleDeleteStep(step.id)}
-                      style={{
-                        backgroundColor: "white",
-                        color: "#000000",
-                        marginLeft: 30,
-                        marginTop: 10,
-                      }}
-                    />{" "}
+
+                    {TrashAlt(handleDeletePoi, e.id)}
                   </div>
                 ))}
               </div>

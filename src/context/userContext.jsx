@@ -34,7 +34,6 @@ export function UserProvider({ children }) {
 
     useEffect(async () => {
         if (token != "" && token != null) {
-            console.log("here")
             const res = await refresh(window.localStorage.getItem("refresh_token"))
             updateToken({ setToken, token: res.token, refresh_token: res.refresh_token })
             const whoami = await whoAmI(token)
