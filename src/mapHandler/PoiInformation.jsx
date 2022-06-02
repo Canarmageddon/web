@@ -7,6 +7,9 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "../style/destinationInput.css";
 import { deletePoi, getDocument, getDocumentsFromPoi, updatePoi } from "../apiCaller";
 import FileUploader from "./FileUploader";
+import { useMutation, useQueryClient } from "react-query";
+import { useToken } from "../context/userContext";
+import { useParams } from "react-router-dom";
 const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
   const [poi, setpoi] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
@@ -15,7 +18,9 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
   const [description, setDescription] = useState("");
   const [file, setFile] = useState([]);
   const [selectedStep, setSelectedStep] = useState("");
-
+  const queryCLient = useQueryClient()
+  const [token] = useToken()
+  const { id } = useParams()
   useEffect(() => {
     setCurrentPoi(poi.getItemById(poiId));
   }, [poi, poiId]);
@@ -26,18 +31,35 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
   }, [currentPoi]);
 
   const handleClick = async () => {
-    currentPoi.title = title;
-    currentPoi.description = description;
-    currentPoi.step = selectedStep;
-    setpoi(poi.updateItem(currentPoi));
-    setContentPage("map");
+    mutationUpdatePoi.mutate({
+      token, id: currentPoi.id, title, description, selectedStep
+    })
     updatePoi(currentPoi.id, title, description, selectedStep);
   };
+  const mutationUpdatePoi = useMutation(updatePoi, {
+    onMutate: () => {
+      currentPoi.title = title;
+      currentPoi.description = description;
+      currentPoi.step = selectedStep;
+      setpoi(poi.updateItem(currentPoi));
+      setContentPage("map");
+    },
+    onSettled: () => {
+      queryCLient.invalidateQueries(["poi", id])
+    }
+  })
+  const mutationDeletePoi = useMutation(deletePoi, {
+    onMutate: () => {
+      setpoi(poi.removeItem(poiId));
+      setContentPage("map");
+    },
+    onSettled: (data) => {
+      queryCLient.invalidateQueries(["poi", id])
+    }
+  })
 
   const handleDelete = async () => {
-    setpoi(poi.removeItem(poiId));
-    setContentPage("map");
-    await deletePoi(poiId);
+    mutationDeletePoi.mutate({ token, id: currentPoi.id })
   };
   const handleChange = (e) => {
     setSelectedStep(e.target.value);

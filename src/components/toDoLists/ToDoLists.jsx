@@ -11,20 +11,21 @@ import { createTodoList, fetchTodoLists } from "../../apiCaller";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import Task from "../../factory/lists/Task";
+import { useToken } from "../../context/userContext";
 const ToDoLists = ({ display }) => {
   const { id } = useParams();
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
   const [taskList, setTaskList] = useTaskList();
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const [token] = useToken()
   const queryClient = useQueryClient();
   const {
     isLoading: isLoadingToDoLists,
     isError: isErrorToDoLists,
     error: errorToDoLists,
     data: dataToDoLists,
-  } = useQuery(["toDoLists", id], () => fetchTodoLists(id), {
+  } = useQuery(["toDoLists", id], () => fetchTodoLists({ token, id }), {
     onSuccess: (data) => {
       let lstTodoList = [];
       data?.map((taskList) => {
@@ -48,7 +49,7 @@ const ToDoLists = ({ display }) => {
   });
 
   const mutationAddToDoList = useMutation(createTodoList, {
-    onMutate: (data) => {},
+    onMutate: (data) => { },
     onSettled: () => {
       queryClient.invalidateQueries(["toDoLists", id]);
     },
@@ -61,7 +62,7 @@ const ToDoLists = ({ display }) => {
         setTitle("");
         setShowForm(false);
         setCurrentIndex(taskList.length);
-        mutationAddToDoList.mutate({ title, id });
+        mutationAddToDoList.mutate({ token, title, id });
       }
     }
   };

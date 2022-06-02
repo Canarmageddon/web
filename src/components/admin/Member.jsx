@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { deleteUser, fetchAllUser, removeUser } from "../../apiCaller";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useToken } from "../../context/userContext";
 export default function Member({ member, id, refetchMembers }) {
     const queryClient = useQueryClient()
     const [role, setRole] = useState(member.role);
+    const [token] = useToken()
+
     const mutationRemoveUser = useMutation(removeUser, {
         onSuccess: () => refetchMembers()
 
@@ -14,7 +17,7 @@ export default function Member({ member, id, refetchMembers }) {
         }
     };
     const handleClick = async (email) => {
-        mutationRemoveUser.mutate({ email, id })
+        mutationRemoveUser.mutate({ token, email, id })
     }
     return <li key={member.user.name}>
         {member.user.firstName} {member.user.lastName}

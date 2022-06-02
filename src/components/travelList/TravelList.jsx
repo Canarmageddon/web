@@ -7,40 +7,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
-import { useQuery } from "react-query";
-import { useUser } from "../../context/userContext";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useToken, useUser } from "../../context/userContext";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [lstTrips, setLstTrips] = useState([]);
-  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery("trips", fetchTravels, {
+  const [user] = useUser()
+  const [token] = useToken()
+
+  const queryClient = useQueryClient()
+  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery("trips", () => fetchTravels({ token, id: user }), {
     staleTime: 60 * 1000
   })
-  /*   useEffect(async () => {
-      const data = await fetchTravels();
-      let res = [];
-      data.map((d) => {
-        res.push({
-          id: d.id,
-          name: d.name,
-          start: d.travels[0]?.start?.name,
-          end: d.travels[d.travels.length - 1]?.end?.name,
-        });
-  const [user] = useUser()
-      });
-  
-      setLstTrips(res);
-    }, []);
-   */
+
   const handleClick = (t) => {
     navigate(`/home/map/${t.id}`);
   };
+  const mutationDeleteTrip = useMutation(deleteTrip, {
+    onSettled: () => {
+      queryClient.invalidateQueries("trips")
+    }
+  })
 
   const handleDelete = async (event, t) => {
     event.stopPropagation();
-    setLstTrips((oldList) => oldList.filter((trip) => trip.id !== t.id));
-    await deleteTrip(t.id);
+    mutationDeleteTrip.mutate({ token, id: t.id })
   };
 
   const displayLstTravel = () => {

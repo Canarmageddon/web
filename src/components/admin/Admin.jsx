@@ -3,14 +3,16 @@ import Member from "./Member";
 import { addUser, fetchAllUser } from "../../apiCaller";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useUser } from "../../context/userContext";
 
 const Admin = ({ display }) => {
   const queryClient = useQueryClient();
   const { id } = useParams();
   const intId = parseInt(id);
+  const [user] = useUser()
   const { isLoading: isLoadingMembers, isError: isErrorMembers,
     error: errorMembers, data: dataMembers, refetch: refetchMembers }
-    = useQuery(["members", intId], () => fetchAllUser(id))
+    = useQuery(["members", intId], () => fetchAllUser({ token, id }))
   const mutationAddUser = useMutation(addUser, {
     onSuccess: () => {
       setNewEmail("");
@@ -22,7 +24,7 @@ const Admin = ({ display }) => {
   const [newRole, setNewRole] = useState("member");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    mutationAddUser.mutate({ email: newEmail, id: intId })
+    mutationAddUser.mutate({ token, email: newEmail, id: intId })
 
   };
   return (
