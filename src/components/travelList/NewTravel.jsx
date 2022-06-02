@@ -4,11 +4,13 @@ import { useState } from "react";
 import { createTrip } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
+import { useToken } from "../../context/userContext";
 export default function ({ lstTrips, setLstTrips }) {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const handleClose = () => setShow(false);
   const queryClient = useQueryClient()
+  const [token] = useToken()
   const handleShow = () => {
     setName("");
     setShow(true);
@@ -29,16 +31,6 @@ export default function ({ lstTrips, setLstTrips }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     mutationNewTrip.mutate({ token, name })
-    /*     const newTrip = await createTrip(name);
-        setLstTrips([
-          ...lstTrips,
-          {
-            id: newTrip.id,
-            name: newTrip.name,
-            start: newTrip.travels[0]?.start?.name,
-            end: newTrip.travels[newTrip.travels.length - 1]?.end?.name,
-          },
-        ]); */
   };
   return (
     <>

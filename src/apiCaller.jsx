@@ -317,10 +317,11 @@ export const deleteTravel = async (id) =>
 
 /* ------------ TRIP -----------------------*/
 
-export const createTrip = async (name) => {
+export const createTrip = async ({ token, name }) => {
   return await fetch(`${url}trips/new`, {
     method: "POST",
     headers: {
+      "Authorization": `Bearer ${token}`,
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
     },
