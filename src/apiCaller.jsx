@@ -290,7 +290,7 @@ export const deleteTask = async ({ token, id }) =>
 
 /* ------------ TRAVEL -----------------------*/
 
-export const fetchTravels = async (token, id) =>
+export const fetchTravels = async ({ token, id }) =>
   await fetch(`${url}users/${id}/trips`, {
     headers: {
       "Authorization": `Bearer ${token}`,
