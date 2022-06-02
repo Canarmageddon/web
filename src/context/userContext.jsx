@@ -15,12 +15,15 @@ export function useToken() {
 
 export function UserProvider({ children }) {
     const [user, setUser] = useState(undefined);
-    const [token, setToken] = useState(window.localStorage.getItem("token"))
     const updateUser = (newUser) => {
         setUser(newUser);
     }
-    const { isLoading } = useQuery("whoami", async () => {
+    const [token, setToken] = useState(window.localStorage.getItem("token"))
+
+
+    useEffect(async () => {
         if (token != "" && token != null) {
+            console.log("here")
             const res = await refresh(window.localStorage.getItem("refresh_token"))
             updateToken({ setToken, token: res.token, refresh_token: res.refresh_token })
             const whoami = await whoAmI(token)
@@ -29,14 +32,13 @@ export function UserProvider({ children }) {
         else {
             setUser(undefined)
         }
-    })
-    console.log(isLoading)
+    }, [token])
 
 
     return (
         <TokenContext.Provider value={[token, setToken]}>
             <UserContext.Provider value={[user, updateUser]}>
-                {isLoading ? <p>loading</p> : children}
+                {children}
             </UserContext.Provider>
         </TokenContext.Provider>
     );

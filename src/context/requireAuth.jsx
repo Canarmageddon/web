@@ -16,9 +16,7 @@ export default function RequireAuth() {
         return <Navigate to="/" />
     }
 
-    const { isLoading, isError, error, data } = useQuery("refresh", refresh, {
-        refetchInterval: 55 * 60 * 1000 //refresh toutes les 55 minutes
-    })
+
     return (
         <>
             <Outlet />

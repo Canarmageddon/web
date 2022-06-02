@@ -52,16 +52,7 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
           icon={faTimesCircle}
           size="lg"
           onClick={() => {
-            mutationDeleteTodoList.mutate(toDoList.id);
-            /* setToDoLists((oldLists) => {
-              deleteTodoList(toDoList.id);
-              const index = oldLists.findIndex((ol) => ol.id === toDoList?.id);
-              if (index !== -1) {
-                oldLists.splice(index, 1);
-              }
-
-              return [...oldLists];
-            }); */
+            mutationDeleteTodoList.mutate({ token, id: toDoList }.id);
           }}
         />
         <FontAwesomeIcon
@@ -90,7 +81,7 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
             <Button
               onClick={() => {
                 if (title !== "") {
-                  mutationAddTask.mutate({ title, id: toDoList.id, date });
+                  mutationAddTask.mutate({ token, title, id: toDoList.id, date });
                   setTitle("");
                   setDate("");
                   setShowForm(false);
@@ -118,7 +109,7 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
                 icon={faTimesCircle}
                 size="lg"
                 onClick={() => {
-                  mutationDeleteTask.mutate(t.id);
+                  mutationDeleteTask.mutate({ token, id: t.id });
                 }}
                 style={{ position: "absolute", right: 5 }}
               />

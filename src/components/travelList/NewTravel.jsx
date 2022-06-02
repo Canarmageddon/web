@@ -28,7 +28,7 @@ export default function ({ lstTrips, setLstTrips }) {
   })
   const handleSubmit = async (e) => {
     e.preventDefault();
-    mutationNewTrip.mutate(name)
+    mutationNewTrip.mutate({ token, name })
     /*     const newTrip = await createTrip(name);
         setLstTrips([
           ...lstTrips,

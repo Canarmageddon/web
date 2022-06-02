@@ -24,7 +24,7 @@ mapboxgl.workerClass =
 import LocationFinder from "./LocationFinder";
 import TaskListUtile from "../factory/lists/TaskListUtile";
 import { useTaskList } from "../context/TravelContext";
-import { useUser } from "../context/userContext";
+import { useUser, useToken } from "../context/userContext";
 export default function MapGl({
   setContentPage,
   contentPage,
@@ -48,6 +48,7 @@ export default function MapGl({
   const [taskList, setTaskList] = useTaskList();
   const [height, setHeight] = useState("100%");
   const [width, setWidth] = useState("100%");
+  const [token] = useToken()
   const [viewport, setViewport] = useState({
     latitude: 48.85837,
     longitude: 2.294481,
@@ -62,7 +63,7 @@ export default function MapGl({
     isError: isErrorSteps,
     error: errorSteps,
     data: dataSteps,
-  } = useQuery(["steps", id], () => fetchSteps(id), {
+  } = useQuery(["steps", id], () => fetchSteps(token, id), {
     retry: false,
     onSuccess: (data) => {
       let lstStep = [];
@@ -86,9 +87,10 @@ export default function MapGl({
     isError: isErrorPoi,
     error: errorPoi,
     data: dataPoi,
-  } = useQuery(["poi", id], () => fetchPois(id), {
+  } = useQuery(["poi", id], () => fetchPois(token, id), {
     retry: false,
     onSuccess: (data) => {
+      "here"
       let lstPoi = [];
       data.map((item) => {
         lstPoi.push(
@@ -148,6 +150,22 @@ export default function MapGl({
       queryClient.invalidateQueries(["poi", id]);
     },
   });
+  const mutationPoiLocation = useMutation(movePoi, {
+    onMutate: () => {
+      setMovingPoi(null)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["poi", id]);
+    },
+  })
+  const mutationStepLocation = useMutation(moveStep, {
+    onMutate: () => {
+      setMovingStep(null)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["step", id]);
+    },
+  })
 
   useEffect(() => {
     const map = _mapRef.current.getMap();
@@ -163,93 +181,22 @@ export default function MapGl({
     });
   }, []);
 
-  /*   useEffect(async () => {
-      const tripData = await fetchTripById(id);
-      if (tripData == -1) {
-        setRedirect(true)
-      }
-      const user = tripData.travelers;
-      const poi = tripData.pointsOfInterest;
-      const step = tripData.steps;
-      const todoLists = tripData.toDoLists;
-      //const poi = await fetchPointOfInterest();
-      //const step = await fetchStep();
-      let lstUser = [];
-      let lstPoi = [];
-      let lstStep = [];
-      let lstTodoList = [];
-      window.addEventListener("resize", () => {
-        setWidth("100%");
-        setHeight("100%");
-      });
-  
-      user?.map((item) => {
-        lstUser.push(new User(item.id, item.firstname, item.name, item.email));
-      });
-      poi?.map((item) => {
-        lstPoi.push(
-          new Location(
-            item.id,
-            item.description,
-            item.title,
-            item.location.longitude,
-            item.location.latitude,
-            item?.step?.id
-          )
-        );
-      });
-      step?.map((item) =>
-        lstStep.push(
-          new Location(
-            item.id,
-            item.description,
-            "",
-            item.location.longitude,
-            item.location.latitude
-          )
-        )
-      );
-      todoLists?.map((taskList) => {
-        let tasks = [];
-        //  let tasks = new TaskList(taskList.id, taskList.name);
-        taskList?.tasks?.map((item) => {
-          tasks.push(
-            new Task(
-              item.id,
-              item.creator,
-              item.name,
-              item.description,
-              new Date(item.date).toLocaleDateString()
-            )
-          );
-        });
-        lstTodoList.push(new TaskListUtile(taskList?.id, taskList?.name, tasks));
-      });
-      setTaskList(lstTodoList);
-      setTravelers(lstUser);
-      setPoiSource(new LayerUtile(lstPoi));
-      //setRouteSource(new LayerUtile(lstStep));
-      setViewport({
-        latitude: lstStep[lstStep.length - 1]?.latitude,
-        longitude: lstStep[lstStep.length - 1]?.longitude,
-        zoom: 7,
-        bearing: 0,
-        pitch: 0,
-      });
-    }, []); */
   const handleClick = async (e) => {
     if (movingPoi != null) {
-      movePoi(movingPoi, e.lngLat[1], e.lngLat[0])
-      setMovingPoi(null);
+      mutationPoiLocation.mutate({
+        token, id: movingPoi, latitude: e.lngLat[1], longitude: e.lngLat[0]
+      })
       return
     }
     if (movingStep != null) {
-      moveStep(movingStep, e.lngLat[1], e.lngLat[0])
-      setMovingStep(null);
+      mutationStepLocation.mutate({
+        token, id: movingStep, latitude: e.lngLat[1], longitude: e.lngLat[0]
+      })
       return
     }
     if (!editing) {
       if (e.features[0] != undefined) {
+
         if (e.features[0].source === typeLocation) {
           if (typeLocation === "poi") {
             setContentPage("poiInfo");
@@ -269,37 +216,13 @@ export default function MapGl({
     if (contentPage === "poiInfo") {
       setContentPage("map");
     } else if (typeLocation === "poi") {
-      mutationPoi.mutate({ latitude: e.lngLat[1], longitude: e.lngLat[0], id });
-      /*   let newPoi = await createPoi(e.lngLat[1], e.lngLat[0], id);
-        setPoiSource(
-          poiSource.addItem(
-            new Location(
-              newPoi.id,
-              "",
-              "",
-              newPoi.location.longitude,
-              newPoi.location.latitude
-            )
-          )
-        ); */
+      mutationPoi.mutate({
+        token, latitude: e.lngLat[1], longitude: e.lngLat[0], id, creator: user
+      });
     } else {
       mutationStep.mutate({
-        latitude: e.lngLat[1],
-        longitude: e.lngLat[0],
-        id,
+        token, latitude: e.lngLat[1], longitude: e.lngLat[0], id, creator: user
       });
-      /*       let newStep = await createStep(e.lngLat[1], e.lngLat[0], id);
-            setRouteSource(
-              routeSource.addItem(
-                new Location(
-                  routeSource.newId,
-                  "",
-                  "",
-                  newStep.location.longitude,
-                  newStep.location.latitude
-                )
-              )
-            ); */
     }
   };
 

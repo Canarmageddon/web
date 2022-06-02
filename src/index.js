@@ -24,7 +24,7 @@ const AppStart = () => {
     <React.StrictMode>
       <QueryClientProvider client={queryClient} contextSharing={true}>
         <App />
-        <ReactQueryDevtools initialIsOpen={true} />
+        <ReactQueryDevtools />
       </QueryClientProvider>
     </React.StrictMode>
   );

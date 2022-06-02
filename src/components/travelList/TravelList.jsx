@@ -7,26 +7,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
-import { useQuery } from "react-query";
-import { useUser } from "../../context/userContext";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useToken, useUser } from "../../context/userContext";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [lstTrips, setLstTrips] = useState([]);
   const [user] = useUser()
-  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery("trips", () => fetchTravels(user), {
+  const [token] = useToken()
+
+  const queryClient = useQueryClient()
+  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery("trips", () => fetchTravels({ token, id: user }), {
     staleTime: 60 * 1000
   })
 
   const handleClick = (t) => {
     navigate(`/home/map/${t.id}`);
   };
+  const mutationDeleteTrip = useMutation(deleteTrip, {
+    onSettled: () => {
+      queryClient.invalidateQueries("trips")
+    }
+  })
 
   const handleDelete = async (event, t) => {
     event.stopPropagation();
-    setLstTrips((oldList) => oldList.filter((trip) => trip.id !== t.id));
-    await deleteTrip(t.id);
+    mutationDeleteTrip.mutate({ token, id: t.id })
   };
 
   const displayLstTravel = () => {
