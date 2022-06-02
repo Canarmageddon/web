@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Tab } from "react-bootstrap";
+import { Tabs, Tab, Button } from "react-bootstrap";
 import { fetchTravels, deleteTrip } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -115,6 +115,7 @@ const TravelsList = () => {
       }}
     >
       <h1 className="list-title">Voyages</h1>
+      <Button onClick={() => navigate("/home/explore/list")}>Explorer</Button>
       <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
       <hr style={{ marginBottom: 5 + "px" }} />
       <Tabs

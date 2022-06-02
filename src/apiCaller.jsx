@@ -353,7 +353,6 @@ export const fetchAllTrips = async (page) =>
   await fetch(`${url}trips?page=${page}`, {
     headers: {
       accept: "application/ld+json",
-
     }
   })
     .then(res => checkStatus(res))
