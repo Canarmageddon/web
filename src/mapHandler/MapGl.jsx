@@ -251,38 +251,47 @@ export default function MapGl({
       })
       return
     }
-    if (!editing) {
-      if (e.features[0] != undefined) {
+    if (contentPage == "poiInfo" || contentPage == "stepInfo") {
+      setContentPage("map")
+      return
+    }
 
-        if (e.features[0].source === typeLocation) {
-          if (typeLocation === "poi") {
-            setContentPage("poiInfo");
-            setPoiId(e.features[0].id);
-          } else {
-            //TODO(Gautier) Show Route details
-            setContentPage("stepInfo");
-            setStepId(e.features[0].id);
-            //            setRouteSource(routeSource.removeItem(e.features[0].id));
-          }
-          return;
-        }
-      }
-      setContentPage("map");
+    if (!editing) {
+      displayMapElement(e)
       return;
     }
-    if (contentPage === "poiInfo") {
-      setContentPage("map");
-    } else if (typeLocation === "poi") {
-      mutationPoi.mutate({
-        token, latitude: e.lngLat[1], longitude: e.lngLat[0], id, creator: user
-      });
-    } else {
-      mutationStep.mutate({
-        token, latitude: e.lngLat[1], longitude: e.lngLat[0], id, creator: user
-      });
+    if (editing && !displayMapElement(e)) {
+      if (contentPage === "poiInfo") {
+        setContentPage("map");
+      } else if (typeLocation === "poi") {
+        mutationPoi.mutate({
+          token, latitude: e.lngLat[1], longitude: e.lngLat[0], id, creator: user
+        });
+      } else {
+        mutationStep.mutate({
+          token, latitude: e.lngLat[1], longitude: e.lngLat[0], id, creator: user
+        });
+      }
     }
   };
-
+  const displayMapElement = (e) => {
+    if (e.features[0] != undefined) {
+      if (e.features[0].source === typeLocation) {
+        if (typeLocation === "poi") {
+          setContentPage("poiInfo");
+          setPoiId(e.features[0].id);
+          return true
+        } else {
+          //TODO(Gautier) Show Route details
+          setContentPage("stepInfo");
+          setStepId(e.features[0].id);
+          return true;
+          //            setRouteSource(routeSource.removeItem(e.features[0].id));
+        }
+      }
+      return false;
+    }
+  }
   const poiLayer = {
     id: "places",
     type: "symbol",
