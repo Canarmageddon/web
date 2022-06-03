@@ -26,6 +26,7 @@ import ExploreTrips from "./explore/ExploreTrips";
 import ExploringNavBar from "./components/navBar/ExploringNavBar";
 import ExploreRoute from "./explore/ExploreRoute";
 import ExploringMapNavBar from "./components/navBar/ExploringMapNavBar";
+import Album from "./album/Album";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
@@ -44,7 +45,7 @@ function App() {
             <Route path='/' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/home/' element={<RequireAuth />}>
-              <Route path='album/:id' element={<p></p>} />
+              <Route path='album/:id' element={<Album />} />
               <Route path='explore/' element={<ExploreRoute />}>
                 <Route path='list' element={<ExploreTrips />} />
                 <Route
