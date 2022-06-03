@@ -11,6 +11,7 @@ import { useToken } from "../../context/userContext";
 import updateToken from "../../updateTokens";
 import { useQueryClient } from "react-query";
 import { toast } from "react-toastify";
+import { validateEmail } from "../../Functions";
 
 const Login = () => {
   const invalidEmail = () =>
@@ -32,14 +33,6 @@ const Login = () => {
   if (user != "" && user != null) {
     return <Navigate to="/home/trips" replace={true} />;
   }
-
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
 
   return (
     <form

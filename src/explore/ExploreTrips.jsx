@@ -1,16 +1,12 @@
-import { Tab } from "bootstrap";
 import React, { useEffect, useState } from "react";
-import { Tabs } from "react-bootstrap";
 import { fetchAllTrips } from "../apiCaller";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPlusCircle,
   faAngleDoubleLeft,
   faAngleDoubleRight,
   faAngleRight,
   faAngleLeft,
-  faDownload,
   faAdd,
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
