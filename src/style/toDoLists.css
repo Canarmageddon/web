@@ -14,7 +14,6 @@
 .add-list-input {
     color: rgb(13, 110, 253, 1);
     flex: 0.1;
-    margin-bottom: 20px; 
     width: auto;
     height: 60px;
     transition: left 5s;

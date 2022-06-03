@@ -50,7 +50,6 @@ export default class LayerUtile {
 
   getPoiByStep(id) {
     let lstPoi = [];
-    console.log(this);
     for (let i = 0; i < this.listLocations.length; i++) {
       if (this.listLocations[i].step == id) lstPoi.push(this.listLocations[i]);
     }

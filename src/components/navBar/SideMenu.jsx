@@ -9,21 +9,20 @@ const SideMenu = ({ setContentPage, showMenu }) => {
 
   return (
     <div className="sidenav" style={{ width: showMenu ? 200 : 0 }}>
-      <a onClick={() => setContentPage("map")}>Carte</a>
-      <a onClick={() => setContentPage("toDoLists")}>Listes de tâches</a>
-      <a onClick={() => setContentPage("admin")}>Administration</a>
-      <a onClick={() => setContentPage("details")}>Details</a>
       <FontAwesomeIcon
         icon={faArrowLeft}
-        onClick={() => navigate('/trips')}
+        onClick={() => navigate("/trips")}
         size="2x"
         style={{
-          backgroundColor: "white",
-          color: "#dc3545",
+          color: "red",
           marginLeft: 30,
           marginTop: 10,
         }}
       />
+      <a onClick={() => setContentPage("map")}>Carte</a>
+      <a onClick={() => setContentPage("toDoLists")}>Listes de tâches</a>
+      <a onClick={() => setContentPage("admin")}>Administration</a>
+      <a onClick={() => setContentPage("details")}>Details</a>
     </div>
   );
 };

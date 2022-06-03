@@ -6,6 +6,7 @@ import { deleteStep } from "../apiCaller";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Tabs, Tab } from "react-bootstrap";
 import PoiInformation from "../mapHandler/PoiInformation";
+import TrashAlt from "./icons/TrashAlt";
 
 export default function ({ display, setContentPage }) {
   const [poi, setPoi] = usePoi();
@@ -37,26 +38,16 @@ export default function ({ display, setContentPage }) {
     >
       {route.listLocations.map((step) => {
         return (
-          <div key={step.id}>
+          <div
+            key={step.id}
+            onClick={() => handleClick(step.id)}
+            style={{ cursor: "pointer" }}
+          >
             {" "}
             {step.description}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className="bi bi-triangle-fill"
-              viewBox="0 0 16 16"
-              onClick={() => handleClick(step.id)}
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"
-              />
-            </svg>
             <FontAwesomeIcon
-              icon={faTrashAlt}
-              onClick={() => handleDeleteStep(step.id)}
+              icon={faPen}
+              onClick={() => setContentPage("stepInfo")}
               style={{
                 backgroundColor: "white",
                 color: "#000000",
@@ -64,8 +55,9 @@ export default function ({ display, setContentPage }) {
                 marginTop: 10,
               }}
             />
+            {TrashAlt(handleDeleteStep, step.id)}
             {currentRoute == step.id && (
-              <div>
+              <div style={{ marginLeft: "2rem" }}>
                 {currentPoi.map((e) => (
                   <div
                     style={{ display: "flex", flexDirection: "row" }}
@@ -83,16 +75,8 @@ export default function ({ display, setContentPage }) {
                         marginTop: 10,
                       }}
                     />
-                    <FontAwesomeIcon
-                      icon={faTrashAlt}
-                      onClick={() => handleDeleteStep(step.id)}
-                      style={{
-                        backgroundColor: "white",
-                        color: "#000000",
-                        marginLeft: 30,
-                        marginTop: 10,
-                      }}
-                    />{" "}
+
+                    {TrashAlt(handleDeletePoi, e.id)}
                   </div>
                 ))}
               </div>

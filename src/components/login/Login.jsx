@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
-
+import { useUser } from "../../context/userContext";
+import { checkCredentials } from "../../apiCaller";
+import { useToken } from "../../context/userContext";
+import updateToken from "../../updateTokens";
+import { useQueryClient } from "react-query";
 const Login = () => {
   const navigate = useNavigate();
+  const [token, setToken] = useToken();
+  const [user, setUser] = useUser();
   const [email, setEmail] = useState("");
+  const [rememberMe, setRememberMe] = useState(false)
   const [password, setPassword] = useState("");
-  const [allUsers, setAllUsers] = useState([]);
   const [showLockIcon, setShowLockIcon] = useState(true);
   const [showUserIcon, setShowUserIcon] = useState(true);
-
+  const queryClient = useQueryClient();
+  if (user != "" && user != null) {
+    return <Navigate to="/home/trips" replace={true} />
+  }
   return (
     <form
       style={{
@@ -83,6 +92,11 @@ const Login = () => {
           justifyContent: "space-around",
         }}
       >
+        <label>
+          Rester connecter
+          <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(!rememberMe)}>
+          </input>
+        </label>
         <Button type="button" size="sm" onClick={checkConnexionInfo}>
           Se connecter
         </Button>
@@ -101,20 +115,13 @@ const Login = () => {
     </form>
   );
 
-  function checkConnexionInfo() {
-    let isConnected = false;
-
-    allUsers.map((user) => {
-      if (user.name === email && user.password === password) {
-        setCurrentUser(user);
-        isConnected = true;
-      }
-    });
-
-    if (isConnected) {
-      //navigate("/");
-    } else {
-      alert("incorrect email/password");
+  async function checkConnexionInfo() {
+    try {
+      const tokens = await checkCredentials(email, password)
+      await updateToken({ setToken, token: tokens.token, refresh_token: tokens.refresh_token })
+      queryClient.invalidateQueries('whoami')
+    } catch (error) {
+      console.log(error)
     }
   }
 };
