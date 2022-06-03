@@ -4,7 +4,7 @@ const url = process.env.REACT_APP_DATABASE_URL;
 
 export const fetchSteps = async (token, id) =>
   await fetch(`${url}trips/${id}/steps`, {
-    headers: { "Authorization": `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
@@ -15,7 +15,7 @@ export const createStep = async ({ token, latitude, longitude, id, creator }) =>
     headers: {
       accept: "applicaiton/ld+json",
       "Content-Type": "applicaiton/ld+json",
-      "Authorization": `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       longitude,
@@ -26,7 +26,8 @@ export const createStep = async ({ token, latitude, longitude, id, creator }) =>
   }).then((res) => res.json());
 
 export const deleteStep = async (id) =>
-  await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res => checkStatus(res))
+  await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res) =>
+    checkStatus(res)
   );
 
 export const moveStep = async (id, latitude, longitude) => {
@@ -44,7 +45,7 @@ export const moveStep = async (id, latitude, longitude) => {
 };
 export const getDocumentsFromStep = async (token, id) =>
   await fetch(`${url}steps/${id}/documents`, {
-    headers: { "Authorization": `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
@@ -55,26 +56,30 @@ export const getDocumentsFromStep = async (token, id) =>
 
 export const fetchPois = async (token, id) =>
   await fetch(`${url}trips/${id}/poi`, {
-    headers: { "Authorization": `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
 export const deletePoi = async ({ token, id }) =>
   await fetch(`${url}point_of_interests/${id}`, {
-    "Authorization": `Bearer ${token}`,
-    method: "DELETE"
-  }).then(
-    (res) => checkStatus(res)
-  );
+    Authorization: `Bearer ${token}`,
+    method: "DELETE",
+  }).then((res) => checkStatus(res));
 
-export const createPoi = async ({ token, latitude, longitude, id, creator }) => {
+export const createPoi = async ({
+  token,
+  latitude,
+  longitude,
+  id,
+  creator,
+}) => {
   return await fetch(`${url}point_of_interests/new`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       longitude,
@@ -91,7 +96,7 @@ export const movePoi = async ({ token, id, latitude, longitude }) => {
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       longitude,
@@ -106,7 +111,7 @@ export const updatePoi = async ({ token, id, title, description, step }) => {
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       title,
@@ -118,7 +123,7 @@ export const updatePoi = async ({ token, id, title, description, step }) => {
 
 export const getDocumentsFromPoi = async (token, id) =>
   await fetch(`${url}point_of_interests/${id}/documents`, {
-    headers: { "Authorization": `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
@@ -140,9 +145,9 @@ export const signup = async (email, password, firstName, lastName) =>
       firstName,
       lastName,
     }),
-  }).then(res => checkStatus(res))
+  })
+    .then((res) => checkStatus(res))
     .then((res) => res.json());
-
 
 export const checkCredentials = async (email, password) => {
   return await fetch(`${url}login`, {
@@ -152,15 +157,18 @@ export const checkCredentials = async (email, password) => {
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({ email, password }),
-  }).then(res => checkStatus(res))
-    .then((res) => checkStatus(res)).then(res => res.json())
-
-}
+  })
+    .then((res) => checkStatus(res))
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
+};
 
 export const whoAmI = async (token) =>
   await fetch(`${url}whoami`, {
-    headers: { "Authorization": `Bearer ${token}` },
-  }).then(res => checkStatus(res)).then(res => res.json())
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 export const refresh = async (refresh_token) => {
   return await fetch(`${url}token/refresh`, {
@@ -169,29 +177,30 @@ export const refresh = async (refresh_token) => {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
     },
-    body: JSON.stringify({ refresh_token })
-  }).then(res => checkStatus(res)).then(res => res.json())
-}
+    body: JSON.stringify({ refresh_token }),
+  })
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
+};
 export const fetchAllUser = async ({ token, id }) =>
   await fetch(`${url}trips/${id}/users`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
-    }
+      Authorization: `Bearer ${token}`,
+    },
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
 export const addUser = async ({ token, email, id }) => {
-  return await fetch(`${url}trips/addUser`, {
-    method: "POST",
+  return await fetch(`${url}trips/${id}/addUser`, {
+    method: "PUT",
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       email,
-      trip: id,
     }),
   })
     .then((res) => checkStatus(res))
@@ -199,13 +208,12 @@ export const addUser = async ({ token, email, id }) => {
 };
 
 export const removeUser = async ({ token, email, id }) => {
-  return await fetch(`${url}trips/removeUser`, {
-    method: "POST",
+  return await fetch(`${url}trips/${id}/removeUser`, {
+    method: "PUT",
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
-      "Authorization": `Bearer ${token}`,
-
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       email: email,
@@ -217,12 +225,10 @@ export const removeUser = async ({ token, email, id }) => {
 export const deleteUser = async (token, id) =>
   await fetch(`${url}users/${id}`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
-    method: "DELETE"
-  }).then((res) =>
-    res.json()
-  );
+    method: "DELETE",
+  }).then((res) => res.json());
 
 /* -------------------------------------------*/
 
@@ -231,8 +237,8 @@ export const deleteUser = async (token, id) =>
 export const fetchTodoLists = async ({ token, id }) => {
   return await fetch(`${url}trips/${id}/toDoLists`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
-    }
+      Authorization: `Bearer ${token}`,
+    },
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
@@ -244,7 +250,7 @@ export const createTodoList = async ({ token, title, id }) => {
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       name: title,
@@ -256,9 +262,9 @@ export const createTodoList = async ({ token, title, id }) => {
 export const deleteTodoList = async ({ token, id }) =>
   await fetch(`${url}to_do_lists/${id}`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
-    method: "DELETE"
+    method: "DELETE",
   });
 
 export const createTask = async ({ token, title, id, date, creator }) =>
@@ -267,7 +273,7 @@ export const createTask = async ({ token, title, id, date, creator }) =>
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       name: title,
@@ -281,9 +287,9 @@ export const createTask = async ({ token, title, id, date, creator }) =>
 export const deleteTask = async ({ token, id }) =>
   await fetch(`${url}tasks/${id}`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
-    method: "DELETE"
+    method: "DELETE",
   });
 
 /* -------------------------------------------*/
@@ -293,8 +299,8 @@ export const deleteTask = async ({ token, id }) =>
 export const fetchTravels = async ({ token, id }) =>
   await fetch(`${url}users/${id}/trips`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
-    }
+      Authorization: `Bearer ${token}`,
+    },
   }).then((res) => res.json());
 
 export const createTravel = async ({ token, name, id }) =>
@@ -303,10 +309,10 @@ export const createTravel = async ({ token, name, id }) =>
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ name }),
-  }).then(res => checkStatus(res));
+  }).then((res) => checkStatus(res));
 
 export const deleteTravel = async (id) =>
   await fetch(`${url}travel/${id}`, { method: "DELETE" }).then((res) =>
@@ -321,7 +327,7 @@ export const createTrip = async ({ token, name }) => {
   return await fetch(`${url}trips/new`, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
     },
@@ -345,7 +351,7 @@ export const fetchTripById = async (id) =>
 export const deleteTrip = async ({ token, id }) =>
   await fetch(`${url}trips/${id}`, {
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     method: "DELETE",
   }).then((res) => res.json());
@@ -354,10 +360,10 @@ export const fetchAllTrips = async (page) =>
   await fetch(`${url}trips?page=${page}`, {
     headers: {
       accept: "application/ld+json",
-    }
+    },
   })
-    .then(res => checkStatus(res))
-    .then(res => res.json())
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
@@ -368,7 +374,7 @@ export const addDocument = async (token, file, creator, mapElement, name) => {
     formData.append("mapElement", mapElement);
   formData.append("name", name);
   return await fetch(`${url}documents`, {
-    headers: { "Authorization": `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}` },
     method: "POST",
     body: formData,
   });
@@ -376,7 +382,7 @@ export const addDocument = async (token, file, creator, mapElement, name) => {
 
 export const getDocument = async (token, id, name) => {
   fetch(`${url}documents/file/${id}`, {
-    headers: { "Authorization": `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${token}` },
   }).then((response) => {
     response.blob().then((blob) => {
       let url = window.URL.createObjectURL(blob);
@@ -390,11 +396,9 @@ export const getDocument = async (token, id, name) => {
 
 export const deleteDocument = async (token, id) =>
   await fetch(`${url}documents/${id}`, {
-    headers: { "Authorization": `Bearer ${token}` },
-    method: "DELETE"
-  }).then((res) =>
-    res.json()
-  );
+    headers: { Authorization: `Bearer ${token}` },
+    method: "DELETE",
+  }).then((res) => res.json());
 
 /* -------------------------------------------*/
 
