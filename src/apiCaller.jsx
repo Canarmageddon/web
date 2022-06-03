@@ -25,8 +25,11 @@ export const createStep = async ({ token, latitude, longitude, id, creator }) =>
     }),
   }).then((res) => res.json());
 
-export const deleteStep = async (id) =>
-  await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res => checkStatus(res))
+export const deleteStep = async ({ token, id }) =>
+  await fetch(`${url}steps/${id}`, {
+    headers: { "Authorization": `Bearer ${token}` },
+    method: "DELETE"
+  }).then((res => checkStatus(res))
   );
 
 export const moveStep = async ({ id, latitude, longitude }) => {
