@@ -33,9 +33,8 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
 
   const handleClick = async () => {
     mutationUpdatePoi.mutate({
-      token, id: currentPoi.id, title, description, selectedStep
+      token, id: currentPoi.id, title, description, step: selectedStep
     })
-    updatePoi(currentPoi.id, title, description, selectedStep);
   };
   const mutationUpdatePoi = useMutation(updatePoi, {
     onMutate: () => {
