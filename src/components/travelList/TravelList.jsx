@@ -15,26 +15,30 @@ const TravelsList = () => {
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [lstTrips, setLstTrips] = useState([]);
-  const [user] = useUser()
-  const [token] = useToken()
+  const [user] = useUser();
+  const [token] = useToken();
 
-  const queryClient = useQueryClient()
-  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery("trips", () => fetchTravels({ token, id: user }), {
-    staleTime: 60 * 1000
-  })
+  const queryClient = useQueryClient();
+  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
+    "trips",
+    () => fetchTravels({ token, id: user }),
+    {
+      staleTime: 60 * 1000,
+    }
+  );
 
   const handleClick = (t) => {
     navigate(`/home/map/${t.id}`);
   };
   const mutationDeleteTrip = useMutation(deleteTrip, {
     onSettled: () => {
-      queryClient.invalidateQueries("trips")
-    }
-  })
+      queryClient.invalidateQueries("trips");
+    },
+  });
 
   const handleDelete = async (event, t) => {
     event.stopPropagation();
-    mutationDeleteTrip.mutate({ token, id: t.id })
+    mutationDeleteTrip.mutate({ token, id: t.id });
   };
 
   const displayLstTravel = () => {
@@ -86,24 +90,24 @@ const TravelsList = () => {
         </div>
 
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />
-        {!isLoadingTravels && dataTravels.map((t) => (
-          <React.Fragment key={t.id}>
-            <div className="travel-list-item" onClick={(e) => handleClick(t)}>
-              <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                {t.name}
-              </p>
-              <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                {t.start}
-              </p>
-              <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                {t.end}
-              </p>
-              {TrashAlt(handleDelete, t)}
-
-            </div>
-            <Dropdown.Divider />
-          </React.Fragment>
-        ))}
+        {!isLoadingTravels &&
+          dataTravels.map((t, index) => (
+            <React.Fragment key={index}>
+              <div className="travel-list-item" onClick={(e) => handleClick(t)}>
+                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                  {t.name}
+                </p>
+                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                  {t.start}
+                </p>
+                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                  {t.end}
+                </p>
+                {TrashAlt(handleDelete, t)}
+              </div>
+              <Dropdown.Divider />
+            </React.Fragment>
+          ))}
       </div>
     );
   };
