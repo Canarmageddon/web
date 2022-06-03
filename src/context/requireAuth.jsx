@@ -10,7 +10,7 @@ export default function RequireAuth() {
     const [token, setToken] = useToken();
     const logout = () => {
         window.localStorage.clear()
-        setToken("")
+        setUser(undefined)
     }
     if (user == undefined) {
         return <Navigate to="/" />

@@ -20,10 +20,10 @@ export function UserProvider({ children }) {
     }
     const [token, setToken] = useState(window.localStorage.getItem("token"))
     const { isLoading } = useQuery("whoami", async () => {
-        if (token != "" && token != null) {
+        if (window.localStorage.getItem("token") != "" && window.localStorage.getItem("token") != null) {
             const res = await refresh(window.localStorage.getItem("refresh_token"))
             updateToken({ setToken, token: res.token, refresh_token: res.refresh_token })
-            const whoami = await whoAmI(token)
+            const whoami = await whoAmI(res.token)
             setUser(whoami.user.id)
         }
         else {
