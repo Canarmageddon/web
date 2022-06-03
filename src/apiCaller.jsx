@@ -29,7 +29,7 @@ export const deleteStep = async (id) =>
   await fetch(`${url}steps/${id}`, { method: "DELETE" }).then((res => checkStatus(res))
   );
 
-export const moveStep = async (id, latitude, longitude) => {
+export const moveStep = async ({ id, latitude, longitude }) => {
   return await fetch(`${url}steps/${id}/edit`, {
     method: "PUT",
     headers: {
