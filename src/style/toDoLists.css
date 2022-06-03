@@ -1,0 +1,20 @@
+.todo-detail > svg:first-of-type {
+    margin-right: 5px;
+}
+
+.todo-detail > svg {
+    font-size: 1.3em;
+}
+
+.add-list-icon {
+    font-size: 3em;
+    color: rgb(13, 110, 253, 1);
+}
+
+.add-list-input {
+    color: rgb(13, 110, 253, 1);
+    flex: 0.1;
+    width: auto;
+    height: 60px;
+    transition: left 5s;
+}
