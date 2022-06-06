@@ -1,43 +1,74 @@
 import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
-import { usePoi } from "../context/TravelContext";
+import { usePoi, useRoute } from "../context/TravelContext";
 import Form from "react-bootstrap/Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "../style/destinationInput.css";
-
-const PoiInformation = ({ display, poiId, setContentPage }) => {
-  const [poiSource, setPoiSource] = usePoi();
+import { deletePoi, getDocument, getDocumentsFromPoi, updatePoi } from "../apiCaller";
+import FileUploader from "./FileUploader";
+import TrashAlt from "../components/icons/TrashAlt";
+import { useMutation, useQueryClient } from "react-query";
+import { useToken } from "../context/userContext";
+import { useParams } from "react-router-dom";
+const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
+  const [poi, setpoi] = usePoi();
+  const [routeSource, setRouteSource] = useRoute();
   const [currentPoi, setCurrentPoi] = useState();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
+  const [file, setFile] = useState([]);
+  const [selectedStep, setSelectedStep] = useState("");
+  const queryCLient = useQueryClient()
+  const [token] = useToken()
+  const { id } = useParams()
   useEffect(() => {
-    setCurrentPoi(poiSource.getItemById(poiId));
-  }, [poiSource, poiId]);
-
+    setCurrentPoi(poi.getItemById(poiId));
+  }, [poi, poiId]);
   useEffect(() => {
     setTitle(currentPoi?.title ? currentPoi.title : "");
     setDescription(currentPoi?.description ? currentPoi.description : "");
+    setSelectedStep(currentPoi?.step ? currentPoi.step : "");
   }, [currentPoi]);
 
-  const handleClick = () => {
-    currentPoi.title = title;
-    currentPoi.description = description;
-    setPoiSource(poiSource.updateItem(currentPoi));
-    setContentPage("map");
+  const handleClick = async () => {
+    mutationUpdatePoi.mutate({
+      token, id: currentPoi.id, title, description, step: selectedStep
+    })
   };
+  const mutationUpdatePoi = useMutation(updatePoi, {
+    onMutate: () => {
+      currentPoi.title = title;
+      currentPoi.description = description;
+      currentPoi.step = selectedStep;
+      setpoi(poi.updateItem(currentPoi));
+      setContentPage("map");
+    },
+    onSettled: () => {
+      queryCLient.invalidateQueries(["poi", id])
+    }
+  })
+  const mutationDeletePoi = useMutation(deletePoi, {
+    onMutate: () => {
+      setpoi(poi.removeItem(poiId));
+      setContentPage("map");
+    },
+    onSettled: (data) => {
+      queryCLient.invalidateQueries(["poi", id])
+    }
+  })
 
-  const handleDelete = () => {
-    setPoiSource(poiSource.removeItem(poiId));
-    setContentPage("map");
+  const handleDelete = async () => {
+    mutationDeletePoi.mutate({ token, id: currentPoi.id })
   };
-
+  const handleChange = (e) => {
+    setSelectedStep(e.target.value);
+  };
   return (
     <div
       style={{
         display: display ? "block" : "none",
-        flex: 0.3,
+        flex: 0.4,
         textAlign: "center",
       }}
     >
@@ -65,21 +96,26 @@ const PoiInformation = ({ display, poiId, setContentPage }) => {
           onChange={(e) => setDescription(e.target.value)}
           style={{ width: "70%", marginLeft: 10 }}
         />
+        <FileUploader file={file} setFile={setFile} mapElement={currentPoi} getDocumentFromElement={getDocumentsFromPoi} />
+        Associer à une étape
+        <select value={selectedStep} onChange={(e) => handleChange(e)}>
+          <option value={null}></option>
+          {routeSource.listLocations.map((step) => {
+            return (
+              <option key={step.id} value={step.id}>
+                {step.description}
+              </option>
+            );
+          })}
+        </select>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Button type="button" onClick={handleClick} style={{ marginTop: 10 }}>
             Enregistrer
           </Button>
-          <FontAwesomeIcon
-            icon={faTrashAlt}
-            size="2x"
-            onClick={handleDelete}
-            style={{
-              backgroundColor: "white",
-              color: "#dc3545",
-              marginLeft: 30,
-              marginTop: 10,
-            }}
-          />
+          {TrashAlt(handleDelete)}
+          <Button type="button" onClick={() => setMovingPoi(currentPoi.id)} style={{ marginTop: 10 }}>
+            Déplacer
+          </Button>
         </div>
       </Form>
     </div>

@@ -7,15 +7,14 @@
 }
 
 .add-list-icon {
-    font-size: 4em;
+    font-size: 3em;
     color: rgb(13, 110, 253, 1);
 }
 
 .add-list-input {
     color: rgb(13, 110, 253, 1);
     flex: 0.1;
-    margin-bottom: 20px; 
-    width: 20%;
+    width: auto;
     height: 60px;
     transition: left 5s;
 }
