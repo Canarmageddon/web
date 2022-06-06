@@ -128,9 +128,11 @@ export default function MapGl({
       ]);
       return { oldData };
     },
-    onSettled: () => {
+    onSettled: (data) => {
       queryClient.invalidateQueries(["steps", id]);
       stepSuccess();
+      setContentPage("stepInfo");
+      setStepId(data.id);
     },
   });
   const mutationPoi = useMutation(createPoi, {
@@ -150,9 +152,11 @@ export default function MapGl({
       ]);
       return { oldData };
     },
-    onSettled: () => {
+    onSettled: (data) => {
       queryClient.invalidateQueries(["poi", id]);
       poiSuccess();
+      setContentPage("poiInfo");
+      setPoiId(data.id);
     },
   });
   const mutationPoiLocation = useMutation(movePoi, {
@@ -264,12 +268,12 @@ export default function MapGl({
       return;
     }
     if (contentPage == "poiInfo" || contentPage == "stepInfo") {
-      setContentPage("map")
-      return
+      setContentPage("map");
+      return;
     }
 
     if (!editing) {
-      displayMapElement(e)
+      displayMapElement(e);
       return;
     }
     if (editing && !displayMapElement(e)) {
@@ -277,11 +281,19 @@ export default function MapGl({
         setContentPage("map");
       } else if (typeLocation === "poi") {
         mutationPoi.mutate({
-          token, latitude: e.lngLat[1], longitude: e.lngLat[0], id, creator: user
+          token,
+          latitude: e.lngLat[1],
+          longitude: e.lngLat[0],
+          id,
+          creator: user,
         });
       } else {
         mutationStep.mutate({
-          token, latitude: e.lngLat[1], longitude: e.lngLat[0], id, creator: user
+          token,
+          latitude: e.lngLat[1],
+          longitude: e.lngLat[0],
+          id,
+          creator: user,
         });
       }
     }
@@ -292,9 +304,8 @@ export default function MapGl({
         if (typeLocation === "poi") {
           setContentPage("poiInfo");
           setPoiId(e.features[0].id);
-          return true
+          return true;
         } else {
-          //TODO(Gautier) Show Route details
           setContentPage("stepInfo");
           setStepId(e.features[0].id);
           return true;
@@ -303,7 +314,7 @@ export default function MapGl({
       }
       return false;
     }
-  }
+  };
   const poiLayer = {
     id: "places",
     type: "symbol",
