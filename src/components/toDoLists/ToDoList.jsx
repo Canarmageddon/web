@@ -6,14 +6,14 @@ import FormControl from "react-bootstrap/FormControl";
 import "../../style/toDoLists.css";
 import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
 import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
-import { useToken, useUser } from "../../context/userContext"
+import { useToken, useUser } from "../../context/userContext";
 import { useMutation, useQueryClient } from "react-query";
-const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
+const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
-  const [token] = useToken()
+  const [token] = useToken();
   const mutationDeleteTodoList = useMutation(deleteTodoList, {
     onMutate: (data) => {
       /*       const oldData = queryClient.getQueryData(["toDoLists", idTrip])
@@ -21,6 +21,7 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
             return oldData */
     },
     onSettled: () => {
+      setCurrentIndex((old) => old - 1);
       queryClient.invalidateQueries(["toDoLists", idTrip]);
     },
   });
@@ -44,7 +45,7 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
       queryClient.invalidateQueries(["toDoLists", idTrip]);
     },
   });
-  const [user] = useUser()
+  const [user] = useUser();
 
   return (
     <CardToDoList className="card-todo-list">
@@ -53,7 +54,7 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
           icon={faTimesCircle}
           size="lg"
           onClick={() => {
-            mutationDeleteTodoList.mutate({ token, id: toDoList }.id);
+            mutationDeleteTodoList.mutate({ token, id: toDoList.id });
           }}
         />
         <FontAwesomeIcon
@@ -82,7 +83,12 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
             <Button
               onClick={() => {
                 if (title !== "") {
-                  mutationAddTask.mutate({ token, title, id: toDoList.id, date });
+                  mutationAddTask.mutate({
+                    token,
+                    title,
+                    id: toDoList.id,
+                    date,
+                  });
                   setTitle("");
                   setDate("");
                   setShowForm(false);
@@ -98,7 +104,14 @@ const ToDoList = ({ toDoList, setToDoLists, idTrip }) => {
           {toDoList?.tasks?.map((t) => (
             <CardItem
               key={t.id}
-              style={{ position: "relative", justifyContent: "space-between", paddingTop: "50px", paddingBottom: "50px", whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
+              style={{
+                position: "relative",
+                justifyContent: "space-between",
+                paddingTop: "50px",
+                paddingBottom: "50px",
+                whiteSpace: "pre-wrap",
+                overflowWrap: "break-word",
+              }}
             >
               {t.date && (
                 <p style={{ margin: 5 }}>

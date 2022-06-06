@@ -122,7 +122,7 @@ const ToDoLists = ({ display }) => {
       {!isLoadingToDoLists && !isErrorToDoLists && dataToDoLists.length > 0 && (
         <ToDoList
           toDoList={dataToDoLists[currentIndex]}
-          setToDoLists={setTaskList}
+          setCurrentIndex={setCurrentIndex}
           idTrip={id}
         />
       )}
