@@ -8,7 +8,9 @@ import "./style/admin.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ToastContainer } from "react-toastify";
 import { ReactQueryDevtools } from "react-query/devtools";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const AppStart = () => {
   const queryClient = new QueryClient({
@@ -22,6 +24,17 @@ const AppStart = () => {
 
   return (
     <React.StrictMode>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+      />
       <QueryClientProvider client={queryClient} contextSharing={true}>
         <App />
         <ReactQueryDevtools />

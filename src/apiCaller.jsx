@@ -27,10 +27,9 @@ export const createStep = async ({ token, latitude, longitude, id, creator }) =>
 
 export const deleteStep = async ({ token, id }) =>
   await fetch(`${url}steps/${id}`, {
-    headers: { "Authorization": `Bearer ${token}` },
-    method: "DELETE"
-  }).then((res => checkStatus(res))
-  );
+    headers: { Authorization: `Bearer ${token}` },
+    method: "DELETE",
+  }).then((res) => checkStatus(res));
 
 export const moveStep = async ({ id, latitude, longitude }) => {
   return await fetch(`${url}steps/${id}/edit`, {
@@ -38,6 +37,7 @@ export const moveStep = async ({ id, latitude, longitude }) => {
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       longitude,
@@ -261,13 +261,14 @@ export const createTodoList = async ({ token, title, id }) => {
   });
 };
 
-export const deleteTodoList = async ({ token, id }) =>
+export const deleteTodoList = async ({ token, id }) => {
   await fetch(`${url}to_do_lists/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
     method: "DELETE",
   });
+};
 
 export const createTask = async ({ token, title, id, date, creator }) =>
   await fetch(`${url}tasks/new`, {
@@ -293,7 +294,6 @@ export const deleteTask = async ({ token, id }) =>
     },
     method: "DELETE",
   });
-
 /* -------------------------------------------*/
 
 /* ------------ TRAVEL -----------------------*/

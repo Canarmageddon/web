@@ -3,18 +3,15 @@ import { useState, useEffect } from "react";
 import LayerUtile from "../factory/layers/LayerUtile";
 import { usePoi, useRoute } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
-import User from "../factory/User";
-import Task from "../factory/lists/Task";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import {
-  fetchTripById,
   createPoi,
   createStep,
   fetchSteps,
   fetchPois,
   movePoi,
-  moveStep
+  moveStep,
 } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
@@ -22,9 +19,10 @@ import { useParams } from "react-router-dom";
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
-import TaskListUtile from "../factory/lists/TaskListUtile";
 import { useTaskList } from "../context/TravelContext";
 import { useUser, useToken } from "../context/userContext";
+import { toast } from "react-toastify";
+
 export default function MapGl({
   setContentPage,
   contentPage,
@@ -35,21 +33,25 @@ export default function MapGl({
   setMovingPoi,
   movingStep,
   setMovingStep,
-  exploring
+  exploring,
 }) {
+  const poiSuccess = () => toast.success("Point d'intérêt créé !");
+  const stepSuccess = () => toast.success("Etape créée !");
+  const successPoiMoved = () => toast.info("Point d'intérêt déplacé");
+  const successStepMoved = () => toast.info("Etape déplacée");
+
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
   const [redirect, setRedirect] = useState(false);
-  const [user] = useUser()
+  const [user] = useUser();
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);
   const [typeLocation, setTypeLocation] = useState("route");
-  const [taskList, setTaskList] = useTaskList();
   const [height, setHeight] = useState("100%");
   const [width, setWidth] = useState("100%");
-  const [token] = useToken()
+  const [token] = useToken();
   const [viewport, setViewport] = useState({
     latitude: 48.85837,
     longitude: 2.294481,
@@ -91,7 +93,7 @@ export default function MapGl({
   } = useQuery(["poi", id], () => fetchPois(token, id), {
     retry: false,
     onSuccess: (data) => {
-      "here"
+      "here";
       let lstPoi = [];
       data.map((item) => {
         lstPoi.push(
@@ -128,6 +130,7 @@ export default function MapGl({
     },
     onSettled: () => {
       queryClient.invalidateQueries(["steps", id]);
+      stepSuccess();
     },
   });
   const mutationPoi = useMutation(createPoi, {
@@ -149,24 +152,27 @@ export default function MapGl({
     },
     onSettled: () => {
       queryClient.invalidateQueries(["poi", id]);
+      poiSuccess();
     },
   });
   const mutationPoiLocation = useMutation(movePoi, {
     onMutate: () => {
-      setMovingPoi(null)
+      setMovingPoi(null);
     },
     onSettled: () => {
       queryClient.invalidateQueries(["poi", id]);
+      successPoiMoved();
     },
-  })
+  });
   const mutationStepLocation = useMutation(moveStep, {
     onMutate: () => {
-      setMovingStep(null)
+      setMovingStep(null);
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["steps", id]);
+      queryClient.invalidateQueries(["step", id]);
+      successStepMoved();
     },
-  })
+  });
 
   useEffect(() => {
     const map = _mapRef.current.getMap();
@@ -238,18 +244,24 @@ export default function MapGl({
     }, []);
     */
   const handleClick = async (e) => {
-    if (exploring) return
+    if (exploring) return;
     if (movingPoi != null) {
       mutationPoiLocation.mutate({
-        token, id: movingPoi, latitude: e.lngLat[1], longitude: e.lngLat[0]
-      })
-      return
+        token,
+        id: movingPoi,
+        latitude: e.lngLat[1],
+        longitude: e.lngLat[0],
+      });
+      return;
     }
     if (movingStep != null) {
       mutationStepLocation.mutate({
-        token, id: movingStep, latitude: e.lngLat[1], longitude: e.lngLat[0]
-      })
-      return
+        token,
+        id: movingStep,
+        latitude: e.lngLat[1],
+        longitude: e.lngLat[0],
+      });
+      return;
     }
     if (contentPage == "poiInfo" || contentPage == "stepInfo") {
       setContentPage("map")
@@ -322,11 +334,13 @@ export default function MapGl({
   if (redirect) navigate("/");
   return (
     <>
-      {!exploring && <LocationFinder
-        typeLocation={typeLocation}
-        setTypeLocation={setTypeLocation}
-        setEditing={setEditing}
-      />}
+      {!exploring && (
+        <LocationFinder
+          typeLocation={typeLocation}
+          setTypeLocation={setTypeLocation}
+          setEditing={setEditing}
+        />
+      )}
       <ReactMapGL
         ref={_mapRef}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
