@@ -1,5 +1,6 @@
 .todo-detail > svg:first-of-type {
     margin-right: 5px;
+    color: red;
 }
 
 .todo-detail > svg {
