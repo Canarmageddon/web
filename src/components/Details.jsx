@@ -1,17 +1,38 @@
 import { useState } from "react";
 import { usePoi, useRoute } from "../context/TravelContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faPen } from "@fortawesome/free-solid-svg-icons";
-import { deleteStep } from "../apiCaller";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { deleteStep, deletePoi } from "../apiCaller";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Tabs, Tab } from "react-bootstrap";
-import PoiInformation from "../mapHandler/PoiInformation";
+import TrashAlt from "./icons/TrashAlt";
+import { useMutation, useQueryClient } from "react-query";
+import { useParams } from "react-router-dom";
+import { useToken } from "../context/userContext";
 
 export default function ({ display, setContentPage }) {
+  const [token] = useToken();
+  const { id } = useParams();
   const [poi, setPoi] = usePoi();
   const [route, setRoute] = useRoute();
   const [currentPoi, setCurrentPoi] = useState([]);
   const [currentRoute, setCurrentRoute] = useState(null);
+  const queryClient = useQueryClient();
+  const mutationDeleteStep = useMutation(deleteStep, {
+    onMutate: (data) => {
+      setRoute(route.removeItem(data.id));
+    },
+    onSettled: (data) => {
+      queryClient.invalidateQueries(["steps", id]);
+    },
+  });
+  const mutationDeletePoi = useMutation(deletePoi, {
+    onMutate: (data) => {
+      setRoute(poi.removeItem(data.id));
+    },
+    onSettled: (data) => {
+      queryClient.invalidateQueries(["poi", id]);
+    },
+  });
   const handleClick = (id) => {
     if (currentRoute == id) {
       setCurrentRoute(null);
@@ -20,13 +41,12 @@ export default function ({ display, setContentPage }) {
     setCurrentPoi(poi.getPoiByStep(id));
     setCurrentRoute(id);
   };
-  const handleDeleteStep = async (id) => {
-    setRoute(route.removeItem(id));
+  const handleDeleteStep = async (e, id) => {
+    mutationDeleteStep.mutate({ token, id });
     //await deleteStep(id)
   };
-  const handleDeletePoi = async (id) => {
-    setPoi(poi.removeItem(id));
-    await deletePoi(id);
+  const handleDeletePoi = async (e, id) => {
+    setPoi(poi.removeItem({ token, id }));
   };
   return (
     <div
@@ -37,26 +57,16 @@ export default function ({ display, setContentPage }) {
     >
       {route.listLocations.map((step) => {
         return (
-          <div key={step.id}>
+          <div
+            key={step.id}
+            onClick={() => handleClick(step.id)}
+            style={{ cursor: "pointer" }}
+          >
             {" "}
             {step.description}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className="bi bi-triangle-fill"
-              viewBox="0 0 16 16"
-              onClick={() => handleClick(step.id)}
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"
-              />
-            </svg>
             <FontAwesomeIcon
-              icon={faTrashAlt}
-              onClick={() => handleDeleteStep(step.id)}
+              icon={faPen}
+              onClick={() => setContentPage("stepInfo")}
               style={{
                 backgroundColor: "white",
                 color: "#000000",
@@ -64,8 +74,9 @@ export default function ({ display, setContentPage }) {
                 marginTop: 10,
               }}
             />
+            {TrashAlt(handleDeleteStep, step.id)}
             {currentRoute == step.id && (
-              <div>
+              <div style={{ marginLeft: "2rem" }}>
                 {currentPoi.map((e) => (
                   <div
                     style={{ display: "flex", flexDirection: "row" }}
@@ -83,16 +94,7 @@ export default function ({ display, setContentPage }) {
                         marginTop: 10,
                       }}
                     />
-                    <FontAwesomeIcon
-                      icon={faTrashAlt}
-                      onClick={() => handleDeleteStep(step.id)}
-                      style={{
-                        backgroundColor: "white",
-                        color: "#000000",
-                        marginLeft: 30,
-                        marginTop: 10,
-                      }}
-                    />{" "}
+                    {TrashAlt(handleDeletePoi, e.id)}
                   </div>
                 ))}
               </div>
