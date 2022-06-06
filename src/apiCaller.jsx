@@ -30,12 +30,13 @@ export const deleteStep = async (id) =>
     checkStatus(res)
   );
 
-export const moveStep = async (id, latitude, longitude) => {
+export const moveStep = async ({ token, id, latitude, longitude }) => {
   return await fetch(`${url}steps/${id}/edit`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       longitude,
