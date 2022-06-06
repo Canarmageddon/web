@@ -124,7 +124,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
                 onClick={() => {
                   mutationDeleteTask.mutate({ token, id: t.id });
                 }}
-                style={{ position: "relative", right: 5 }}
+                style={{ position: "relative", right: 5, color: "red" }}
               />
             </CardItem>
           ))}
