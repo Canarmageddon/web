@@ -18,7 +18,7 @@ const ToDoLists = ({ display }) => {
   const [title, setTitle] = useState("");
   const [taskList, setTaskList] = useTaskList();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [token] = useToken()
+  const [token] = useToken();
   const queryClient = useQueryClient();
   const {
     isLoading: isLoadingToDoLists,
@@ -49,9 +49,15 @@ const ToDoLists = ({ display }) => {
   });
 
   const mutationAddToDoList = useMutation(createTodoList, {
-    onMutate: (data) => { },
+    onMutate: (data) => {
+      queryClient.setQueryData(["toDoLists", id], (old) => [
+        ...old,
+        { id: id, name: title },
+      ]);
+    },
     onSettled: () => {
       queryClient.invalidateQueries(["toDoLists", id]);
+      setCurrentIndex(dataToDoLists.length);
     },
   });
 
@@ -61,7 +67,6 @@ const ToDoLists = ({ display }) => {
         setTaskList([...taskList, new TaskListUtile("", title, [])]);
         setTitle("");
         setShowForm(false);
-        setCurrentIndex(taskList.length);
         mutationAddToDoList.mutate({ token, title, id });
       }
     }
@@ -117,7 +122,7 @@ const ToDoLists = ({ display }) => {
       {!isLoadingToDoLists && !isErrorToDoLists && dataToDoLists.length > 0 && (
         <ToDoList
           toDoList={dataToDoLists[currentIndex]}
-          setToDoLists={setTaskList}
+          setCurrentIndex={setCurrentIndex}
           idTrip={id}
         />
       )}
