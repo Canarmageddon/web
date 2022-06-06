@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { deleteStep, getDocumentsFromStep, updatePoi } from "../apiCaller";
 import { useRoute } from "../context/TravelContext";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import FileUploader from "./FileUploader";
 import TrashAlt from "../components/icons/TrashAlt";
 import { toast } from "react-toastify";

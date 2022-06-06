@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Tabs, Tab, Button } from "react-bootstrap";
 import { fetchTravels, deleteTrip } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
 import TrashAlt from "../icons/TrashAlt";

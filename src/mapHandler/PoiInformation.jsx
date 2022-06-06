@@ -2,15 +2,8 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { usePoi, useRoute } from "../context/TravelContext";
 import Form from "react-bootstrap/Form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "../style/destinationInput.css";
-import {
-  deletePoi,
-  getDocument,
-  getDocumentsFromPoi,
-  updatePoi,
-} from "../apiCaller";
+import { deletePoi, getDocumentsFromPoi, updatePoi } from "../apiCaller";
 import FileUploader from "./FileUploader";
 import TrashAlt from "../components/icons/TrashAlt";
 import { useMutation, useQueryClient } from "react-query";

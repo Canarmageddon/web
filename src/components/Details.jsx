@@ -1,40 +1,38 @@
 import { useState } from "react";
 import { usePoi, useRoute } from "../context/TravelContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { deleteStep, deletePoi } from "../apiCaller";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Tabs, Tab } from "react-bootstrap";
-import PoiInformation from "../mapHandler/PoiInformation";
 import TrashAlt from "./icons/TrashAlt";
 import { useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
-import { useToken } from "../context/userContext"
+import { useToken } from "../context/userContext";
 
 export default function ({ display, setContentPage }) {
-  const [token] = useToken()
-  const { id } = useParams()
+  const [token] = useToken();
+  const { id } = useParams();
   const [poi, setPoi] = usePoi();
   const [route, setRoute] = useRoute();
   const [currentPoi, setCurrentPoi] = useState([]);
   const [currentRoute, setCurrentRoute] = useState(null);
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const mutationDeleteStep = useMutation(deleteStep, {
     onMutate: (data) => {
       setRoute(route.removeItem(data.id));
     },
     onSettled: (data) => {
-      queryClient.invalidateQueries(["steps", id])
-    }
-  })
+      queryClient.invalidateQueries(["steps", id]);
+    },
+  });
   const mutationDeletePoi = useMutation(deletePoi, {
     onMutate: (data) => {
-      setRoute(poi.removeItem(data.id))
+      setRoute(poi.removeItem(data.id));
     },
     onSettled: (data) => {
-      queryClient.invalidateQueries(["poi", id])
-    }
-  })
+      queryClient.invalidateQueries(["poi", id]);
+    },
+  });
   const handleClick = (id) => {
     if (currentRoute == id) {
       setCurrentRoute(null);
@@ -44,7 +42,7 @@ export default function ({ display, setContentPage }) {
     setCurrentRoute(id);
   };
   const handleDeleteStep = async (e, id) => {
-    mutationDeleteStep.mutate({ token, id })
+    mutationDeleteStep.mutate({ token, id });
     //await deleteStep(id)
   };
   const handleDeletePoi = async (e, id) => {
@@ -96,7 +94,6 @@ export default function ({ display, setContentPage }) {
                         marginTop: 10,
                       }}
                     />
-
                     {TrashAlt(handleDeletePoi, e.id)}
                   </div>
                 ))}
