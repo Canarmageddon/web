@@ -13,7 +13,7 @@ const TravelsList = () => {
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [lstTrips, setLstTrips] = useState([]);
-  const [user] = useUser();
+  const [user, setUser] = useUser();
   const [token] = useToken();
 
   const queryClient = useQueryClient();
@@ -37,6 +37,11 @@ const TravelsList = () => {
   const handleDelete = async (event, t) => {
     event.stopPropagation();
     mutationDeleteTrip.mutate({ token, id: t.id });
+  };
+
+  const logout = () => {
+    window.localStorage.clear();
+    setUser(undefined);
   };
 
   const displayLstTravel = () => {
@@ -139,6 +144,13 @@ const TravelsList = () => {
         <Tab eventKey="member" title="Membre"></Tab>
       </Tabs>
       {displayLstTravel()}
+      <Button
+        variant="danger"
+        onClick={logout}
+        style={{ position: "absolute", bottom: 10, left: 15 }}
+      >
+        Déconnexion
+      </Button>
     </div>
   );
 };
