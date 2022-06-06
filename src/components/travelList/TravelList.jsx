@@ -1,41 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { Tabs, Tab } from "react-bootstrap";
+import React, { useState } from "react";
+import { Tabs, Tab, Button } from "react-bootstrap";
 import { fetchTravels, deleteTrip } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
+import TrashAlt from "../icons/TrashAlt";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useToken, useUser } from "../../context/userContext";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [lstTrips, setLstTrips] = useState([]);
+  const [user] = useUser();
+  const [token] = useToken();
 
-  useEffect(async () => {
-    const data = await fetchTravels();
-    let res = [];
-    data.map((d) => {
-      res.push({
-        id: d.id,
-        name: d.name,
-        start: d.travels[0]?.start?.name,
-        end: d.travels[d.travels.length - 1]?.end?.name,
-      });
-    });
-
-    setLstTrips(res);
-  }, []);
+  const queryClient = useQueryClient();
+  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
+    "trips",
+    () => fetchTravels({ token, id: user }),
+    {
+      staleTime: 60 * 1000,
+    }
+  );
 
   const handleClick = (t) => {
-    navigate(`/map/${t.id}`);
+    navigate(`/home/map/${t.id}`);
   };
+  const mutationDeleteTrip = useMutation(deleteTrip, {
+    onSettled: () => {
+      queryClient.invalidateQueries("trips");
+    },
+  });
 
   const handleDelete = async (event, t) => {
     event.stopPropagation();
-    setLstTrips((oldList) => oldList.filter((trip) => trip.id !== t.id));
-    await deleteTrip(t.id);
+    mutationDeleteTrip.mutate({ token, id: t.id });
   };
 
   const displayLstTravel = () => {
@@ -87,31 +88,24 @@ const TravelsList = () => {
         </div>
 
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />
-        {lstTrips.map((t) => (
-          <React.Fragment key={t.id}>
-            <div className="travel-list-item" onClick={(e) => handleClick(t)}>
-              <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                {t.name}
-              </p>
-              <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                {t.start}
-              </p>
-              <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                {t.end}
-              </p>
-              <FontAwesomeIcon
-                icon={faTrashAlt}
-                size="2x"
-                onClick={(event) => handleDelete(event, t)}
-                style={{
-                  color: "#dc3545",
-                  cursor: "pointer",
-                }}
-              />
-            </div>
-            <Dropdown.Divider />
-          </React.Fragment>
-        ))}
+        {!isLoadingTravels &&
+          dataTravels.map((t, index) => (
+            <React.Fragment key={index}>
+              <div className="travel-list-item" onClick={(e) => handleClick(t)}>
+                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                  {t.name}
+                </p>
+                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                  {t.start}
+                </p>
+                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                  {t.end}
+                </p>
+                {TrashAlt(handleDelete, t)}
+              </div>
+              <Dropdown.Divider />
+            </React.Fragment>
+          ))}
       </div>
     );
   };
@@ -123,6 +117,7 @@ const TravelsList = () => {
       }}
     >
       <h1 className="list-title">Voyages</h1>
+      <Button onClick={() => navigate("/home/explore/list")}>Explorer</Button>
       <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
       <hr style={{ marginBottom: 5 + "px" }} />
       <Tabs
