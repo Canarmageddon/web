@@ -2,7 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { signup } from "../../apiCaller";
 import { useUser } from "../../context/userContext";
+import { toast } from "react-toastify";
+import { validateEmail } from "../../Functions";
+
 const CreateAccount = () => {
+  const invalidEmail = () =>
+    toast.warning("Cette adresse e-mail n'est pas valide");
+  const noPassword = () => toast.warning("Veuilez renseigner un mot de passe");
+  const noConfirmPassword = () =>
+    toast.warning("Veuilez confirmer le mot de passe");
+  const divergentPasswords = () =>
+    toast.warning("Les mots de passe ne correspondent pas");
+  const credentialsError = () =>
+    toast.error("E-mail / mot de passe incorrect, veuillez réessayer");
+
   const navigate = useNavigate();
   const [user] = useUser();
   const [email, setemail] = useState("");
@@ -12,7 +25,7 @@ const CreateAccount = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   if (user != "" && user != null) {
-    return <Navigate to="/home/trips" replace={true} />
+    return <Navigate to="/home/trips" replace={true} />;
   }
   useEffect(() => {
     // useFetch(() => {
@@ -66,20 +79,31 @@ const CreateAccount = () => {
         <button type="button" onClick={checkInfo}>
           Créer mon compte
         </button>
-        <button type="button" onClick={() => navigate("/")}>connexion</button>
+        <button type="button" onClick={() => navigate("/")}>
+          connexion
+        </button>
       </form>
     </>
   );
 
   async function checkInfo() {
-    try {
-      if (password === confirmPassword) {
-        await signup(email, password, firstName, lastName)
+    if (!validateEmail(email)) {
+      invalidEmail();
+    } else if (!password) {
+      noPassword();
+    } else if (!confirmPassword) {
+      noConfirmPassword();
+    } else if (password !== confirmPassword) {
+      divergentPasswords();
+    } else {
+      try {
+        await signup(email, password, firstName, lastName);
+        accountCreation();
         navigate("/");
-
+      } catch (error) {
+        console.log(error);
+        //TODO handler errors (toast)
       }
-    } catch (error) {
-
     }
   }
 };

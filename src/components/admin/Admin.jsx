@@ -4,29 +4,42 @@ import { addUser, fetchAllUser } from "../../apiCaller";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
+import { toast } from "react-toastify";
 
 const Admin = ({ display }) => {
+  const noEmail = () =>
+    toast.warning("Veuilez renseigner l'email de la personne à ajouter");
   const queryClient = useQueryClient();
   const { id } = useParams();
   const intId = parseInt(id);
   const [user] = useUser();
-  const [token] = useToken()
-  const { isLoading: isLoadingMembers, isError: isErrorMembers,
-    error: errorMembers, data: dataMembers, refetch: refetchMembers }
-    = useQuery(["members", intId], () => fetchAllUser({ token, id }))
+  const [token] = useToken();
+  const {
+    isLoading: isLoadingMembers,
+    isError: isErrorMembers,
+    error: errorMembers,
+    data: dataMembers,
+    refetch: refetchMembers,
+  } = useQuery(["members", intId], () => fetchAllUser({ token, id }));
   const mutationAddUser = useMutation(addUser, {
     onSuccess: () => {
       setNewEmail("");
-      refetchMembers()
-    }
-  })
+      refetchMembers();
+    },
+    onError: (error) => {
+      //TODO Handle member already in trip
+      console.log(error);
+    },
+  });
 
   const [newEmail, setNewEmail] = useState("");
   const [newRole, setNewRole] = useState("member");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    mutationAddUser.mutate({ token, email: newEmail, id: intId })
-
+    if (!newEmail) {
+      noEmail();
+    }
+    mutationAddUser.mutate({ token, email: newEmail, id: intId });
   };
   return (
     <div
@@ -65,13 +78,19 @@ const Admin = ({ display }) => {
       <span className="nom">Nom</span>
       <span className="role">Role</span>
       <hr className="bar" />
-      {!isLoadingMembers && !isErrorMembers &&
-        <ul className="list">{dataMembers.map((member, index) =>
-          <Member key={index} member={member} id={intId} refetchMembers={refetchMembers} />
-        )}</ul>
-      }
+      {!isLoadingMembers && !isErrorMembers && (
+        <ul className="list">
+          {dataMembers.map((member, index) => (
+            <Member
+              key={index}
+              member={member}
+              id={intId}
+              refetchMembers={refetchMembers}
+            />
+          ))}
+        </ul>
+      )}
     </div>
-
   );
 };
 

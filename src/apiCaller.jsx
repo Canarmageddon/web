@@ -38,6 +38,7 @@ export const moveStep = async ({ id, latitude, longitude }) => {
     headers: {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       longitude,
