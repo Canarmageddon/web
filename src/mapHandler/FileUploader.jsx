@@ -6,27 +6,52 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
-
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 export default function FileUploader({
   file,
   setFile,
   mapElement,
   getDocumentFromElement,
 }) {
-  const [lstDocuments, setLstDocuments] = useState([]);
   const [token] = useToken();
-  useEffect(async () => {
-    if (mapElement != undefined) {
-      setLstDocuments(await getDocumentFromElement(token, mapElement.id));
-    }
-  }, [mapElement]);
+  const queryClient = useQueryClient()
   const [user] = useUser();
   const handleUpload = (file) => {
     setFile(file);
   };
+  const { isLoading, isError, error, data: dataDocuments } = useQuery(["documents", mapElement?.id], () =>
+    getDocumentFromElement(token, mapElement.id),
+    {
+      enabled: mapElement != undefined
+    }
+  )
+  const mutationAddDocument = useMutation(addDocument, {
+    onMutate: (data) => {
+      console.log(data)
+    },
+    onSettled: (data) => {
+      setFile([])
+      toast.success("document ajouté")
+      queryClient.invalidateQueries(["document", mapElement.id])
+    }
+  });
+  const mutationDeleteDocument = useMutation(deleteDocument, {
+    onMutate: (data) => {
+      const oldData = queryClient.getQueryData(["document", mapElement.id])
+      queryClient.setQueryData(["document", mapElement.id], (old) => old.filter(element => element.id != mapElement.id))
+      return { oldData }
+    },
+    onSettled: (data) => {
+      toast.success("document supprimé")
+      queryClient.invalidateQueries(["document", mapElement.id])
+    }
+  });
+
+  if (isLoading || isError) return <></>
   return (
     <>
-      {lstDocuments.map((document) => (
+      {dataDocuments.map((document) => (
         <div key={document.id}>
           {document.name}
           <FontAwesomeIcon
@@ -49,7 +74,7 @@ export default function FileUploader({
               marginLeft: 30,
               marginTop: 10,
             }}
-            onClick={() => deleteDocument(token, document.id)}
+            onClick={() => mutationDeleteDocument.mutate({ token, id: document.id })}
           />
         </div>
       ))}
@@ -62,7 +87,7 @@ export default function FileUploader({
         <Button
           type="button"
           onClick={() =>
-            addDocument(token, file, parseInt(user), mapElement.id, file.name)
+            mutationAddDocument.mutate({ token, file, creator: parseInt(user), mapElement: mapElement.id, name: file.name })
           }
           style={{ marginTop: 10 }}
         >
