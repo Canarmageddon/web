@@ -118,7 +118,7 @@ export default function MapGl({
       onSuccess: (data) => {
         const map = _mapRef.current.getMap();
         data.map((picture) => {
-          map.loadImage(`http://vm-26.iutrs.unistra.fr/api/pictures/file/${picture.id}`, (error, image) => {
+          map.loadImage(`${process.env.REACT_APP_DATABASE_URL}${picture.id}`, (error, image) => {
             if (error) throw error;
             map.addImage(`picture${picture.id}`, image)
           })
