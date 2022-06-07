@@ -8,13 +8,7 @@ import SideMenu from "./components/navBar/SideMenu";
 import Admin from "./components/admin/Admin";
 import { TravelProvider } from "./context/TravelContext";
 import { UserProvider } from "./context/userContext";
-import {
-  Route,
-  Routes,
-  HashRouter,
-  Navigate,
-  BrowserRouter,
-} from "react-router-dom";
+import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 import MapGl from "./mapHandler/MapGl";
 import PoiInformation from "./mapHandler/PoiInformation";
 import Login from "./components/login/Login";
@@ -23,7 +17,6 @@ import Details from "./components/Details";
 import StepInfo from "./mapHandler/StepInfo";
 import RequireAuth from "./context/requireAuth";
 import ExploreTrips from "./explore/ExploreTrips";
-import ExploringNavBar from "./components/navBar/ExploringNavBar";
 import ExploreRoute from "./explore/ExploreRoute";
 import ExploringMapNavBar from "./components/navBar/ExploringMapNavBar";
 import Album from "./album/Album";

@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Tabs, Tab, Button } from "react-bootstrap";
 import { fetchTravels, deleteTrip } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "./travel.css";
 import NewTravel from "./NewTravel";
 import TrashAlt from "../icons/TrashAlt";
@@ -15,26 +13,35 @@ const TravelsList = () => {
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
   const [lstTrips, setLstTrips] = useState([]);
-  const [user] = useUser()
-  const [token] = useToken()
+  const [user, setUser] = useUser();
+  const [token] = useToken();
 
-  const queryClient = useQueryClient()
-  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery("trips", () => fetchTravels({ token, id: user }), {
-    staleTime: 60 * 1000
-  })
+  const queryClient = useQueryClient();
+  const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
+    "trips",
+    () => fetchTravels({ token, id: user }),
+    {
+      staleTime: 60 * 1000,
+    }
+  );
 
   const handleClick = (t) => {
     navigate(`/home/map/${t.id}`);
   };
   const mutationDeleteTrip = useMutation(deleteTrip, {
     onSettled: () => {
-      queryClient.invalidateQueries("trips")
-    }
-  })
+      queryClient.invalidateQueries("trips");
+    },
+  });
 
   const handleDelete = async (event, t) => {
     event.stopPropagation();
-    mutationDeleteTrip.mutate({ token, id: t.id })
+    mutationDeleteTrip.mutate({ token, id: t.id });
+  };
+
+  const logout = () => {
+    window.localStorage.clear();
+    setUser(undefined);
   };
 
   const displayLstTravel = () => {
@@ -86,24 +93,24 @@ const TravelsList = () => {
         </div>
 
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />
-        {!isLoadingTravels && dataTravels.map((t) => (
-          <React.Fragment key={t.id}>
-            <div className="travel-list-item" onClick={(e) => handleClick(t)}>
-              <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                {t.name}
-              </p>
-              <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                {t.start}
-              </p>
-              <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                {t.end}
-              </p>
-              {TrashAlt(handleDelete, t)}
-
-            </div>
-            <Dropdown.Divider />
-          </React.Fragment>
-        ))}
+        {!isLoadingTravels &&
+          dataTravels.map((t, index) => (
+            <React.Fragment key={index}>
+              <div className="travel-list-item" onClick={(e) => handleClick(t)}>
+                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                  {t.name}
+                </p>
+                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                  {t.start}
+                </p>
+                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                  {t.end}
+                </p>
+                {TrashAlt(handleDelete, t)}
+              </div>
+              <Dropdown.Divider />
+            </React.Fragment>
+          ))}
       </div>
     );
   };
@@ -137,6 +144,13 @@ const TravelsList = () => {
         <Tab eventKey="member" title="Membre"></Tab>
       </Tabs>
       {displayLstTravel()}
+      <Button
+        variant="danger"
+        onClick={logout}
+        style={{ position: "absolute", bottom: 10, left: 15 }}
+      >
+        Déconnexion
+      </Button>
     </div>
   );
 };

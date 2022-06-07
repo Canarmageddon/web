@@ -10,19 +10,30 @@ import { checkCredentials } from "../../apiCaller";
 import { useToken } from "../../context/userContext";
 import updateToken from "../../updateTokens";
 import { useQueryClient } from "react-query";
+import { toast } from "react-toastify";
+import { validateEmail } from "../../Functions";
+
 const Login = () => {
+  const invalidEmail = () =>
+    toast.warning("Cette adresse e-mail n'est pas valide");
+  const noPassword = () => toast.warning("Veuilez renseigner un mot de passe");
+  const credentialsError = () =>
+    toast.error("E-mail / mot de passe incorrect, veuillez réessayer");
+
   const navigate = useNavigate();
   const [token, setToken] = useToken();
   const [user, setUser] = useUser();
   const [email, setEmail] = useState("");
-  const [rememberMe, setRememberMe] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false);
   const [password, setPassword] = useState("");
   const [showLockIcon, setShowLockIcon] = useState(true);
   const [showUserIcon, setShowUserIcon] = useState(true);
   const queryClient = useQueryClient();
+
   if (user != "" && user != null) {
-    return <Navigate to="/home/trips" replace={true} />
+    return <Navigate to="/home/trips" replace={true} />;
   }
+
   return (
     <form
       style={{
@@ -94,8 +105,11 @@ const Login = () => {
       >
         <label>
           Rester connecter
-          <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(!rememberMe)}>
-          </input>
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(!rememberMe)}
+          ></input>
         </label>
         <Button type="button" size="sm" onClick={checkConnexionInfo}>
           Se connecter
@@ -116,12 +130,22 @@ const Login = () => {
   );
 
   async function checkConnexionInfo() {
-    try {
-      const tokens = await checkCredentials(email, password)
-      await updateToken({ setToken, token: tokens.token, refresh_token: tokens.refresh_token })
-      queryClient.invalidateQueries('whoami')
-    } catch (error) {
-      console.log(error)
+    if (!validateEmail(email)) {
+      invalidEmail();
+    } else if (!password) {
+      noPassword();
+    } else {
+      try {
+        const tokens = await checkCredentials(email, password);
+        await updateToken({
+          setToken,
+          token: tokens.token,
+          refresh_token: tokens.refresh_token,
+        });
+        queryClient.invalidateQueries("whoami");
+      } catch (error) {
+        credentialsError();
+      }
     }
   }
 };
