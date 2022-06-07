@@ -369,7 +369,7 @@ export const fetchAllTrips = async (page) =>
 
 /* -------------------------------------------*/
 
-export const addDocument = async (token, file, creator, mapElement, name) => {
+export const addDocument = async ({ token, file, creator, mapElement, name }) => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("creator", creator),
@@ -396,7 +396,7 @@ export const getDocument = async (token, id, name) => {
   });
 };
 
-export const deleteDocument = async (token, id) =>
+export const deleteDocument = async ({ token, id }) =>
   await fetch(`${url}documents/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
     method: "DELETE",
