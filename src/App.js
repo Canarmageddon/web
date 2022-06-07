@@ -34,13 +34,13 @@ function App() {
       <UserProvider>
         <TravelProvider>
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/home/" element={<RequireAuth />}>
-              <Route path="explore/" element={<ExploreRoute />}>
-                <Route path="list" element={<ExploreTrips />} />
+            <Route path='/' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/home/' element={<RequireAuth />}>
+              <Route path='explore/' element={<ExploreRoute />}>
+                <Route path='list' element={<ExploreTrips />} />
                 <Route
-                  path="map/:id"
+                  path='map/:id'
                   element={
                     <div
                       style={{
@@ -57,9 +57,9 @@ function App() {
                 />
               </Route>
 
-              <Route path="trips" element={<TravelsList />} />
+              <Route path='trips' element={<TravelsList />} />
               <Route
-                path="map/:id"
+                path='map/:id'
                 element={
                   <>
                     <div
@@ -129,12 +129,12 @@ function App() {
                 }
               />
               <Route
-                path="/home/*"
-                element={<Navigate to="trips" />}
+                path='/home/*'
+                element={<Navigate to='trips' />}
                 replace={true}
               />
             </Route>
-            <Route path="*" element={<Navigate to="/" />} replace={true} />
+            <Route path='*' element={<Navigate to='/' />} replace={true} />
           </Routes>
         </TravelProvider>
       </UserProvider>
