@@ -20,35 +20,48 @@ export default function FileUploader({
   const handleUpload = (file) => {
     setFile(file);
   };
-  const { isLoading, isError, error, data: dataDocuments } = useQuery(["documents", mapElement?.id], () =>
+  console.log(file)
+  const { isLoading, isError, error, data: dataDocuments } = useQuery(["document", mapElement?.id], () =>
     getDocumentFromElement(token, mapElement.id),
     {
-      enabled: mapElement != undefined
+      enabled: mapElement != undefined,
     }
   )
   const mutationAddDocument = useMutation(addDocument, {
     onMutate: (data) => {
       console.log(data)
     },
+    onSuccess: () => {
+      toast.success("le document a été ajouté");
+    },
+    onError: () => {
+      toast.error("le document n'a pas pu être ajouté")
+    },
     onSettled: (data) => {
       setFile([])
-      toast.success("document ajouté")
       queryClient.invalidateQueries(["document", mapElement.id])
     }
   });
   const mutationDeleteDocument = useMutation(deleteDocument, {
     onMutate: (data) => {
       const oldData = queryClient.getQueryData(["document", mapElement.id])
-      queryClient.setQueryData(["document", mapElement.id], (old) => old.filter(element => element.id != mapElement.id))
+      console.log(oldData)
+      queryClient.setQueryData(["document", mapElement.id], () => oldData.filter(element => element.id != mapElement.id))
       return { oldData }
     },
-    onSettled: (data) => {
+    onSuccess: () => {
       toast.success("document supprimé")
+    },
+    onError: () => {
+      toast.error("le document n'a pas pu être supprimé")
+    },
+    onSettled: (data) => {
       queryClient.invalidateQueries(["document", mapElement.id])
     }
   });
+  console.log(file.name)
 
-  if (isLoading || isError) return <></>
+  if (isLoading || isError || dataDocuments == undefined) return <></>
   return (
     <>
       {dataDocuments.map((document) => (
