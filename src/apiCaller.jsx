@@ -369,6 +369,30 @@ export const fetchAllTrips = async (page) =>
 
 /* -------------------------------------------*/
 
+/* -------------- LOGBOOK --------------------------*/
+
+export const getLogBookEntries = async (token, id) =>
+  await fetch(`${url}trips/${id}/logBookEntries`, {
+    headers: { "Authorization": `Bearer ${token}` },
+  }).then(res => checkStatus(res))
+    .then(res => res.json())
+
+
+/* -------------------------------------------*/
+
+/* -------------- PICTURES --------------------------*/
+
+export const getPictures = async (token, id) =>
+  await fetch(`${url}trips/${id}/pictures`, {
+    headers: { "Authorization": `Bearer ${token}` },
+  }).then(res => checkStatus(res))
+    .then(res => res.json())
+
+
+/* -------------------------------------------*/
+
+/* -------------- DOCUMENT --------------------------*/
+
 export const addDocument = async ({ token, file, creator, mapElement, name }) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -403,6 +427,8 @@ export const deleteDocument = async ({ token, id }) =>
   }).then((res) => res.json());
 
 /* -------------------------------------------*/
+
+
 
 const checkStatus = async (response) => {
   if (response.ok) {
