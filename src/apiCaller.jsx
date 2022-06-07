@@ -383,8 +383,8 @@ export const getLogBookEntries = async (token, id) =>
 /* -------------- PICTURES --------------------------*/
 
 export const getPictures = async (token, id) =>
-  await fetch(`${url}trips/${id}/pictures`, {
-    headers: { "Authorization": `Bearer ${token}` },
+  await fetch(`http://vm-26.iutrs.unistra.fr/api/trips/2/pictures`, {
+    // headers: { "Authorization": `Bearer ${token}` },
   }).then(res => checkStatus(res))
     .then(res => res.json())
 

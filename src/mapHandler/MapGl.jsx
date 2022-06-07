@@ -12,6 +12,7 @@ import {
   fetchPois,
   movePoi,
   moveStep,
+  getPictures,
 } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
@@ -110,6 +111,21 @@ export default function MapGl({
       setPoiSource(new LayerUtile(lstPoi));
     },
   });
+
+  const { isLoading: isLoadingPictures, isError: isErrorPictures, data: dataPictures }
+    = useQuery(["explorePictures", id], () => getPictures(token, id), {
+      enabled: !exploring,
+      onSuccess: (data) => {
+        const map = _mapRef.current.getMap();
+        data.map((picture) => {
+          map.loadImage(`http://vm-26.iutrs.unistra.fr/api/pictures/file/${picture.id}`, (error, image) => {
+            if (error) throw error;
+            map.addImage(`picture${picture.id}`, image)
+          })
+
+        })
+      }
+    })
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
@@ -315,6 +331,16 @@ export default function MapGl({
       return false;
     }
   };
+  const pictureLayer = (id) => {
+    return {
+      id: "picture",
+      type: "symbol",
+      layout: {
+        "icon-image": `picture${id}`, // reference the image
+        "icon-size": 0.25,
+      },
+    }
+  };
   const poiLayer = {
     id: "places",
     type: "symbol",
@@ -380,6 +406,22 @@ export default function MapGl({
               <Layer {...routeLayer2} />
             </Source>
           </>
+        )}
+        {exploring && !isLoadingPictures && !isErrorPictures && (
+          dataPictures.map((picture) =>
+            <Source id={`picture${picture.id}`} type="geojson" data={
+              {
+                type: "FeatureCollection",
+                features: [
+                  {
+                    geometry: { type: "Point", coordinates: [picture.id * 1, 5, picture.id * 1, 5] },
+                    type: "Feature"
+                  }
+                ]
+              }} >
+              <Layer {...pictureLayer(picture.id)} />
+            </Source>
+          )
         )}
       </ReactMapGL>
     </>
