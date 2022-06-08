@@ -23,7 +23,9 @@ import LocationFinder from "./LocationFinder";
 import { useTaskList } from "../context/TravelContext";
 import { useUser, useToken } from "../context/userContext";
 import { toast } from "react-toastify";
-
+import Gallery from "react-grid-gallery"
+import { Modal } from "react-bootstrap";
+import ImageModal from "./ImageModal";
 export default function MapGl({
   setContentPage,
   contentPage,
@@ -44,7 +46,6 @@ export default function MapGl({
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
-  const [redirect, setRedirect] = useState(false);
   const [user] = useUser();
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
@@ -53,9 +54,11 @@ export default function MapGl({
   const [height, setHeight] = useState("100%");
   const [width, setWidth] = useState("100%");
   const [token] = useToken();
+  const [currentImage, setCurrentImage] = useState(null)
+  const [show, setShow] = useState(false)
   const [viewport, setViewport] = useState({
-    latitude: 48.85837,
-    longitude: 2.294481,
+    latitude: 0,
+    longitude: 0,
     zoom: 7,
     bearing: 0,
     pitch: 0,
@@ -111,19 +114,28 @@ export default function MapGl({
       setPoiSource(new LayerUtile(lstPoi));
     },
   });
-
+  const [imageList, setImageList] = useState([])
   const { isLoading: isLoadingPictures, isError: isErrorPictures, data: dataPictures }
     = useQuery(["explorePictures", id], () => getPictures(token, id), {
-      enabled: !exploring,
+      enabled: exploring,
       onSuccess: (data) => {
-        const map = _mapRef.current.getMap();
+        let formatedList = [];
         data.map((picture) => {
-          map.loadImage(`${process.env.REACT_APP_DATABASE_URL}${picture.id}`, (error, image) => {
-            if (error) throw error;
-            map.addImage(`picture${picture.id}`, image)
-          })
+          formatedList = [...formatedList, {
+            type: "Feature",
+            id: picture.id,
+            properties: {
+              description: "aaaa"
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [picture.id * 2, picture.id * 2]//TODO
+            }
+          }]
 
         })
+        setImageList({ type: "FeatureCollection", features: formatedList })
+
       }
     })
 
@@ -208,63 +220,15 @@ export default function MapGl({
     });
   }, []);
 
-  /*    user?.map((item) => {
-        lstUser.push(new User(item.id, item.firstname, item.name, item.email));
-      });
-      poi?.map((item) => {
-        lstPoi.push(
-          new Location(
-            item.id,
-            item.description,
-            item.title,
-            item.location.longitude,
-            item.location.latitude,
-            item?.step?.id
-          )
-        );
-      });
-      step?.map((item) =>
-        lstStep.push(
-          new Location(
-            item.id,
-            item.description,
-            "",
-            item.location.longitude,
-            item.location.latitude
-          )
-        )
-      );
-      todoLists?.map((taskList) => {
-        let tasks = [];
-        //  let tasks = new TaskList(taskList.id, taskList.name);
-        taskList?.tasks?.map((item) => {
-          tasks.push(
-            new Task(
-              item.id,
-              item.creator,
-              item.name,
-              item.description,
-              new Date(item.date).toLocaleDateString()
-            )
-          );
-        });
-        lstTodoList.push(new TaskListUtile(taskList?.id, taskList?.name, tasks));
-      });
-      setTaskList(lstTodoList);
-      if (!exploring) setTravelers(lstUser);
-      setPoiSource(new LayerUtile(lstPoi));
-      setRouteSource(new LayerUtile(lstStep));
-      setViewport({
-        latitude: lstStep[lstStep.length - 1]?.latitude,
-        longitude: lstStep[lstStep.length - 1]?.longitude,
-        zoom: 7,
-        bearing: 0,
-        pitch: 0,
-      });
-    }, []);
-    */
   const handleClick = async (e) => {
-    if (exploring) return;
+    if (exploring) {
+      if (e.features[0].source === "images") {
+        setCurrentImage(e.features[0].id)
+        setShow(true)
+        console.log(e.features[0].id)
+      }
+      return
+    }
     if (movingPoi != null) {
       mutationPoiLocation.mutate({
         token,
@@ -331,16 +295,7 @@ export default function MapGl({
       return false;
     }
   };
-  const pictureLayer = (id) => {
-    return {
-      id: "picture",
-      type: "symbol",
-      layout: {
-        "icon-image": `picture${id}`, // reference the image
-        "icon-size": 0.25,
-      },
-    }
-  };
+
   const poiLayer = {
     id: "places",
     type: "symbol",
@@ -349,6 +304,15 @@ export default function MapGl({
       "icon-size": 0.25,
     },
   };
+  const imageLayer = {
+    id: "images",
+    type: "symbol",
+    layout: {
+      "icon-image": "stepImage", // reference the image
+      "icon-size": 0.25,
+    },
+  };
+
   const routeLayer2 = {
     id: "route2",
     type: "symbol",
@@ -360,7 +324,6 @@ export default function MapGl({
   const routeLayer = {
     id: "theRoute",
     type: "line",
-
     paint: {
       "line-color": "#000000",
       "line-opacity": 1,
@@ -368,7 +331,6 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
-  if (redirect) navigate("/");
   return (
     <>
       {!exploring && (
@@ -407,23 +369,13 @@ export default function MapGl({
             </Source>
           </>
         )}
-        {exploring && !isLoadingPictures && !isErrorPictures && (
-          dataPictures.map((picture) =>
-            <Source id={`picture${picture.id}`} type="geojson" data={
-              {
-                type: "FeatureCollection",
-                features: [
-                  {
-                    geometry: { type: "Point", coordinates: [picture.id * 1, 5, picture.id * 1, 5] },
-                    type: "Feature"
-                  }
-                ]
-              }} >
-              <Layer {...pictureLayer(picture.id)} />
-            </Source>
-          )
-        )}
+        {!isLoadingPictures && !isErrorPictures &&
+          <Source id="images" type="geojson" data={imageList}>
+            <Layer {...imageLayer} />
+          </Source>
+        }
       </ReactMapGL>
+      <ImageModal id={currentImage} show={show} setShow={setShow} />
     </>
   );
 }

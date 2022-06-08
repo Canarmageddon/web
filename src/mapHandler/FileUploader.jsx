@@ -20,7 +20,6 @@ export default function FileUploader({
   const handleUpload = (file) => {
     setFile(file);
   };
-  console.log(file)
   const { isLoading, isError, error, data: dataDocuments } = useQuery(["document", mapElement?.id], () =>
     getDocumentFromElement(token, mapElement.id),
     {
@@ -45,7 +44,6 @@ export default function FileUploader({
   const mutationDeleteDocument = useMutation(deleteDocument, {
     onMutate: (data) => {
       const oldData = queryClient.getQueryData(["document", mapElement.id])
-      console.log(oldData)
       queryClient.setQueryData(["document", mapElement.id], () => oldData.filter(element => element.id != mapElement.id))
       return { oldData }
     },
@@ -59,7 +57,7 @@ export default function FileUploader({
       queryClient.invalidateQueries(["document", mapElement.id])
     }
   });
-  console.log(file.name)
+
 
   if (isLoading || isError || dataDocuments == undefined) return <></>
   return (

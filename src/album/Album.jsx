@@ -21,7 +21,6 @@ export default function Album() {
         = useInfiniteQuery(['pictures', id], () => getPictures(token, id), {
             // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
         })
-    console.log(dataPictures)
     return statusLogBook === "loading" ? (<p>loading</p>)
         : statusLogBook === "error" ? (<p>Error</p>) :
             (<>
