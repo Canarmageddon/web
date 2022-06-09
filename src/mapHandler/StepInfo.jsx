@@ -8,8 +8,6 @@ import TrashAlt from "../components/icons/TrashAlt";
 import { toast } from "react-toastify";
 
 export default function ({ display, stepId, setContentPage, setMovingStep }) {
-  const successDelete = () => toast.info("Etape supprimée");
-
   const [routeSource, setRouteSource] = useRoute();
   const [description, setDescription] = useState("");
   const [currentRoute, setCurrentRoute] = useState();

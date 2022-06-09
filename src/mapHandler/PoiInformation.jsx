@@ -12,7 +12,8 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
-  const successDelete = () => toast.info("Point d'intérêt supprimé");
+  const successDelete = () => toast.info("Point d'intérêt supprimé !");
+  const successEdit = () => toast.success("Point d'intérêt modifié !");
 
   const [poi, setpoi] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
@@ -50,7 +51,9 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
       setpoi(poi.updateItem(currentPoi));
       setContentPage("map");
     },
+
     onSettled: () => {
+      successEdit();
       queryCLient.invalidateQueries(["poi", id]);
     },
   });
