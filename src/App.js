@@ -20,6 +20,7 @@ import ExploreTrips from "./explore/ExploreTrips";
 import ExploreRoute from "./explore/ExploreRoute";
 import ExploringMapNavBar from "./components/navBar/ExploringMapNavBar";
 import Album from "./album/Album";
+import CheckLink from "./album/unregistered/CheckLink";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
@@ -57,8 +58,8 @@ function App() {
                   }
                 />
               </Route>
-
               <Route path='trips' element={<TravelsList />} />
+              <Route path='album/:id' element={<Album />} />
               <Route
                 path='map/:id'
                 element={
@@ -134,6 +135,25 @@ function App() {
                 element={<Navigate to='trips' />}
                 replace={true}
               />
+            </Route>
+            <Route path='/unregistered/:id/:link/' element={<CheckLink />}>
+              <Route
+                path='map/'
+                element={
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "93vh",
+                      overflow: "hidden",
+                      position: "relative",
+                    }}
+                  >
+                    <ExploringMapNavBar />
+                    <MapGl exploring={true} />
+                  </div>
+                }
+              />
+              <Route path='album' element={<Album />} />
             </Route>
             <Route path='*' element={<Navigate to='/' />} replace={true} />
           </Routes>
