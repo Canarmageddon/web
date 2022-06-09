@@ -325,7 +325,7 @@ export const deleteTravel = async (id) =>
 
 /* ------------ TRIP -----------------------*/
 
-export const createTrip = async ({ token, name }) => {
+export const createTrip = async ({ token, name, user }) => {
   return await fetch(`${url}trips/new`, {
     method: "POST",
     headers: {
@@ -334,7 +334,7 @@ export const createTrip = async ({ token, name }) => {
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({
-      name,
+      name, creator: user
     }),
   }).then((res) => res.json());
 };
