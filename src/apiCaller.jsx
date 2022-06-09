@@ -31,7 +31,7 @@ export const deleteStep = async ({ token, id }) =>
     method: "DELETE",
   }).then((res) => checkStatus(res));
 
-export const moveStep = async ({ id, latitude, longitude }) => {
+export const moveStep = async ({ token, id, latitude, longitude }) => {
   return await fetch(`${url}steps/${id}/edit`, {
     method: "PUT",
     headers: {
@@ -325,7 +325,7 @@ export const deleteTravel = async (id) =>
 
 /* ------------ TRIP -----------------------*/
 
-export const createTrip = async ({ token, name }) => {
+export const createTrip = async ({ token, name, user }) => {
   return await fetch(`${url}trips/new`, {
     method: "POST",
     headers: {
@@ -334,7 +334,7 @@ export const createTrip = async ({ token, name }) => {
       "Content-Type": "application/ld+json",
     },
     body: JSON.stringify({
-      name,
+      name, creator: user
     }),
   }).then((res) => res.json());
 };
@@ -367,9 +367,45 @@ export const fetchAllTrips = async (page) =>
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
+
+export const generateTripLink = async (token, id) =>
+  await fetch(`${url}trips/${id}/generateLink`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method: "PUT"
+  }).then(res => checkStatus(res)).then(res => res.json())
+
+export const checkLink = async (id, link) =>
+  await fetch(`${url}trips/${id}/checkLink/${link}`).then(res => checkStatus(res))
+
 /* -------------------------------------------*/
 
-export const addDocument = async (token, file, creator, mapElement, name) => {
+/* -------------- LOGBOOK --------------------------*/
+
+export const getLogBookEntries = async (token, id) =>
+  await fetch(`${url}trips/${id}/logBookEntries`, {
+    headers: { "Authorization": `Bearer ${token}` },
+  }).then(res => checkStatus(res))
+    .then(res => res.json())
+
+
+/* -------------------------------------------*/
+
+/* -------------- PICTURES --------------------------*/
+
+export const getPictures = async (token, id) =>
+  await fetch(`${url}trips/${id}/pictures`, {
+    headers: { "Authorization": `Bearer ${token}` },
+  }).then(res => checkStatus(res))
+    .then(res => res.json())
+
+
+/* -------------------------------------------*/
+
+/* -------------- DOCUMENT --------------------------*/
+
+export const addDocument = async ({ token, file, creator, mapElement, name }) => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("creator", creator),
@@ -396,13 +432,15 @@ export const getDocument = async (token, id, name) => {
   });
 };
 
-export const deleteDocument = async (token, id) =>
+export const deleteDocument = async ({ token, id }) =>
   await fetch(`${url}documents/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
     method: "DELETE",
   }).then((res) => res.json());
 
 /* -------------------------------------------*/
+
+
 
 const checkStatus = async (response) => {
   if (response.ok) {

@@ -19,6 +19,8 @@ import RequireAuth from "./context/requireAuth";
 import ExploreTrips from "./explore/ExploreTrips";
 import ExploreRoute from "./explore/ExploreRoute";
 import ExploringMapNavBar from "./components/navBar/ExploringMapNavBar";
+import Album from "./album/Album";
+import CheckLink from "./album/unregistered/CheckLink";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
@@ -34,13 +36,13 @@ function App() {
       <UserProvider>
         <TravelProvider>
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/home/" element={<RequireAuth />}>
-              <Route path="explore/" element={<ExploreRoute />}>
-                <Route path="list" element={<ExploreTrips />} />
+            <Route path='/' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/home/' element={<RequireAuth />}>
+              <Route path='explore/' element={<ExploreRoute />}>
+                <Route path='list' element={<ExploreTrips />} />
                 <Route
-                  path="map/:id"
+                  path='map/:id'
                   element={
                     <div
                       style={{
@@ -56,10 +58,10 @@ function App() {
                   }
                 />
               </Route>
-
-              <Route path="trips" element={<TravelsList />} />
+              <Route path='trips' element={<TravelsList />} />
+              <Route path='album/:id' element={<Album />} />
               <Route
-                path="map/:id"
+                path='map/:id'
                 element={
                   <>
                     <div
@@ -129,12 +131,31 @@ function App() {
                 }
               />
               <Route
-                path="/home/*"
-                element={<Navigate to="trips" />}
+                path='/home/*'
+                element={<Navigate to='trips' />}
                 replace={true}
               />
             </Route>
-            <Route path="*" element={<Navigate to="/" />} replace={true} />
+            <Route path='/unregistered/:id/:link/' element={<CheckLink />}>
+              <Route
+                path='map/'
+                element={
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "93vh",
+                      overflow: "hidden",
+                      position: "relative",
+                    }}
+                  >
+                    <ExploringMapNavBar />
+                    <MapGl exploring={true} />
+                  </div>
+                }
+              />
+              <Route path='album' element={<Album />} />
+            </Route>
+            <Route path='*' element={<Navigate to='/' />} replace={true} />
           </Routes>
         </TravelProvider>
       </UserProvider>
