@@ -9,7 +9,14 @@ import TrashAlt from "../icons/TrashAlt";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe, faImage, faMap, faMapLocation, faShare, faShareAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGlobe,
+  faImage,
+  faMap,
+  faMapLocation,
+  faShare,
+  faShareAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 const TravelsList = () => {
   const navigate = useNavigate();
@@ -18,7 +25,8 @@ const TravelsList = () => {
   const [lstTrips, setLstTrips] = useState([]);
   const [user, setUser] = useUser();
   const [token] = useToken();
-  const generatedLink = (message) => toast.success(message, { autoClose: false })
+  const generatedLink = (message) =>
+    toast.success(message, { autoClose: false });
   const queryClient = useQueryClient();
   const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
     "trips",
@@ -28,7 +36,8 @@ const TravelsList = () => {
     }
   );
   const { isLoading: isLoadingHistory, data: dataHistory } = useQuery(
-    "history", () => fetchTravels({ token, id: user }),
+    "history",
+    () => fetchTravels({ token, id: user }),
     {
       staleTime: 60 * 1000,
     }
@@ -49,11 +58,10 @@ const TravelsList = () => {
   };
   const createLink = async (event, id) => {
     event.stopPropagation();
-    console.log(id)
-    const res = await generateTripLink(token, id)
-    navigator.clipboard.writeText(res.message)
-    generatedLink(res.message)
-  }
+    const res = await generateTripLink(token, id);
+    navigator.clipboard.writeText(res.message);
+    generatedLink(res.message);
+  };
   const logout = () => {
     window.localStorage.clear();
     setUser(undefined);
@@ -122,11 +130,13 @@ const TravelsList = () => {
                   {t.end}
                 </p>
                 {TrashAlt(handleDelete, t)}
-                <FontAwesomeIcon icon={faShareAlt}
+                <FontAwesomeIcon
+                  icon={faShareAlt}
                   style={{
                     cursor: "pointer",
                   }}
-                  onClick={(e) => createLink(e, t.id)} />
+                  onClick={(e) => createLink(e, t.id)}
+                />
               </div>
               <Dropdown.Divider />
             </React.Fragment>
@@ -186,7 +196,7 @@ const TravelsList = () => {
         {!isLoadingHistory &&
           dataHistory.map((t, index) => (
             <React.Fragment key={index}>
-              <div  >
+              <div>
                 <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                   {t.name}
                 </p>
@@ -196,22 +206,27 @@ const TravelsList = () => {
                 <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                   {t.end}
                 </p>
-                <FontAwesomeIcon icon={faGlobe} size="2x"
+                <FontAwesomeIcon
+                  icon={faGlobe}
+                  size="2x"
                   style={{
                     cursor: "pointer",
                   }}
-                  onClick={() => handleClick(t)} />
-                <FontAwesomeIcon icon={faImage} size="2x"
+                  onClick={() => handleClick(t)}
+                />
+                <FontAwesomeIcon
+                  icon={faImage}
+                  size="2x"
                   style={{
                     cursor: "pointer",
                   }}
-                  onClick={() => navigate(`/home/album/${t.id}`)} />
+                  onClick={() => navigate(`/home/album/${t.id}`)}
+                />
               </div>
               <Dropdown.Divider />
             </React.Fragment>
-          ))
-        }
-      </div >
+          ))}
+      </div>
     );
   };
   return (
@@ -231,7 +246,7 @@ const TravelsList = () => {
         onSelect={(k) => setTiming(k)}
         className="tabs-travel"
       >
-        <Tab eventKey="planned" title="Voyages planifies" ></Tab>
+        <Tab eventKey="planned" title="Voyages planifies"></Tab>
         <Tab eventKey="past" title="Historique"></Tab>
       </Tabs>
       {timing == "planned" ? displayLstTravel() : displayHistory()}
