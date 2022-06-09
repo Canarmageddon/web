@@ -4,10 +4,10 @@ import { useToken, useUser } from "../context/userContext";
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
+import TrashAlt from "../components/icons/TrashAlt";
 export default function FileUploader({
   file,
   setFile,
@@ -56,6 +56,10 @@ export default function FileUploader({
       queryClient.invalidateQueries(["document", mapElement.id])
     }
   });
+  
+  const handleDelete = (e, id) => {
+    mutationDeleteDocument.mutate({ token, id })
+  }
 
   if (isLoading || isError || dataDocuments == undefined) return <></>
   return (
@@ -74,17 +78,7 @@ export default function FileUploader({
             }}
             onClick={() => getDocument(token, document.id, document.name)}
           />
-          <FontAwesomeIcon
-            icon={faTrashAlt}
-            size="2x"
-            style={{
-              backgroundColor: "white",
-              color: "#dc3545",
-              marginLeft: 30,
-              marginTop: 10,
-            }}
-            onClick={() => mutationDeleteDocument.mutate({ token, id: document.id })}
-          />
+          {TrashAlt(handleDelete, document.id)}
         </div>
       ))}
       <Form.Group controlId="formFileMultiple" className="mb-3">
