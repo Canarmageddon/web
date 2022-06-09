@@ -20,6 +20,7 @@ const Login = () => {
   const noPassword = () => toast.warning("Veuilez renseigner un mot de passe");
   const credentialsError = () =>
     toast.error("E-mail / mot de passe incorrect, veuillez réessayer");
+  const successLog = () => toast.success("Connection réussie");
 
   const navigate = useNavigate();
   const [token, setToken] = useToken();
@@ -164,6 +165,7 @@ const Login = () => {
       try {
         setIsCheckingCredentials(true);
         const tokens = await checkCredentials(email, password);
+        successLog();
         await updateToken({
           setToken,
           token: tokens.token,

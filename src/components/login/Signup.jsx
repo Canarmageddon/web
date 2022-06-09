@@ -8,13 +8,14 @@ import { validateEmail } from "../../Functions";
 const CreateAccount = () => {
   const invalidEmail = () =>
     toast.warning("Cette adresse e-mail n'est pas valide");
+  const emailNotAvailable = () =>
+    toast.error("Cette adresse e-mail est déjà utilisée");
   const noPassword = () => toast.warning("Veuilez renseigner un mot de passe");
   const noConfirmPassword = () =>
     toast.warning("Veuilez confirmer le mot de passe");
   const divergentPasswords = () =>
     toast.warning("Les mots de passe ne correspondent pas");
-  const credentialsError = () =>
-    toast.error("E-mail / mot de passe incorrect, veuillez réessayer");
+  const successCreate = () => toast.success("Compte créé !");
 
   const navigate = useNavigate();
   const [user] = useUser();
@@ -98,11 +99,10 @@ const CreateAccount = () => {
     } else {
       try {
         await signup(email, password, firstName, lastName);
-        accountCreation();
+        successCreate();
         navigate("/");
       } catch (error) {
-        console.log(error);
-        //TODO handler errors (toast)
+        emailNotAvailable();
       }
     }
   }
