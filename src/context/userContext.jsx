@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useQuery } from "react-query";
 import { refresh, whoAmI } from "../apiCaller";
+import ScreenLogo from "../components/loadingScreen/ScreenLogo";
 import updateToken from "../updateTokens";
 const UserContext = React.createContext();
 const TokenContext = React.createContext();
@@ -35,7 +36,7 @@ export function UserProvider({ children }) {
     return (
         <TokenContext.Provider value={[token, setToken]}>
             <UserContext.Provider value={[user, updateUser]}>
-                {isLoading ? <p>loading</p> : children}
+                {isLoading ? <ScreenLogo /> : children}
             </UserContext.Provider>
         </TokenContext.Provider>
     );

@@ -2,6 +2,7 @@ import React from "react"
 import { useInfiniteQuery } from "react-query"
 import { useParams } from "react-router-dom"
 import { getLogBookEntries, getPictures } from "../apiCaller"
+import ScreenLogo from "../components/loadingScreen/ScreenLogo"
 import { useToken } from "../context/userContext"
 import LogBookEntry from "./LogBookEntry"
 import Picture from "./Picture"
@@ -22,7 +23,7 @@ export default function Album() {
             // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
         })
     console.log(dataPictures)
-    return statusLogBook === "loading" ? (<p>loading</p>)
+    return statusLogBook === "loading" ? (<ScreenLogo />)
         : statusLogBook === "error" ? (<p>Error</p>) :
             (<>
                 <div style={{ display: "flex", flexDirection: "row", }}>
