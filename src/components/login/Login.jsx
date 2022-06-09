@@ -12,6 +12,7 @@ import updateToken from "../../updateTokens";
 import { useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { validateEmail } from "../../Functions";
+import imgLoader from "../../resources/images/loader-blue.svg";
 
 const Login = () => {
   const invalidEmail = () =>
@@ -28,6 +29,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showLockIcon, setShowLockIcon] = useState(true);
   const [showUserIcon, setShowUserIcon] = useState(true);
+  const [isCheckingCredentials, setIsCheckingCredentials] = useState(false);
   const queryClient = useQueryClient();
 
   if (user != "" && user != null) {
@@ -93,6 +95,25 @@ const Login = () => {
           />
         )}
       </div>
+      <div style={{ width: "11%" }}>
+        <Button
+          type="button"
+          size="sm"
+          onClick={checkConnexionInfo}
+          style={{
+            marginTop: 10,
+            width: "100%",
+          }}
+        >
+          Se connecter
+        </Button>
+        {isCheckingCredentials && (
+          <img
+            src={imgLoader}
+            style={{ height: 40, position: "absolute", marginTop: 5 }}
+          />
+        )}
+      </div>
       <div
         style={{
           display: "flex",
@@ -103,17 +124,22 @@ const Login = () => {
           justifyContent: "space-around",
         }}
       >
-        <label>
-          Rester connecter
+        <label
+          style={{
+            fontSize: 12,
+          }}
+        >
+          Rester connecté
           <input
             type="checkbox"
             checked={rememberMe}
             onChange={(e) => setRememberMe(!rememberMe)}
+            style={{
+              cursor: "pointer",
+              marginLeft: 5,
+            }}
           ></input>
         </label>
-        <Button type="button" size="sm" onClick={checkConnexionInfo}>
-          Se connecter
-        </Button>
         <p
           onClick={() => navigate("/signup")}
           style={{
@@ -136,6 +162,7 @@ const Login = () => {
       noPassword();
     } else {
       try {
+        setIsCheckingCredentials(true);
         const tokens = await checkCredentials(email, password);
         await updateToken({
           setToken,
@@ -146,6 +173,7 @@ const Login = () => {
       } catch (error) {
         credentialsError();
       }
+      setIsCheckingCredentials(false);
     }
   }
 };
