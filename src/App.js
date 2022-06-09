@@ -57,7 +57,6 @@ function App() {
                   }
                 />
               </Route>
-
               <Route path='trips' element={<TravelsList />} />
               <Route
                 path='map/:id'
@@ -133,6 +132,24 @@ function App() {
                 path='/home/*'
                 element={<Navigate to='trips' />}
                 replace={true}
+              />
+            </Route>
+            <Route path='/unregistered/'>
+              <Route
+                path='map/:id/:link'
+                element={
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "93vh",
+                      overflow: "hidden",
+                      position: "relative",
+                    }}
+                  >
+                    <ExploringMapNavBar />
+                    <MapGl exploring={true} />
+                  </div>
+                }
               />
             </Route>
             <Route path='*' element={<Navigate to='/' />} replace={true} />

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tabs, Tab, Button } from "react-bootstrap";
-import { fetchTravels, deleteTrip } from "../../apiCaller";
+import { fetchTravels, deleteTrip, generateTripLink } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "./travel.css";
@@ -8,6 +8,9 @@ import NewTravel from "./NewTravel";
 import TrashAlt from "../icons/TrashAlt";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShare, faShareAlt } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 const TravelsList = () => {
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
@@ -15,7 +18,7 @@ const TravelsList = () => {
   const [lstTrips, setLstTrips] = useState([]);
   const [user, setUser] = useUser();
   const [token] = useToken();
-
+  const generatedLink = (message) => toast.success(message, { autoClose: false })
   const queryClient = useQueryClient();
   const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
     "trips",
@@ -38,7 +41,13 @@ const TravelsList = () => {
     event.stopPropagation();
     mutationDeleteTrip.mutate({ token, id: t.id });
   };
-
+  const createLink = async (event, id) => {
+    event.stopPropagation();
+    console.log(id)
+    const res = await generateTripLink(token, id)
+    navigator.clipboard.writeText(res.message)
+    generatedLink(res.message)
+  }
   const logout = () => {
     window.localStorage.clear();
     setUser(undefined);
@@ -107,6 +116,8 @@ const TravelsList = () => {
                   {t.end}
                 </p>
                 {TrashAlt(handleDelete, t)}
+                <FontAwesomeIcon icon={faShareAlt}
+                  onClick={(e) => createLink(e, t.id)} />
               </div>
               <Dropdown.Divider />
             </React.Fragment>
