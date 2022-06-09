@@ -6,7 +6,7 @@ import { useToken } from "../context/userContext"
 import LogBookEntry from "./LogBookEntry"
 import Picture from "./Picture"
 export default function Album() {
-    const { id } = useParams()
+    const { id, link } = useParams()
     const [token] = useToken()
     const { data: dataLogBook, error: errorLogBook,
         hasNextPage: hasNextPageLogBook, isFetching: isFetchingLogBook,
@@ -21,7 +21,6 @@ export default function Album() {
         = useInfiniteQuery(['pictures', id], () => getPictures(token, id), {
             // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
         })
-    console.log(dataPictures)
     return statusLogBook === "loading" ? (<p>loading</p>)
         : statusLogBook === "error" ? (<p>Error</p>) :
             (<>

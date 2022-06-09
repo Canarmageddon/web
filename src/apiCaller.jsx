@@ -367,6 +367,18 @@ export const fetchAllTrips = async (page) =>
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
+
+export const generateTripLink = async (token, id) =>
+  await fetch(`${url}trips/${id}/generateLink`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method: "PUT"
+  }).then(res => checkStatus(res)).then(res => res.json())
+
+export const checkLink = async (id, link) =>
+  await fetch(`${url}trips/${id}/checkLink/${link}`).then(res => checkStatus(res))
+
 /* -------------------------------------------*/
 
 /* -------------- LOGBOOK --------------------------*/
