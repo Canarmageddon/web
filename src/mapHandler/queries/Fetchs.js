@@ -47,9 +47,9 @@ export function pois(token, id, setPoiSource) {
     },
   });
 }
-export function pictures(token, id, exploring, setImageList) {
+export function pictures(token, id, setImageList) {
   return useQuery(["explorePictures", id], () => getPictures(token, id), {
-    enabled: exploring,
+    enabled: window.location.pathname.split("/")[1] == "unregistered",
     onSuccess: (data) => {
       let formatedList = [];
       data.map((picture) => {

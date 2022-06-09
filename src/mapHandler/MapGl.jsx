@@ -64,7 +64,6 @@ export default function MapGl({
   });
   const { id, link } = useParams();
 
-
   const _mapRef = createRef();
 
   const {
@@ -82,7 +81,7 @@ export default function MapGl({
   } = pois(token, id, setPoiSource)
   const [imageList, setImageList] = useState([])
   const { isLoading: isLoadingPictures, isError: isErrorPictures, data: dataPictures }
-    = pictures(token, id, exploring, setImageList)
+    = pictures(token, id, setImageList)
 
 
   const mutationStep = useMutation(createStep, {
@@ -164,13 +163,7 @@ export default function MapGl({
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("stepImage", image);
     });
-    try {
-      console.log(window.location.pathname.split("/"))
-      if (window.location.pathname.split("/")[1] == "unregistered")
-        await checkLink(id, link)
-    } catch (e) {
-      return navigate("/")
-    }
+
   }, []);
 
   /*    user?.map((item) => {
