@@ -8,13 +8,7 @@ import SideMenu from "./components/navBar/SideMenu";
 import Admin from "./components/admin/Admin";
 import { TravelProvider } from "./context/TravelContext";
 import { UserProvider } from "./context/userContext";
-import {
-  Route,
-  Routes,
-  HashRouter,
-  Navigate,
-  BrowserRouter,
-} from "react-router-dom";
+import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 import MapGl from "./mapHandler/MapGl";
 import PoiInformation from "./mapHandler/PoiInformation";
 import Login from "./components/login/Login";
@@ -23,9 +17,10 @@ import Details from "./components/Details";
 import StepInfo from "./mapHandler/StepInfo";
 import RequireAuth from "./context/requireAuth";
 import ExploreTrips from "./explore/ExploreTrips";
-import ExploringNavBar from "./components/navBar/ExploringNavBar";
 import ExploreRoute from "./explore/ExploreRoute";
 import ExploringMapNavBar from "./components/navBar/ExploringMapNavBar";
+import Album from "./album/Album";
+import CheckLink from "./album/unregistered/CheckLink";
 
 function App() {
   const [contentPage, setContentPage] = useState("map");
@@ -63,8 +58,8 @@ function App() {
                   }
                 />
               </Route>
-
               <Route path='trips' element={<TravelsList />} />
+              <Route path='album/:id' element={<Album />} />
               <Route
                 path='map/:id'
                 element={
@@ -140,6 +135,25 @@ function App() {
                 element={<Navigate to='trips' />}
                 replace={true}
               />
+            </Route>
+            <Route path='/unregistered/:id/:link/' element={<CheckLink />}>
+              <Route
+                path='map/'
+                element={
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "93vh",
+                      overflow: "hidden",
+                      position: "relative",
+                    }}
+                  >
+                    <ExploringMapNavBar />
+                    <MapGl exploring={true} />
+                  </div>
+                }
+              />
+              <Route path='album' element={<Album />} />
             </Route>
             <Route path='*' element={<Navigate to='/' />} replace={true} />
           </Routes>

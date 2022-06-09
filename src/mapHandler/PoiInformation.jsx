@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { usePoi, useRoute } from "../context/TravelContext";
 import Form from "react-bootstrap/Form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import "../style/destinationInput.css";
-import { deletePoi, getDocument, getDocumentsFromPoi, updatePoi } from "../apiCaller";
+import { deletePoi, getDocumentsFromPoi, updatePoi } from "../apiCaller";
 import FileUploader from "./FileUploader";
 import TrashAlt from "../components/icons/TrashAlt";
 import { useMutation, useQueryClient } from "react-query";
 import { useToken } from "../context/userContext";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+
 const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
+  const successDelete = () => toast.info("Point d'intérêt supprimé");
+
   const [poi, setpoi] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [currentPoi, setCurrentPoi] = useState();
@@ -19,9 +21,9 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
   const [description, setDescription] = useState("");
   const [file, setFile] = useState([]);
   const [selectedStep, setSelectedStep] = useState("");
-  const queryCLient = useQueryClient()
-  const [token] = useToken()
-  const { id } = useParams()
+  const queryCLient = useQueryClient();
+  const [token] = useToken();
+  const { id } = useParams();
   useEffect(() => {
     setCurrentPoi(poi.getItemById(poiId));
   }, [poi, poiId]);
@@ -33,9 +35,12 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
 
   const handleClick = async () => {
     mutationUpdatePoi.mutate({
-      token, id: currentPoi.id, title, description, selectedStep
-    })
-    updatePoi(currentPoi.id, title, description, selectedStep);
+      token,
+      id: currentPoi.id,
+      title,
+      description,
+      step: selectedStep,
+    });
   };
   const mutationUpdatePoi = useMutation(updatePoi, {
     onMutate: () => {
@@ -46,21 +51,22 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
       setContentPage("map");
     },
     onSettled: () => {
-      queryCLient.invalidateQueries(["poi", id])
-    }
-  })
+      queryCLient.invalidateQueries(["poi", id]);
+    },
+  });
   const mutationDeletePoi = useMutation(deletePoi, {
     onMutate: () => {
       setpoi(poi.removeItem(poiId));
       setContentPage("map");
     },
     onSettled: (data) => {
-      queryCLient.invalidateQueries(["poi", id])
-    }
-  })
+      queryCLient.invalidateQueries(["poi", id]);
+      successDelete();
+    },
+  });
 
   const handleDelete = async () => {
-    mutationDeletePoi.mutate({ token, id: currentPoi.id })
+    mutationDeletePoi.mutate({ token, id: currentPoi.id });
   };
   const handleChange = (e) => {
     setSelectedStep(e.target.value);
@@ -97,7 +103,12 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
           onChange={(e) => setDescription(e.target.value)}
           style={{ width: "70%", marginLeft: 10 }}
         />
-        <FileUploader file={file} setFile={setFile} mapElement={currentPoi} getDocumentFromElement={getDocumentsFromPoi} />
+        <FileUploader
+          file={file}
+          setFile={setFile}
+          mapElement={currentPoi}
+          getDocumentFromElement={getDocumentsFromPoi}
+        />
         Associer à une étape
         <select value={selectedStep} onChange={(e) => handleChange(e)}>
           <option value={null}></option>
@@ -114,7 +125,11 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
             Enregistrer
           </Button>
           {TrashAlt(handleDelete)}
-          <Button type="button" onClick={() => setMovingPoi(currentPoi.id)} style={{ marginTop: 10 }}>
+          <Button
+            type="button"
+            onClick={() => setMovingPoi(currentPoi.id)}
+            style={{ marginTop: 10 }}
+          >
             Déplacer
           </Button>
         </div>
