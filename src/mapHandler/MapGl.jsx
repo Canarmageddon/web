@@ -142,11 +142,13 @@ export default function MapGl({
     },
   });
   const mutationStepLocation = useMutation(moveStep, {
-    onMutate: () => {
+    onMutate: (data) => {
+      let step = routeSource.getItemById(data.id)
+      setRouteSource(routeSource.updateItem(step))
       setMovingStep(null);
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["step", id]);
+      queryClient.invalidateQueries(["steps", id]);
       successStepMoved();
     },
   });
