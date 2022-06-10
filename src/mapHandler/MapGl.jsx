@@ -60,7 +60,7 @@ export default function MapGl({
     isError: isErrorSteps,
     error: errorSteps,
     data: dataSteps,
-  } = steps(token, id, setRouteSource);
+  } = steps(token, id, setRouteSource, setViewport);
 
   const {
     isLoading: isLoadingPoi,
