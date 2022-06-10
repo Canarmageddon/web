@@ -1,20 +1,10 @@
 import ReactMapGL, { Layer, Source } from "react-map-gl";
 import { useState, useEffect } from "react";
-import LayerUtile from "../factory/layers/LayerUtile";
 import { usePoi, useRoute } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
 import { useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "react-query";
-import {
-  createPoi,
-  createStep,
-  fetchSteps,
-  fetchPois,
-  movePoi,
-  moveStep,
-  getPictures,
-  checkLink,
-} from "../apiCaller";
+import { useMutation, useQueryClient } from "react-query";
+import { createPoi, createStep, movePoi, moveStep } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
@@ -22,7 +12,6 @@ import { pictures, pois, steps } from "./queries/Fetchs";
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
-import { useTaskList } from "../context/TravelContext";
 import { useUser, useToken } from "../context/userContext";
 import { toast } from "react-toastify";
 
@@ -31,7 +20,6 @@ export default function MapGl({
   contentPage,
   setPoiId,
   setStepId,
-  setTravelers,
   movingPoi,
   setMovingPoi,
   movingStep,
@@ -46,14 +34,12 @@ export default function MapGl({
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
-  const [redirect, setRedirect] = useState(false);
+  const [redirect] = useState(false);
   const [user] = useUser();
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);
   const [typeLocation, setTypeLocation] = useState("route");
-  const [height, setHeight] = useState("100%");
-  const [width, setWidth] = useState("100%");
   const [token] = useToken();
   const [viewport, setViewport] = useState({
     latitude: 48.85837,
@@ -157,7 +143,7 @@ export default function MapGl({
 
   useEffect(async () => {
     const map = _mapRef.current.getMap();
-    map.loadImage("http://placekitten.com/50/50", (error, image) => {
+    map.loadImage(imgLoader, (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("poiImage", image);
@@ -285,8 +271,8 @@ export default function MapGl({
       <ReactMapGL
         ref={_mapRef}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-        height={height}
-        width={width}
+        height={"100%"}
+        width={"100%"}
         {...viewport}
         onViewportChange={(viewport) => setViewport(viewport)}
         mapStyle="mapbox://styles/mapbox/streets-v11"
