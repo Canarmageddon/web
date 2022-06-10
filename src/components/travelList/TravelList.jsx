@@ -44,7 +44,7 @@ const TravelsList = () => {
   );
 
   const handleClick = (t) => {
-    navigate(`/home/map/${t.id}/discovery`);
+    navigate(`/home/map/${t.id}`);
   };
   const mutationDeleteTrip = useMutation(deleteTrip, {
     onSettled: () => {
@@ -120,15 +120,17 @@ const TravelsList = () => {
           dataTravels.map((t, index) => (
             <React.Fragment key={index}>
               <div className="travel-list-item" onClick={(e) => handleClick(t)}>
-                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                  {t.name}
-                </p>
-                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                  {t.start}
-                </p>
-                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                  {t.end}
-                </p>
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                  <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                    {t.name}
+                  </p>
+                  <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                    {t.steps[0].description}
+                  </p>
+                  <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3, }}>
+                    {t.steps[t.steps.length - 1].description}
+                  </p>
+                </div>
                 {TrashAlt(handleDelete, t)}
                 <FontAwesomeIcon
                   icon={faShareAlt}
@@ -197,22 +199,24 @@ const TravelsList = () => {
           dataHistory.map((t, index) => (
             <React.Fragment key={index}>
               <div>
-                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                  {t.name}
-                </p>
-                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                  {t.start}
-                </p>
-                <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                  {t.end}
-                </p>
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                  <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                    {t.name}
+                  </p>
+                  <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+                    {t.steps[0].description}
+                  </p>
+                  <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3, }}>
+                    {t.steps[t.steps.length - 1].description}
+                  </p>
+                </div>
                 <FontAwesomeIcon
                   icon={faGlobe}
                   size="2x"
                   style={{
                     cursor: "pointer",
                   }}
-                  onClick={() => handleClick(t)}
+                  onClick={() => navigate(`/home/map/${t.id}/discovery`)}
                 />
                 <FontAwesomeIcon
                   icon={faImage}
