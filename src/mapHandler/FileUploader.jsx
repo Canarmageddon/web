@@ -56,7 +56,7 @@ export default function FileUploader({
       queryClient.invalidateQueries(["document", mapElement.id])
     }
   });
-  
+
   const handleDelete = (e, id) => {
     mutationDeleteDocument.mutate({ token, id })
   }
