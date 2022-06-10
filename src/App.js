@@ -130,8 +130,24 @@ function App() {
                 }
               />
               <Route
-                path="/home/*"
-                element={<Navigate to="trips" />}
+                path='map/:id/discovery'
+                element={
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "93vh",
+                      overflow: "hidden",
+                      position: "relative",
+                    }}
+                  >
+                    <ExploringMapNavBar />
+                    <MapGl exploring={true} />
+                  </div>
+                }
+              />
+              <Route
+                path='/home/*'
+                element={<Navigate to='trips' />}
                 replace={true}
               />
             </Route>

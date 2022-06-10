@@ -24,7 +24,7 @@ export default function Album() {
         })
 
     return statusLogBook === "loading" ? (<ScreenLogo />)
-                                          
+
         : statusLogBook === "error" ? (<p>Error</p>) :
             (<>
                 <div style={{ display: "flex", flexDirection: "row", }}>
