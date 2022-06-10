@@ -18,7 +18,9 @@ import {
   faShareAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import { useTranslation } from 'react-i18next';
 const TravelsList = () => {
+  const { t } = useTranslation('translation', { "keyPrefix": "trip_list" });
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
   const [role, setRole] = useState("admin");
@@ -59,7 +61,7 @@ const TravelsList = () => {
   const createLink = async (event, id) => {
     event.stopPropagation();
     const res = await generateTripLink(token, id);
-    navigator.clipboard.writeText(res.message);
+    navigator.clipboard.writeText(res.message);//TODO
     generatedLink(res.message);
   };
   const logout = () => {
@@ -89,7 +91,7 @@ const TravelsList = () => {
               fontWeight: 500,
             }}
           >
-            Nom
+            {t("name")}
           </p>
           <p
             style={{
@@ -100,7 +102,7 @@ const TravelsList = () => {
               fontWeight: 500,
             }}
           >
-            Départ
+            {t("start")}
           </p>
           <p
             style={{
@@ -111,7 +113,7 @@ const TravelsList = () => {
               fontWeight: 500,
             }}
           >
-            Arrivée
+            {t("end")}
           </p>
         </div>
 
@@ -168,7 +170,7 @@ const TravelsList = () => {
               fontWeight: 500,
             }}
           >
-            Nom
+            {t("name")}
           </p>
           <p
             style={{
@@ -179,7 +181,7 @@ const TravelsList = () => {
               fontWeight: 500,
             }}
           >
-            Départ
+            {t("star")}
           </p>
           <p
             style={{
@@ -190,7 +192,7 @@ const TravelsList = () => {
               fontWeight: 500,
             }}
           >
-            Arrivée
+            {t("end")}
           </p>
         </div>
 
@@ -240,8 +242,8 @@ const TravelsList = () => {
         flex: 0.4,
       }}
     >
-      <h1 className="list-title">Voyages</h1>
-      <Button onClick={() => navigate("/home/explore/list")}>Explorer</Button>
+      <h1 className="list-title">{t("trips")}</h1>
+      <Button onClick={() => navigate("/home/explore/list")}>{t("explore")}</Button>
       <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
       <hr style={{ marginBottom: 5 + "px" }} />
       <Tabs
@@ -250,8 +252,8 @@ const TravelsList = () => {
         onSelect={(k) => setTiming(k)}
         className="tabs-travel"
       >
-        <Tab eventKey="planned" title="Voyages planifies"></Tab>
-        <Tab eventKey="past" title="Historique"></Tab>
+        <Tab eventKey="planned" title={t("planned_trip")}></Tab>
+        <Tab eventKey="past" title={t("history")}></Tab>
       </Tabs>
       {timing == "planned" ? displayLstTravel() : displayHistory()}
       <Button
@@ -259,7 +261,7 @@ const TravelsList = () => {
         onClick={logout}
         style={{ position: "absolute", bottom: 10, left: 15 }}
       >
-        Déconnexion
+        {t("disconnect")}
       </Button>
     </div>
   );

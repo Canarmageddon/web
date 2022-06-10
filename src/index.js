@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -11,6 +11,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ToastContainer } from "react-toastify";
 import { ReactQueryDevtools } from "react-query/devtools";
 import "react-toastify/dist/ReactToastify.min.css";
+import i18n from "./translation/i18n";
+import ScreenLogo from "./components/loadingScreen/ScreenLogo";
 
 const AppStart = () => {
   const queryClient = new QueryClient({
@@ -24,21 +26,23 @@ const AppStart = () => {
 
   return (
     <React.StrictMode>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable
-        pauseOnHover
-      />
-      <QueryClientProvider client={queryClient} contextSharing={true}>
-        <App />
-        <ReactQueryDevtools />
-      </QueryClientProvider>
+      <Suspense fallback={<ScreenLogo />}>
+        <ToastContainer
+          position='top-right'
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover
+        />
+        <QueryClientProvider client={queryClient} contextSharing={true}>
+          <App />
+          <ReactQueryDevtools />
+        </QueryClientProvider>
+      </Suspense>
     </React.StrictMode>
   );
 };

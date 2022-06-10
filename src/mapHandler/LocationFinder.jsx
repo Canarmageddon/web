@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
+import { useTranslation } from 'react-i18next';
 
 const LocationFinder = ({ typeLocation, setTypeLocation, setEditing }) => {
+  const { t } = useTranslation();
   const [switchChecked, setSwitchChecked] = useState(false);
   useEffect(() => {
     setEditing(switchChecked);
@@ -25,7 +27,7 @@ const LocationFinder = ({ typeLocation, setTypeLocation, setEditing }) => {
           <Form.Check
             type="switch"
             value={switchChecked}
-            label={switchChecked ? "Edition" : "Lecture"}
+            label={switchChecked ? t("editing") : t("reading")}
             onChange={(e) => setSwitchChecked(e.target.checked)}
           />
           <Form>

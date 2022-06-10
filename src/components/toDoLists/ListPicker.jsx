@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDoubleLeft } from "@fortawesome/free-solid-svg-icons";
 import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from 'react-i18next';
 
 const ListPicker = ({
   currentIndex,
@@ -9,6 +10,7 @@ const ListPicker = ({
   listTitle,
   listLength,
 }) => {
+  const { t } = useTranslation('translation', { "keyPrefix": "list_picker" });
   return (
     <div
       style={{
@@ -41,7 +43,7 @@ const ListPicker = ({
           color: "rgb(13, 110, 253, 1)",
         }}
       >
-        {listLength > 0 ? listTitle : "Créez votre première liste !"}
+        {listLength > 0 ? listTitle : t("fist_list")}
       </h4>
       {listLength > 0 && (
         <FontAwesomeIcon

@@ -10,10 +10,12 @@ import { useMutation, useQueryClient } from "react-query";
 import { useToken } from "../context/userContext";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useTranslation } from 'react-i18next';
 
 const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
-  const successDelete = () => toast.info("Point d'intérêt supprimé !");
-  const successEdit = () => toast.success("Point d'intérêt modifié !");
+  const { t } = useTranslation('translation', { "keyPrefix": "poi_info" });
+  const successDelete = () => toast.info(t("poi_deleted"));
+  const successEdit = () => toast.success(t("poi_updated"));
 
   const [poi, setpoi] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
@@ -82,7 +84,7 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
         textAlign: "center",
       }}
     >
-      <h2>Détails du point d'intérêt</h2>
+      <h2>{t("poi_details")}</h2>
       <Form
         style={{
           display: "flex",
@@ -112,7 +114,7 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
           mapElement={currentPoi}
           getDocumentFromElement={getDocumentsFromPoi}
         />
-        Associer à une étape
+        {t("associate_step")}
         <select value={selectedStep} onChange={(e) => handleChange(e)}>
           <option value={null}></option>
           {routeSource.listLocations.map((step) => {
@@ -133,7 +135,7 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
             onClick={() => setMovingPoi(currentPoi.id)}
             style={{ marginTop: 10 }}
           >
-            Déplacer
+            {t("move")}
           </Button>
         </div>
       </Form>

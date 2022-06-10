@@ -14,8 +14,9 @@ import { useNavigate } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 import ExploringNavBar from "../components/navBar/ExploringNavBar";
 import { useQuery } from "react-query";
-
+import { useTranslation } from 'react-i18next';
 export default function ExploreTrips({ context }) {
+  const { t } = useTranslation('translation', { "keyPrefix": "trip_list " });
   const [currentPage, setCurrentPage] = useOutletContext();
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
@@ -93,7 +94,7 @@ export default function ExploreTrips({ context }) {
               fontWeight: 500,
             }}
           >
-            Nom
+            {t("name")}
           </p>
           <p
             style={{
@@ -104,7 +105,7 @@ export default function ExploreTrips({ context }) {
               fontWeight: 500,
             }}
           >
-            Départ
+            {t("start")}
           </p>
           <p
             style={{
@@ -115,7 +116,7 @@ export default function ExploreTrips({ context }) {
               fontWeight: 500,
             }}
           >
-            Arrivée
+            {t("end")}
           </p>
         </div>
 
@@ -171,7 +172,7 @@ export default function ExploreTrips({ context }) {
     >
       <ExploringNavBar />
       <h1 className="list-title">
-        Découvrez les voyages des autres utilisateurs
+        {t("others_trips")}
       </h1>
       <hr style={{ marginBottom: 5 + "px" }} />
       {displayLstTravel()}

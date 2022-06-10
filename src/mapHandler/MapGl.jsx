@@ -16,6 +16,7 @@ import { useUser, useToken } from "../context/userContext";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 import ImageModal from "./ImageModal";
+import { useTranslation } from 'react-i18next';
 export default function MapGl({
   setContentPage,
   contentPage,
@@ -27,10 +28,11 @@ export default function MapGl({
   setMovingStep,
   exploring = false,
 }) {
-  const poiSuccess = () => toast.success("Point d'intérêt créé !");
-  const stepSuccess = () => toast.success("Etape créée !");
-  const successPoiMoved = () => toast.info("Point d'intérêt déplacé");
-  const successStepMoved = () => toast.info("Etape déplacée");
+  const { t } = useTranslation('translation', { "keyPrefix": "map" });
+  const poiSuccess = () => toast.success(t("poi_created"));
+  const stepSuccess = () => toast.success(t("screp_created"));
+  const successPoiMoved = () => toast.info(t("poi_moved"));
+  const successStepMoved = () => toast.info(t("step_moved"));
 
   const queryClient = useQueryClient();
 
