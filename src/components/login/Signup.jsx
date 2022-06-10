@@ -10,18 +10,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import imgLoader from "../../resources/images/loader-blue.svg";
+import { useTranslation } from 'react-i18next';
 
 const CreateAccount = () => {
+  const { t } = useTranslation('translation', { "keyPrefix": "create_account" });
+
   const invalidEmail = () =>
-    toast.warning("Cette adresse e-mail n'est pas valide");
+    toast.warning(t("invalidEmail"));
   const emailNotAvailable = () =>
-    toast.error("Cette adresse e-mail est déjà utilisée");
-  const noPassword = () => toast.warning("Veuilez renseigner un mot de passe");
+    toast.error(t("user_email"));
+  const noPassword = () => toast.warning(t("no_password"));
   const noConfirmPassword = () =>
-    toast.warning("Veuilez confirmer le mot de passe");
+    toast.warning(t("confirm_password"));
   const divergentPasswords = () =>
-    toast.warning("Les mots de passe ne correspondent pas");
-  const successCreate = () => toast.success("Compte créé !");
+    toast.warning(t("divergent_passwords"));
+  const successCreate = () => toast.success(t("success"));
 
   const navigate = useNavigate();
   const [user] = useUser();
@@ -83,7 +86,7 @@ const CreateAccount = () => {
           }}
         >
           <label htmlFor="firstName" style={{ fontSize: 11 }}>
-            Prénom
+            {t("first_name")}
           </label>
           <FormControl
             type="text"
@@ -100,7 +103,7 @@ const CreateAccount = () => {
           }}
         >
           <label htmlFor="lastName" style={{ fontSize: 11 }}>
-            Nom
+            {t("last_name")}
           </label>
           <FormControl
             type="text"
@@ -142,7 +145,7 @@ const CreateAccount = () => {
           }}
         >
           <label htmlFor="confirmPassword" style={{ fontSize: 11 }}>
-            Confirmez le mot de passe
+            {t("confirm_password")}
           </label>
           <FormControl
             type="password"
@@ -168,7 +171,7 @@ const CreateAccount = () => {
               width: "100%",
             }}
           >
-            Créer mon compte
+            {t('create_account')}
           </Button>
           <Button
             type="button"

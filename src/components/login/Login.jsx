@@ -13,14 +13,15 @@ import { useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { validateEmail } from "../../Functions";
 import imgLoader from "../../resources/images/loader-blue.svg";
-
+import { useTranslation } from 'react-i18next';
 const Login = () => {
+  const { t } = useTranslation('translation', { "keyPrefix": "login" });
   const invalidEmail = () =>
-    toast.warning("Cette adresse e-mail n'est pas valide");
-  const noPassword = () => toast.warning("Veuilez renseigner un mot de passe");
+    toast.warning(t("invalid_email"));
+  const noPassword = () => toast.warning(t("no_password"));
   const credentialsError = () =>
-    toast.error("E-mail / mot de passe incorrect, veuillez réessayer");
-  const successLog = () => toast.success("Connection réussie");
+    toast.error(t("credentials_error"));
+  const successLog = () => toast.success(t("success_log"));
 
   const navigate = useNavigate();
   const [token, setToken] = useToken();
@@ -79,7 +80,7 @@ const Login = () => {
         }}
       >
         <label htmlFor="password" style={{ fontSize: 11 }}>
-          Mot de passe
+          {t("mdp")}
         </label>
         <FormControl
           type="password"
@@ -106,7 +107,7 @@ const Login = () => {
             width: "100%",
           }}
         >
-          Se connecter
+          {t("se_connecter")}
         </Button>
         {isCheckingCredentials && (
           <img
@@ -125,22 +126,7 @@ const Login = () => {
           justifyContent: "space-around",
         }}
       >
-        <label
-          style={{
-            fontSize: 12,
-          }}
-        >
-          Rester connecté
-          <input
-            type="checkbox"
-            checked={rememberMe}
-            onChange={(e) => setRememberMe(!rememberMe)}
-            style={{
-              cursor: "pointer",
-              marginLeft: 5,
-            }}
-          ></input>
-        </label>
+
         <p
           onClick={() => navigate("/signup")}
           style={{
@@ -150,7 +136,7 @@ const Login = () => {
             cursor: "pointer",
           }}
         >
-          Créer un compte
+          {t("creer_compte")}
         </p>
       </div>
     </form>

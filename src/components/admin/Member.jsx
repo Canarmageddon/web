@@ -27,7 +27,7 @@ export default function Member({ member, id, refetchMembers }) {
             <option value="guest">Invité</option>
         </select> */}
       <button className="delete" onClick={() => handleClick(member.user.email)}>
-        Supprimer
+        Supprimer {/* TODO */}
       </button>
       <hr className="bar" />
     </li>

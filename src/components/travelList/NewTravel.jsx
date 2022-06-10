@@ -5,7 +5,9 @@ import { createTrip } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
+import { useTranslation } from 'react-i18next';
 export default function ({ lstTrips, setLstTrips }) {
+  const { t } = useTranslation('translation', { "keyPrefix": "new_trip" });
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const handleClose = () => setShow(false);
@@ -36,17 +38,17 @@ export default function ({ lstTrips, setLstTrips }) {
   return (
     <>
       <button className="button-new" onClick={handleShow}>
-        Nouveau voyage
+        {t("btn_new_trip")}
       </button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Créez un nouveau voyage</Modal.Title>
+          <Modal.Title>t{("new_trip")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={(e) => handleSubmit(e)}>
             <label>
-              Nom du voyage
+              {t("trip_name")}
               <input
                 type="text"
                 name="name"
@@ -54,7 +56,7 @@ export default function ({ lstTrips, setLstTrips }) {
                 onChange={(e) => setName(e.target.value)}
               />
             </label>
-            <input type="submit" value="Créer" />
+            <input type="submit" value={t("create")} />
           </form>
         </Modal.Body>
       </Modal>

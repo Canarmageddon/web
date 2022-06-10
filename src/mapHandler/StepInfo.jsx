@@ -8,15 +8,16 @@ import { useToken } from "../context/userContext";
 import FileUploader from "./FileUploader";
 import TrashAlt from "../components/icons/TrashAlt";
 import { toast } from "react-toastify";
+import { useTranslation } from 'react-i18next';
 
 export default function ({ display, stepId, setContentPage, setMovingStep }) {
+  const { t } = useTranslation('translation', { "keyPrefix": "step_info" });
   const [routeSource, setRouteSource] = useRoute();
   const [token] = useToken();
   const [description, setDescription] = useState("");
   const [currentRoute, setCurrentRoute] = useState();
   const [file, setFile] = useState([]);
-  const successEdit = () => toast.success("Etape modifiée !");
-
+  const successEdit = () => toast.success(t("step_updated"));
   const mutationUpdateStep = useMutation(updateStep, {
     onMutate: () => {
       currentRoute.description = description;
@@ -27,7 +28,6 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
       successEdit();
     },
   });
-  console.log(currentRoute);
   useEffect(() => {
     setCurrentRoute(routeSource.getItemById(stepId));
     setDescription(
@@ -90,7 +90,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
             onClick={() => setMovingStep(currentRoute.id)}
             style={{ marginTop: 10 }}
           >
-            Déplacer
+            {t("move")}
           </Button>
         </div>
       </Form>

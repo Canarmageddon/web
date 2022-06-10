@@ -1,0 +1,78 @@
+{
+    "login": {
+        "se_connecter": "Login",
+        "creer_compte": "Create an account",
+        "mdp": "Password",
+        "invalid_email": "This e-mail address is not valid",
+        "no_password": "Please, enter a password",
+        "credentials_error": "E-mail / password incorrect, please try again",
+        "success_log": "Login success"
+    },
+    "create_account": {
+        "invalid_email": "This e-mail address is not valid",
+        "used_email": "This address is already in use",
+        "no_password": "Please, enter a password",
+        "confirm_password": "Please, confirm password",
+        "divergent_passwords": "Passwords are not corresponding",
+        "success": "Account created !",
+        "first_name": "Firstname",
+        "last_name": "Lastname",
+        "create_account": "Created an account"
+    },
+    "side_menu": {
+        "map": "Map",
+        "todo_list": "Todo lists",
+        "admin": "Admin",
+        "details": "Details",
+        "disconnect": "Disconnection"
+    },
+    "list_picker": {
+        "first_list": "Create your first list !"
+    },
+    "new_trip": {
+        "btn_new_trip": "New trip",
+        "new_trip": "Create a new trip",
+        "trip_name": "Trip's name",
+        "create": "Create"
+    },
+    "trip_list": {
+        "name": "Name",
+        "start": "Start",
+        "end": "End",
+        "trips": "Trips",
+        "explore": "Explore",
+        "planned_trip": "Planned trips",
+        "history": "History",
+        "disconnect": "Disconnect",
+        "others_trips": "See others trips"
+    },
+    "file_uploader": {
+        "added_document": "The document was added",
+        "not_added_document": "The document could not be added",
+        "deleted_document": "The document was deleted",
+        "not_deleted_document": "The document could not be deleted",
+        "add_file": "Add a file",
+        "validate_file": "Validate this file"
+    },
+    "editing": "Editing",
+    "reading": "Reading",
+    "map": {
+        "poi_created": "Point of interrest created !",
+        "step_created": "Step created !",
+        "poi_moved": "Point of interrest moved",
+        "step_moved": "Step moved"
+    },
+    "poi_info": {
+        "poi_deleted": "Point of interrest deleted !",
+        "poi_updated": "Point of interrest modifed !",
+        "poi_details": "Point of interrest's details",
+        "associate_step": "Associate a step",
+        "move": "Move"
+    },
+    "step_info": {
+        "step_deleted": "Step deleted !",
+        "step_updated": "Step modified !",
+        "step_details": "Step's details",
+        "move": "Move"
+    }
+}

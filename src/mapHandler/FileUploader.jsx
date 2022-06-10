@@ -8,12 +8,14 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import TrashAlt from "../components/icons/TrashAlt";
+import { useTranslation } from 'react-i18next';
 export default function FileUploader({
   file,
   setFile,
   mapElement,
   getDocumentFromElement,
 }) {
+  const { t } = useTranslation('translation', { "keyPrefix": "file_uploader" });
   const [token] = useToken();
   const queryClient = useQueryClient()
   const [user] = useUser();
@@ -30,10 +32,10 @@ export default function FileUploader({
     onMutate: (data) => {
     },
     onSuccess: () => {
-      toast.success("le document a été ajouté");
+      toast.success(t("added_document"));
     },
     onError: () => {
-      toast.error("le document n'a pas pu être ajouté")
+      toast.error(t("not_added_document"))
     },
     onSettled: (data) => {
       setFile([])
@@ -47,10 +49,10 @@ export default function FileUploader({
       return { oldData }
     },
     onSuccess: () => {
-      toast.success("document supprimé")
+      toast.success(t("deleted_document"))
     },
     onError: () => {
-      toast.error("le document n'a pas pu être supprimé")
+      toast.error()
     },
     onSettled: (data) => {
       queryClient.invalidateQueries(["document", mapElement.id])
@@ -82,7 +84,7 @@ export default function FileUploader({
         </div>
       ))}
       <Form.Group controlId="formFileMultiple" className="mb-3">
-        <Form.Label>Ajoutez un fichier</Form.Label>
+        <Form.Label>{t("add_file")}</Form.Label>
         <Form.Control
           type="file"
           onChange={(e) => handleUpload(e.target.files[0])}
@@ -94,7 +96,7 @@ export default function FileUploader({
           }
           style={{ marginTop: 10 }}
         >
-          Valider ce fichier
+          {t('validate_file')}
         </Button>
       </Form.Group>
     </>
