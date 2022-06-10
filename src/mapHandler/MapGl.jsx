@@ -25,7 +25,8 @@ import LocationFinder from "./LocationFinder";
 import { useTaskList } from "../context/TravelContext";
 import { useUser, useToken } from "../context/userContext";
 import { toast } from "react-toastify";
-
+import { Modal } from "react-bootstrap";
+import ImageModal from "./ImageModal";
 export default function MapGl({
   setContentPage,
   contentPage,
@@ -36,7 +37,7 @@ export default function MapGl({
   setMovingPoi,
   movingStep,
   setMovingStep,
-  exploring,
+  exploring = false,
 }) {
   const poiSuccess = () => toast.success("Point d'intérêt créé !");
   const stepSuccess = () => toast.success("Etape créée !");
@@ -46,7 +47,6 @@ export default function MapGl({
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
-  const [redirect, setRedirect] = useState(false);
   const [user] = useUser();
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
@@ -55,9 +55,11 @@ export default function MapGl({
   const [height, setHeight] = useState("100%");
   const [width, setWidth] = useState("100%");
   const [token] = useToken();
+  const [currentImage, setCurrentImage] = useState(null)
+  const [show, setShow] = useState(false)
   const [viewport, setViewport] = useState({
-    latitude: 48.85837,
-    longitude: 2.294481,
+    latitude: 0,
+    longitude: 0,
     zoom: 7,
     bearing: 0,
     pitch: 0,
@@ -81,7 +83,7 @@ export default function MapGl({
   } = pois(token, id, setPoiSource)
   const [imageList, setImageList] = useState([])
   const { isLoading: isLoadingPictures, isError: isErrorPictures, data: dataPictures }
-    = pictures(token, id, setImageList)
+    = pictures(token, id, setImageList, exploring)
 
 
   const mutationStep = useMutation(createStep, {
@@ -244,6 +246,7 @@ export default function MapGl({
       return false;
     }
   };
+
   const poiLayer = {
     id: "places",
     type: "symbol",
@@ -252,6 +255,15 @@ export default function MapGl({
       "icon-size": 0.25,
     },
   };
+  const imageLayer = {
+    id: "images",
+    type: "symbol",
+    layout: {
+      "icon-image": "stepImage", // reference the image
+      "icon-size": 0.25,
+    },
+  };
+
   const routeLayer2 = {
     id: "route2",
     type: "symbol",
@@ -263,7 +275,6 @@ export default function MapGl({
   const routeLayer = {
     id: "theRoute",
     type: "line",
-
     paint: {
       "line-color": "#000000",
       "line-opacity": 1,
@@ -271,7 +282,7 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
-  if (redirect) navigate("/");
+  console.log(!isLoadingPictures, !isErrorPictures, exploring)
   return (
     <>
       {!exploring && (
@@ -310,7 +321,13 @@ export default function MapGl({
             </Source>
           </>
         )}
+        {!isLoadingPictures && !isErrorPictures && exploring &&
+          <Source id="images" type="geojson" data={imageList}>
+            <Layer {...imageLayer} />
+          </Source>
+        }
       </ReactMapGL>
+      <ImageModal id={currentImage} show={show} setShow={setShow} />
     </>
   );
 }
