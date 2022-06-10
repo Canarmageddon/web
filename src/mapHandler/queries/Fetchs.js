@@ -3,7 +3,7 @@ import { fetchPois, fetchSteps, getPictures } from "../../apiCaller";
 import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
 
-export function steps(token, id, setRouteSource) {
+export function steps(token, id, setRouteSource, setViewport) {
   return useQuery(["steps", id], () => fetchSteps(token, id), {
     retry: false,
     onSuccess: (data) => {
@@ -21,6 +21,13 @@ export function steps(token, id, setRouteSource) {
         );
       });
       setRouteSource(new LayerUtile(lstStep));
+      setViewport({
+        latitude: data[data.length - 1].location.latitude,
+        longitude: data[data.length - 1].location.longitude,
+        zoom: 7,
+        bearing: 0,
+        pitch: 0,
+      });
     },
   });
 }
