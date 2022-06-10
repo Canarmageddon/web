@@ -44,7 +44,7 @@ const TravelsList = () => {
   );
 
   const handleClick = (t) => {
-    navigate(`/home/map/${t.id}`);
+    navigate(`/home/map/${t.id}/discovery`);
   };
   const mutationDeleteTrip = useMutation(deleteTrip, {
     onSettled: () => {
