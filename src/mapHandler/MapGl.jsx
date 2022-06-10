@@ -145,6 +145,15 @@ export default function MapGl({
   });
 
   useEffect(async () => {
+    if (dataSteps != undefined) {
+      setViewport({
+        latitude: dataSteps[dataSteps.length - 1].location.latitude,
+        longitude: dataSteps[dataSteps.length - 1].location.longitude,
+        zoom: 7,
+        bearing: 0,
+        pitch: 0,
+      });
+    }
     const map = _mapRef.current.getMap();
     map.loadImage("http://placekitten.com/50/50", (error, image) => {
       if (error) throw error;
