@@ -42,8 +42,8 @@ export default function MapGl({
   const [editing, setEditing] = useState(true);
   const [typeLocation, setTypeLocation] = useState("route");
   const [token] = useToken();
-  const [currentImage, setCurrentImage] = useState(null)
-  const [show, setShow] = useState(false)
+  const [currentImage, setCurrentImage] = useState(null);
+  const [show, setShow] = useState(false);
   const [viewport, setViewport] = useState({
     latitude: 0,
     longitude: 0,
@@ -67,10 +67,13 @@ export default function MapGl({
     isError: isErrorPoi,
     error: errorPoi,
     data: dataPoi,
-  } = pois(token, id, setPoiSource)
-  const [imageList, setImageList] = useState([])
-  const { isLoading: isLoadingPictures, isError: isErrorPictures, data: dataPictures }
-    = pictures(token, id, setImageList, exploring)
+  } = pois(token, id, setPoiSource);
+  const [imageList, setImageList] = useState([]);
+  const {
+    isLoading: isLoadingPictures,
+    isError: isErrorPictures,
+    data: dataPictures,
+  } = pictures(token, id, setImageList, exploring);
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
@@ -143,7 +146,7 @@ export default function MapGl({
 
   useEffect(async () => {
     const map = _mapRef.current.getMap();
-    map.loadImage(imgLoader, (error, image) => {
+    map.loadImage("http://placekitten.com/50/50", (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("poiImage", image);
@@ -267,7 +270,7 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
-  console.log(!isLoadingPictures, !isErrorPictures, exploring)
+  console.log(!isLoadingPictures, !isErrorPictures, exploring);
   return (
     <>
       {!exploring && (
@@ -306,11 +309,11 @@ export default function MapGl({
             </Source>
           </>
         )}
-        {!isLoadingPictures && !isErrorPictures && exploring &&
+        {!isLoadingPictures && !isErrorPictures && exploring && (
           <Source id="images" type="geojson" data={imageList}>
             <Layer {...imageLayer} />
           </Source>
-        }
+        )}
       </ReactMapGL>
       <ImageModal id={currentImage} show={show} setShow={setShow} />
     </>
