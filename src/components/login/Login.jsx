@@ -23,8 +23,8 @@ const Login = () => {
   const successLog = () => toast.success("Connection réussie");
 
   const navigate = useNavigate();
-  const [setToken] = useToken();
-  const [user] = useUser();
+  const [token, setToken] = useToken();
+  const [user, setUser] = useUser();
   const [email, setEmail] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [password, setPassword] = useState("");
