@@ -38,7 +38,7 @@ export default function MapGl({
   setMovingPoi,
   movingStep,
   setMovingStep,
-  exploring,
+  exploring = false,
 }) {
   const poiSuccess = () => toast.success("Point d'intérêt créé !");
   const stepSuccess = () => toast.success("Etape créée !");
@@ -84,7 +84,7 @@ export default function MapGl({
   } = pois(token, id, setPoiSource)
   const [imageList, setImageList] = useState([])
   const { isLoading: isLoadingPictures, isError: isErrorPictures, data: dataPictures }
-    = pictures(token, id, setImageList)
+    = pictures(token, id, setImageList, exploring)
 
 
   const mutationStep = useMutation(createStep, {
@@ -283,6 +283,7 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
+  console.log(!isLoadingPictures, !isErrorPictures, exploring)
   return (
     <>
       {!exploring && (
@@ -321,7 +322,7 @@ export default function MapGl({
             </Source>
           </>
         )}
-        {!isLoadingPictures && !isErrorPictures &&
+        {!isLoadingPictures && !isErrorPictures && exploring &&
           <Source id="images" type="geojson" data={imageList}>
             <Layer {...imageLayer} />
           </Source>
