@@ -18,7 +18,7 @@ import {
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
-import { pictures, pois, steps } from "./queries/Fetchs"
+import { pictures, pois, steps } from "./queries/Fetchs";
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
@@ -71,18 +71,20 @@ export default function MapGl({
     isError: isErrorSteps,
     error: errorSteps,
     data: dataSteps,
-  } = steps(token, id, setRouteSource)
+  } = steps(token, id, setRouteSource);
 
   const {
     isLoading: isLoadingPoi,
     isError: isErrorPoi,
     error: errorPoi,
     data: dataPoi,
-  } = pois(token, id, setPoiSource)
-  const [imageList, setImageList] = useState([])
-  const { isLoading: isLoadingPictures, isError: isErrorPictures, data: dataPictures }
-    = pictures(token, id, setImageList)
-
+  } = pois(token, id, setPoiSource);
+  const [imageList, setImageList] = useState([]);
+  const {
+    isLoading: isLoadingPictures,
+    isError: isErrorPictures,
+    data: dataPictures,
+  } = pictures(token, id, setImageList);
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
@@ -143,8 +145,8 @@ export default function MapGl({
   });
   const mutationStepLocation = useMutation(moveStep, {
     onMutate: (data) => {
-      let step = routeSource.getItemById(data.id)
-      setRouteSource(routeSource.updateItem(step))
+      let step = routeSource.getItemById(data.id);
+      setRouteSource(routeSource.updateItem(step));
       setMovingStep(null);
     },
     onSettled: () => {
@@ -165,16 +167,16 @@ export default function MapGl({
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("stepImage", image);
     });
-
   }, []);
 
   const handleClick = async (e) => {
     if (exploring) {
+      console.log(exploring);
       if (e.features[0].source === "images") {
-        setCurrentImage(e.features[0].id)
-        setShow(true)
+        setCurrentImage(e.features[0].id);
+        setShow(true);
       }
-      return
+      return;
     }
     if (movingPoi != null) {
       mutationPoiLocation.mutate({
@@ -195,6 +197,7 @@ export default function MapGl({
       return;
     }
     if (contentPage == "poiInfo" || contentPage == "stepInfo") {
+      console.log(contentPage);
       if (!displayMapElement(e)) {
         setContentPage("map");
       }
@@ -202,6 +205,7 @@ export default function MapGl({
     }
 
     if (!editing) {
+      console.log("a");
       displayMapElement(e);
       return;
     }
@@ -229,17 +233,14 @@ export default function MapGl({
   };
   const displayMapElement = (e) => {
     if (e.features[0] != undefined) {
-      if (e.features[0].source === typeLocation) {
-        if (typeLocation === "poi") {
-          setContentPage("poiInfo");
-          setPoiId(e.features[0].id);
-          return true;
-        } else {
-          setContentPage("stepInfo");
-          setStepId(e.features[0].id);
-          return true;
-          //            setRouteSource(routeSource.removeItem(e.features[0].id));
-        }
+      if (e.features[0].source === "poi") {
+        setContentPage("poiInfo");
+        setPoiId(e.features[0].id);
+        return true;
+      } else if (e.features[0].source === "route") {
+        setContentPage("stepInfo");
+        setStepId(e.features[0].id);
+        return true;
       }
       return false;
     }
