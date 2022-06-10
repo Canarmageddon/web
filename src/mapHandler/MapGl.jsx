@@ -13,10 +13,12 @@ import {
   movePoi,
   moveStep,
   getPictures,
+  checkLink,
 } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
+import { pictures, pois, steps } from "./queries/Fetchs"
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
@@ -63,81 +65,27 @@ export default function MapGl({
     bearing: 0,
     pitch: 0,
   });
-  const { id } = useParams();
+  const { id, link } = useParams();
+
   const _mapRef = createRef();
+
   const {
     isLoading: isLoadingSteps,
     isError: isErrorSteps,
     error: errorSteps,
     data: dataSteps,
-  } = useQuery(["steps", id], () => fetchSteps(token, id), {
-    retry: false,
-    onSuccess: (data) => {
-      let lstStep = [];
-      data.map((item) => {
-        lstStep.push(
-          new Location(
-            item.id,
-            item.description,
-            item.title,
-            item.location.longitude,
-            item.location.latitude,
-            item?.step?.id
-          )
-        );
-      });
-      setRouteSource(new LayerUtile(lstStep));
-    },
-  });
+  } = steps(token, id, setRouteSource)
+
   const {
     isLoading: isLoadingPoi,
     isError: isErrorPoi,
     error: errorPoi,
     data: dataPoi,
-  } = useQuery(["poi", id], () => fetchPois(token, id), {
-    retry: false,
-    onSuccess: (data) => {
-      "here";
-      let lstPoi = [];
-      data.map((item) => {
-        lstPoi.push(
-          new Location(
-            item.id,
-            item.description,
-            item.title,
-            item.location.longitude,
-            item.location.latitude,
-            item?.step?.id
-          )
-        );
-      });
-      setPoiSource(new LayerUtile(lstPoi));
-    },
-  });
+  } = pois(token, id, setPoiSource)
   const [imageList, setImageList] = useState([])
   const { isLoading: isLoadingPictures, isError: isErrorPictures, data: dataPictures }
-    = useQuery(["explorePictures", id], () => getPictures(token, id), {
-      enabled: exploring,
-      onSuccess: (data) => {
-        let formatedList = [];
-        data.map((picture) => {
-          formatedList = [...formatedList, {
-            type: "Feature",
-            id: picture.id,
-            properties: {
-              description: "aaaa"
-            },
-            geometry: {
-              type: "Point",
-              coordinates: [picture.id * 2, picture.id * 2]//TODO
-            }
-          }]
+    = pictures(token, id, setImageList)
 
-        })
-        setImageList({ type: "FeatureCollection", features: formatedList })
-
-      }
-    })
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
@@ -197,16 +145,18 @@ export default function MapGl({
     },
   });
   const mutationStepLocation = useMutation(moveStep, {
-    onMutate: () => {
+    onMutate: (data) => {
+      let step = routeSource.getItemById(data.id)
+      setRouteSource(routeSource.updateItem(step))
       setMovingStep(null);
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["step", id]);
+      queryClient.invalidateQueries(["steps", id]);
       successStepMoved();
     },
   });
 
-  useEffect(() => {
+  useEffect(async () => {
     const map = _mapRef.current.getMap();
     map.loadImage("http://placekitten.com/50/50", (error, image) => {
       if (error) throw error;
@@ -218,6 +168,7 @@ export default function MapGl({
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("stepImage", image);
     });
+
   }, []);
 
   const handleClick = async (e) => {
@@ -225,7 +176,6 @@ export default function MapGl({
       if (e.features[0].source === "images") {
         setCurrentImage(e.features[0].id)
         setShow(true)
-        console.log(e.features[0].id)
       }
       return
     }
@@ -248,7 +198,9 @@ export default function MapGl({
       return;
     }
     if (contentPage == "poiInfo" || contentPage == "stepInfo") {
-      setContentPage("map");
+      if (!displayMapElement(e)) {
+        setContentPage("map");
+      }
       return;
     }
 
