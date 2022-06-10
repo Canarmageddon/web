@@ -25,7 +25,6 @@ import LocationFinder from "./LocationFinder";
 import { useTaskList } from "../context/TravelContext";
 import { useUser, useToken } from "../context/userContext";
 import { toast } from "react-toastify";
-import Gallery from "react-grid-gallery"
 import { Modal } from "react-bootstrap";
 import ImageModal from "./ImageModal";
 export default function MapGl({
