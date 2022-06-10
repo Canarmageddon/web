@@ -14,6 +14,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
   const [token] = useToken();
+  const [user] = useUser();
   const mutationDeleteTodoList = useMutation(deleteTodoList, {
     onMutate: (data) => {
       /*       const oldData = queryClient.getQueryData(["toDoLists", idTrip])
@@ -45,7 +46,6 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
       queryClient.invalidateQueries(["toDoLists", idTrip]);
     },
   });
-  const [user] = useUser();
 
   return (
     <CardToDoList className="card-todo-list">
@@ -88,6 +88,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
                     title,
                     id: toDoList.id,
                     date,
+                    creator: user
                   });
                   setTitle("");
                   setDate("");
