@@ -1,31 +1,47 @@
 import Button from "react-bootstrap/Button";
 import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
-import { deleteStep, getDocumentsFromStep, updatePoi } from "../apiCaller";
+import { deleteStep, getDocumentsFromStep, updateStep } from "../apiCaller";
+import { useMutation } from "react-query";
 import { useRoute } from "../context/TravelContext";
+import { useToken } from "../context/userContext";
 import FileUploader from "./FileUploader";
 import TrashAlt from "../components/icons/TrashAlt";
 import { toast } from "react-toastify";
 
 export default function ({ display, stepId, setContentPage, setMovingStep }) {
   const [routeSource, setRouteSource] = useRoute();
+  const [token] = useToken();
   const [description, setDescription] = useState("");
   const [currentRoute, setCurrentRoute] = useState();
   const [file, setFile] = useState([]);
+  const successEdit = () => toast.success("Etape modifiée !");
 
+  const mutationUpdateStep = useMutation(updateStep, {
+    onMutate: () => {
+      currentRoute.description = description;
+      setRouteSource(routeSource.updateItem(currentRoute));
+    },
+
+    onSettled: () => {
+      successEdit();
+    },
+  });
+  console.log(currentRoute);
   useEffect(() => {
     setCurrentRoute(routeSource.getItemById(stepId));
     setDescription(
-      routeSource.getItemById(stepId)?.title
-        ? routeSource.getItemById(stepId).title
+      routeSource.getItemById(stepId)?.description
+        ? routeSource.getItemById(stepId).description
         : ""
     );
   }, [routeSource, stepId]);
   const handleClick = async () => {
-    currentRoute.description = description;
-    setRouteSource(routeSource.updateItem(currentRoute));
-    setContentPage("map");
-    updatePoi(currentRoute.id, description);
+    mutationUpdateStep.mutate({
+      token,
+      id: currentRoute.id,
+      description: description,
+    });
   };
   const handleDelete = async () => {
     setRouteSource(routeSource.removeItem(stepId));
