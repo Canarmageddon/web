@@ -295,10 +295,11 @@ export const createTask = async ({ token, title, id, date, creator }) =>
     },
     body: JSON.stringify({
       name: title,
-      description: "", //TODO
+      description: "",
       creator,
       toDoList: id,
       date: date,
+      creator
     }),
   });
 
