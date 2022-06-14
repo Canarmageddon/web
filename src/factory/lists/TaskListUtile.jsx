@@ -18,10 +18,6 @@ export default class TaskListUtile {
         return new TaskListUtile(this.id, this.name, [...this.listTasks, task]);
     }
 
-    addTasks(tasks) {
-        return new TaskListUtile(this.id, this.name, this.listTasks.concat(tasks));
-    }
-
     getTaskById(id) {
         for (let i = 0; i < this.listTasks.length; i++) {
             if (this.listTasks[i].id === id)
