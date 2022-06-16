@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllTrips } from "../apiCaller";
+import Modal from "react-bootstrap/Modal";
+import { cloneTrip, fetchAllTrips } from "../apiCaller";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,14 +14,20 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 import ExploringNavBar from "../components/navBar/ExploringNavBar";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useTranslation } from 'react-i18next';
+import { useUser } from "../context/userContext";
+import { toast } from "react-toastify";
 export default function ExploreTrips({ context }) {
   const { t } = useTranslation('translation', { "keyPrefix": "trip_list " });
   const [currentPage, setCurrentPage] = useOutletContext();
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
   const [lastPage, setLastPage] = useState(1);
+  const [show, setShow] = useState(false)
+  const [name, setName] = useState("")
+  const [user] = useUser();
+  const [selectedTrip, setSelectedTrip] = useState(null)
   const { isLoading, isError, error, data, refetch } = useQuery(
     ["explore", currentPage],
     () => fetchAllTrips(currentPage),
@@ -32,6 +39,27 @@ export default function ExploreTrips({ context }) {
       },
     }
   );
+  const handleClose = () => setShow(false);
+  const handleShow = () => {
+    setName("");
+    setShow(true);
+  };
+  const mutationClone = useMutation(cloneTrip, {
+    onSuccess: () => {
+      toast.success("Votre voyage a bien été cloné")
+      navigate("/home/trips")
+    },
+    onError: () => {
+      toast.warning("Le voyage n'a pas pu être cloné")
+    },
+    onSettled: () => {
+      handleClose()
+    }
+  });
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    mutationClone.mutate({ id: selectedTrip, name, creator: user });
+  }
 
   const displayTrips = () => {
     if (isLoading || isError) return "";
@@ -41,7 +69,11 @@ export default function ExploreTrips({ context }) {
           <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>{t.name}</p>
           <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>{t.start}</p>
           <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>{t.end}</p>
-          <FontAwesomeIcon icon={faAdd} size={"2x"} />
+          <FontAwesomeIcon icon={faAdd} size={"2x"}
+            onClick={() => {
+              setSelectedTrip(t.id)
+              handleShow()
+            }} />
           <FontAwesomeIcon
             icon={faEye}
             size={"2x"}
@@ -170,6 +202,25 @@ export default function ExploreTrips({ context }) {
         flex: 0.4,
       }}
     >
+      <Modal show={show} >
+        <Modal.Header closeButton>
+          <Modal.Title>t{("new_trip")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={(e) => handleSubmit(e)}>
+            <label>
+              {t("trip_name")}
+              <input
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </label>
+            <input type="submit" value={t("create")} />
+          </form>
+        </Modal.Body>
+      </Modal>
       <ExploringNavBar />
       <h1 className="list-title">
         {t("others_trips")}
