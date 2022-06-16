@@ -25,7 +25,7 @@ export function UserProvider({ children }) {
             const res = await refresh(window.localStorage.getItem("refresh_token"))
             updateToken({ setToken, token: res.token, refresh_token: res.refresh_token })
             const whoami = await whoAmI(res.token)
-            setUser(whoami.user.id)
+            setUser(whoami.id)
         }
         else {
             setUser(undefined)
