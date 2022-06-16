@@ -68,3 +68,12 @@ test("get new id when empty", () => {
   let newId = layer.newId;
   expect(newId).toBe(11);
 });
+
+test("update item", () => {
+  let layer = new LayerUtile([new Location(0, "description")]);
+  let newLocation = layer.items[0];
+  newLocation.description = "new Description";
+  layer = layer.updateItem(newLocation);
+  expect(layer.items.length).toBe(1);
+  expect(layer.items[0].description).toBe("new Description");
+});
