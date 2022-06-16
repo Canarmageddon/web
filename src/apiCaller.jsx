@@ -221,7 +221,7 @@ export const removeUser = async ({ token, email, id }) => {
       email: email,
       trip: id,
     }),
-  }).then((res) => res.json);
+  }).then((res) => res.json());
 };
 
 export const deleteUser = async (token, id) =>
@@ -231,6 +231,32 @@ export const deleteUser = async (token, id) =>
     },
     method: "DELETE",
   }).then((res) => res.json());
+
+export const fetchUser = async ({ token, id }) => {
+  return await fetch(`${url}users/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
+    }
+  }).then((res) => res.json());
+};
+
+export const updateUser = async ({ token ,id, firstName, lastName }) => {
+  return await fetch(`${url}users/${id}/edit`, {
+    method: "PUT",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      firstName,
+      lastName
+    }),
+  }).then((res) => res.json());
+};
 
 /* -------------------------------------------*/
 
