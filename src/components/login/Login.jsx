@@ -14,6 +14,8 @@ import { toast } from "react-toastify";
 import { validateEmail } from "../../Functions";
 import imgLoader from "../../resources/images/loader-blue.svg";
 import { useTranslation } from 'react-i18next';
+import i18next from "i18next";
+import i18n from "../../translation/i18n";
 const Login = () => {
   const { t } = useTranslation('translation', { "keyPrefix": "login" });
   const invalidEmail = () =>
@@ -22,7 +24,7 @@ const Login = () => {
   const credentialsError = () =>
     toast.error(t("credentials_error"));
   const successLog = () => toast.success(t("success_log"));
-
+  const [language, setLanguage] = useState(i18n.language)
   const navigate = useNavigate();
   const [token, setToken] = useToken();
   const [user, setUser] = useUser();
@@ -33,113 +35,122 @@ const Login = () => {
   const [showUserIcon, setShowUserIcon] = useState(true);
   const [isCheckingCredentials, setIsCheckingCredentials] = useState(false);
   const queryClient = useQueryClient();
+  useEffect(() => {
+    i18n.changeLanguage(language)
+  }, [language])
 
   if (user != "" && user != null) {
     return <Navigate to="/home/trips" replace={true} />;
   }
 
   return (
-    <form
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
-      <div
+    <>
+      <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+        <option value="fr">Fr</option>
+        <option value="en">En</option>
+      </select>
+      <form
         style={{
-          position: "relative",
           display: "flex",
           flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
         }}
       >
-        <label htmlFor="email" style={{ fontSize: 11 }}>
-          E-mail
-        </label>
-        <FormControl
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onFocus={() => setShowUserIcon(false)}
-          onBlur={() => setShowUserIcon(true)}
-          type="text"
-        />
-        {showUserIcon && email === "" && (
-          <FontAwesomeIcon
-            icon={faUser}
-            style={{ position: "absolute", top: 26, left: 5 }}
-          />
-        )}
-      </div>
-      <div
-        style={{
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <label htmlFor="password" style={{ fontSize: 11 }}>
-          {t("mdp")}
-        </label>
-        <FormControl
-          type="password"
-          name="password"
-          value={password}
-          onFocus={() => setShowLockIcon(false)}
-          onBlur={() => setShowLockIcon(true)}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {showLockIcon && password === "" && (
-          <FontAwesomeIcon
-            icon={faLock}
-            style={{ position: "absolute", top: 26, left: 5 }}
-          />
-        )}
-      </div>
-      <div style={{ width: "11%" }}>
-        <Button
-          type="button"
-          size="sm"
-          onClick={checkConnexionInfo}
+        <div
           style={{
-            marginTop: 10,
-            width: "100%",
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          {t("se_connecter")}
-        </Button>
-        {isCheckingCredentials && (
-          <img
-            src={imgLoader}
-            style={{ height: 40, position: "absolute", marginTop: 5 }}
+          <label htmlFor="email" style={{ fontSize: 11 }}>
+            E-mail
+          </label>
+          <FormControl
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onFocus={() => setShowUserIcon(false)}
+            onBlur={() => setShowUserIcon(true)}
+            type="text"
           />
-        )}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "baseline",
-          marginTop: 5,
-          width: "15%",
-          justifyContent: "space-around",
-        }}
-      >
+          {showUserIcon && email === "" && (
+            <FontAwesomeIcon
+              icon={faUser}
+              style={{ position: "absolute", top: 26, left: 5 }}
+            />
+          )}
+        </div>
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <label htmlFor="password" style={{ fontSize: 11 }}>
+            {t("mdp")}
+          </label>
+          <FormControl
+            type="password"
+            name="password"
+            value={password}
+            onFocus={() => setShowLockIcon(false)}
+            onBlur={() => setShowLockIcon(true)}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {showLockIcon && password === "" && (
+            <FontAwesomeIcon
+              icon={faLock}
+              style={{ position: "absolute", top: 26, left: 5 }}
+            />
+          )}
+        </div>
+        <div style={{ width: "11%" }}>
+          <Button
+            type="button"
+            size="sm"
+            onClick={checkConnexionInfo}
+            style={{
+              marginTop: 10,
+              width: "100%",
+            }}
+          >
+            {t("se_connecter")}
+          </Button>
+          {isCheckingCredentials && (
+            <img
+              src={imgLoader}
+              style={{ height: 40, position: "absolute", marginTop: 5 }}
+            />
+          )}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "baseline",
+            marginTop: 5,
+            width: "15%",
+            justifyContent: "space-around",
+          }}
+        >
 
-        <p
-          onClick={() => navigate("/signup")}
-          style={{
-            marginTop: 0,
-            marginBottom: 0,
-            fontSize: 12,
-            cursor: "pointer",
-          }}
-        >
-          {t("creer_compte")}
-        </p>
-      </div>
-    </form>
+          <p
+            onClick={() => navigate("/signup")}
+            style={{
+              marginTop: 0,
+              marginBottom: 0,
+              fontSize: 12,
+              cursor: "pointer",
+            }}
+          >
+            {t("creer_compte")}
+          </p>
+        </div>
+      </form>
+    </>
   );
 
   async function checkConnexionInfo() {
