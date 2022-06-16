@@ -7,6 +7,7 @@ import NavBar from "./components/navBar/NavBar";
 import SideMenu from "./components/navBar/SideMenu";
 import Admin from "./components/admin/Admin";
 import { TravelProvider } from "./context/TravelContext";
+import Profile from "./components/profile/Profile";
 import { UserProvider } from "./context/userContext";
 import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 import MapGl from "./mapHandler/MapGl";
@@ -59,6 +60,7 @@ function App() {
                 />
               </Route>
               <Route path="trips" element={<TravelsList />} />
+              <Route path='profile' element={<Profile />} />
               <Route path="album/:id" element={<Album />} />
               <Route
                 path="map/:id"

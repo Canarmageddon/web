@@ -6,9 +6,10 @@ import Dropdown from "react-bootstrap/Dropdown";
 import "./travel.css";
 import NewTravel from "./NewTravel";
 import TrashAlt from "../icons/TrashAlt";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGlobe,
   faImage,
@@ -244,6 +245,10 @@ const TravelsList = () => {
     >
       <h1 className="list-title">{t("trips")}</h1>
       <Button onClick={() => navigate("/home/explore/list")}>{t("explore")}</Button>
+      <FontAwesomeIcon className="p-2 nav-icon" icon={faUser} size="2x"
+        style ={{ float: "right", background: "#0d6efd", borderRadius: "50%", color: "white", cursor: "pointer" }}
+        onClick={() => navigate("/home/profile")}
+      />
       <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
       <hr style={{ marginBottom: 5 + "px" }} />
       <Tabs
