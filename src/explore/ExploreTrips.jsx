@@ -16,7 +16,7 @@ import ExploringNavBar from "../components/navBar/ExploringNavBar";
 import { useQuery } from "react-query";
 import { useTranslation } from 'react-i18next';
 export default function ExploreTrips({ context }) {
-  const { t } = useTranslation('translation', { "keyPrefix": "trip_list " });
+  const { t } = useTranslation('translation', { "keyPrefix": "trip_list" });
   const [currentPage, setCurrentPage] = useOutletContext();
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
