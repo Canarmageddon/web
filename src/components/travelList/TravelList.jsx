@@ -69,7 +69,6 @@ const TravelsList = () => {
     window.localStorage.clear();
     setUser(undefined);
   };
-
   const displayLstTravel = () => {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
@@ -182,7 +181,7 @@ const TravelsList = () => {
               fontWeight: 500,
             }}
           >
-            {t("star")}
+            {t("start")}
           </p>
           <p
             style={{
@@ -227,7 +226,10 @@ const TravelsList = () => {
                   style={{
                     cursor: "pointer",
                   }}
-                  onClick={() => navigate(`/home/album/${t.id}`)}
+                  onClick={() => {
+                    if (t.album == null) toast.warning("Il n'y a rien à voir ici pour l'instant")
+                    else navigate(`/home/album/${t.album.id}`)
+                  }}
                 />
               </div>
               <Dropdown.Divider />
@@ -246,7 +248,7 @@ const TravelsList = () => {
       <h1 className="list-title">{t("trips")}</h1>
       <Button onClick={() => navigate("/home/explore/list")}>{t("explore")}</Button>
       <FontAwesomeIcon className="p-2 nav-icon" icon={faUser} size="2x"
-        style ={{ float: "right", background: "#0d6efd", borderRadius: "50%", color: "white", cursor: "pointer" }}
+        style={{ float: "right", background: "#0d6efd", borderRadius: "50%", color: "white", cursor: "pointer" }}
         onClick={() => navigate("/home/profile")}
       />
       <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />

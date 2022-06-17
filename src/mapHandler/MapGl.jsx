@@ -8,7 +8,7 @@ import { createPoi, createStep, movePoi, moveStep } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
-import { pictures, pois, steps } from "./queries/Fetchs";
+import { logBookEntries, pictures, pois, steps } from "./queries/Fetchs";
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
@@ -37,7 +37,7 @@ export default function MapGl({
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
-
+  const [selectedLocation, setSelectedLocation] = useState(null)
   const [user] = useUser();
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
@@ -70,12 +70,14 @@ export default function MapGl({
     error: errorPoi,
     data: dataPoi,
   } = pois(token, id, setPoiSource);
-  const [imageList, setImageList] = useState([]);
   const {
     isLoading: isLoadingPictures,
     isError: isErrorPictures,
     data: dataPictures,
-  } = pictures(token, id, setImageList, exploring);
+  } = pictures(selectedLocation, exploring);
+  const { isLoading: isLoadingLogBook,
+    isError: isErrorLogBook,
+    data: dataLogBook } = logBookEntries(selectedLocation, exploring)
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
@@ -197,7 +199,6 @@ export default function MapGl({
       return;
     }
     if (contentPage == "poiInfo" || contentPage == "stepInfo") {
-      console.log(contentPage);
       if (!displayMapElement(e)) {
         setContentPage("map");
       }
@@ -205,7 +206,6 @@ export default function MapGl({
     }
 
     if (!editing) {
-      console.log("a");
       displayMapElement(e);
       return;
     }
@@ -281,7 +281,6 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
-  console.log(!isLoadingPictures, !isErrorPictures, exploring);
   return (
     <>
       {!exploring && (
