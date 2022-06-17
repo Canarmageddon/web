@@ -151,8 +151,8 @@ export default function MapGl({
   useEffect(async () => {
     if (dataSteps != undefined) {
       setViewport({
-        latitude: dataSteps[dataSteps.length - 1].location.latitude,
-        longitude: dataSteps[dataSteps.length - 1].location.longitude,
+        latitude: dataSteps[dataSteps?.length - 1]?.location?.latitude,
+        longitude: dataSteps[dataSteps?.length - 1]?.location?.longitude,
         zoom: 7,
         bearing: 0,
         pitch: 0,
