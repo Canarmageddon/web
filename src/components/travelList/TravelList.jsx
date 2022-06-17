@@ -231,6 +231,13 @@ const TravelsList = () => {
                     else navigate(`/home/album/${t.album.id}`)
                   }}
                 />
+                <FontAwesomeIcon
+                  icon={faShareAlt}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  onClick={(e) => createLink(e, t.id)}
+                />
               </div>
               <Dropdown.Divider />
             </React.Fragment>
