@@ -29,7 +29,7 @@ const TravelsList = () => {
   const [user, setUser] = useUser();
   const [token] = useToken();
   const generatedLink = (message) =>
-    toast.success(message, { autoClose: false });
+    toast.success(message);
   const queryClient = useQueryClient();
   const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
     "trips",
@@ -62,8 +62,9 @@ const TravelsList = () => {
   const createLink = async (event, id) => {
     event.stopPropagation();
     const res = await generateTripLink(token, id);
-    navigator.clipboard.writeText(res.message);//TODO
-    generatedLink(res.message);
+
+    navigator.clipboard.writeText(`${window.location.hostname}:${location.port}/unregistered/${id}/${res.message}/map`);//TODO
+    generatedLink("lien de partage copier dans le press-papier");
   };
   const logout = () => {
     window.localStorage.clear();
