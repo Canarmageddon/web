@@ -9,7 +9,7 @@ export const fetchSteps = async (token, id) =>
     .then((res) => res.json());
 
 export const createStep = async ({ token, latitude, longitude, id, creator }) =>
-  await fetch(`${url}steps/new`, {
+  await fetch(`${url}steps`, {
     method: "POST",
     headers: {
       accept: "applicaiton/ld+json",
@@ -31,7 +31,7 @@ export const deleteStep = async ({ token, id }) =>
   }).then((res) => checkStatus(res));
 
 export const moveStep = async ({ token, id, latitude, longitude }) => {
-  return await fetch(`${url}steps/${id}/edit`, {
+  return await fetch(`${url}steps/${id}`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
@@ -53,7 +53,7 @@ export const getDocumentsFromStep = async (token, id) =>
     .then((res) => res.json());
 
 export const updateStep = async ({ token, id, description }) => {
-  return await fetch(`${url}steps/${id}/edit`, {
+  return await fetch(`${url}steps/${id}`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
@@ -89,7 +89,7 @@ export const createPoi = async ({
   id,
   creator,
 }) => {
-  return await fetch(`${url}point_of_interests/new`, {
+  return await fetch(`${url}point_of_interests`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -106,7 +106,7 @@ export const createPoi = async ({
 };
 
 export const movePoi = async ({ token, id, latitude, longitude }) => {
-  return await fetch(`${url}point_of_interests/${id}/edit`, {
+  return await fetch(`${url}point_of_interests/${id}`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
@@ -121,7 +121,7 @@ export const movePoi = async ({ token, id, latitude, longitude }) => {
 };
 
 export const updatePoi = async ({ token, id, title, description, step }) => {
-  return await fetch(`${url}point_of_interests/${id}/edit`, {
+  return await fetch(`${url}point_of_interests/${id}`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
@@ -256,7 +256,7 @@ export const fetchUser = async ({ token, id }) => {
 };
 
 export const updateUser = async ({ token, id, firstName, lastName }) => {
-  return await fetch(`${url}users/${id}/edit`, {
+  return await fetch(`${url}users/${id}`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
@@ -285,7 +285,7 @@ export const fetchTodoLists = async ({ token, id }) => {
 };
 
 export const createTodoList = async ({ token, title, id }) => {
-  await fetch(`${url}to_do_lists/new`, {
+  await fetch(`${url}to_do_lists`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -309,7 +309,7 @@ export const deleteTodoList = async ({ token, id }) => {
 };
 
 export const createTask = async ({ token, title, id, date, creator }) =>
-  await fetch(`${url}tasks/new`, {
+  await fetch(`${url}tasks`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -345,7 +345,7 @@ export const fetchTravels = async ({ token, id }) =>
   }).then((res) => res.json());
 
 export const createTravel = async ({ token, name, id }) =>
-  await fetch(`${url}travel/new`, {
+  await fetch(`${url}travel`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -365,7 +365,7 @@ export const deleteTravel = async (id) =>
 /* ------------ TRIP -----------------------*/
 
 export const createTrip = async ({ token, name, user }) => {
-  return await fetch(`${url}trips/new`, {
+  return await fetch(`${url}trips`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
