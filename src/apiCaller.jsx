@@ -132,6 +132,7 @@ export const updatePoi = async ({ token, id, title, description, step }) => {
     },
     body: JSON.stringify({
       title,
+      poi,
       description,
       step,
     }),
@@ -144,6 +145,84 @@ export const getDocumentsFromPoi = async (token, id) =>
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
+
+/* -------------------------------------------*/
+
+/* ------------ LOCATION -----------------------*/
+
+export const fetchLocations = async (token, id) =>
+  await fetch(`${url}locations.json`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
+
+// export const deleteLocation = async ({ token, id }) =>
+//   await fetch(`${url}locationnt_of_interests/${id}`, {
+//     Authorization: `Bearer ${token}`,
+//     method: "DELETE",
+//   }).then((res) => checkStatus(res));
+
+// export const createLocation = async ({
+//   token,
+//   latitude,
+//   longitude,
+//   id,
+//   creator,
+// }) => {
+//   return await fetch(`${url}locationnt_of_interests/new`, {
+//     method: "POST",
+//     headers: {
+//       accept: "application/ld+json",
+//       "Content-Type": "application/ld+json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({
+//       longitude,
+//       latitude,
+//       trip: parseInt(id),
+//       creator,
+//     }),
+//   }).then((res) => res.json());
+// };
+
+// export const moveLocation = async ({ token, id, latitude, longitude }) => {
+//   return await fetch(`${url}locationnt_of_interests/${id}/edit`, {
+//     method: "PUT",
+//     headers: {
+//       accept: "application/ld+json",
+//       "Content-Type": "application/ld+json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({
+//       longitude,
+//       latitude,
+//     }),
+//   }).then((res) => res.json());
+// };
+
+// export const updateLocation = async ({ token, id, title, description, step }) => {
+//   return await fetch(`${url}locationnt_of_interests/${id}/edit`, {
+//     method: "PUT",
+//     headers: {
+//       accept: "application/ld+json",
+//       "Content-Type": "application/ld+json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({
+//       title,
+//       description,
+//       step,
+//     }),
+//   }).then((res) => res.json());
+// };
+
+// export const getDocumentsFromLocation = async (token, id) =>
+//   await fetch(`${url}locationnt_of_interests/${id}/documents`, {
+//     headers: { Authorization: `Bearer ${token}` },
+//   })
+//     .then((res) => checkStatus(res))
+//     .then((res) => res.json());
 
 /* -------------------------------------------*/
 
@@ -247,31 +326,31 @@ export const deleteUser = async (token, id) =>
     method: "DELETE",
   }).then((res) => res.json());
 
-  export const fetchUser = async ({ token, id }) => {
-    return await fetch(`${url}users/${id}`, {
-      method: "GET",
-      headers: {
-        accept: "application/ld+json",
-        "Content-Type": "application/ld+json",
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((res) => res.json());
-  };
-  
-  export const updateUser = async ({ token ,id, firstName, lastName }) => {
-    return await fetch(`${url}users/${id}/edit`, {
-      method: "PUT",
-      headers: {
-        accept: "application/ld+json",
-        "Content-Type": "application/ld+json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName
-      }),
-    }).then((res) => res.json());
-  };
+export const fetchUser = async ({ token, id }) => {
+  return await fetch(`${url}users/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json());
+};
+
+export const updateUser = async ({ token, id, firstName, lastName }) => {
+  return await fetch(`${url}users/${id}/edit`, {
+    method: "PUT",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      firstName,
+      lastName,
+    }),
+  }).then((res) => res.json());
+};
 
 /* -------------------------------------------*/
 
@@ -325,7 +404,7 @@ export const createTask = async ({ token, title, id, date, creator }) =>
       creator,
       toDoList: id,
       date: date,
-      creator
+      creator,
     }),
   });
 
