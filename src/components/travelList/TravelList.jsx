@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tabs, Tab, Button } from "react-bootstrap";
-import { fetchTravels, deleteTrip, generateTripLink } from "../../apiCaller";
+import { fetchTravels, deleteTrip, generateTripLink, fetchTrips } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "./travel.css";
@@ -33,14 +33,14 @@ const TravelsList = () => {
   const queryClient = useQueryClient();
   const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
     "trips",
-    () => fetchTravels({ token, id: user }),
+    () => fetchTrips({ token, user, isEnded: 0 }),
     {
       staleTime: 60 * 1000,
     }
   );
   const { isLoading: isLoadingHistory, data: dataHistory } = useQuery(
     "history",
-    () => fetchTravels({ token, id: user }),
+    () => fetchTrips({ token, user, isEnded: 1 }),
     {
       staleTime: 60 * 1000,
     }
@@ -246,7 +246,7 @@ const TravelsList = () => {
       <h1 className="list-title">{t("trips")}</h1>
       <Button onClick={() => navigate("/home/explore/list")}>{t("explore")}</Button>
       <FontAwesomeIcon className="p-2 nav-icon" icon={faUser} size="2x"
-        style ={{ float: "right", background: "#0d6efd", borderRadius: "50%", color: "white", cursor: "pointer" }}
+        style={{ float: "right", background: "#0d6efd", borderRadius: "50%", color: "white", cursor: "pointer" }}
         onClick={() => navigate("/home/profile")}
       />
       <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />

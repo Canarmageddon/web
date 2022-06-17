@@ -247,31 +247,31 @@ export const deleteUser = async (token, id) =>
     method: "DELETE",
   }).then((res) => res.json());
 
-  export const fetchUser = async ({ token, id }) => {
-    return await fetch(`${url}users/${id}`, {
-      method: "GET",
-      headers: {
-        accept: "application/ld+json",
-        "Content-Type": "application/ld+json",
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((res) => res.json());
-  };
-  
-  export const updateUser = async ({ token ,id, firstName, lastName }) => {
-    return await fetch(`${url}users/${id}/edit`, {
-      method: "PUT",
-      headers: {
-        accept: "application/ld+json",
-        "Content-Type": "application/ld+json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName
-      }),
-    }).then((res) => res.json());
-  };
+export const fetchUser = async ({ token, id }) => {
+  return await fetch(`${url}users/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
+    }
+  }).then((res) => res.json());
+};
+
+export const updateUser = async ({ token, id, firstName, lastName }) => {
+  return await fetch(`${url}users/${id}/edit`, {
+    method: "PUT",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      firstName,
+      lastName
+    }),
+  }).then((res) => res.json());
+};
 
 /* -------------------------------------------*/
 
@@ -366,6 +366,15 @@ export const deleteTravel = async (id) =>
 /* -------------------------------------------*/
 
 /* ------------ TRIP -----------------------*/
+
+export const fetchTrips = async ({ token, user, isEnded }) =>
+  await fetch(`${url}users/${user}/trips/${isEnded}/ended`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  })
+    .then(res => checkStatus(res))
+    .then(res => res.json())
 
 export const createTrip = async ({ token, name, user }) => {
   return await fetch(`${url}trips/new`, {
