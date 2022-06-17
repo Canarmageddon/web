@@ -43,7 +43,7 @@ export default function ({ lstTrips, setLstTrips }) {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>t{("new_trip")}</Modal.Title>
+          <Modal.Title>{t("new_trip")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={(e) => handleSubmit(e)}>
