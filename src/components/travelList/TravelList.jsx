@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tabs, Tab, Button } from "react-bootstrap";
-import { fetchTravels, deleteTrip, generateTripLink } from "../../apiCaller";
+import { fetchTravels, deleteTrip, generateTripLink, fetchTrips } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "./travel.css";
@@ -33,7 +33,7 @@ const TravelsList = () => {
   const queryClient = useQueryClient();
   const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
     "trips",
-    () => fetchTravels({ token, id: user }),
+    () => fetchTrips({ token, user, isEnded: 0 }),
     {
       staleTime: 60 * 1000,
     }

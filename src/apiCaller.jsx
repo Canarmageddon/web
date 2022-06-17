@@ -364,6 +364,15 @@ export const deleteTravel = async (id) =>
 
 /* ------------ TRIP -----------------------*/
 
+export const fetchTrips = async ({ token, user, isEnded }) =>
+  await fetch(`${url}users/${user}/trips/${isEnded}/ended`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  })
+    .then(res => checkStatus(res))
+    .then(res => res.json())
+
 export const createTrip = async ({ token, name, user }) => {
   return await fetch(`${url}trips`, {
     method: "POST",
