@@ -1,5 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { fetchPois, fetchSteps, getPictures } from "../../apiCaller";
+import {
+  fetchPois,
+  fetchSteps,
+  getLogBookEntriesByLocation,
+  getPictures,
+  getPicturesByLocation,
+} from "../../apiCaller";
 import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
 
@@ -54,7 +60,7 @@ export function pois(token, id, setPoiSource) {
     },
   });
 }
-export function pictures(token, id, setImageList, enabled) {
+/* export function pictures(token, id, setImageList, enabled) {
   return useQuery(["explorePictures", id], () => getPictures(token, id), {
     enabled: enabled,
     onSuccess: (data) => {
@@ -75,4 +81,24 @@ export function pictures(token, id, setImageList, enabled) {
       setImageList({ type: "FeatureCollection", features: formatedList });
     },
   });
+}
+ */
+export function pictures(idLocation, enabled) {
+  return useQuery(
+    ["picturesByLocations", idLocation],
+    () => getPicturesByLocation(idLocation),
+    {
+      enabled: enabled && idLocation != null,
+    },
+  );
+}
+
+export function logBookEntries(idLocation, enabled) {
+  return useQuery(
+    ["LogBookEntriesByLocations", idLocation],
+    () => getLogBookEntriesByLocation(idLocation),
+    {
+      enabled: enabled && idLocation != null,
+    },
+  );
 }

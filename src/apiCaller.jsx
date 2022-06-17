@@ -4,13 +4,12 @@ const url = process.env.REACT_APP_DATABASE_URL;
 
 export const fetchSteps = async (token, id) =>
   await fetch(`${url}trips/${id}/steps`, {
-    headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
 export const createStep = async ({ token, latitude, longitude, id, creator }) =>
-  await fetch(`${url}steps/new`, {
+  await fetch(`${url}steps`, {
     method: "POST",
     headers: {
       accept: "applicaiton/ld+json",
@@ -32,7 +31,7 @@ export const deleteStep = async ({ token, id }) =>
   }).then((res) => checkStatus(res));
 
 export const moveStep = async ({ token, id, latitude, longitude }) => {
-  return await fetch(`${url}steps/${id}/edit`, {
+  return await fetch(`${url}steps/${id}`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
@@ -54,7 +53,7 @@ export const getDocumentsFromStep = async (token, id) =>
     .then((res) => res.json());
 
 export const updateStep = async ({ token, id, description }) => {
-  return await fetch(`${url}steps/${id}/edit`, {
+  return await fetch(`${url}steps/${id}`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
@@ -73,7 +72,6 @@ export const updateStep = async ({ token, id, description }) => {
 
 export const fetchPois = async (token, id) =>
   await fetch(`${url}trips/${id}/poi`, {
-    headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
@@ -91,7 +89,7 @@ export const createPoi = async ({
   id,
   creator,
 }) => {
-  return await fetch(`${url}point_of_interests/new`, {
+  return await fetch(`${url}point_of_interests`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -108,7 +106,7 @@ export const createPoi = async ({
 };
 
 export const movePoi = async ({ token, id, latitude, longitude }) => {
-  return await fetch(`${url}point_of_interests/${id}/edit`, {
+  return await fetch(`${url}point_of_interests/${id}`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
@@ -123,7 +121,7 @@ export const movePoi = async ({ token, id, latitude, longitude }) => {
 };
 
 export const updatePoi = async ({ token, id, title, description, step }) => {
-  return await fetch(`${url}point_of_interests/${id}/edit`, {
+  return await fetch(`${url}point_of_interests/${id}`, {
     method: "PUT",
     headers: {
       accept: "application/ld+json",
@@ -175,7 +173,6 @@ export const checkCredentials = async (email, password) => {
     },
     body: JSON.stringify({ email, password }),
   })
-    .then((res) => checkStatus(res))
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 };
@@ -247,31 +244,31 @@ export const deleteUser = async (token, id) =>
     method: "DELETE",
   }).then((res) => res.json());
 
-  export const fetchUser = async ({ token, id }) => {
-    return await fetch(`${url}users/${id}`, {
-      method: "GET",
-      headers: {
-        accept: "application/ld+json",
-        "Content-Type": "application/ld+json",
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((res) => res.json());
-  };
-  
-  export const updateUser = async ({ token ,id, firstName, lastName }) => {
-    return await fetch(`${url}users/${id}/edit`, {
-      method: "PUT",
-      headers: {
-        accept: "application/ld+json",
-        "Content-Type": "application/ld+json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName
-      }),
-    }).then((res) => res.json());
-  };
+export const fetchUser = async ({ token, id }) => {
+  return await fetch(`${url}users/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
+    }
+  }).then((res) => res.json());
+};
+
+export const updateUser = async ({ token, id, firstName, lastName }) => {
+  return await fetch(`${url}users/${id}`, {
+    method: "PUT",
+    headers: {
+      accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      firstName,
+      lastName
+    }),
+  }).then((res) => res.json());
+};
 
 /* -------------------------------------------*/
 
@@ -288,7 +285,7 @@ export const fetchTodoLists = async ({ token, id }) => {
 };
 
 export const createTodoList = async ({ token, title, id }) => {
-  await fetch(`${url}to_do_lists/new`, {
+  await fetch(`${url}to_do_lists`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -312,7 +309,7 @@ export const deleteTodoList = async ({ token, id }) => {
 };
 
 export const createTask = async ({ token, title, id, date, creator }) =>
-  await fetch(`${url}tasks/new`, {
+  await fetch(`${url}tasks`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -348,7 +345,7 @@ export const fetchTravels = async ({ token, id }) =>
   }).then((res) => res.json());
 
 export const createTravel = async ({ token, name, id }) =>
-  await fetch(`${url}travel/new`, {
+  await fetch(`${url}travel`, {
     method: "POST",
     headers: {
       accept: "application/ld+json",
@@ -367,8 +364,17 @@ export const deleteTravel = async (id) =>
 
 /* ------------ TRIP -----------------------*/
 
+export const fetchTrips = async ({ token, user, isEnded }) =>
+  await fetch(`${url}users/${user}/trips/${isEnded}/ended`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  })
+    .then(res => checkStatus(res))
+    .then(res => res.json())
+
 export const createTrip = async ({ token, name, user }) => {
-  return await fetch(`${url}trips/new`, {
+  return await fetch(`${url}trips`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -430,22 +436,30 @@ export const checkLink = async (id, link) =>
 /* -------------- LOGBOOK --------------------------*/
 
 export const getLogBookEntries = async (token, id) =>
-  await fetch(`${url}trips/${id}/logBookEntries`, {
-    headers: { Authorization: `Bearer ${token}` },
+  await fetch(`${url}albums/${id}/logBookEntries`, {
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
+
+export const getLogBookEntriesByLocation = async (id) =>
+  await fetch(`${url}locations/${id}/logBookEntries`)
+    .then(res => checkStatus(res))
+    .then(res => res.json())
 
 /* -------------------------------------------*/
 
 /* -------------- PICTURES --------------------------*/
 
 export const getPictures = async (token, id) =>
-  await fetch(`${url}trips/${id}/pictures`, {
-    headers: { Authorization: `Bearer ${token}` },
+  await fetch(`${url}albums/${id}/pictures`, {
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
+
+export const getPicturesByLocation = async (id) =>
+  await fetch(`${url}locations/${id}/pictures`)
+    .then(res => checkStatus(res))
+    .then(res => res.json())
 
 /* -------------------------------------------*/
 

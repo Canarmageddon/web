@@ -1,5 +1,5 @@
 import React from "react"
-import { useInfiniteQuery } from "react-query"
+import { useInfiniteQuery, useQuery } from "react-query"
 import { useParams } from "react-router-dom"
 import { getLogBookEntries, getPictures } from "../apiCaller"
 import ScreenLogo from "../components/loadingScreen/ScreenLogo"
@@ -12,45 +12,45 @@ export default function Album() {
     const { data: dataLogBook, error: errorLogBook,
         hasNextPage: hasNextPageLogBook, isFetching: isFetchingLogBook,
         isFetchingNextPage: isFetchingNextPageLogBook, status: statusLogBook }
-        = useInfiniteQuery(['album', id], () => getLogBookEntries(token, id), {
+        = useQuery(['album', id], () => getLogBookEntries(token, id), {
             getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
         })
 
     const { data: dataPictures, error: errorPictures,
         hasNextPage: hasNextPagePictures, isFetching: isFetchingPictures,
         isFetchingNextPage: isFetchingNextPagePictures, status: statusPictures }
-        = useInfiniteQuery(['pictures', id], () => getPictures(token, id), {
+        = useQuery(['pictures', id], () => getPictures(token, id), {
             // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
         })
+    if (statusLogBook === "loading" || statusPictures === "loading") {
+        return <ScreenLogo />
+    }
+    if (statusLogBook === "error" || statusPictures === "error") {
+        return <ScreenLogo />
+    }
+    return <>
+        <div style={{ display: "flex", flexDirection: "row", }}>
+            <div style={{ width: "30vw" }}>
+                {dataLogBook.map((entry) =>
+                    <LogBookEntry date={entry.creationDate} text={entry.content} />
+                )
 
-    return statusLogBook === "loading" ? (<ScreenLogo />)
+                }
+            </div>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", width: "70vw" }}>
+                {dataPictures.map((image) =>
+                    <Picture id={image.id} />
+                )}
+            </div>
 
-        : statusLogBook === "error" ? (<p>Error</p>) :
-            (<>
-                <div style={{ display: "flex", flexDirection: "row", }}>
-                    <div style={{ width: "30vw" }}>
-                        {dataLogBook.pages.map((page) =>
-                            page.map((entry) =>
-                                <LogBookEntry date={entry.creationDate} text={entry.content} />
-                            )
-
-                        )}
-                    </div>
-                    <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", flexWrap: "wrap", width: "70vw" }}>
-                        {dataPictures.pages.map((page) =>
-                            page.map((image) =>
-                                <Picture id={image.id} />
-                            ))}
-                    </div>
-
-                    {/*                     {dataLogBook.pages.map((group, i) => (
+            {/*                     {dataLogBook.pages.map((group, i) => (
                         <React.Fragment key={i}>
                             {group.projects.map(project => (
                                 <p key={project.id}>(project.conent)</p>
                             ))}
                         </React.Fragment>
                     ))} */}
-                    {/*                        <div>
+            {/*                        <div>
                         <button onClick={() => fetchNextPage()}
                             disabled={!hasNextPage || isFetchingNextPage}>
                             {isFetchingNextPage
@@ -62,5 +62,5 @@ export default function Album() {
                     </div> 
                     <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
                 */} </div>
-            </>)
+    </>
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tabs, Tab, Button } from "react-bootstrap";
-import { fetchTravels, deleteTrip, generateTripLink } from "../../apiCaller";
+import { fetchTravels, deleteTrip, generateTripLink, fetchTrips } from "../../apiCaller";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import "./travel.css";
@@ -29,11 +29,11 @@ const TravelsList = () => {
   const [user, setUser] = useUser();
   const [token] = useToken();
   const generatedLink = (message) =>
-    toast.success(message, { autoClose: false });
+    toast.success(message);
   const queryClient = useQueryClient();
   const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
     "trips",
-    () => fetchTravels({ token, id: user }),
+    () => fetchTrips({ token, user, isEnded: 0 }),
     {
       staleTime: 60 * 1000,
     }
@@ -62,14 +62,14 @@ const TravelsList = () => {
   const createLink = async (event, id) => {
     event.stopPropagation();
     const res = await generateTripLink(token, id);
-    navigator.clipboard.writeText(res.message);//TODO
-    generatedLink(res.message);
+
+    navigator.clipboard.writeText(`${window.location.hostname}:${location.port}/unregistered/${id}/${res.message}/map`);//TODO
+    generatedLink("lien de partage copier dans le press-papier");
   };
   const logout = () => {
     window.localStorage.clear();
     setUser(undefined);
   };
-
   const displayLstTravel = () => {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
@@ -182,7 +182,7 @@ const TravelsList = () => {
               fontWeight: 500,
             }}
           >
-            {t("star")}
+            {t("start")}
           </p>
           <p
             style={{
@@ -227,7 +227,10 @@ const TravelsList = () => {
                   style={{
                     cursor: "pointer",
                   }}
-                  onClick={() => navigate(`/home/album/${t.id}`)}
+                  onClick={() => {
+                    if (t.album == null) toast.warning("Il n'y a rien à voir ici pour l'instant")
+                    else navigate(`/home/album/${t.album.id}`)
+                  }}
                 />
               </div>
               <Dropdown.Divider />
@@ -246,7 +249,7 @@ const TravelsList = () => {
       <h1 className="list-title">{t("trips")}</h1>
       <Button onClick={() => navigate("/home/explore/list")}>{t("explore")}</Button>
       <FontAwesomeIcon className="p-2 nav-icon" icon={faUser} size="2x"
-        style ={{ float: "right", background: "#0d6efd", borderRadius: "50%", color: "white", cursor: "pointer" }}
+        style={{ float: "right", background: "#0d6efd", borderRadius: "50%", color: "white", cursor: "pointer" }}
         onClick={() => navigate("/home/profile")}
       />
       <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
