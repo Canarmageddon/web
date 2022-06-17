@@ -69,7 +69,6 @@ const TravelsList = () => {
     window.localStorage.clear();
     setUser(undefined);
   };
-
   const displayLstTravel = () => {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
@@ -182,7 +181,7 @@ const TravelsList = () => {
               fontWeight: 500,
             }}
           >
-            {t("star")}
+            {t("start")}
           </p>
           <p
             style={{
@@ -227,7 +226,10 @@ const TravelsList = () => {
                   style={{
                     cursor: "pointer",
                   }}
-                  onClick={() => navigate(`/home/album/${t.id}`)}
+                  onClick={() => {
+                    if (t.album == null) toast.warning("Il n'y a rien à voir ici pour l'instant")
+                    else navigate(`/home/album/${t.album.id}`)
+                  }}
                 />
               </div>
               <Dropdown.Divider />
