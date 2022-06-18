@@ -16,6 +16,7 @@ import { validateEmail } from "../../Functions";
 import imgLoader from "../../resources/images/loader-blue.svg";
 import { useTranslation } from "react-i18next";
 import LanguageModal from "../LanguageModal";
+import Background from "../Background";
 
 const Login = () => {
   const { t } = useTranslation("translation", { keyPrefix: "login" });
@@ -40,6 +41,7 @@ const Login = () => {
 
   return (
     <>
+      <Background />
       <FontAwesomeIcon
         onClick={() => setShowModal(true)}
         icon={faGlobe}
@@ -105,7 +107,7 @@ const Login = () => {
             />
           )}
         </div>
-        <div style={{ width: "11%" }}>
+        <div style={{ width: "11%", zIndex: 1 }}>
           <Button
             type="button"
             size="sm"
@@ -132,6 +134,7 @@ const Login = () => {
             marginTop: 5,
             width: "15%",
             justifyContent: "space-around",
+            zIndex: 1,
           }}
         >
           <p

@@ -13,6 +13,7 @@ import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import imgLoader from "../../resources/images/loader-blue.svg";
 import { useTranslation } from "react-i18next";
 import LanguageModal from "../LanguageModal";
+import Background from "../Background";
 
 const CreateAccount = () => {
   const { t } = useTranslation("translation", { keyPrefix: "create_account" });
@@ -43,6 +44,7 @@ const CreateAccount = () => {
 
   return (
     <>
+      <Background />
       <FontAwesomeIcon
         onClick={() => setShowModal(true)}
         icon={faGlobe}
@@ -167,7 +169,7 @@ const CreateAccount = () => {
             />
           )}
         </div>
-        <div style={{ width: "11%" }}>
+        <div style={{ width: "11%", zIndex: 1 }}>
           <Button
             type="button"
             onClick={checkInfo}
