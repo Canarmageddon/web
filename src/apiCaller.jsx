@@ -149,78 +149,11 @@ export const getDocumentsFromPoi = async (token, id) =>
 /* ------------ LOCATION -----------------------*/
 
 export const fetchLocations = async (token, id) =>
-  await fetch(`${url}locations.json`, {
+  await fetch(`${url}locations`, {
     headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => checkStatus(res))
     .then((res) => res.json());
-
-// export const deleteLocation = async ({ token, id }) =>
-//   await fetch(`${url}locationnt_of_interests/${id}`, {
-//     Authorization: `Bearer ${token}`,
-//     method: "DELETE",
-//   }).then((res) => checkStatus(res));
-
-// export const createLocation = async ({
-//   token,
-//   latitude,
-//   longitude,
-//   id,
-//   creator,
-// }) => {
-//   return await fetch(`${url}locationnt_of_interests/new`, {
-//     method: "POST",
-//     headers: {
-//       accept: "application/ld+json",
-//       "Content-Type": "application/ld+json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//     body: JSON.stringify({
-//       longitude,
-//       latitude,
-//       trip: parseInt(id),
-//       creator,
-//     }),
-//   }).then((res) => res.json());
-// };
-
-// export const moveLocation = async ({ token, id, latitude, longitude }) => {
-//   return await fetch(`${url}locationnt_of_interests/${id}/edit`, {
-//     method: "PUT",
-//     headers: {
-//       accept: "application/ld+json",
-//       "Content-Type": "application/ld+json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//     body: JSON.stringify({
-//       longitude,
-//       latitude,
-//     }),
-//   }).then((res) => res.json());
-// };
-
-// export const updateLocation = async ({ token, id, title, description, step }) => {
-//   return await fetch(`${url}locationnt_of_interests/${id}/edit`, {
-//     method: "PUT",
-//     headers: {
-//       accept: "application/ld+json",
-//       "Content-Type": "application/ld+json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//     body: JSON.stringify({
-//       title,
-//       description,
-//       step,
-//     }),
-//   }).then((res) => res.json());
-// };
-
-// export const getDocumentsFromLocation = async (token, id) =>
-//   await fetch(`${url}locationnt_of_interests/${id}/documents`, {
-//     headers: { Authorization: `Bearer ${token}` },
-//   })
-//     .then((res) => checkStatus(res))
-//     .then((res) => res.json());
 
 /* -------------------------------------------*/
 

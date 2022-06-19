@@ -40,8 +40,7 @@ export function steps(token, id, setRouteSource, setViewport) {
 export function pois(token, id, setPoiSource) {
   return useQuery(["poi", id], () => fetchPois(token, id), {
     retry: false,
-    onSuccess: (data) => {
-      console.log("poi", data);
+    onSuccess: data => {
       let lstPoi = [];
       data.map((item) => {
         lstPoi.push(
@@ -65,19 +64,8 @@ export function locations(token, id, setLocationSource) {
     retry: false,
     onSuccess: (data) => {
       let locationsList = [];
-      console.log(data);
-      data.map((item) => {
-        console.log(item);
-        locationsList.push(
-          new Location(
-            item.id,
-            item.description,
-            item.title,
-            item.longitude,
-            item.latitude,
-            item?.step?.id,
-          ),
-        );
+      data["hydra:member"].map(item => {
+        locationsList.push(new Location(item.id, item.longitude, item.latitude, item.albumElements));
       });
       setLocationSource(new LayerUtile(locationsList));
     },

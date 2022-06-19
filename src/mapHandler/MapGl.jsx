@@ -21,6 +21,7 @@ export default function MapGl({
   setContentPage,
   contentPage,
   setPoiId,
+  setLocationId,
   setStepId,
   movingPoi,
   setMovingPoi,
@@ -260,6 +261,10 @@ export default function MapGl({
         setContentPage("stepInfo");
         setStepId(e.features[0].id);
         return true;
+      } else if (e.features[0].source === "location") {
+        setContentPage("locationInfo");
+        setLocationId(e.features[0].id);
+        return true;
       }
       return false;
     }
@@ -340,8 +345,6 @@ export default function MapGl({
             type="geojson"
             data={locationSource.templateSource}
           >
-            {console.log(locationSource.templateSource)}
-            {console.log(locationLayer)}
             <Layer {...locationLayer} />
           </Source>
         )}
