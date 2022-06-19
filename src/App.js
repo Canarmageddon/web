@@ -22,9 +22,10 @@ import ExploreRoute from "./explore/ExploreRoute";
 import ExploringMapNavBar from "./components/navBar/ExploringMapNavBar";
 import Album from "./album/Album";
 import CheckLink from "./album/unregistered/CheckLink";
+import Background from "./components/Background";
 
 function App() {
-  const [contentPage, setContentPage] = useState("map");
+  const [contentPage, setContentPage] = useState();
   const [showMenu, setShowMenu] = useState(false);
   const [poiId, setPoiId] = useState(false);
   const [stepId, setStepId] = useState(false);
@@ -59,8 +60,11 @@ function App() {
                   }
                 />
               </Route>
-              <Route path="trips" element={<TravelsList />} />
-              <Route path='profile' element={<Profile />} />
+              <Route
+                path="trips"
+                element={<TravelsList setContentPage={setContentPage} />}
+              />
+              <Route path="profile" element={<Profile />} />
               <Route path="album/:id" element={<Album />} />
               <Route
                 path="map/:id"
@@ -132,7 +136,7 @@ function App() {
                 }
               />
               <Route
-                path='map/:id/discovery'
+                path="map/:id/discovery"
                 element={
                   <div
                     style={{
@@ -148,8 +152,8 @@ function App() {
                 }
               />
               <Route
-                path='/home/*'
-                element={<Navigate to='trips' />}
+                path="/home/*"
+                element={<Navigate to="trips" />}
                 replace={true}
               />
             </Route>
@@ -174,6 +178,7 @@ function App() {
             </Route>
             <Route path="*" element={<Navigate to="/" />} replace={true} />
           </Routes>
+          <Background display={!contentPage} />
         </TravelProvider>
       </UserProvider>
     </BrowserRouter>

@@ -23,17 +23,18 @@ const Admin = ({ display }) => {
   } = useQuery(["members", intId], () => fetchAllUser({ token, id }));
   const mutationAddUser = useMutation(addUser, {
     onSuccess: () => {
+      toast.success("l'utilisateur a été ajouté")
       setNewEmail("");
-      refetchMembers();
     },
     onError: (error) => {
       //TODO Handle member already in trip
+      toast.warning("l'utilisateur n'a pas pu être ajouté")
       console.log(error);
     },
+    onSettled: () => queryClient.invalidateQueries(["members", intId])
   });
 
   const [newEmail, setNewEmail] = useState("");
-  const [newRole, setNewRole] = useState("member");
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newEmail) {
@@ -60,14 +61,6 @@ const Admin = ({ display }) => {
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
           />
-          <select
-            value={newRole}
-            onChange={(e) => setNewRole(e.target.value)}
-            className="invite-input"
-          >
-            <option value="editor">Editeur</option>
-            <option value="guest">Invité</option>
-          </select>
           <button type="submit" className="button-new">
             Inviter
           </button>
@@ -76,7 +69,6 @@ const Admin = ({ display }) => {
       <h3 className="sub-title">Membres</h3>
       <hr className="bar" />
       <span className="nom">Nom</span>
-      <span className="role">Role</span>
       <hr className="bar" />
       {!isLoadingMembers && !isErrorMembers && (
         <ul className="list">

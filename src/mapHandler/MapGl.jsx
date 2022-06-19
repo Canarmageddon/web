@@ -14,9 +14,10 @@ mapboxgl.workerClass =
 import LocationFinder from "./LocationFinder";
 import { useUser, useToken } from "../context/userContext";
 import { toast } from "react-toastify";
-import { Modal } from "react-bootstrap";
 import ImageModal from "./ImageModal";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+
 export default function MapGl({
   setContentPage,
   contentPage,
@@ -37,7 +38,7 @@ export default function MapGl({
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
-
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [user] = useUser();
   const [poiSource, setPoiSource] = usePoi();
   const [locationSource, setLocationSource] = useLocation();
@@ -57,6 +58,10 @@ export default function MapGl({
   const { id, link } = useParams();
 
   const _mapRef = createRef();
+
+  useEffect(() => {
+    setContentPage("map");
+  }, []);
 
   const {
     isLoading: isLoadingSteps,
@@ -85,7 +90,12 @@ export default function MapGl({
     isLoading: isLoadingPictures,
     isError: isErrorPictures,
     data: dataPictures,
-  } = pictures(token, id, setImageList, exploring);
+  } = pictures(selectedLocation, exploring);
+  const {
+    isLoading: isLoadingLogBook,
+    isError: isErrorLogBook,
+    data: dataLogBook,
+  } = logBookEntries(selectedLocation, exploring);
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
@@ -162,8 +172,8 @@ export default function MapGl({
   useEffect(async () => {
     if (dataSteps != undefined) {
       setViewport({
-        latitude: dataSteps[dataSteps.length - 1].location.latitude,
-        longitude: dataSteps[dataSteps.length - 1].location.longitude,
+        latitude: dataSteps[dataSteps?.length - 1]?.location?.latitude,
+        longitude: dataSteps[dataSteps?.length - 1]?.location?.longitude,
         zoom: 7,
         bearing: 0,
         pitch: 0,
@@ -301,7 +311,6 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
-
   return (
     <>
       {!exploring && (

@@ -1,5 +1,12 @@
-import {useQuery, useMutation, useQueryClient} from "react-query";
 import {fetchPois, fetchSteps, fetchLocations, getPictures} from "../../apiCaller";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import {
+  fetchPois,
+  fetchSteps,
+  getLogBookEntriesByLocation,
+  getPictures,
+  getPicturesByLocation,
+} from "../../apiCaller";
 import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
 
@@ -18,8 +25,8 @@ export function steps(token, id, setRouteSource, setViewport) {
       });
       setRouteSource(new LayerUtile(lstStep));
       setViewport({
-        latitude: data[data.length - 1].location.latitude,
-        longitude: data[data.length - 1].location.longitude,
+        latitude: data[data?.length - 1]?.location?.latitude,
+        longitude: data[data?.length - 1]?.location?.longitude,
         zoom: 7,
         bearing: 0,
         pitch: 0
@@ -92,4 +99,24 @@ export function pictures(token, id, setImageList, enabled) {
       setImageList({type: "FeatureCollection", features: formatedList});
     }
   });
+}
+ */
+export function pictures(idLocation, enabled) {
+  return useQuery(
+    ["picturesByLocations", idLocation],
+    () => getPicturesByLocation(idLocation),
+    {
+      enabled: enabled && idLocation != null,
+    },
+  );
+}
+
+export function logBookEntries(idLocation, enabled) {
+  return useQuery(
+    ["LogBookEntriesByLocations", idLocation],
+    () => getLogBookEntriesByLocation(idLocation),
+    {
+      enabled: enabled && idLocation != null,
+    },
+  );
 }
