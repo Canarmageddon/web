@@ -38,3 +38,21 @@ button.button-new {
 ul {
     margin-top: 10px;
 }
+
+.language-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    border: solid 2px white;
+    padding: 8px;
+    border-radius: 30px;
+}
+
+.travel-text {
+    margin-top: 0;
+    margin-bottom: 0;
+    flex: 0.3;
+    color: #0096ff;
+    font-weight: 500;
+}

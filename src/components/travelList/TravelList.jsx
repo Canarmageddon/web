@@ -79,12 +79,6 @@ const TravelsList = ({ setContentPage }) => {
   const displayLstTravel = () => {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <FontAwesomeIcon
-          onClick={() => setShowModal(true)}
-          icon={faGlobe}
-          style={{ position: "absolute", top: 20, right: 220, color: "white" }}
-          size={"2x"}
-        />
         <div
           style={{
             display: "flex",
@@ -95,39 +89,9 @@ const TravelsList = ({ setContentPage }) => {
           }}
           className="nav-item"
         >
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("name")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("start")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("end")}
-          </p>
+          <p className="travel-text">{t("name")}</p>
+          <p className="travel-text">{t("start")}</p>
+          <p className="travel-text">{t("end")}</p>
         </div>
 
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />
@@ -181,39 +145,9 @@ const TravelsList = ({ setContentPage }) => {
           }}
           className="nav-item"
         >
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("name")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("start")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("end")}
-          </p>
+          <p className="travel-text">{t("name")}</p>
+          <p className="travel-text">{t("start")}</p>
+          <p className="travel-text">{t("end")}</p>
         </div>
 
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />
@@ -275,6 +209,12 @@ const TravelsList = ({ setContentPage }) => {
   };
   return (
     <>
+      <FontAwesomeIcon
+        onClick={() => setShowModal(true)}
+        icon={faGlobe}
+        className="language-icon"
+        size={"2x"}
+      />
       <div className="travellist-container">
         <h1 className="list-title">{t("trips")}</h1>
         <Button onClick={() => navigate("/home/explore/list")}>
