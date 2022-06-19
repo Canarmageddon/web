@@ -40,9 +40,10 @@
     }
     
     .loader {
-        height: 40;
+        height: 34px;
         position: absolute;
-        margin-top: 5;
+        bottom: 65px;
+        right: -2px;
     }
     
     .signup-text {
