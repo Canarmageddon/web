@@ -88,7 +88,7 @@ const Login = () => {
           >
             {t("se_connecter")}
           </Button>
-          <img src={imgLoader} className="loader" />
+          {isCheckingCredentials && <img src={imgLoader} className="loader" />}
           <Button
             type="button"
             size="sm"

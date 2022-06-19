@@ -20,7 +20,7 @@ const CreateAccount = () => {
   const { t } = useTranslation("translation", { keyPrefix: "create_account" });
 
   const [showModal, setShowModal] = useState(false);
-  const invalidEmail = () => toast.warning(t("invalidEmail"));
+  const invalidEmail = () => toast.warning(t("invalid_email"));
   const emailNotAvailable = () => toast.error(t("user_email"));
   const noPassword = () => toast.warning(t("no_password"));
   const noConfirmPassword = () => toast.warning(t("confirm_password"));
