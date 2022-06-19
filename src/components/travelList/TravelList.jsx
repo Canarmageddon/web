@@ -79,12 +79,6 @@ const TravelsList = ({ setContentPage }) => {
   const displayLstTravel = () => {
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <FontAwesomeIcon
-          onClick={() => setShowModal(true)}
-          icon={faGlobe}
-          style={{ position: "absolute", top: 20, right: 220, color: "white" }}
-          size={"2x"}
-        />
         <div
           style={{
             display: "flex",
@@ -275,6 +269,12 @@ const TravelsList = ({ setContentPage }) => {
   };
   return (
     <>
+      <FontAwesomeIcon
+        onClick={() => setShowModal(true)}
+        icon={faGlobe}
+        className="language-icon"
+        size={"2x"}
+      />
       <div className="travellist-container">
         <h1 className="list-title">{t("trips")}</h1>
         <Button onClick={() => navigate("/home/explore/list")}>
