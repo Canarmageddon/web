@@ -1,19 +1,40 @@
-.travel{
-    border: solid;
-    border-color: black;
-    border-radius: 1px;
-    padding: 2px;
-    margin: 2px;
+.travellist-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 25px 30px;
+    border-radius: 8px;
+    background-color: white;
+    transform: translate(-50%, -50%);
+    width: 85vw;
+    height: 80vh;
 }
 
-.travel-list-item {
-    display: "flex";
-    margin-bottom: 10;
-    margin-top: 10;
-    align-items: "center";
-    justify-content: "center";
+h1.list-title {
+    color: rgb(13, 110, 253, 1);
+    display: inline;
 }
 
-.travel-list-item:hover {
-    background-color: rgba(13, 110, 253, 0.6);
+button.button-new {
+    background: none;
+    color: white;
+    background-color: rgb(13, 110, 253, 1);
+    border: 0ch;
+    border-radius: 5px;
+    float: right;
+    margin-right: 5px;
+    margin-top: 15px;
+}
+
+.nav-tabs .nav-link.active {
+    color: #0096ff;
+    border-color: #ffffff #ffffff #0096ff;
+}
+
+.nav-link {
+    color: black;
+}
+
+ul {
+    margin-top: 10px;
 }

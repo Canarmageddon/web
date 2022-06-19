@@ -13,7 +13,7 @@ const SideMenu = ({ setContentPage, showMenu }) => {
   const navigate = useNavigate();
 
   const logout = () => {
-    setContentPage("login");
+    setContentPage();
     window.localStorage.clear();
     setUser(undefined);
   };

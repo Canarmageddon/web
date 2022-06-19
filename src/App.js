@@ -25,7 +25,7 @@ import CheckLink from "./album/unregistered/CheckLink";
 import Background from "./components/Background";
 
 function App() {
-  const [contentPage, setContentPage] = useState("map");
+  const [contentPage, setContentPage] = useState();
   const [showMenu, setShowMenu] = useState(false);
   const [poiId, setPoiId] = useState(false);
   const [stepId, setStepId] = useState(false);
@@ -38,10 +38,7 @@ function App() {
       <UserProvider>
         <TravelProvider>
           <Routes>
-            <Route
-              path="/"
-              element={<Login setContentPage={setContentPage} />}
-            />
+            <Route path="/" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/home/" element={<RequireAuth />}>
               <Route path="explore/" element={<ExploreRoute />}>
@@ -181,7 +178,7 @@ function App() {
             </Route>
             <Route path="*" element={<Navigate to="/" />} replace={true} />
           </Routes>
-          <Background display={contentPage === "login"} />
+          <Background display={!contentPage} />
         </TravelProvider>
       </UserProvider>
     </BrowserRouter>

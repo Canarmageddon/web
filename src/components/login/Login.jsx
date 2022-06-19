@@ -18,7 +18,7 @@ import imgLoader from "../../resources/images/loader-blue.svg";
 import { useTranslation } from "react-i18next";
 import LanguageModal from "../LanguageModal";
 
-const Login = ({ setContentPage }) => {
+const Login = () => {
   const { t } = useTranslation("translation", { keyPrefix: "login" });
   const invalidEmail = () => toast.warning(t("invalid_email"));
   const noPassword = () => toast.warning(t("no_password"));
@@ -115,7 +115,6 @@ const Login = ({ setContentPage }) => {
       try {
         setIsCheckingCredentials(true);
         const tokens = await checkCredentials(email, password);
-        setContentPage("map");
         successLog();
         await updateToken({
           setToken,

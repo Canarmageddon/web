@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Tabs, Tab, Button } from "react-bootstrap";
 import {
   fetchTravels,
@@ -48,11 +48,8 @@ const TravelsList = ({ setContentPage }) => {
     }
   );
 
-  useEffect(() => {
-    setContentPage("map");
-  }, []);
-
   const handleClick = (t) => {
+    setContentPage("map");
     navigate(`/home/map/${t.id}`);
   };
   const mutationDeleteTrip = useMutation(deleteTrip, {
@@ -75,7 +72,7 @@ const TravelsList = ({ setContentPage }) => {
     generatedLink("lien de partage copier dans le press-papier");
   };
   const logout = () => {
-    setContentPage("login");
+    setContentPage();
     window.localStorage.clear();
     setUser(undefined);
   };
@@ -236,10 +233,10 @@ const TravelsList = ({ setContentPage }) => {
                     {t.name}
                   </p>
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                    {t.steps[0].description}
+                    {t.steps[0]?.description}
                   </p>
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                    {t.steps[t.steps.length - 1].description}
+                    {t.steps[t.steps.length - 1]?.description}
                   </p>
                 </div>
                 <FontAwesomeIcon
@@ -277,50 +274,47 @@ const TravelsList = ({ setContentPage }) => {
     );
   };
   return (
-    <div
-      className="root-list"
-      style={{
-        flex: 0.4,
-      }}
-    >
-      <h1 className="list-title">{t("trips")}</h1>
-      <Button onClick={() => navigate("/home/explore/list")}>
-        {t("explore")}
-      </Button>
-      <FontAwesomeIcon
-        className="p-2 nav-icon"
-        icon={faUser}
-        size="2x"
-        style={{
-          float: "right",
-          background: "#0d6efd",
-          borderRadius: "50%",
-          color: "white",
-          cursor: "pointer",
-        }}
-        onClick={() => navigate("/home/profile")}
-      />
-      <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
-      <hr style={{ marginBottom: 5 + "px" }} />
-      <Tabs
-        id="tabs-timing"
-        activeKey={timing}
-        onSelect={(k) => setTiming(k)}
-        className="tabs-travel"
-      >
-        <Tab eventKey="planned" title={t("planned_trip")}></Tab>
-        <Tab eventKey="past" title={t("history")}></Tab>
-      </Tabs>
-      {timing == "planned" ? displayLstTravel() : displayHistory()}
+    <>
+      <div className="travellist-container">
+        <h1 className="list-title">{t("trips")}</h1>
+        <Button onClick={() => navigate("/home/explore/list")}>
+          {t("explore")}
+        </Button>
+        <FontAwesomeIcon
+          className="p-2 nav-icon"
+          icon={faUser}
+          size="2x"
+          style={{
+            float: "right",
+            background: "#0d6efd",
+            borderRadius: "50%",
+            color: "white",
+            cursor: "pointer",
+          }}
+          onClick={() => navigate("/home/profile")}
+        />
+        <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
+        <hr style={{ marginBottom: 5 + "px" }} />
+        <Tabs
+          id="tabs-timing"
+          activeKey={timing}
+          onSelect={(k) => setTiming(k)}
+          className="tabs-travel"
+        >
+          <Tab eventKey="planned" title={t("planned_trip")}></Tab>
+          <Tab eventKey="past" title={t("history")}></Tab>
+        </Tabs>
+        {timing == "planned" ? displayLstTravel() : displayHistory()}
+        <LanguageModal showModal={showModal} setShowModal={setShowModal} />
+      </div>
       <Button
         variant="danger"
         onClick={logout}
-        style={{ position: "absolute", bottom: 10, left: 15 }}
+        style={{ position: "absolute", bottom: 20, left: 25 }}
       >
         {t("disconnect")}
       </Button>
-      <LanguageModal showModal={showModal} setShowModal={setShowModal} />
-    </div>
+    </>
   );
 };
 
