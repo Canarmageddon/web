@@ -4,6 +4,8 @@ import Form from "react-bootstrap/Form";
 import "../style/destinationInput.css";
 import FileUploader from "./FileUploader";
 import { useTranslation } from "react-i18next";
+import Picture from "../album/Picture";
+import LogBookEntry from "../album/LogBookEntry";
 
 const LocationInformation = ({ display, locationId }) => {
   const { t } = useTranslation("translation", { keyPrefix: "location_info" });
@@ -26,7 +28,6 @@ const LocationInformation = ({ display, locationId }) => {
     );
     setSelectedStep(currentLocation?.step ? currentLocation.step : "");
   }, [currentLocation]);
-  console.log(currentLocation);
   return (
     <div
       style={{
@@ -44,7 +45,13 @@ const LocationInformation = ({ display, locationId }) => {
           marginTop: 10,
         }}
       >
-        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        {location.getItemById(12)?.albumElements.map((element) => {
+          if (element.type2 == "picture")
+            return <Picture key={element.id} id={element.id} />
+          else if (element.type2 == "log_book_entry")
+            return <LogBookEntry key={element.id} author={element?.creator} date={element?.creationDate} text={element?.content} />
+          else return <></>
+        })}
         {/* <Form.Control
           type="text"
           placeholder="Titre"

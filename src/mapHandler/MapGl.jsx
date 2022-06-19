@@ -85,12 +85,11 @@ export default function MapGl({
   } = locations(token, id, setLocationSource);
 
   const [imageList, setImageList] = useState([]);
-
   const {
     isLoading: isLoadingPictures,
     isError: isErrorPictures,
     data: dataPictures,
-  } = pictures(selectedLocation, exploring);
+  } = pictures(token, selectedLocation, setImageList, exploring);
   const {
     isLoading: isLoadingLogBook,
     isError: isErrorLogBook,
@@ -362,11 +361,7 @@ export default function MapGl({
             </Source>
           </>
         )}
-        {!isLoadingPictures && !isErrorPictures && exploring && (
-          <Source id="images" type="geojson" data={imageList}>
-            <Layer {...imageLayer} />
-          </Source>
-        )}
+
       </ReactMapGL>
       <ImageModal id={currentImage} show={show} setShow={setShow} />
     </>
