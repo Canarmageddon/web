@@ -1,4 +1,9 @@
-import {fetchPois, fetchSteps, fetchLocations, getPictures} from "../../apiCaller";
+import {
+  fetchPois,
+  fetchSteps,
+  fetchLocations,
+  getPictures,
+} from "../../apiCaller";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import {
   fetchPois,
@@ -11,17 +16,21 @@ import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
 
 export function steps(token, id, setRouteSource, setViewport) {
-  return useQuery([
-    "steps", id
-  ], () => fetchSteps(token, id), {
+  return useQuery(["steps", id], () => fetchSteps(token, id), {
     retry: false,
-    onSuccess: data => {
+    onSuccess: (data) => {
       let lstStep = [];
-      data.map(item => {
-        lstStep.push(new Location(
-          item.id, item.description, item.title, item.location.longitude, item.location.latitude, item
-          ?.step
-            ?.id));
+      data.map((item) => {
+        lstStep.push(
+          new Location(
+            item.id,
+            item.description,
+            item.title,
+            item.location.longitude,
+            item.location.latitude,
+            item?.step?.id,
+          ),
+        );
       });
       setRouteSource(new LayerUtile(lstStep));
       setViewport({
@@ -29,78 +38,82 @@ export function steps(token, id, setRouteSource, setViewport) {
         longitude: data[data?.length - 1]?.location?.longitude,
         zoom: 7,
         bearing: 0,
-        pitch: 0
+        pitch: 0,
       });
-    }
+    },
   });
 }
 
 export function pois(token, id, setPoiSource) {
-  return useQuery([
-    "poi", id
-  ], () => fetchPois(token, id), {
+  return useQuery(["poi", id], () => fetchPois(token, id), {
     retry: false,
-    onSuccess: data => {
+    onSuccess: (data) => {
       console.log("poi", data);
       let lstPoi = [];
-      data.map(item => {
-        lstPoi.push(new Location(
-          item.id, item.description, item.title, item.location.longitude, item.location.latitude, item
-          ?.step
-            ?.id));
+      data.map((item) => {
+        lstPoi.push(
+          new Location(
+            item.id,
+            item.description,
+            item.title,
+            item.location.longitude,
+            item.location.latitude,
+            item?.step?.id,
+          ),
+        );
       });
       setPoiSource(new LayerUtile(lstPoi));
-    }
+    },
   });
 }
 
 export function locations(token, id, setLocationSource) {
-  return useQuery([
-    "locations", id
-  ], () => fetchLocations(token, id), {
+  return useQuery(["locations", id], () => fetchLocations(token, id), {
     retry: false,
-    onSuccess: data => {
+    onSuccess: (data) => {
       let locationsList = [];
       console.log(data);
-      data.map(item => {
+      data.map((item) => {
         console.log(item);
-        locationsList.push(new Location(
-          item.id, item.description, item.title, item.longitude, item.latitude, item
-          ?.step
-            ?.id));
+        locationsList.push(
+          new Location(
+            item.id,
+            item.description,
+            item.title,
+            item.longitude,
+            item.latitude,
+            item?.step?.id,
+          ),
+        );
       });
       setLocationSource(new LayerUtile(locationsList));
-    }
+    },
   });
 }
 
 export function pictures(token, id, setImageList, enabled) {
-  return useQuery([
-    "explorePictures", id
-  ], () => getPictures(token, id), {
+  return useQuery(["explorePictures", id], () => getPictures(token, id), {
     enabled: enabled,
-    onSuccess: data => {
+    onSuccess: (data) => {
       let formatedList = [];
-      data.map(picture => {
+      data.map((picture) => {
         formatedList = [
-          ...formatedList, {
+          ...formatedList,
+          {
             type: "Feature",
             id: picture.id,
             geometry: {
               type: "Point",
-              coordinates: [
-                picture.id * 2,
-                picture.id * 2
-              ] //TODO
-            }
-          }
+              coordinates: [picture.id * 2, picture.id * 2], //TODO
+            },
+          },
         ];
       });
-      setImageList({type: "FeatureCollection", features: formatedList});
-    }
+      setImageList({ type: "FeatureCollection", features: formatedList });
+    },
   });
 }
- */
+
 export function pictures(idLocation, enabled) {
   return useQuery(
     ["picturesByLocations", idLocation],

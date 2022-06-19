@@ -16,7 +16,6 @@ import { useUser, useToken } from "../context/userContext";
 import { toast } from "react-toastify";
 import ImageModal from "./ImageModal";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
 
 export default function MapGl({
   setContentPage,
