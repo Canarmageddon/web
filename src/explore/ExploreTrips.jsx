@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./explore.css";
 import { fetchAllTrips } from "../apiCaller";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,9 +15,9 @@ import { useNavigate } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 import ExploringNavBar from "../components/navBar/ExploringNavBar";
 import { useQuery } from "react-query";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 export default function ExploreTrips({ context }) {
-  const { t } = useTranslation('translation', { "keyPrefix": "trip_list" });
+  const { t } = useTranslation("translation", { keyPrefix: "trip_list" });
   const [currentPage, setCurrentPage] = useOutletContext();
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
@@ -74,7 +75,7 @@ export default function ExploreTrips({ context }) {
   };
   const displayLstTravel = () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
         <div
           style={{
             display: "flex",
@@ -164,16 +165,9 @@ export default function ExploreTrips({ context }) {
   };
 
   return (
-    <div
-      className="root-list"
-      style={{
-        flex: 0.4,
-      }}
-    >
+    <div className="explore-container">
       <ExploringNavBar />
-      <h1 className="list-title">
-        {t("others_trips")}
-      </h1>
+      <h1 className="list-title">{t("others_trips")}</h1>
       <hr style={{ marginBottom: 5 + "px" }} />
       {displayLstTravel()}
     </div>
