@@ -1,29 +1,32 @@
-div.root-list{
+div.root-list {
     margin: 5px;
 }
-h1.list-title{
+
+h1.list-title {
     color: rgb(13, 110, 253, 1);
     display: inline;
 }
-button.button-new{
+
+button.button-new {
     background: none;
-    color:white;
+    color: white;
     background-color: rgb(13, 110, 253, 1);
     border: 0ch;
     border-radius: 5px;
     float: right;
     margin-right: 5px;
     margin-top: 15px;
-    
 }
+
 .nav-tabs .nav-link.active {
     color: #0096ff;
     border-color: #ffffff #ffffff #0096ff;
 }
+
 .nav-link {
     color: black;
 }
+
 ul {
     margin-top: 10px;
 }
-

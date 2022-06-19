@@ -14,9 +14,10 @@ mapboxgl.workerClass =
 import LocationFinder from "./LocationFinder";
 import { useUser, useToken } from "../context/userContext";
 import { toast } from "react-toastify";
-import { Modal } from "react-bootstrap";
 import ImageModal from "./ImageModal";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+
 export default function MapGl({
   setContentPage,
   contentPage,
@@ -28,7 +29,7 @@ export default function MapGl({
   setMovingStep,
   exploring = false,
 }) {
-  const { t } = useTranslation('translation', { "keyPrefix": "map" });
+  const { t } = useTranslation("translation", { keyPrefix: "map" });
   const poiSuccess = () => toast.success(t("poi_created"));
   const stepSuccess = () => toast.success(t("screp_created"));
   const successPoiMoved = () => toast.info(t("poi_moved"));
@@ -37,7 +38,7 @@ export default function MapGl({
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
-  const [selectedLocation, setSelectedLocation] = useState(null)
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [user] = useUser();
   const [poiSource, setPoiSource] = usePoi();
   const [routeSource, setRouteSource] = useRoute();
@@ -57,6 +58,10 @@ export default function MapGl({
 
   const _mapRef = createRef();
 
+  useEffect(() => {
+    setContentPage("map");
+  }, []);
+
   const {
     isLoading: isLoadingSteps,
     isError: isErrorSteps,
@@ -75,9 +80,11 @@ export default function MapGl({
     isError: isErrorPictures,
     data: dataPictures,
   } = pictures(selectedLocation, exploring);
-  const { isLoading: isLoadingLogBook,
+  const {
+    isLoading: isLoadingLogBook,
     isError: isErrorLogBook,
-    data: dataLogBook } = logBookEntries(selectedLocation, exploring)
+    data: dataLogBook,
+  } = logBookEntries(selectedLocation, exploring);
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
@@ -173,7 +180,6 @@ export default function MapGl({
 
   const handleClick = async (e) => {
     if (exploring) {
-      console.log(exploring);
       if (e.features[0].source === "images") {
         setCurrentImage(e.features[0].id);
         setShow(true);

@@ -2,13 +2,12 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import franceFlag from "../resources/images/franceFlag.png";
 import ukFlag from "../resources/images/ukFlag.png";
-import { FlagImg } from "./styledComponents/LoginStyle";
+import { FlagImg } from "./styledComponents/LanguageStyle";
 import { useTranslation } from "react-i18next";
 import i18n from "../translation/i18n";
 
 const LanguageModal = ({ showModal, setShowModal }) => {
   const { t } = useTranslation("translation", { keyPrefix: "language_selection" });
-
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>
@@ -17,7 +16,7 @@ const LanguageModal = ({ showModal, setShowModal }) => {
       <Modal.Body>
         <div style={{ display: "flex", justifyContent: "space-around" }}>
           <FlagImg
-            selected={i18n.language === "fr"}
+            selected={i18n.language === "fr" || i18n.language === "fr-FR"}
             src={franceFlag}
             alt="Drapeau français"
             onClick={() => i18n.changeLanguage("fr")}
