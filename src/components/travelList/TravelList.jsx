@@ -89,39 +89,9 @@ const TravelsList = ({ setContentPage }) => {
           }}
           className="nav-item"
         >
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("name")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("start")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("end")}
-          </p>
+          <p className="travel-text">{t("name")}</p>
+          <p className="travel-text">{t("start")}</p>
+          <p className="travel-text">{t("end")}</p>
         </div>
 
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />
@@ -175,39 +145,9 @@ const TravelsList = ({ setContentPage }) => {
           }}
           className="nav-item"
         >
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("name")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("start")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("end")}
-          </p>
+          <p className="travel-text">{t("name")}</p>
+          <p className="travel-text">{t("start")}</p>
+          <p className="travel-text">{t("end")}</p>
         </div>
 
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />

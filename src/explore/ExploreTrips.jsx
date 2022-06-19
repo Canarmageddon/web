@@ -75,7 +75,7 @@ export default function ExploreTrips({ context }) {
   };
   const displayLstTravel = () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <div
           style={{
             display: "flex",
@@ -86,39 +86,9 @@ export default function ExploreTrips({ context }) {
           }}
           className="nav-item"
         >
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("name")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("start")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("end")}
-          </p>
+          <p className="travel-text">{t("name")}</p>
+          <p className="travel-text">{t("start")}</p>
+          <p className="travel-text">{t("end")}</p>
         </div>
 
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />
