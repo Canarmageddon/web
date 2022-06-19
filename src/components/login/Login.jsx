@@ -26,7 +26,7 @@ const Login = () => {
   const successLog = () => toast.success(t("success_log"));
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const [setToken] = useToken();
+  const [token, setToken] = useToken();
   const [user] = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -123,6 +123,7 @@ const Login = () => {
         });
         queryClient.invalidateQueries("whoami");
       } catch (error) {
+        console.log(error)
         credentialsError();
       }
       setIsCheckingCredentials(false);
