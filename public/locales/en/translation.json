@@ -32,7 +32,7 @@
     "new_trip": {
         "btn_new_trip": "New trip",
         "new_trip": "Create a new trip",
-        "trip_name": "Trip's name",
+        "trip_name": "Trip name",
         "create": "Create"
     },
     "trip_list": {
