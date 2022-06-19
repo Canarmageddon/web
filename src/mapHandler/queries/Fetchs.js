@@ -5,13 +5,6 @@ import {
   getPictures,
 } from "../../apiCaller";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import {
-  fetchPois,
-  fetchSteps,
-  getLogBookEntriesByLocation,
-  getPictures,
-  getPicturesByLocation,
-} from "../../apiCaller";
 import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
 
@@ -114,7 +107,7 @@ export function pictures(token, id, setImageList, enabled) {
   });
 }
 
-export function pictures(idLocation, enabled) {
+/* export function pictures(idLocation, enabled) {
   return useQuery(
     ["picturesByLocations", idLocation],
     () => getPicturesByLocation(idLocation),
@@ -123,7 +116,7 @@ export function pictures(idLocation, enabled) {
     },
   );
 }
-
+ */
 export function logBookEntries(idLocation, enabled) {
   return useQuery(
     ["LogBookEntriesByLocations", idLocation],
