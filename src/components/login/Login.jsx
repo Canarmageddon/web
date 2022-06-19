@@ -55,6 +55,7 @@ const Login = () => {
           <FormControl
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && checkConnexionInfo()}
             onFocus={() => setShowUserIcon(false)}
             onBlur={() => setShowUserIcon(true)}
             type="text"
@@ -74,6 +75,7 @@ const Login = () => {
             onFocus={() => setShowLockIcon(false)}
             onBlur={() => setShowLockIcon(true)}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && checkConnexionInfo()}
           />
           {showLockIcon && password === "" && (
             <FontAwesomeIcon icon={faLock} className="input-icon" />
@@ -123,7 +125,7 @@ const Login = () => {
         });
         queryClient.invalidateQueries("whoami");
       } catch (error) {
-        console.log(error)
+        console.log(error);
         credentialsError();
       }
       setIsCheckingCredentials(false);

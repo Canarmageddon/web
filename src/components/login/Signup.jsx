@@ -63,6 +63,7 @@ const CreateAccount = () => {
             onFocus={() => setShowUserIcon(false)}
             onBlur={() => setShowUserIcon(true)}
             onChange={(e) => setEmail(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && checkInfo()}
           />
           {showUserIcon && email === "" && (
             <FontAwesomeIcon icon={faUser} className="input-icon" />
@@ -77,6 +78,7 @@ const CreateAccount = () => {
             name="firstName"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && checkInfo()}
           />
         </div>
         <div className="input-container">
@@ -88,6 +90,7 @@ const CreateAccount = () => {
             name="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && checkInfo()}
           />
         </div>
         <div className="input-container">
@@ -101,6 +104,7 @@ const CreateAccount = () => {
             onFocus={() => setShowLockIcon(false)}
             onBlur={() => setShowLockIcon(true)}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && checkInfo()}
           />
           {showLockIcon && password === "" && (
             <FontAwesomeIcon icon={faLock} className="input-icon" />
@@ -117,6 +121,7 @@ const CreateAccount = () => {
             onFocus={() => setShowConfirmLockIcon(false)}
             onBlur={() => setShowConfirmLockIcon(true)}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && checkInfo()}
           />
           {showConfirmLockIcon && confirmPassword === "" && (
             <FontAwesomeIcon icon={faLock} className="input-icon" />
