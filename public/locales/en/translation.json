@@ -30,9 +30,9 @@
         "first_list": "Create your first list !"
     },
     "new_trip": {
-        "btn_new_trip": "New trip",
+        "btn_new_trip": "Create trip",
         "new_trip": "Create a new trip",
-        "trip_name": "Trip's name",
+        "trip_name": "Trip name",
         "create": "Create"
     },
     "trip_list": {
@@ -74,5 +74,26 @@
         "step_updated": "Step modified !",
         "step_details": "Step's details",
         "move": "Move"
+    },
+    "language_selection": {
+        "choose_language": "Choose language"
+    },
+    "edit_user": {
+        "profil": "Profile",
+        "edit": "Edit",
+        "back": "Back",
+        "success": "Modify your information"
+    },
+    "error_occured": "An error occured. Please try again",
+    "step": "Step",
+    "poi": "Point of interest",
+    "add": "Add",
+    "admin": {
+        "added_user": "The user was added",
+        "not_added_user": "The user could not be added",
+        "trips_members": "Trip's members",
+        "add_member": "Invite a member",
+        "invite": "Invite",
+        "members": "Members"
     }
 }

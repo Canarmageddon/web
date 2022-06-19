@@ -8,7 +8,9 @@ import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
 import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
 import { useToken, useUser } from "../../context/userContext";
 import { useMutation, useQueryClient } from "react-query";
+import { useTranslation } from "react-i18next";
 const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
+  const { t } = useTranslation("translation");
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState("");
@@ -66,7 +68,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
         {showForm && (
           <div>
             <FormControl
-              placeholder="Nom"
+              placeholder={t("create_account.last_name")}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               style={{ flex: 0.1 }}
@@ -97,7 +99,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
               }}
               style={{ flex: 0.1 }}
             >
-              Ajouter
+              {t("add")}
             </Button>
           </div>
         )}

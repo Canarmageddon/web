@@ -7,11 +7,11 @@ import { useTranslation } from "react-i18next";
 import i18n from "../translation/i18n";
 
 const LanguageModal = ({ showModal, setShowModal }) => {
-  const { t } = useTranslation("translation", { keyPrefix: "login" });
+  const { t } = useTranslation("translation", { keyPrefix: "language_selection" });
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Choix de la langue</Modal.Title>
+        <Modal.Title>{t("choose_language")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div style={{ display: "flex", justifyContent: "space-around" }}>
