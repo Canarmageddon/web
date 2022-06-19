@@ -9,21 +9,20 @@ import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import imgLoader from "../../resources/images/loader-blue.svg";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+import LanguageModal from "../LanguageModal";
 
 const CreateAccount = () => {
-  const { t } = useTranslation('translation', { "keyPrefix": "create_account" });
+  const { t } = useTranslation("translation", { keyPrefix: "create_account" });
 
-  const invalidEmail = () =>
-    toast.warning(t("invalidEmail"));
-  const emailNotAvailable = () =>
-    toast.error(t("user_email"));
+  const [showModal, setShowModal] = useState(false);
+  const invalidEmail = () => toast.warning(t("invalidEmail"));
+  const emailNotAvailable = () => toast.error(t("user_email"));
   const noPassword = () => toast.warning(t("no_password"));
-  const noConfirmPassword = () =>
-    toast.warning(t("confirm_password"));
-  const divergentPasswords = () =>
-    toast.warning(t("divergent_passwords"));
+  const noConfirmPassword = () => toast.warning(t("confirm_password"));
+  const divergentPasswords = () => toast.warning(t("divergent_passwords"));
   const successCreate = () => toast.success(t("success"));
 
   const navigate = useNavigate();
@@ -44,6 +43,12 @@ const CreateAccount = () => {
 
   return (
     <>
+      <FontAwesomeIcon
+        onClick={() => setShowModal(true)}
+        icon={faGlobe}
+        style={{ position: "absolute", top: 20, left: 5, color: "white" }}
+        size={"2x"}
+      />
       <form
         style={{
           display: "flex",
@@ -171,7 +176,7 @@ const CreateAccount = () => {
               width: "100%",
             }}
           >
-            {t('create_account')}
+            {t("create_account")}
           </Button>
           <Button
             type="button"
@@ -192,6 +197,7 @@ const CreateAccount = () => {
           )}
         </div>
       </form>
+      <LanguageModal showModal={showModal} setShowModal={setShowModal} />
     </>
   );
 

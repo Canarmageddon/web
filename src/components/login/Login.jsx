@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import { useUser } from "../../context/userContext";
@@ -13,31 +14,25 @@ import { useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { validateEmail } from "../../Functions";
 import imgLoader from "../../resources/images/loader-blue.svg";
-import { useTranslation } from 'react-i18next';
-import i18next from "i18next";
-import i18n from "../../translation/i18n";
+import { useTranslation } from "react-i18next";
+import LanguageModal from "../LanguageModal";
+
 const Login = () => {
-  const { t } = useTranslation('translation', { "keyPrefix": "login" });
-  const invalidEmail = () =>
-    toast.warning(t("invalid_email"));
+  const { t } = useTranslation("translation", { keyPrefix: "login" });
+  const invalidEmail = () => toast.warning(t("invalid_email"));
   const noPassword = () => toast.warning(t("no_password"));
-  const credentialsError = () =>
-    toast.error(t("credentials_error"));
+  const credentialsError = () => toast.error(t("credentials_error"));
   const successLog = () => toast.success(t("success_log"));
-  const [language, setLanguage] = useState(i18n.language)
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const [token, setToken] = useToken();
   const [user, setUser] = useUser();
   const [email, setEmail] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [password, setPassword] = useState("");
   const [showLockIcon, setShowLockIcon] = useState(true);
   const [showUserIcon, setShowUserIcon] = useState(true);
   const [isCheckingCredentials, setIsCheckingCredentials] = useState(false);
   const queryClient = useQueryClient();
-  useEffect(() => {
-    i18n.changeLanguage(language)
-  }, [language])
 
   if (user != "" && user != null) {
     return <Navigate to="/home/trips" replace={true} />;
@@ -45,10 +40,12 @@ const Login = () => {
 
   return (
     <>
-      <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-        <option value="fr">Fr</option>
-        <option value="en">En</option>
-      </select>
+      <FontAwesomeIcon
+        onClick={() => setShowModal(true)}
+        icon={faGlobe}
+        style={{ position: "absolute", top: 20, left: 5, color: "white" }}
+        size={"2x"}
+      />
       <form
         style={{
           display: "flex",
@@ -56,6 +53,7 @@ const Login = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
+          backgroundColor: "rgba(99, 110, 114,0.7)",
         }}
       >
         <div
@@ -136,7 +134,6 @@ const Login = () => {
             justifyContent: "space-around",
           }}
         >
-
           <p
             onClick={() => navigate("/signup")}
             style={{
@@ -150,6 +147,7 @@ const Login = () => {
           </p>
         </div>
       </form>
+      <LanguageModal showModal={showModal} setShowModal={setShowModal} />
     </>
   );
 
