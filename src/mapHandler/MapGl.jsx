@@ -8,7 +8,7 @@ import { createPoi, createStep, movePoi, moveStep } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
-import { pictures, pois, steps, locations } from "./queries/Fetchs";
+import { pictures, pois, steps, locations, logBookEntries } from "./queries/Fetchs";
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
