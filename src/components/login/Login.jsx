@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import "./connection.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -16,9 +17,8 @@ import { validateEmail } from "../../Functions";
 import imgLoader from "../../resources/images/loader-blue.svg";
 import { useTranslation } from "react-i18next";
 import LanguageModal from "../LanguageModal";
-import Background from "../Background";
 
-const Login = () => {
+const Login = ({ setContentPage }) => {
   const { t } = useTranslation("translation", { keyPrefix: "login" });
   const invalidEmail = () => toast.warning(t("invalid_email"));
   const noPassword = () => toast.warning(t("no_password"));
@@ -26,8 +26,8 @@ const Login = () => {
   const successLog = () => toast.success(t("success_log"));
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const [token, setToken] = useToken();
-  const [user, setUser] = useUser();
+  const [setToken] = useToken();
+  const [user] = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showLockIcon, setShowLockIcon] = useState(true);
@@ -41,31 +41,15 @@ const Login = () => {
 
   return (
     <>
-      <Background />
       <FontAwesomeIcon
         onClick={() => setShowModal(true)}
         icon={faGlobe}
-        style={{ position: "absolute", top: 20, left: 5, color: "white" }}
-        size={"2x"}
+        className="language-icon"
+        size={"3x"}
       />
-      <form
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          backgroundColor: "rgba(99, 110, 114,0.7)",
-        }}
-      >
-        <div
-          style={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <label htmlFor="email" style={{ fontSize: 11 }}>
+      <form className="form-connection">
+        <div className="input-container">
+          <label htmlFor="email" className="input-label">
             E-mail
           </label>
           <FormControl
@@ -76,20 +60,11 @@ const Login = () => {
             type="text"
           />
           {showUserIcon && email === "" && (
-            <FontAwesomeIcon
-              icon={faUser}
-              style={{ position: "absolute", top: 26, left: 5 }}
-            />
+            <FontAwesomeIcon icon={faUser} className="input-icon" />
           )}
         </div>
-        <div
-          style={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <label htmlFor="password" style={{ fontSize: 11 }}>
+        <div className="input-container">
+          <label htmlFor="password" className="input-label">
             {t("mdp")}
           </label>
           <FormControl
@@ -101,53 +76,30 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           {showLockIcon && password === "" && (
-            <FontAwesomeIcon
-              icon={faLock}
-              style={{ position: "absolute", top: 26, left: 5 }}
-            />
+            <FontAwesomeIcon icon={faLock} className="input-icon" />
           )}
         </div>
-        <div style={{ width: "11%", zIndex: 1 }}>
+        <div style={{ width: "100%" }}>
           <Button
             type="button"
             size="sm"
             onClick={checkConnexionInfo}
-            style={{
-              marginTop: 10,
-              width: "100%",
-            }}
+            className="button"
           >
             {t("se_connecter")}
           </Button>
-          {isCheckingCredentials && (
-            <img
-              src={imgLoader}
-              style={{ height: 40, position: "absolute", marginTop: 5 }}
-            />
-          )}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "baseline",
-            marginTop: 5,
-            width: "15%",
-            justifyContent: "space-around",
-            zIndex: 1,
-          }}
-        >
-          <p
-            onClick={() => navigate("/signup")}
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              fontSize: 12,
-              cursor: "pointer",
+          {isCheckingCredentials && <img src={imgLoader} className="loader" />}
+          <Button
+            type="button"
+            size="sm"
+            onClick={() => {
+              navigate("/signup");
             }}
+            variant="secondary"
+            className="button"
           >
             {t("creer_compte")}
-          </p>
+          </Button>
         </div>
       </form>
       <LanguageModal showModal={showModal} setShowModal={setShowModal} />
@@ -163,6 +115,7 @@ const Login = () => {
       try {
         setIsCheckingCredentials(true);
         const tokens = await checkCredentials(email, password);
+        setContentPage("map");
         successLog();
         await updateToken({
           setToken,

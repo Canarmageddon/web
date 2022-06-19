@@ -5,14 +5,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/userContext";
 import Button from "react-bootstrap/Button";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 const SideMenu = ({ setContentPage, showMenu }) => {
-  const { t } = useTranslation('translation', { "keyPrefix": "side_menu" });
+  const { t } = useTranslation("translation", { keyPrefix: "side_menu" });
 
   const [user, setUser] = useUser();
   const navigate = useNavigate();
 
   const logout = () => {
+    setContentPage("login");
     window.localStorage.clear();
     setUser(undefined);
   };

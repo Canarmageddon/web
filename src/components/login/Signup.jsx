@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import "./connection.css";
+
 import { Navigate, useNavigate } from "react-router-dom";
-import { checkCredentials, signup } from "../../apiCaller";
+import { signup } from "../../apiCaller";
 import { useUser } from "../../context/userContext";
 import { toast } from "react-toastify";
 import { validateEmail } from "../../Functions";
@@ -13,7 +15,6 @@ import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import imgLoader from "../../resources/images/loader-blue.svg";
 import { useTranslation } from "react-i18next";
 import LanguageModal from "../LanguageModal";
-import Background from "../Background";
 
 const CreateAccount = () => {
   const { t } = useTranslation("translation", { keyPrefix: "create_account" });
@@ -44,30 +45,15 @@ const CreateAccount = () => {
 
   return (
     <>
-      <Background />
       <FontAwesomeIcon
         onClick={() => setShowModal(true)}
         icon={faGlobe}
-        style={{ position: "absolute", top: 20, left: 5, color: "white" }}
-        size={"2x"}
+        className="language-icon"
+        size={"3x"}
       />
-      <form
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <div
-          style={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <label htmlFor="email" style={{ fontSize: 11 }}>
+      <form className="form-connection">
+        <div className="input-container">
+          <label htmlFor="email" className="input-label">
             E-mail
           </label>
           <FormControl
@@ -79,20 +65,11 @@ const CreateAccount = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           {showUserIcon && email === "" && (
-            <FontAwesomeIcon
-              icon={faUser}
-              style={{ position: "absolute", top: 26, left: 5 }}
-            />
+            <FontAwesomeIcon icon={faUser} className="input-icon" />
           )}
         </div>
-        <div
-          style={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <label htmlFor="firstName" style={{ fontSize: 11 }}>
+        <div className="input-container">
+          <label htmlFor="firstName" className="input-label">
             {t("first_name")}
           </label>
           <FormControl
@@ -102,14 +79,8 @@ const CreateAccount = () => {
             onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
-        <div
-          style={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <label htmlFor="lastName" style={{ fontSize: 11 }}>
+        <div className="input-container">
+          <label htmlFor="lastName" className="input-label">
             {t("last_name")}
           </label>
           <FormControl
@@ -119,14 +90,8 @@ const CreateAccount = () => {
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
-        <div
-          style={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <label htmlFor="password" style={{ fontSize: 11 }}>
+        <div className="input-container">
+          <label htmlFor="password" className="input-label">
             Mot de passe
           </label>
           <FormControl
@@ -138,20 +103,11 @@ const CreateAccount = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           {showLockIcon && password === "" && (
-            <FontAwesomeIcon
-              icon={faLock}
-              style={{ position: "absolute", top: 26, left: 5 }}
-            />
+            <FontAwesomeIcon icon={faLock} className="input-icon" />
           )}
         </div>
-        <div
-          style={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <label htmlFor="confirmPassword" style={{ fontSize: 11 }}>
+        <div className="input-container">
+          <label htmlFor="confirmPassword" className="input-label">
             {t("confirm_password")}
           </label>
           <FormControl
@@ -163,40 +119,28 @@ const CreateAccount = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           {showConfirmLockIcon && confirmPassword === "" && (
-            <FontAwesomeIcon
-              icon={faLock}
-              style={{ position: "absolute", top: 26, left: 5 }}
-            />
+            <FontAwesomeIcon icon={faLock} className="input-icon" />
           )}
         </div>
-        <div style={{ width: "11%", zIndex: 1 }}>
+        <div style={{ width: "100%" }}>
           <Button
             type="button"
+            size="sm"
             onClick={checkInfo}
-            style={{
-              marginTop: 10,
-              width: "100%",
-            }}
+            className="button"
           >
             {t("create_account")}
           </Button>
           <Button
             type="button"
+            size="sm"
             onClick={() => navigate("/")}
             variant="secondary"
-            style={{
-              marginTop: 10,
-              width: "100%",
-            }}
+            className="button"
           >
             Connexion
           </Button>
-          {isCheckingCredentials && (
-            <img
-              src={imgLoader}
-              style={{ height: 40, position: "absolute", bottom: 325 }}
-            />
-          )}
+          {isCheckingCredentials && <img src={imgLoader} className="loader" />}
         </div>
       </form>
       <LanguageModal showModal={showModal} setShowModal={setShowModal} />

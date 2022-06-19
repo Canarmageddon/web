@@ -1,13 +1,16 @@
 import React from "react";
 
-const Background = () => {
+const Background = ({ display }) => {
   return (
     <div
       style={{
         width: "100vw",
         height: "100vh",
         position: "absolute",
+        zIndex: -1,
+        backgroundColor: "#7aceff",
         overflow: "hidden",
+        display: display ? "block" : "none",
       }}
     >
       <svg
@@ -15,7 +18,6 @@ const Background = () => {
           margin: "auto",
           background: "#7aceff",
           display: "block",
-          zIndex: 0,
         }}
         preserveAspectRatio="xMidYMid"
         viewBox="0 0 3000 2000"

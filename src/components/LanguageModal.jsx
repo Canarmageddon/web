@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import franceFlag from "../resources/images/franceFlag.png";
 import ukFlag from "../resources/images/ukFlag.png";
-import { FlagImg } from "./styledComponents/LoginStyle";
+import { FlagImg } from "./styledComponents/LanguageStyle";
 import { useTranslation } from "react-i18next";
 import i18n from "../translation/i18n";
 

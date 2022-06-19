@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, Tab, Button } from "react-bootstrap";
 import {
   fetchTravels,
@@ -13,7 +13,6 @@ import NewTravel from "./NewTravel";
 import TrashAlt from "../icons/TrashAlt";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { faShareAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
@@ -23,7 +22,7 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import LanguageModal from "../LanguageModal";
 
-const TravelsList = () => {
+const TravelsList = ({ setContentPage }) => {
   const { t } = useTranslation("translation", { keyPrefix: "trip_list" });
   const navigate = useNavigate();
   const [timing, setTiming] = useState("planned");
@@ -49,6 +48,10 @@ const TravelsList = () => {
     }
   );
 
+  useEffect(() => {
+    setContentPage("map");
+  }, []);
+
   const handleClick = (t) => {
     navigate(`/home/map/${t.id}`);
   };
@@ -72,6 +75,7 @@ const TravelsList = () => {
     generatedLink("lien de partage copier dans le press-papier");
   };
   const logout = () => {
+    setContentPage("login");
     window.localStorage.clear();
     setUser(undefined);
   };
@@ -148,7 +152,7 @@ const TravelsList = () => {
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                     {t?.steps[0]?.description}
                   </p>
-                  <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3, }}>
+                  <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                     {t?.steps[t?.steps?.length - 1]?.description}
                   </p>
                 </div>
@@ -234,7 +238,7 @@ const TravelsList = () => {
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                     {t.steps[0].description}
                   </p>
-                  <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3, }}>
+                  <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                     {t.steps[t.steps.length - 1].description}
                   </p>
                 </div>
