@@ -1,19 +1,19 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import FormControl from "react-bootstrap/FormControl";
 import { useState } from "react";
 import { createTrip } from "../../apiCaller";
-import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 export default function ({ lstTrips, setLstTrips }) {
-  const { t } = useTranslation('translation', { "keyPrefix": "new_trip" });
+  const { t } = useTranslation("translation", { keyPrefix: "new_trip" });
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const handleClose = () => setShow(false);
-  const queryClient = useQueryClient()
-  const [token] = useToken()
-  const [user] = useUser()
+  const queryClient = useQueryClient();
+  const [token] = useToken();
+  const [user] = useUser();
   const handleShow = () => {
     setName("");
     setShow(true);
@@ -22,41 +22,40 @@ export default function ({ lstTrips, setLstTrips }) {
     onMutate: (data) => {
       setShow(false);
       setName("");
-      const oldData = queryClient.getQueryData("trips")
-      queryClient.setQueryData("trips", old => [...old, { name: data.name }])
-      return { oldData }
-
+      const oldData = queryClient.getQueryData("trips");
+      queryClient.setQueryData("trips", (old) => [...old, { name: data.name }]);
+      return { oldData };
     },
     onSettled: () => {
-      queryClient.invalidateQueries("trips")
+      queryClient.invalidateQueries("trips");
     },
-  })
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    mutationNewTrip.mutate({ token, name, user })
+    mutationNewTrip.mutate({ token, name, user });
   };
   return (
     <>
-      <button className="button-new" onClick={handleShow}>
-        {t("btn_new_trip")}
-      </button>
-
+      <Button onClick={handleShow}>{t("btn_new_trip")}</Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{t("new_trip")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={(e) => handleSubmit(e)}>
-            <label>
+            <label htmlFor="name" style={{ fontSize: 14 }}>
               {t("trip_name")}
-              <input
-                type="text"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
             </label>
-            <input type="submit" value={t("create")} />
+            <FormControl
+              type="text"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && checkConnexionInfo()}
+            />
+            <Button type="submit" style={{ marginTop: 5 }}>
+              {t("btn_new_trip")}
+            </Button>
           </form>
         </Modal.Body>
       </Modal>
