@@ -326,9 +326,9 @@ export default function MapGl({
           </>
         )}
         {!isLoadingPictures && !isErrorPictures && exploring && (
-          <Source id="images" type="geojson" data={imageList}>
+          <></>/*           <Source id="images" type="geojson" data={imageList}>
             <Layer {...imageLayer} />
-          </Source>
+          </Source> */
         )}
       </ReactMapGL>
       <ImageModal id={currentImage} show={show} setShow={setShow} />
