@@ -443,6 +443,15 @@ export const checkLink = async (id, link) =>
     checkStatus(res)
   );
 
+export const cloneTrip = async ({ id, name, creator }) =>
+  await fetch(`${url}trips/${id}/clone`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      name, creator
+    })
+  }).then((res) => checkStatus(res))
+
+
 /* -------------------------------------------*/
 
 /* -------------- ALBUM --------------------------*/
