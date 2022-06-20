@@ -223,10 +223,13 @@ const TravelsList = ({ setContentPage }) => {
         size={"2x"}
       />
       <div className="travellist-container">
-        <h1 className="list-title">{t("trips")}</h1>
+        <h1 className="list-title" style={{ marginRight: 20 }}>
+          {t("trips")}
+        </h1>
         <Button onClick={() => navigate("/home/explore/list")}>
           {t("explore")}
         </Button>
+        <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
         <FontAwesomeIcon
           className="p-2 nav-icon"
           icon={faUser}
@@ -240,7 +243,6 @@ const TravelsList = ({ setContentPage }) => {
           }}
           onClick={() => navigate("/home/profile")}
         />
-        <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
         <hr style={{ marginBottom: 5 + "px" }} />
         <Tabs
           id="tabs-timing"
