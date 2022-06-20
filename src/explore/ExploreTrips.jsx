@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { cloneTrip, fetchAllTrips } from "../apiCaller";
 import "./explore.css";
-import { fetchAllTrips } from "../apiCaller";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,13 +15,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
 import ExploringNavBar from "../components/navBar/ExploringNavBar";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useTranslation } from 'react-i18next';
 import { useUser } from "../context/userContext";
 import { toast } from "react-toastify";
-import { useQuery } from "react-query";
 export default function ExploreTrips({ context }) {
   const { t } = useTranslation("translation", { keyPrefix: "trip_list" });
+  const queryClient = useQueryClient();
   const [currentPage, setCurrentPage] = useOutletContext();
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
@@ -50,6 +49,7 @@ export default function ExploreTrips({ context }) {
   const mutationClone = useMutation(cloneTrip, {
     onSuccess: () => {
       toast.success("Votre voyage a bien été cloné")
+      queryClient.invalidateQueries("trips")
       navigate("/home/trips")
     },
     onError: () => {
