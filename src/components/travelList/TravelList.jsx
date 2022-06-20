@@ -225,10 +225,11 @@ const TravelsList = ({ setContentPage }) => {
         size={"2x"}
       />
       <div className="travellist-container">
-        <h1 className="list-title" style={{ marginRight: 20 }}>
-          {t("trips")}
-        </h1>
-        <Button onClick={() => navigate("/home/explore/list")}>
+        <h1 className="list-title">{t("trips")}</h1>
+        <Button
+          className="explore-btn"
+          onClick={() => navigate("/home/explore/list")}
+        >
           {t("explore")}
         </Button>
         <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />

@@ -24,8 +24,6 @@ const SideMenu = ({ setContentPage, showMenu }) => {
   };
 
   const handleClickDetails = () => {
-    console.log(poiSource);
-    console.log(routeSource);
     if (
       poiSource?.listLocations?.length === 0 &&
       routeSource?.listLocations?.length === 0
