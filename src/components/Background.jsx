@@ -8,7 +8,7 @@ const Background = ({ display }) => {
         height: "100vh",
         position: "absolute",
         zIndex: -1,
-        backgroundColor: "#7aceff",
+        backgroundColor: "var(--primary)",
         overflow: "hidden",
         display: display ? "block" : "none",
       }}
@@ -16,7 +16,7 @@ const Background = ({ display }) => {
       <svg
         style={{
           margin: "auto",
-          background: "#7aceff",
+          background: "var(--primary)",
           display: "block",
         }}
         preserveAspectRatio="xMidYMid"

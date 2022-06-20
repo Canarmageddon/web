@@ -226,7 +226,7 @@ const TravelsList = ({ setContentPage }) => {
           size="2x"
           style={{
             float: "right",
-            background: "#0d6efd",
+            background: "var(--primary)",
             borderRadius: "50%",
             color: "white",
             cursor: "pointer",

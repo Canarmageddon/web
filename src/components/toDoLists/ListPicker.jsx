@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDoubleLeft } from "@fortawesome/free-solid-svg-icons";
 import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const ListPicker = ({
   currentIndex,
@@ -10,7 +10,7 @@ const ListPicker = ({
   listTitle,
   listLength,
 }) => {
-  const { t } = useTranslation('translation', { "keyPrefix": "list_picker" });
+  const { t } = useTranslation("translation", { keyPrefix: "list_picker" });
   return (
     <div
       style={{
@@ -30,7 +30,7 @@ const ListPicker = ({
               currentIndex === 0 ? 0 : oldIndex - 1
             )
           }
-          style={{ color: "rgb(13, 110, 253, 1)" }}
+          style={{ color: "var(--primary)" }}
         />
       )}
       <h4
@@ -40,7 +40,7 @@ const ListPicker = ({
           maxWidth: 350,
           minWidth: 350,
           userSelect: "none",
-          color: "rgb(13, 110, 253, 1)",
+          color: "var(--primary)",
         }}
       >
         {listLength > 0 ? listTitle : t("fist_list")}
@@ -55,7 +55,7 @@ const ListPicker = ({
             )
           }
           disabled={currentIndex === listLength - 1}
-          style={{ color: "rgb(13, 110, 253, 1)" }}
+          style={{ color: "var(--primary)" }}
         />
       )}
     </div>

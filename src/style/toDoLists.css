@@ -1,19 +1,19 @@
-.todo-detail > svg:first-of-type {
+.todo-detail>svg:first-of-type {
     margin-right: 5px;
     color: red;
 }
 
-.todo-detail > svg {
+.todo-detail>svg {
     font-size: 1.3em;
 }
 
 .add-list-icon {
     font-size: 3em;
-    color: rgb(13, 110, 253, 1);
+    color: var(--primary);
 }
 
 .add-list-input {
-    color: rgb(13, 110, 253, 1);
+    color: var(--primary);
     flex: 0.1;
     width: auto;
     height: 60px;
