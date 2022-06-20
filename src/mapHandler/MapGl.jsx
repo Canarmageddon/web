@@ -179,15 +179,20 @@ export default function MapGl({
       });
     }
     const map = _mapRef.current.getMap();
-    map.loadImage("http://vm-26.iutrs.unistra.fr/api/pictures/file/16", (error, image) => {
+    map.loadImage(process.env.PUBLIC_URL + '/red_marker.png', (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("poiImage", image);
     });
-    map.loadImage("http://vm-26.iutrs.unistra.fr/api/pictures/file/15", (error, image) => {
+    map.loadImage(process.env.PUBLIC_URL + '/blue_marker.png', (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("stepImage", image);
+    });
+    map.loadImage(process.env.PUBLIC_URL + '/3926045.png', (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage("locationImage", image);
     });
   }, []);
 
@@ -273,7 +278,7 @@ export default function MapGl({
     id: "places",
     type: "symbol",
     layout: {
-      "icon-image": "", // reference the image
+      "icon-image": "poiImage", // reference the image
       "icon-size": 0.25,
     },
   };
@@ -282,17 +287,8 @@ export default function MapGl({
     id: "locations",
     type: "symbol",
     layout: {
-      "icon-image": "poiImage", // reference the image
+      "icon-image": "locationImage", // reference the image
       "icon-size": 0.5,
-    },
-  };
-
-  const imageLayer = {
-    id: "images",
-    type: "symbol",
-    layout: {
-      "icon-image": "stepImage", // reference the image
-      "icon-size": 0.01,
     },
   };
 
@@ -300,8 +296,10 @@ export default function MapGl({
     id: "route2",
     type: "symbol",
     layout: {
-      "icon-image": "", // reference the image
-      "icon-size": 0.25,
+      "icon-image": "stepImage", // reference the image
+      "icon-size": 0.1,
+      "icon-anchor": "bottom"
+
     },
   };
   const routeLayer = {
@@ -333,11 +331,7 @@ export default function MapGl({
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onClick={(e) => handleClick(e)}
       >
-        {!isLoadingPoi && !isErrorPoi && (
-          <Source id="poi" type="geojson" data={poiSource.templateSource}>
-            <Layer {...poiLayer} />
-          </Source>
-        )}
+
         {!isLoadingLocation && !isErrorLocation && (
           <Source
             id="location"
@@ -361,7 +355,11 @@ export default function MapGl({
             </Source>
           </>
         )}
-
+        {!isLoadingPoi && !isErrorPoi && (
+          <Source id="poi" type="geojson" data={poiSource.templateSource}>
+            <Layer {...poiLayer} />
+          </Source>
+        )}
       </ReactMapGL>
       <ImageModal id={currentImage} show={show} setShow={setShow} />
     </>
