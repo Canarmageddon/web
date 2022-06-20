@@ -130,6 +130,7 @@ export const updatePoi = async ({ token, id, title, description, step }) => {
     },
     body: JSON.stringify({
       title,
+      poi,
       description,
       step,
     }),
@@ -138,6 +139,17 @@ export const updatePoi = async ({ token, id, title, description, step }) => {
 
 export const getDocumentsFromPoi = async (token, id) =>
   await fetch(`${url}point_of_interests/${id}/documents`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
+
+/* -------------------------------------------*/
+
+/* ------------ LOCATION -----------------------*/
+
+export const fetchLocations = async (token, id) =>
+  await fetch(`${url}locations`, {
     headers: { Authorization: `Bearer ${token}` },
   })
     .then((res) => checkStatus(res))
@@ -251,7 +263,7 @@ export const fetchUser = async ({ token, id }) => {
       accept: "application/ld+json",
       "Content-Type": "application/ld+json",
       Authorization: `Bearer ${token}`,
-    }
+    },
   }).then((res) => res.json());
 };
 
@@ -322,7 +334,7 @@ export const createTask = async ({ token, title, id, date, creator }) =>
       creator,
       toDoList: id,
       date: date,
-      creator
+      creator,
     }),
   });
 

@@ -12,6 +12,7 @@ import { UserProvider } from "./context/userContext";
 import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 import MapGl from "./mapHandler/MapGl";
 import PoiInformation from "./mapHandler/PoiInformation";
+import LocationInformation from "./mapHandler/LocationInformation";
 import Login from "./components/login/Login";
 import Signup from "./components/login/Signup";
 import Details from "./components/Details";
@@ -30,6 +31,7 @@ function App() {
   const [contentPage, setContentPage] = useState();
   const [showMenu, setShowMenu] = useState(false);
   const [poiId, setPoiId] = useState(false);
+  const [locationId, setLocationId] = useState(false);
   const [stepId, setStepId] = useState(false);
   const [travelers, setTravelers] = useState([]);
   const [movingStep, setMovingStep] = useState(null);
@@ -92,6 +94,10 @@ function App() {
                           poiId={poiId}
                           setMovingPoi={setMovingPoi}
                         />
+                        <LocationInformation
+                          display={contentPage === "locationInfo"}
+                          locationId={locationId}
+                        />
                         <StepInfo
                           display={contentPage === "stepInfo"}
                           setContentPage={setContentPage}
@@ -121,6 +127,7 @@ function App() {
                             setContentPage={setContentPage}
                             contentPage={contentPage}
                             setPoiId={setPoiId}
+                            setLocationId={setLocationId}
                             setStepId={setStepId}
                             movingPoi={movingPoi}
                             setMovingPoi={setMovingPoi}

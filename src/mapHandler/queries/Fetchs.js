@@ -1,11 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from "react-query";
 import {
   fetchPois,
   fetchSteps,
-  getLogBookEntriesByLocation,
+  fetchLocations,
   getPictures,
-  getPicturesByLocation,
 } from "../../apiCaller";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
 
@@ -42,7 +41,6 @@ export function pois(token, id, setPoiSource) {
   return useQuery(["poi", id], () => fetchPois(token, id), {
     retry: false,
     onSuccess: (data) => {
-      "here";
       let lstPoi = [];
       data.map((item) => {
         lstPoi.push(
@@ -60,7 +58,29 @@ export function pois(token, id, setPoiSource) {
     },
   });
 }
-/* export function pictures(token, id, setImageList, enabled) {
+
+export function locations(token, id, setLocationSource) {
+  return useQuery(["locations", id], () => fetchLocations(token, id), {
+    retry: false,
+    onSuccess: (data) => {
+      let locationsList = [];
+      data["hydra:member"].map((item) => {
+        if (item.albumElements.length > 0)
+          locationsList.push(
+            new Location(
+              item.id,
+              item.longitude,
+              item.latitude,
+              item.albumElements,
+            ),
+          );
+      });
+      setLocationSource(new LayerUtile(locationsList));
+    },
+  });
+}
+
+export function pictures(token, id, setImageList, enabled) {
   return useQuery(["explorePictures", id], () => getPictures(token, id), {
     enabled: enabled,
     onSuccess: (data) => {
@@ -82,8 +102,8 @@ export function pois(token, id, setPoiSource) {
     },
   });
 }
- */
-export function pictures(idLocation, enabled) {
+
+/* export function pictures(idLocation, enabled) {
   return useQuery(
     ["picturesByLocations", idLocation],
     () => getPicturesByLocation(idLocation),
@@ -92,7 +112,7 @@ export function pictures(idLocation, enabled) {
     },
   );
 }
-
+ */
 export function logBookEntries(idLocation, enabled) {
   return useQuery(
     ["LogBookEntriesByLocations", idLocation],
