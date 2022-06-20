@@ -198,10 +198,13 @@ export default function MapGl({
   }, []);
 
   const handleClick = async (e) => {
-    if (exploring) {
-      if (e.features[0].source === "images") {
-        setCurrentImage(e.features[0].id);
-        setShow(true);
+    if (displayAlbum) {
+      if (e.features[0].source === "location") {
+        setContentPage("locationInfo");
+        setLocationId(e.features[0].id);
+      }
+      else {
+        setContentPage("map")
       }
       return;
     }
