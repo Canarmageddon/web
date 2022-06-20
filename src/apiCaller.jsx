@@ -337,8 +337,8 @@ export const deleteTask = async ({ token, id }) =>
 
 /* ------------ TRAVEL -----------------------*/
 
-export const fetchTravels = async ({ token, id }) =>
-  await fetch(`${url}users/${id}/trips`, {
+export const fetchTravels = async ({ token, user }) =>
+  await fetch(`${url}users/${user}/trips`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -430,6 +430,15 @@ export const checkLink = async (id, link) =>
   await fetch(`${url}trips/${id}/checkLink/${link}`).then((res) =>
     checkStatus(res)
   );
+
+/* -------------------------------------------*/
+
+/* -------------- ALBUM --------------------------*/
+
+export const getAlbum = async (id) =>
+  await fetch(`${url}trips/${id}/album`)
+    .then(res => checkStatus(res))
+    .then(res => res.json())
 
 /* -------------------------------------------*/
 

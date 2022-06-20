@@ -166,12 +166,12 @@ export default function MapGl({
       });
     }
     const map = _mapRef.current.getMap();
-    map.loadImage("http://placekitten.com/50/50", (error, image) => {
+    map.loadImage("http://vm-26.iutrs.unistra.fr/api/pictures/file/16", (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("poiImage", image);
     });
-    map.loadImage("http://placekitten.com/50/50", (error, image) => {
+    map.loadImage("http://vm-26.iutrs.unistra.fr/api/pictures/file/15", (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("stepImage", image);
@@ -257,7 +257,7 @@ export default function MapGl({
     type: "symbol",
     layout: {
       "icon-image": "poiImage", // reference the image
-      "icon-size": 0.25,
+      "icon-size": 0.5,
     },
   };
   const imageLayer = {
@@ -265,7 +265,7 @@ export default function MapGl({
     type: "symbol",
     layout: {
       "icon-image": "stepImage", // reference the image
-      "icon-size": 0.25,
+      "icon-size": 0.01,
     },
   };
 
