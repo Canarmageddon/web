@@ -12,7 +12,6 @@ export function steps(token, id, routeSource, setRouteSource, setViewport) {
   return useQuery(["steps", id], () => fetchSteps(token, id), {
     retry: false,
     onSuccess: (data) => {
-      console.log(routeSource);
       let lstStep = [];
       data.map((item) => {
         lstStep.push(
