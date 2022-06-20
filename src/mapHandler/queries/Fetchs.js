@@ -8,10 +8,11 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
 
-export function steps(token, id, setRouteSource, setViewport) {
+export function steps(token, id, routeSource, setRouteSource, setViewport) {
   return useQuery(["steps", id], () => fetchSteps(token, id), {
     retry: false,
     onSuccess: (data) => {
+      console.log(routeSource);
       let lstStep = [];
       data.map((item) => {
         lstStep.push(
@@ -25,14 +26,15 @@ export function steps(token, id, setRouteSource, setViewport) {
           }),
         );
       });
+      if (routeSource.listLocations.length == 0)
+        setViewport({
+          latitude: data[data?.length - 1]?.location?.latitude,
+          longitude: data[data?.length - 1]?.location?.longitude,
+          zoom: 7,
+          bearing: 0,
+          pitch: 0,
+        });
       setRouteSource(new LayerUtile(lstStep));
-      /*       setViewport({
-        latitude: data[data?.length - 1]?.location?.latitude,
-        longitude: data[data?.length - 1]?.location?.longitude,
-        zoom: 7,
-        bearing: 0,
-        pitch: 0,
-      }); */
     },
   });
 }

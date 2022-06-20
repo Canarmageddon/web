@@ -78,6 +78,9 @@ export default class LayerUtile {
   }
 
   updateItem(item) {
+    let index = this.listLocations.findIndex((obj) => obj.id == item.id);
+    this.listLocations[index] = item;
+    return this;
     return new LayerUtile([
       ...this.listLocations.filter((elt) => elt.id != item.id),
       item,

@@ -69,8 +69,7 @@ export default function MapGl({
     isError: isErrorSteps,
     error: errorSteps,
     data: dataSteps,
-  } = steps(token, id, setRouteSource, setViewport);
-
+  } = steps(token, id, routeSource, setRouteSource, setViewport);
   const {
     isLoading: isLoadingPoi,
     isError: isErrorPoi,
@@ -149,6 +148,10 @@ export default function MapGl({
 
   const mutationPoiLocation = useMutation(movePoi, {
     onMutate: () => {
+      let poi = poiSource.getItemById(data.id);
+      poi.longitude = data.longitude;
+      poi.latitude = data.latitude;
+      setPoiSource(poiSource.updateItem(poi));
       setMovingPoi(null);
     },
     onSettled: () => {
@@ -160,6 +163,8 @@ export default function MapGl({
   const mutationStepLocation = useMutation(moveStep, {
     onMutate: (data) => {
       let step = routeSource.getItemById(data.id);
+      step.longitude = data.longitude;
+      step.latitude = data.latitude;
       setRouteSource(routeSource.updateItem(step));
       setMovingStep(null);
     },
@@ -178,7 +183,7 @@ export default function MapGl({
       setViewport({
         latitude: dataSteps[dataSteps?.length - 1]?.location?.latitude,
         longitude: dataSteps[dataSteps?.length - 1]?.location?.longitude,
-        zoom: 7,
+        zoom: 3,
         bearing: 0,
         pitch: 0,
       });
