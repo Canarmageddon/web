@@ -82,8 +82,7 @@ const TravelsList = ({ setContentPage }) => {
         style={{
           display: "flex",
           flexDirection: "column",
-          overflowY: "scroll",
-          maxHeight: 570,
+          fontSize: 18,
         }}
       >
         <div
@@ -91,8 +90,7 @@ const TravelsList = ({ setContentPage }) => {
             display: "flex",
             marginBottom: 1,
             marginTop: 10,
-            alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "start",
           }}
           className="nav-item"
         >
@@ -110,8 +108,9 @@ const TravelsList = ({ setContentPage }) => {
                   style={{
                     display: "flex",
                     flexDirection: "row",
+                    justifyContent: "start",
                     alignItems: "center",
-                    justifyContent: "center",
+                    lineHeight: 3,
                   }}
                 >
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
@@ -123,15 +122,18 @@ const TravelsList = ({ setContentPage }) => {
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                     {t?.steps[t?.steps.length - 1]?.description ?? "-"}
                   </p>
+                  {TrashAlt(handleDelete, t)}
+                  <FontAwesomeIcon
+                    icon={faShareAlt}
+                    size="2x"
+                    style={{
+                      marginLeft: 10,
+                      cursor: "pointer",
+                      color: "var(--primary)",
+                    }}
+                    onClick={(e) => createLink(e, t.id)}
+                  />
                 </div>
-                {TrashAlt(handleDelete, t)}
-                <FontAwesomeIcon
-                  icon={faShareAlt}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={(e) => createLink(e, t.id)}
-                />
               </div>
               <Dropdown.Divider />
             </React.Fragment>
