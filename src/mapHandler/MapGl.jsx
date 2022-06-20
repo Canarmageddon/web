@@ -85,16 +85,16 @@ export default function MapGl({
   } = locations(token, id, setLocationSource);
 
   const [imageList, setImageList] = useState([]);
-  const {
-    isLoading: isLoadingPictures,
-    isError: isErrorPictures,
-    data: dataPictures,
-  } = pictures(token, selectedLocation, setImageList, exploring);
-  const {
-    isLoading: isLoadingLogBook,
-    isError: isErrorLogBook,
-    data: dataLogBook,
-  } = logBookEntries(selectedLocation, exploring);
+  /*   const {
+      isLoading: isLoadingPictures,
+      isError: isErrorPictures,
+      data: dataPictures,
+    } = pictures(token, selectedLocation, setImageList, exploring); */
+  /*   const {
+      isLoading: isLoadingLogBook,
+      isError: isErrorLogBook,
+      data: dataLogBook,
+    } = logBookEntries(selectedLocation, exploring); */
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
@@ -280,6 +280,8 @@ export default function MapGl({
     layout: {
       "icon-image": "poiImage", // reference the image
       "icon-size": 0.25,
+      "icon-anchor": "bottom",
+      "icon-allow-overlap": true
     },
   };
 
@@ -289,6 +291,8 @@ export default function MapGl({
     layout: {
       "icon-image": "locationImage", // reference the image
       "icon-size": 0.5,
+      "icon-anchor": "bottom",
+      "icon-allow-overlap": true
     },
   };
 
@@ -298,8 +302,8 @@ export default function MapGl({
     layout: {
       "icon-image": "stepImage", // reference the image
       "icon-size": 0.1,
-      "icon-anchor": "bottom"
-
+      "icon-anchor": "bottom",
+      "icon-allow-overlap": true
     },
   };
   const routeLayer = {
