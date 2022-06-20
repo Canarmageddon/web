@@ -4,12 +4,16 @@ import { faBackward } from "@fortawesome/free-solid-svg-icons";
 import "../../style/nav.css";
 import { useNavigate } from "react-router-dom";
 
-const UnregisteredNavBar = ({ setContentPage }) => {
+const UnregisteredNavBar = ({ setContentPage, map }) => {
   const navigate = useNavigate();
   return (
     <>
       <FontAwesomeIcon
-        className="back-arrow-unregistered"
+        className={
+          map
+            ? "back-arrow-unregistered map-icon"
+            : "back-arrow-unregistered album-icon"
+        }
         icon={faBackward}
         size="2x"
         onClick={() => {

@@ -183,7 +183,10 @@ function App() {
                       position: "relative",
                     }}
                   >
-                    <UnregisteredNavBar setContentPage={setContentPage} />
+                    <UnregisteredNavBar
+                      map={true}
+                      setContentPage={setContentPage}
+                    />
                     <MapGl
                       exploring={true}
                       setContentPage={setContentPage}
@@ -195,17 +198,13 @@ function App() {
               <Route
                 path="album/:idAlbum"
                 element={
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100vh",
-                      overflow: "hidden",
-                      position: "relative",
-                    }}
-                  >
-                    <UnregisteredNavBar setContentPage={setContentPage} />
+                  <>
+                    <UnregisteredNavBar
+                      map={false}
+                      setContentPage={setContentPage}
+                    />
                     <Album />
-                  </div>
+                  </>
                 }
               />
             </Route>
