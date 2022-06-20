@@ -12,7 +12,9 @@ import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import Task from "../../factory/lists/Task";
 import { useToken } from "../../context/userContext";
+import { useTranslation } from "react-i18next";
 const ToDoLists = ({ display }) => {
+  const { t } = useTranslation("translation");
   const { id } = useParams();
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
@@ -109,7 +111,7 @@ const ToDoLists = ({ display }) => {
         />
         {showForm && (
           <FormControl
-            placeholder="Nom"
+            placeholder={t("create_account.last_name")}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             onKeyPress={(e) => handleKeyPress(e)}

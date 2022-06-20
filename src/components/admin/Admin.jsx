@@ -5,8 +5,10 @@ import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const Admin = ({ display }) => {
+  const { t } = useTranslation("translation");
   const noEmail = () =>
     toast.warning("Veuilez renseigner l'email de la personne à ajouter");
   const queryClient = useQueryClient();
@@ -23,12 +25,12 @@ const Admin = ({ display }) => {
   } = useQuery(["members", intId], () => fetchAllUser({ token, id }));
   const mutationAddUser = useMutation(addUser, {
     onSuccess: () => {
-      toast.success("l'utilisateur a été ajouté")
+      toast.success(t("admin.added_user"))
       setNewEmail("");
     },
     onError: (error) => {
       //TODO Handle member already in trip
-      toast.warning("l'utilisateur n'a pas pu être ajouté")
+      toast.warning(t("admin.not_added_user"))
       console.log(error);
     },
     onSettled: () => queryClient.invalidateQueries(["members", intId])
@@ -49,9 +51,9 @@ const Admin = ({ display }) => {
         flex: 1,
       }}
     >
-      <h2 className="main-title">Membre de voyage</h2>
+      <h2 className="main-title">{t("admin.trips_members")}</h2>
       <form className="admin-form" onSubmit={(e) => handleSubmit(e)}>
-        <span className="invite-title">Inviter membre</span>
+        <span className="invite-title">{t("admin.add_member")}</span>
         <hr />
         <div className="invite-div">
           <input
@@ -66,9 +68,9 @@ const Admin = ({ display }) => {
           </button>
         </div>
       </form>
-      <h3 className="sub-title">Membres</h3>
+      <h3 className="sub-title">{t("admin.members")} </h3>
       <hr className="bar" />
-      <span className="nom">Nom</span>
+      <span className="nom">{t("trip_list.name")}</span>
       <hr className="bar" />
       {!isLoadingMembers && !isErrorMembers && (
         <ul className="list">

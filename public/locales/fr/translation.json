@@ -74,5 +74,26 @@
         "step_updated": "Etape modifiée !",
         "step_details": "Détails de l'étape",
         "move": "Déplacer"
+    },
+    "language_selection": {
+        "choose_language": "Choix de la langue"
+    },
+    "edit_user": {
+        "profil": "Profile",
+        "edit": "Editer",
+        "back": "Retour",
+        "success": "utilisateur modifié"
+    },
+    "error_occured": "Une erreur s'est produite. Veuillez réessayer",
+    "step": "Étape",
+    "poi": "Point d'intérêt",
+    "add": "Ajouter",
+    "admin": {
+        "added_user": "l'utilisateur a été ajouté",
+        "not_added_user": "l'utilisateur n'a pas pu être ajouté",
+        "trips_members": "Membres de voyage",
+        "add_member": "Inviter un membre",
+        "invite": "Inviter",
+        "members": "Membres"
     }
 }

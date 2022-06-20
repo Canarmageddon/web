@@ -7,9 +7,11 @@ import "../../style/profile.css";
 import { fetchUser, updateUser } from "../../apiCaller";
 import { toast } from "react-toastify";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
+    const { t } = useTranslation("translation",);
     const navigate = useNavigate();
     const [token, setToken] = useToken();
     const [user, setUser] = useUser();
@@ -30,17 +32,17 @@ const Profile = () => {
         }
     );
     useEffect(() => {
-        if(dataUser !== undefined){
+        if (dataUser !== undefined) {
             setFName(dataUser.firstName);
             setLName(dataUser.lastName);
         }
     }, []);
     const mutationEditUser = useMutation(updateUser, {
         onSettled: () => {
-          queryClient.invalidateQueries("user");
+            queryClient.invalidateQueries("user");
         },
         onSuccess: () => {
-            toast.success("Utilisateur modifié")
+            toast.success(t(edit_user("success")))
         },
         onError: () => {
             toast.warning("Erreur s'est produit")
@@ -55,47 +57,46 @@ const Profile = () => {
 
     return (
         <form>
-            <h1 className="h1">Profile</h1>
+            <h1 className="h1">{t("edit_user.profil")}</h1>
             <hr style={{ marginBottom: 5 + "px" }} />
-            <h2 className="h2">Nom</h2>
             <div
                 style={{
-                position: "relative",
-                display: "flex",
-                flexDirection: "column",
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
                 }}
             >
-            
-            <label htmlFor="firstName" style={{ fontSize: 15 }}>
-            Prénom
-            </label>
-            <FormControl
-            value={firstName}
-            onChange={(e) => setFName(e.target.value)}
-            type="text"
-            />
+
+                <label htmlFor="firstName" style={{ fontSize: 15 }}>
+                    {t("create_account.first_name")}
+                </label>
+                <FormControl
+                    value={firstName}
+                    onChange={(e) => setFName(e.target.value)}
+                    type="text"
+                />
             </div>
             <div
                 style={{
-                position: "relative",
-                display: "flex",
-                flexDirection: "column",
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
                 }}
             >
-            <label htmlFor="lastName" style={{ fontSize: 15 }}>
-            Nom
-            </label>
-            <FormControl
-            value={lastName}
-            onChange={(e) => setLName(e.target.value)}
-            type="text"
-            />
+                <label htmlFor="lastName" style={{ fontSize: 15 }}>
+                    {t("create_account.last_name")}
+                </label>
+                <FormControl
+                    value={lastName}
+                    onChange={(e) => setLName(e.target.value)}
+                    type="text"
+                />
             </div>
             <hr style={{ marginBottom: 5 + "px" }} />
-            <Button onClick={handleUpdate} style={{backgroundColor: "#c50000"}}>Edit</Button>
-            <Button onClick={() => navigate(-1)} style={{marginLeft: "5px"}}>Revenir</Button>
+            <Button onClick={handleUpdate} style={{ backgroundColor: "#c50000" }}>{t("edit_user.edit")}</Button>
+            <Button onClick={() => navigate(-1)} style={{ marginLeft: "5px" }}>{t("edit_user.back")}</Button>
         </form>
-        
+
     )
 }
 
