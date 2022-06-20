@@ -42,7 +42,7 @@ const TravelsList = ({ setContentPage }) => {
   );
   const { isLoading: isLoadingHistory, data: dataHistory } = useQuery(
     "history",
-    () => fetchTravels({ token, id: user }),
+    () => fetchTravels({ token, user }),
     {
       staleTime: 60 * 1000,
     }
@@ -179,7 +179,7 @@ const TravelsList = ({ setContentPage }) => {
                   style={{
                     cursor: "pointer",
                   }}
-                  onClick={() => navigate(`/home/map/${t.id}/discovery`)}
+                  onClick={() => navigate(`/home/map/${t.id}/history`)}
                 />
                 <FontAwesomeIcon
                   icon={faImage}

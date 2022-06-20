@@ -107,7 +107,7 @@ export default function MapGl({
     onMutate: (data) => {
       setRouteSource(
         routeSource.addItem(
-          new Location(data.id, "", "", data.longitude, data.latitude)
+          new Location({ id: data.id, longitude: data.longitude, latitude: data.latitude })
         )
       );
       const oldData = queryClient.getQueryData(["steps", id]);
@@ -132,7 +132,7 @@ export default function MapGl({
     onMutate: (data) => {
       setPoiSource(
         poiSource.addItem(
-          new Location(data.id, "", "", data.longitude, data.latitude)
+          new Location({ id: data.id, longitude: data.longitude, latitude: data.latitude, step: data.step })
         )
       );
       const oldData = queryClient.getQueryData(["poi", id]);
@@ -210,10 +210,13 @@ export default function MapGl({
   }, []);
 
   const handleClick = async (e) => {
-    if (exploring) {
-      if (e.features[0].source === "images") {
-        setCurrentImage(e.features[0].id);
-        setShow(true);
+    if (displayAlbum) {
+      if (e.features[0].source === "location") {
+        setContentPage("locationInfo");
+        setLocationId(e.features[0].id);
+      }
+      else {
+        setContentPage("map")
       }
       return;
     }
