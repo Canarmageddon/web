@@ -2,6 +2,10 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { getAlbum } from "../apiCaller";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faImages } from "@fortawesome/free-solid-svg-icons";
+import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
+import Button from "react-bootstrap/Button";
 import "./home.css";
 
 export default function () {
@@ -15,16 +19,32 @@ export default function () {
     <>
       {!isError && !isLoading && (
         <div className="home-container">
-          <button onClick={() => navigate(`/unregistered/${id}/${link}/map`)}>
+          <Button
+            className="home-button"
+            style={{ marginRight: 40 }}
+            onClick={() => navigate(`/unregistered/${id}/${link}/map`)}
+          >
             Afficher la carte
-          </button>
-          <button
+            <FontAwesomeIcon
+              className="home-icon"
+              icon={faGlobeAsia}
+              size={"3x"}
+            />
+          </Button>
+          <Button
+            className="home-button"
+            style={{ marginLeft: 40 }}
             onClick={() =>
               navigate(`/unregistered/${id}/${link}/album/${data.id}`)
             }
           >
             Afficher l'album
-          </button>
+            <FontAwesomeIcon
+              className="home-icon"
+              icon={faImages}
+              size={"3x"}
+            />
+          </Button>
         </div>
       )}
     </>
