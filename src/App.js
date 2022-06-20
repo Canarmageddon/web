@@ -62,7 +62,7 @@ function App() {
                       <MapGl
                         exploring={true}
                         setContentPage={setContentPage}
-                        displayAlbum={true}
+                        displayAlbum={false}
                       />
                     </div>
                   }

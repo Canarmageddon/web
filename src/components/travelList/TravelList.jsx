@@ -42,7 +42,7 @@ const TravelsList = ({ setContentPage }) => {
   );
   const { isLoading: isLoadingHistory, data: dataHistory } = useQuery(
     "history",
-    () => fetchTravels({ token, id: user }),
+    () => fetchTrips({ token, user, isEnded: 1 }),
     {
       staleTime: 60 * 1000,
     }
