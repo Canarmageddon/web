@@ -138,13 +138,13 @@ export default function ExploreTrips({ context }) {
             <FontAwesomeIcon
               icon={faAngleDoubleLeft}
               size={"2x"}
-              style={{ color: "rgb(13, 110, 253, 1)" }}
+              style={{ color: "var(--primary)" }}
               onClick={() => handleClick("first")}
             />
             <FontAwesomeIcon
               icon={faAngleLeft}
               size={"2x"}
-              style={{ color: "rgb(13, 110, 253, 1)" }}
+              style={{ color: "var(--primary)" }}
               onClick={() => handleClick("prev")}
             />
             <p>
@@ -153,13 +153,13 @@ export default function ExploreTrips({ context }) {
             <FontAwesomeIcon
               icon={faAngleRight}
               size={"2x"}
-              style={{ color: "rgb(13, 110, 253, 1)" }}
+              style={{ color: "var(--primary)" }}
               onClick={() => handleClick("next")}
             />
             <FontAwesomeIcon
               icon={faAngleDoubleRight}
               size={"2x"}
-              style={{ color: "rgb(13, 110, 253, 1)" }}
+              style={{ color: "var(--primary)" }}
               onClick={() => handleClick("last")}
             />
           </div>

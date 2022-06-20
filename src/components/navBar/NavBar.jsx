@@ -15,12 +15,12 @@ const NavBar = ({ setShowMenu }) => {
       <FontAwesomeIcon
         onClick={() => setShowModal(true)}
         icon={faGlobe}
-        style={{ position: "absolute", top: 8, left: 50, color: "white" }}
+        className="language-icon"
         size={"2x"}
       />
       <div
         className="d-flex justify-content-between bg-primary nav"
-        style={{ height: "fit-content" }}
+        style={{ height: "5vh" }}
       >
         <FontAwesomeIcon
           className="p-2 nav-icon"

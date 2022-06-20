@@ -22,7 +22,10 @@ const SideMenu = ({ setContentPage, showMenu }) => {
     <div className="sidenav" style={{ width: showMenu ? 200 : 0 }}>
       <FontAwesomeIcon
         icon={faArrowLeft}
-        onClick={() => navigate("/trips")}
+        onClick={() => {
+          setContentPage();
+          navigate("/trips");
+        }}
         size="2x"
         style={{
           color: "red",

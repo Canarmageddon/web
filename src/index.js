@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
+import "./style/bootstrapOverride.scss";
 import "./style/index.css";
 import "./style/list.css";
 import "./style/admin.css";
@@ -28,7 +27,7 @@ const AppStart = () => {
     <React.StrictMode>
       <Suspense fallback={<ScreenLogo />}>
         <ToastContainer
-          position='top-right'
+          position="top-right"
           autoClose={3000}
           hideProgressBar={false}
           newestOnTop

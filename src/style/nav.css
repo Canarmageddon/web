@@ -4,7 +4,7 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: rgb(13, 110, 253, 0.7);
+    background-color: var(--primary);
     overflow-x: hidden;
     padding-top: 30px;
     transition: 0.5s;
@@ -21,7 +21,7 @@
 }
 
 .sidenav a:hover {
-    background-color: rgb(13, 110, 253, 1);
+    background-color: var(--primary);
 }
 
 .sidenav .closebtn {
@@ -50,4 +50,37 @@
     color: white;
     padding: 10px;
     border-radius: 18px;
+}
+
+.back-arrow-unregistered {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 2;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all .2s ease-in-out;
+}
+
+.back-arrow-unregistered:hover {
+    transform: scale(1.1);
+}
+
+.map-icon {
+    color: white;
+    background-color: var(--primary);
+}
+
+.album-icon {
+    color: var(--primary);
+    background-color: white;
+}
+
+.language-icon {
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    left: 50px;
+    color: white;
 }

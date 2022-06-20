@@ -5,10 +5,10 @@ export const CardToDoList = styled.div`
   min-height: 120px;
   background-color: #fff;
   background-clip: border-box;
-  border: 3px solid rgb(13, 110, 253, 1);
+  border: 3px solid var(--primary);
   border-radius: 1rem;
   user-select: none;
-  color: rgb(13, 110, 253, 1);
+  color: var(--primary);
   text-align: start;
   padding-left: 10px;
   padding-right: 10px;
@@ -30,9 +30,9 @@ export const CardItem = styled.div`
   max-height: 70px;
   background-color: #fff;
   background-clip: border-box;
-  border: 3px solid rgb(13, 110, 253, 1);
+  border: 3px solid var(--primary);
   border-radius: 1rem;
   user-select: none;
-  color: rgb(13, 110, 253, 1);
+  color: var(--primary);
   font-size: 0.8em;
 `;
