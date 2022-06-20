@@ -62,7 +62,7 @@ function App() {
                       <MapGl
                         exploring={true}
                         setContentPage={setContentPage}
-                        displayAlbum={true}
+                        displayAlbum={false}
                       />
                     </div>
                   }
@@ -139,6 +139,53 @@ function App() {
                             setMovingStep={setMovingStep}
                           />
                         </div>
+                      </div>
+                    </div>
+                    <SideMenu
+                      showMenu={showMenu}
+                      setContentPage={setContentPage}
+                    />
+                  </>
+                }
+              />
+              <Route
+                path='map/:id/history'
+                element={
+                  <>
+                    <div
+                      style={{
+                        marginLeft: showMenu ? 200 : 0,
+                        transition: "0.5s",
+                      }}
+                    >
+                      <UnregisteredNavBar />
+                      <div style={{ display: "flex" }}>
+                        <LocationInformation
+                          display={contentPage === "locationInfo"}
+                          locationId={locationId}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          flex:
+                            contentPage === "map"
+                              ? 1
+                              : contentPage === "details" ||
+                                contentPage === "admin"
+                              ? 0
+                              : 0.7,
+                          width: "100%",
+                          height: "93vh",
+                          overflow: "hidden",
+                          position: "absolute",
+                        }}
+                      >
+                        <MapGl
+                          exploring={true}
+                          setContentPage={setContentPage}
+                          displayAlbum={true}
+                          setLocationId={setLocationId}
+                        />
                       </div>
                     </div>
                     <SideMenu

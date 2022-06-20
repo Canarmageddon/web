@@ -15,7 +15,11 @@ export function mutateCreateStep(
     onMutate: (data) => {
       setRouteSource(
         routeSource.addItem(
-          new Location(data.id, "", "", data.longitude, data.latitude),
+          new Location({
+            id: data.id,
+            longitude: data.longitude,
+            latitude: data.latitude,
+          }),
         ),
       );
       const oldData = queryClient.getQueryData(["steps", id]);

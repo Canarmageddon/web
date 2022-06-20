@@ -17,6 +17,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
   const [description, setDescription] = useState("");
   const [currentRoute, setCurrentRoute] = useState();
   const [file, setFile] = useState([]);
+  const [date, setdate] = useState("")
   const successEdit = () => toast.success(t("step_updated"));
   const mutationUpdateStep = useMutation(updateStep, {
     onMutate: () => {
@@ -35,12 +36,19 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
         ? routeSource.getItemById(stepId).description
         : ""
     );
+    setdate(routeSource.getItemById(stepId)?.date
+      ? routeSource.getItemById(stepId)?.date : ""
+    );
   }, [routeSource, stepId]);
+  console.log(routeSource.getItemById(stepId))
   const handleClick = async () => {
+    let arrayDate = date.split("-")
+    let formatedDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
     mutationUpdateStep.mutate({
       token,
       id: currentRoute.id,
       description: description,
+      date: formatedDate
     });
   };
   const handleDelete = async () => {
@@ -74,6 +82,12 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
           onChange={(e) => setDescription(e.target.value)}
           style={{ width: "70%", marginLeft: 10 }}
         />
+        <Form.Control
+          type="date"
+          placeholder="date"
+          className="mb-3"
+          onChange={(e) => setdate(e.target.value)}
+          style={{ width: "70%", marginLeft: 10 }} />
         <FileUploader
           file={file}
           setFile={setFile}

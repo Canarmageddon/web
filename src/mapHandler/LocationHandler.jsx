@@ -14,8 +14,8 @@ export default class LocationHandler {
         const step = await fetchStep();
         let lstPoi = []
         let lstStep = [];
-        poi.map(item => lstPoi.push(new Location(item.id, item.description, item.location.longitude, item.location.latitude)));
-        step.map((item) => lstStep.push(new Location(item.id, item.description, item.location.longitude, item.location.latitude)));
+        poi.map(item => lstPoi.push(new Location({ id: item.id, description: item.description, longitude: item.location.longitude, latitude: item.location.latitude })));
+        step.map((item) => lstStep.push(new Location({ id: item.id, description: item.description, longitude: item.location.longitude, latitude: item.location.latitude })));
         this.setState({
             poiLayer: this.state.poiLayer.addItems(lstPoi),
             stepLayer: this.state.poiLayer.addItems(lstStep)
@@ -26,7 +26,7 @@ export default class LocationHandler {
     addItem(id, description, long, lat) {
         if (this.props.typeLocation) this.setState({ poiLayer: this.state.poiLayer.addItem(new Location(id, description, long, lat)) })
         else {
-            this.setState({ stepLayer: this.state.stepLayer.addItem(new Location(id, description, long, lat)) })
+            this.setState({ stepLayer: this.state.stepLayer.addItem(new Location({ id: id, description: description, longitude: long, latitude: lat })) })
             generateRoute()
         }
     }

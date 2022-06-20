@@ -15,14 +15,14 @@ export function steps(token, id, setRouteSource, setViewport) {
       let lstStep = [];
       data.map((item) => {
         lstStep.push(
-          new Location(
-            item.id,
-            item.description,
-            item.title,
-            item.location.longitude,
-            item.location.latitude,
-            item?.step?.id,
-          ),
+          new Location({
+            id: item.id,
+            description: item.description,
+            title: item.title,
+            longitude: item.location.longitude,
+            latitude: item.location.latitude,
+            step: item?.step?.id,
+          }),
         );
       });
       setRouteSource(new LayerUtile(lstStep));
@@ -43,15 +43,16 @@ export function pois(token, id, setPoiSource) {
     onSuccess: (data) => {
       let lstPoi = [];
       data.map((item) => {
+        console.log(item.step);
         lstPoi.push(
-          new Location(
-            item.id,
-            item.description,
-            item.title,
-            item.location.longitude,
-            item.location.latitude,
-            item?.step?.id,
-          ),
+          new Location({
+            id: item.id,
+            description: item.description,
+            title: item.title,
+            longitude: item.location.longitude,
+            latitude: item.location.latitude,
+            step: item?.step?.id,
+          }),
         );
       });
       setPoiSource(new LayerUtile(lstPoi));
@@ -68,12 +69,12 @@ export function locations(token, id, setLocationSource, enabled) {
       data["hydra:member"].map((item) => {
         if (item.albumElements.length > 0)
           locationsList.push(
-            new Location(
-              item.id,
-              item.longitude,
-              item.latitude,
-              item.albumElements,
-            ),
+            new Location({
+              id: item.id,
+              longitude: item.longitude,
+              latitude: item.latitude,
+              albumElements: item.albumElements,
+            }),
           );
       });
       setLocationSource(new LayerUtile(locationsList));

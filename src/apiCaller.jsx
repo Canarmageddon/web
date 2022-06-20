@@ -52,7 +52,7 @@ export const getDocumentsFromStep = async (token, id) =>
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
-export const updateStep = async ({ token, id, description }) => {
+export const updateStep = async ({ token, id, description, date }) => {
   return await fetch(`${url}steps/${id}`, {
     method: "PUT",
     headers: {
@@ -61,7 +61,7 @@ export const updateStep = async ({ token, id, description }) => {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      description,
+      description, date
     }),
   }).then((res) => res.json());
 };
@@ -130,9 +130,8 @@ export const updatePoi = async ({ token, id, title, description, step }) => {
     },
     body: JSON.stringify({
       title,
-      poi,
       description,
-      step,
+      step: parseInt(step),
     }),
   }).then((res) => res.json());
 };
