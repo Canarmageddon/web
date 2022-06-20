@@ -1,24 +1,19 @@
 export default class Location {
-  constructor(id, description, title, longitude, latitude, step) {
+  constructor(id, longitude, latitude, albumElements) {
     this.id = id;
-    this.title = title;
-    this.description = description;
     this.longitude = longitude;
     this.latitude = latitude;
-    this.step = step;
+    this.albumElements = albumElements;
   }
   get formated() {
     return {
       type: "Feature",
       id: this.id,
-      properties: {
-        description: this.description,
-      },
 
       geometry: {
         type: "Point",
-        coordinates: [this.longitude, this.latitude],
-      },
+        coordinates: [this.longitude, this.latitude]
+      }
     };
   }
 }
