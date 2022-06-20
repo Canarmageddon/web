@@ -98,6 +98,7 @@ const TravelsList = ({ setContentPage }) => {
         {!isLoadingTravels &&
           dataTravels?.map((t, index) => (
             <React.Fragment key={index}>
+              {console.log(t)}
               <div className="travel-list-item" onClick={(e) => handleClick(t)}>
                 <div
                   style={{
@@ -111,10 +112,10 @@ const TravelsList = ({ setContentPage }) => {
                     {t.name}
                   </p>
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                    {t.steps[0]?.description ?? "-"}
+                    {t?.steps[0]?.description ?? "-"}
                   </p>
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                    {t.steps[t.steps.length - 1]?.description ?? "-"}
+                    {t?.steps[t?.steps.length - 1]?.description ?? "-"}
                   </p>
                 </div>
                 {TrashAlt(handleDelete, t)}

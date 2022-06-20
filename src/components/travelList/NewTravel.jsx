@@ -23,7 +23,7 @@ export default function ({ lstTrips, setLstTrips }) {
       setShow(false);
       setName("");
       const oldData = queryClient.getQueryData("trips");
-      queryClient.setQueryData("trips", (old) => [...old, { name: data.name }]);
+      queryClient.setQueryData("trips", (old) => [...old, { name: data.name, steps: [], pointOfInterests: [], id: null }]);
       return { oldData };
     },
     onSettled: () => {
