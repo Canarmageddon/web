@@ -98,7 +98,6 @@ const TravelsList = ({ setContentPage }) => {
         {!isLoadingTravels &&
           dataTravels?.map((t, index) => (
             <React.Fragment key={index}>
-              {console.log(t)}
               <div className="travel-list-item" onClick={(e) => handleClick(t)}>
                 <div
                   style={{
