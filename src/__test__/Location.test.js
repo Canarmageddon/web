@@ -64,7 +64,7 @@ test("get new id when empty", () => {
 
 test("get new id when empty", () => {
   let layer = new LayerUtile();
-  layer = layer.addItem(new Location(10));
+  layer = layer.addItem(new Location({ id: 10 }));
   let newId = layer.newId;
   expect(newId).toBe(11);
 });
