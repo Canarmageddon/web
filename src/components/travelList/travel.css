@@ -8,6 +8,7 @@
     transform: translate(-50%, -50%);
     width: 85vw;
     height: 80vh;
+    overflow: auto;
 }
 
 h1.list-title {

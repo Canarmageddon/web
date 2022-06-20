@@ -78,14 +78,19 @@ const TravelsList = ({ setContentPage }) => {
   };
   const displayLstTravel = () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          fontSize: 18,
+        }}
+      >
         <div
           style={{
             display: "flex",
             marginBottom: 1,
             marginTop: 10,
-            alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "start",
           }}
           className="nav-item"
         >
@@ -103,8 +108,9 @@ const TravelsList = ({ setContentPage }) => {
                   style={{
                     display: "flex",
                     flexDirection: "row",
+                    justifyContent: "start",
                     alignItems: "center",
-                    justifyContent: "center",
+                    lineHeight: 3,
                   }}
                 >
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
@@ -116,15 +122,18 @@ const TravelsList = ({ setContentPage }) => {
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                     {t?.steps[t?.steps.length - 1]?.description ?? "-"}
                   </p>
+                  {TrashAlt(handleDelete, t)}
+                  <FontAwesomeIcon
+                    icon={faShareAlt}
+                    size="2x"
+                    style={{
+                      marginLeft: 10,
+                      cursor: "pointer",
+                      color: "var(--primary)",
+                    }}
+                    onClick={(e) => createLink(e, t.id)}
+                  />
                 </div>
-                {TrashAlt(handleDelete, t)}
-                <FontAwesomeIcon
-                  icon={faShareAlt}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={(e) => createLink(e, t.id)}
-                />
               </div>
               <Dropdown.Divider />
             </React.Fragment>
@@ -216,10 +225,13 @@ const TravelsList = ({ setContentPage }) => {
         size={"2x"}
       />
       <div className="travellist-container">
-        <h1 className="list-title">{t("trips")}</h1>
+        <h1 className="list-title" style={{ marginRight: 20 }}>
+          {t("trips")}
+        </h1>
         <Button onClick={() => navigate("/home/explore/list")}>
           {t("explore")}
         </Button>
+        <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
         <FontAwesomeIcon
           className="p-2 nav-icon"
           icon={faUser}
@@ -233,7 +245,6 @@ const TravelsList = ({ setContentPage }) => {
           }}
           onClick={() => navigate("/home/profile")}
         />
-        <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
         <hr style={{ marginBottom: 5 + "px" }} />
         <Tabs
           id="tabs-timing"

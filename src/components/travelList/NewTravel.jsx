@@ -39,7 +39,9 @@ export default function ({ lstTrips, setLstTrips }) {
   };
   return (
     <>
-      <Button onClick={handleShow}>{t("btn_new_trip")}</Button>
+      <Button onClick={handleShow} style={{ marginLeft: 20 }}>
+        {t("btn_new_trip")}
+      </Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{t("new_trip")}</Modal.Title>
