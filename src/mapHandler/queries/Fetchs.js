@@ -26,13 +26,13 @@ export function steps(token, id, setRouteSource, setViewport) {
         );
       });
       setRouteSource(new LayerUtile(lstStep));
-      setViewport({
+      /*       setViewport({
         latitude: data[data?.length - 1]?.location?.latitude,
         longitude: data[data?.length - 1]?.location?.longitude,
         zoom: 7,
         bearing: 0,
         pitch: 0,
-      });
+      }); */
     },
   });
 }
