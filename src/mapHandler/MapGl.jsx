@@ -8,7 +8,13 @@ import { createPoi, createStep, movePoi, moveStep } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
-import { pictures, pois, steps, locations, logBookEntries } from "./queries/Fetchs";
+import {
+  pictures,
+  pois,
+  steps,
+  locations,
+  logBookEntries,
+} from "./queries/Fetchs";
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
@@ -28,7 +34,7 @@ export default function MapGl({
   movingStep,
   setMovingStep,
   exploring = false,
-  displayAlbum = false
+  displayAlbum = false,
 }) {
   const { t } = useTranslation("translation", { keyPrefix: "map" });
   const poiSuccess = () => toast.success(t("poi_created"));
@@ -180,17 +186,23 @@ export default function MapGl({
       });
     }
     const map = _mapRef.current.getMap();
-    map.loadImage(process.env.PUBLIC_URL + '/red_marker.png', (error, image) => {
-      if (error) throw error;
-      // Add the loaded image to the style's sprite with the ID 'poiImage'.
-      map.addImage("poiImage", image);
-    });
-    map.loadImage(process.env.PUBLIC_URL + '/blue_marker.png', (error, image) => {
-      if (error) throw error;
-      // Add the loaded image to the style's sprite with the ID 'poiImage'.
-      map.addImage("stepImage", image);
-    });
-    map.loadImage(process.env.PUBLIC_URL + '/3926045.png', (error, image) => {
+    map.loadImage(
+      process.env.PUBLIC_URL + "/red_marker.png",
+      (error, image) => {
+        if (error) throw error;
+        // Add the loaded image to the style's sprite with the ID 'poiImage'.
+        map.addImage("poiImage", image);
+      }
+    );
+    map.loadImage(
+      process.env.PUBLIC_URL + "/blue_marker.png",
+      (error, image) => {
+        if (error) throw error;
+        // Add the loaded image to the style's sprite with the ID 'poiImage'.
+        map.addImage("stepImage", image);
+      }
+    );
+    map.loadImage(process.env.PUBLIC_URL + "/3926045.png", (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("locationImage", image);
@@ -282,7 +294,7 @@ export default function MapGl({
       "icon-image": "poiImage", // reference the image
       "icon-size": 0.25,
       "icon-anchor": "bottom",
-      "icon-allow-overlap": true
+      "icon-allow-overlap": true,
     },
   };
 
@@ -293,7 +305,7 @@ export default function MapGl({
       "icon-image": "locationImage", // reference the image
       "icon-size": 0.5,
       "icon-anchor": "bottom",
-      "icon-allow-overlap": true
+      "icon-allow-overlap": true,
     },
   };
 
@@ -304,7 +316,7 @@ export default function MapGl({
       "icon-image": "stepImage", // reference the image
       "icon-size": 0.1,
       "icon-anchor": "bottom",
-      "icon-allow-overlap": true
+      "icon-allow-overlap": true,
     },
   };
   const routeLayer = {
@@ -336,7 +348,6 @@ export default function MapGl({
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onClick={(e) => handleClick(e)}
       >
-
         {!isLoadingLocation && !isErrorLocation && (
           <Source
             id="location"

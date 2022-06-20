@@ -51,3 +51,15 @@
     padding: 10px;
     border-radius: 18px;
 }
+
+.back-arrow-unregistered {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 2;
+    color: white;
+    background-color: var(--primary);
+    padding: 10px;
+    border-radius: 10px;
+}
