@@ -66,13 +66,13 @@ export default function Album() {
   return (
     <>
       <div className="album-container">
-        {/* renderArrowPrev={true} renderArrowNext={true} */}
         <Carousel
           showStatus={false}
           showIndicators={false}
           renderArrowNext={renderNextArrow}
           renderArrowPrev={renderPrevArrow}
           showThumbs={false}
+          style={{ width: "100%" }}
         >
           {dataPictures.map((image, index) => (
             <div className="carousel-item">
@@ -83,11 +83,6 @@ export default function Album() {
             </div>
           ))}
         </Carousel>
-        {/* <div>
-          {dataLogBook.map((entry) => (
-            <LogBookEntry date={entry.creationDate} text={entry.content} />
-          ))}
-        </div> */}
       </div>
     </>
   );
