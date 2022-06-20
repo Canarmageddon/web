@@ -5,8 +5,10 @@ import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 const Admin = ({ display }) => {
+  const { t } = useTranslation("translation");
   const noEmail = () =>
     toast.warning("Veuilez renseigner l'email de la personne à ajouter");
   const queryClient = useQueryClient();
@@ -23,17 +25,18 @@ const Admin = ({ display }) => {
   } = useQuery(["members", intId], () => fetchAllUser({ token, id }));
   const mutationAddUser = useMutation(addUser, {
     onSuccess: () => {
+      toast.success(t("admin.added_user"))
       setNewEmail("");
-      refetchMembers();
     },
     onError: (error) => {
       //TODO Handle member already in trip
+      toast.warning(t("admin.not_added_user"))
       console.log(error);
     },
+    onSettled: () => queryClient.invalidateQueries(["members", intId])
   });
 
   const [newEmail, setNewEmail] = useState("");
-  const [newRole, setNewRole] = useState("member");
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newEmail) {
@@ -48,9 +51,9 @@ const Admin = ({ display }) => {
         flex: 1,
       }}
     >
-      <h2 className="main-title">Membre de voyage</h2>
+      <h2 className="main-title">{t("admin.trips_members")}</h2>
       <form className="admin-form" onSubmit={(e) => handleSubmit(e)}>
-        <span className="invite-title">Inviter membre</span>
+        <span className="invite-title">{t("admin.add_member")}</span>
         <hr />
         <div className="invite-div">
           <input
@@ -60,23 +63,14 @@ const Admin = ({ display }) => {
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
           />
-          <select
-            value={newRole}
-            onChange={(e) => setNewRole(e.target.value)}
-            className="invite-input"
-          >
-            <option value="editor">Editeur</option>
-            <option value="guest">Invité</option>
-          </select>
           <button type="submit" className="button-new">
             Inviter
           </button>
         </div>
       </form>
-      <h3 className="sub-title">Membres</h3>
+      <h3 className="sub-title">{t("admin.members")} </h3>
       <hr className="bar" />
-      <span className="nom">Nom</span>
-      <span className="role">Role</span>
+      <span className="nom">{t("trip_list.name")}</span>
       <hr className="bar" />
       {!isLoadingMembers && !isErrorMembers && (
         <ul className="list">

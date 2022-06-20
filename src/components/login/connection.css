@@ -1,0 +1,59 @@
+    .form-connection {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 25px 30px;
+        border-radius: 8px;
+        background-color: white;
+        width: fit-content;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .language-icon {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: white;
+        border: solid 2px white;
+        padding: 8px;
+        border-radius: 30px;
+    }
+    
+    .input-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .input-icon {
+        position: absolute;
+        top: 26px;
+        left: 5px;
+    }
+    
+    .input-label {
+        font-size: 11px;
+    }
+    
+    .loader {
+        height: 34px;
+        position: absolute;
+        bottom: 65px;
+        right: -2px;
+    }
+    
+    .signup-text {
+        margin-top: 5px;
+        margin-bottom: 0px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+    
+    .button {
+        margin-top: 10px;
+        width: 100%;
+    }

@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import { useTranslation } from 'react-i18next';
 
 const LocationFinder = ({ typeLocation, setTypeLocation, setEditing }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("translation");
   const [switchChecked, setSwitchChecked] = useState(false);
   useEffect(() => {
     setEditing(switchChecked);
@@ -37,7 +37,7 @@ const LocationFinder = ({ typeLocation, setTypeLocation, setEditing }) => {
                 name="group1"
                 checked={"route" == typeLocation}
                 value="route"
-                label="Étape"
+                label={(t("step"))}
                 onChange={(e) => setTypeLocation(e.target.value)}
               />
               <Form.Check
@@ -45,7 +45,7 @@ const LocationFinder = ({ typeLocation, setTypeLocation, setEditing }) => {
                 name="group1"
                 checked={"poi" == typeLocation}
                 value="poi"
-                label="Point d'intérêt"
+                label={t("poi")}
                 onChange={(e) => setTypeLocation(e.target.value)}
               />
             </div>

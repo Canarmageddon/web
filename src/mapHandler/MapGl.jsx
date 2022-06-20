@@ -1,6 +1,6 @@
 import ReactMapGL, { Layer, Source } from "react-map-gl";
 import { useState, useEffect } from "react";
-import { usePoi, useRoute } from "../context/TravelContext";
+import { useLocation, usePoi, useRoute } from "../context/TravelContext";
 import Location from "../factory/layers/Location";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
@@ -8,27 +8,29 @@ import { createPoi, createStep, movePoi, moveStep } from "../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
-import { pictures, pois, steps } from "./queries/Fetchs";
+import { pictures, pois, steps, locations, logBookEntries } from "./queries/Fetchs";
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
 import { useUser, useToken } from "../context/userContext";
 import { toast } from "react-toastify";
-import { Modal } from "react-bootstrap";
 import ImageModal from "./ImageModal";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+
 export default function MapGl({
   setContentPage,
   contentPage,
   setPoiId,
+  setLocationId,
   setStepId,
   movingPoi,
   setMovingPoi,
   movingStep,
   setMovingStep,
   exploring = false,
+  displayAlbum = false
 }) {
-  const { t } = useTranslation('translation', { "keyPrefix": "map" });
+  const { t } = useTranslation("translation", { keyPrefix: "map" });
   const poiSuccess = () => toast.success(t("poi_created"));
   const stepSuccess = () => toast.success(t("screp_created"));
   const successPoiMoved = () => toast.info(t("poi_moved"));
@@ -37,9 +39,10 @@ export default function MapGl({
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
-
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [user] = useUser();
   const [poiSource, setPoiSource] = usePoi();
+  const [locationSource, setLocationSource] = useLocation();
   const [routeSource, setRouteSource] = useRoute();
   const [editing, setEditing] = useState(true);
   const [typeLocation, setTypeLocation] = useState("route");
@@ -57,6 +60,10 @@ export default function MapGl({
 
   const _mapRef = createRef();
 
+  useEffect(() => {
+    setContentPage("map");
+  }, []);
+
   const {
     isLoading: isLoadingSteps,
     isError: isErrorSteps,
@@ -70,12 +77,25 @@ export default function MapGl({
     error: errorPoi,
     data: dataPoi,
   } = pois(token, id, setPoiSource);
-  const [imageList, setImageList] = useState([]);
+
   const {
-    isLoading: isLoadingPictures,
-    isError: isErrorPictures,
-    data: dataPictures,
-  } = pictures(token, id, setImageList, exploring);
+    isLoading: isLoadingLocation,
+    isError: isErrorLocation,
+    error: errorLocation,
+    data: dataLocation,
+  } = locations(token, id, setLocationSource, displayAlbum);
+
+  const [imageList, setImageList] = useState([]);
+  /*   const {
+      isLoading: isLoadingPictures,
+      isError: isErrorPictures,
+      data: dataPictures,
+    } = pictures(token, selectedLocation, setImageList, exploring); */
+  /*   const {
+      isLoading: isLoadingLogBook,
+      isError: isErrorLogBook,
+      data: dataLogBook,
+    } = logBookEntries(selectedLocation, exploring); */
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
@@ -101,6 +121,7 @@ export default function MapGl({
       setStepId(data.id);
     },
   });
+
   const mutationPoi = useMutation(createPoi, {
     onMutate: (data) => {
       setPoiSource(
@@ -125,6 +146,7 @@ export default function MapGl({
       setPoiId(data.id);
     },
   });
+
   const mutationPoiLocation = useMutation(movePoi, {
     onMutate: () => {
       setMovingPoi(null);
@@ -134,6 +156,7 @@ export default function MapGl({
       successPoiMoved();
     },
   });
+
   const mutationStepLocation = useMutation(moveStep, {
     onMutate: (data) => {
       let step = routeSource.getItemById(data.id);
@@ -149,29 +172,33 @@ export default function MapGl({
   useEffect(async () => {
     if (dataSteps != undefined) {
       setViewport({
-        latitude: dataSteps[dataSteps.length - 1].location.latitude,
-        longitude: dataSteps[dataSteps.length - 1].location.longitude,
+        latitude: dataSteps[dataSteps?.length - 1]?.location?.latitude,
+        longitude: dataSteps[dataSteps?.length - 1]?.location?.longitude,
         zoom: 7,
         bearing: 0,
         pitch: 0,
       });
     }
     const map = _mapRef.current.getMap();
-    map.loadImage("http://placekitten.com/50/50", (error, image) => {
+    map.loadImage(process.env.PUBLIC_URL + '/red_marker.png', (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("poiImage", image);
     });
-    map.loadImage("http://placekitten.com/50/50", (error, image) => {
+    map.loadImage(process.env.PUBLIC_URL + '/blue_marker.png', (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("stepImage", image);
+    });
+    map.loadImage(process.env.PUBLIC_URL + '/3926045.png', (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage("locationImage", image);
     });
   }, []);
 
   const handleClick = async (e) => {
     if (exploring) {
-      console.log(exploring);
       if (e.features[0].source === "images") {
         setCurrentImage(e.features[0].id);
         setShow(true);
@@ -197,7 +224,6 @@ export default function MapGl({
       return;
     }
     if (contentPage == "poiInfo" || contentPage == "stepInfo") {
-      console.log(contentPage);
       if (!displayMapElement(e)) {
         setContentPage("map");
       }
@@ -205,7 +231,6 @@ export default function MapGl({
     }
 
     if (!editing) {
-      console.log("a");
       displayMapElement(e);
       return;
     }
@@ -241,6 +266,10 @@ export default function MapGl({
         setContentPage("stepInfo");
         setStepId(e.features[0].id);
         return true;
+      } else if (e.features[0].source === "location") {
+        setContentPage("locationInfo");
+        setLocationId(e.features[0].id);
+        return true;
       }
       return false;
     }
@@ -252,14 +281,19 @@ export default function MapGl({
     layout: {
       "icon-image": "poiImage", // reference the image
       "icon-size": 0.25,
+      "icon-anchor": "bottom",
+      "icon-allow-overlap": true
     },
   };
-  const imageLayer = {
-    id: "images",
+
+  const locationLayer = {
+    id: "locations",
     type: "symbol",
     layout: {
-      "icon-image": "stepImage", // reference the image
-      "icon-size": 0.25,
+      "icon-image": "locationImage", // reference the image
+      "icon-size": 0.5,
+      "icon-anchor": "bottom",
+      "icon-allow-overlap": true
     },
   };
 
@@ -268,7 +302,9 @@ export default function MapGl({
     type: "symbol",
     layout: {
       "icon-image": "stepImage", // reference the image
-      "icon-size": 0.25,
+      "icon-size": 0.1,
+      "icon-anchor": "bottom",
+      "icon-allow-overlap": true
     },
   };
   const routeLayer = {
@@ -281,7 +317,6 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
-  console.log(!isLoadingPictures, !isErrorPictures, exploring);
   return (
     <>
       {!exploring && (
@@ -301,9 +336,14 @@ export default function MapGl({
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onClick={(e) => handleClick(e)}
       >
-        {!isLoadingPoi && !isErrorPoi && (
-          <Source id="poi" type="geojson" data={poiSource.templateSource}>
-            <Layer {...poiLayer} />
+
+        {!isLoadingLocation && !isErrorLocation && (
+          <Source
+            id="location"
+            type="geojson"
+            data={locationSource.templateSource}
+          >
+            <Layer {...locationLayer} />
           </Source>
         )}
         {/* 
@@ -320,9 +360,9 @@ export default function MapGl({
             </Source>
           </>
         )}
-        {!isLoadingPictures && !isErrorPictures && exploring && (
-          <Source id="images" type="geojson" data={imageList}>
-            <Layer {...imageLayer} />
+        {!isLoadingPoi && !isErrorPoi && (
+          <Source id="poi" type="geojson" data={poiSource.templateSource}>
+            <Layer {...poiLayer} />
           </Source>
         )}
       </ReactMapGL>

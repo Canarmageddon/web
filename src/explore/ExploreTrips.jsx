@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { cloneTrip, fetchAllTrips } from "../apiCaller";
+import "./explore.css";
+import { fetchAllTrips } from "../apiCaller";
 import Dropdown from "react-bootstrap/Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,8 +20,9 @@ import { useMutation, useQuery } from "react-query";
 import { useTranslation } from 'react-i18next';
 import { useUser } from "../context/userContext";
 import { toast } from "react-toastify";
+import { useQuery } from "react-query";
 export default function ExploreTrips({ context }) {
-  const { t } = useTranslation('translation', { "keyPrefix": "trip_list " });
+  const { t } = useTranslation("translation", { keyPrefix: "trip_list" });
   const [currentPage, setCurrentPage] = useOutletContext();
   const navigate = useNavigate();
   const [trips, setTrips] = useState([]);
@@ -117,39 +120,9 @@ export default function ExploreTrips({ context }) {
           }}
           className="nav-item"
         >
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("name")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("start")}
-          </p>
-          <p
-            style={{
-              marginTop: 0,
-              marginBottom: 0,
-              flex: 0.3,
-              color: "#0096ff",
-              fontWeight: 500,
-            }}
-          >
-            {t("end")}
-          </p>
+          <p className="travel-text">{t("name")}</p>
+          <p className="travel-text">{t("start")}</p>
+          <p className="travel-text">{t("end")}</p>
         </div>
 
         <Dropdown.Divider style={{ backgroundColor: "#0096ff", height: 4 }} />
@@ -221,10 +194,9 @@ export default function ExploreTrips({ context }) {
           </form>
         </Modal.Body>
       </Modal>
+
       <ExploringNavBar />
-      <h1 className="list-title">
-        {t("others_trips")}
-      </h1>
+      <h1 className="list-title">{t("others_trips")}</h1>
       <hr style={{ marginBottom: 5 + "px" }} />
       {displayLstTravel()}
     </div>
