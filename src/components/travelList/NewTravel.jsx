@@ -23,7 +23,10 @@ export default function ({ lstTrips, setLstTrips }) {
       setShow(false);
       setName("");
       const oldData = queryClient.getQueryData("trips");
-      queryClient.setQueryData("trips", (old) => [...old, { name: data.name }]);
+      queryClient.setQueryData("trips", (old) => [
+        ...old,
+        { name: data.name, steps: [], pointOfInterests: [], id: null },
+      ]);
       return { oldData };
     },
     onSettled: () => {
@@ -51,7 +54,6 @@ export default function ({ lstTrips, setLstTrips }) {
               name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && checkConnexionInfo()}
             />
             <Button type="submit" style={{ marginTop: 5 }}>
               {t("btn_new_trip")}

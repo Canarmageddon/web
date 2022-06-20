@@ -174,6 +174,10 @@ export default function MapGl({
       successStepMoved();
     },
   });
+  useEffect(() => {
+    //Sinon la carte risque de rester plus petite lorsqu'on ouvre d'autres fenêtres
+    setViewport({ ...viewport, width: "100%", height: "100%" })
+  }, [contentPage])
 
   useEffect(async () => {
     if (dataSteps != undefined) {

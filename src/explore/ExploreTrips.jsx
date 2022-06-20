@@ -19,6 +19,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useTranslation } from 'react-i18next';
 import { useUser } from "../context/userContext";
 import { toast } from "react-toastify";
+import ImportModal from "./ImportModal";
 export default function ExploreTrips({ context }) {
   const { t } = useTranslation("translation", { keyPrefix: "trip_list" });
   const queryClient = useQueryClient();
@@ -175,25 +176,7 @@ export default function ExploreTrips({ context }) {
         flex: 0.4,
       }}
     >
-      <Modal show={show} >
-        <Modal.Header closeButton>
-          <Modal.Title>{t("new_trip")}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <label>
-              {t("trip_name")}
-              <input
-                type="text"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </label>
-            <input type="submit" value={t("create")} />
-          </form>
-        </Modal.Body>
-      </Modal>
+      <ImportModal show={show} setShow={setShow} handleSubmit={handleSubmit} handleClose={handleClose} name={name} setName={setName} />
 
       <ExploringNavBar />
       <h1 className="list-title">{t("others_trips")}</h1>

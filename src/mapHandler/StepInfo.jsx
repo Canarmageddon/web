@@ -8,16 +8,16 @@ import { useToken } from "../context/userContext";
 import FileUploader from "./FileUploader";
 import TrashAlt from "../components/icons/TrashAlt";
 import { toast } from "react-toastify";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 export default function ({ display, stepId, setContentPage, setMovingStep }) {
-  const { t } = useTranslation('translation', { "keyPrefix": "step_info" });
+  const { t } = useTranslation("translation", { keyPrefix: "step_info" });
   const [routeSource, setRouteSource] = useRoute();
   const [token] = useToken();
   const [description, setDescription] = useState("");
   const [currentRoute, setCurrentRoute] = useState();
   const [file, setFile] = useState([]);
-  const [date, setdate] = useState("")
+  const [date, setdate] = useState("");
   const successEdit = () => toast.success(t("step_updated"));
   const mutationUpdateStep = useMutation(updateStep, {
     onMutate: () => {
@@ -36,19 +36,20 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
         ? routeSource.getItemById(stepId).description
         : ""
     );
-    setdate(routeSource.getItemById(stepId)?.date
-      ? routeSource.getItemById(stepId)?.date : ""
+    setdate(
+      routeSource.getItemById(stepId)?.date
+        ? routeSource.getItemById(stepId)?.date
+        : ""
     );
   }, [routeSource, stepId]);
-  console.log(routeSource.getItemById(stepId))
   const handleClick = async () => {
-    let arrayDate = date.split("-")
-    let formatedDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`
+    let arrayDate = date.split("-");
+    let formatedDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`;
     mutationUpdateStep.mutate({
       token,
       id: currentRoute.id,
       description: description,
-      date: formatedDate
+      date: formatedDate,
     });
   };
   const handleDelete = async () => {
@@ -87,7 +88,8 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
           placeholder="date"
           className="mb-3"
           onChange={(e) => setdate(e.target.value)}
-          style={{ width: "70%", marginLeft: 10 }} />
+          style={{ width: "70%", marginLeft: 10 }}
+        />
         <FileUploader
           file={file}
           setFile={setFile}
