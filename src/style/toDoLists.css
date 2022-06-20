@@ -5,11 +5,13 @@
 
 .todo-detail>svg {
     font-size: 1.3em;
+    cursor: pointer;
 }
 
 .add-list-icon {
     font-size: 3em;
     color: var(--primary);
+    cursor: pointer;
 }
 
 .add-list-input {

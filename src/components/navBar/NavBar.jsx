@@ -15,7 +15,7 @@ const NavBar = ({ setShowMenu }) => {
       <FontAwesomeIcon
         onClick={() => setShowModal(true)}
         icon={faGlobe}
-        style={{ position: "absolute", top: 8, left: 50, color: "white" }}
+        className="language-icon"
         size={"2x"}
       />
       <div

@@ -15,4 +15,5 @@ code {
 
 button {
     color: white !important;
+    cursor: pointer;
 }

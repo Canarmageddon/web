@@ -63,3 +63,11 @@
     padding: 10px;
     border-radius: 10px;
 }
+
+.language-icon {
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    left: 50px;
+    color: white;
+}
