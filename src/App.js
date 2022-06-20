@@ -59,7 +59,7 @@ function App() {
                       }}
                     >
                       <ExploringMapNavBar />
-                      <MapGl exploring={true} />
+                      <MapGl exploring={true} setContentPage={setContentPage} />
                     </div>
                   }
                 />
@@ -156,7 +156,7 @@ function App() {
                     }}
                   >
                     <ExploringMapNavBar />
-                    <MapGl exploring={true} />
+                    <MapGl exploring={true} setContentPage={setContentPage} />
                   </div>
                 }
               />
