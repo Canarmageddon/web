@@ -21,6 +21,7 @@
         border: solid 2px white;
         padding: 8px;
         border-radius: 30px;
+        cursor: pointer;
     }
     
     .input-container {
