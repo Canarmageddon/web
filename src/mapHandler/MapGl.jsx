@@ -28,6 +28,7 @@ export default function MapGl({
   movingStep,
   setMovingStep,
   exploring = false,
+  displayAlbum = false
 }) {
   const { t } = useTranslation("translation", { keyPrefix: "map" });
   const poiSuccess = () => toast.success(t("poi_created"));
@@ -82,7 +83,7 @@ export default function MapGl({
     isError: isErrorLocation,
     error: errorLocation,
     data: dataLocation,
-  } = locations(token, id, setLocationSource);
+  } = locations(token, id, setLocationSource, displayAlbum);
 
   const [imageList, setImageList] = useState([]);
   /*   const {

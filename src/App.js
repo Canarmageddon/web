@@ -59,7 +59,11 @@ function App() {
                       }}
                     >
                       <ExploringMapNavBar />
-                      <MapGl exploring={true} setContentPage={setContentPage} />
+                      <MapGl
+                        exploring={true}
+                        setContentPage={setContentPage}
+                        displayAlbum={true}
+                      />
                     </div>
                   }
                 />
@@ -180,7 +184,11 @@ function App() {
                     }}
                   >
                     <UnregisteredNavBar />
-                    <MapGl exploring={true} setContentPage={setContentPage} />
+                    <MapGl
+                      exploring={true}
+                      setContentPage={setContentPage}
+                      displayAlbum={true}
+                    />
                   </div>
                 }
               />

@@ -59,8 +59,9 @@ export function pois(token, id, setPoiSource) {
   });
 }
 
-export function locations(token, id, setLocationSource) {
+export function locations(token, id, setLocationSource, enabled) {
   return useQuery(["locations", id], () => fetchLocations(token, id), {
+    enabled: enabled,
     retry: false,
     onSuccess: (data) => {
       let locationsList = [];
