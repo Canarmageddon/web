@@ -67,9 +67,9 @@ const TravelsList = ({ setContentPage }) => {
     const res = await generateTripLink(token, id);
 
     navigator.clipboard.writeText(
-      `${window.location.hostname}:${location.port}/unregistered/${id}/${res.message}/map`
+      `${window.location.hostname}:${location.port}/unregistered/${id}/${res.message}/home`
     ); //TODO
-    generatedLink("lien de partage copier dans le press-papier");
+    generatedLink("lien de pd: artage copier dans le press-papier");
   };
   const logout = () => {
     setContentPage();

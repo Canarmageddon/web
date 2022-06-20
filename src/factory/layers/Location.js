@@ -1,9 +1,11 @@
 export default class Location {
-  constructor(id, longitude, latitude, albumElements) {
+  constructor(id, description, title, longitude, latitude, albumElements) {
     this.id = id;
     this.longitude = longitude;
     this.latitude = latitude;
     this.albumElements = albumElements;
+    this.description = description;
+    this.title = title;
   }
   get formated() {
     return {
@@ -12,8 +14,8 @@ export default class Location {
 
       geometry: {
         type: "Point",
-        coordinates: [this.longitude, this.latitude]
-      }
+        coordinates: [this.longitude, this.latitude],
+      },
     };
   }
 }

@@ -45,7 +45,7 @@ const LocationInformation = ({ display, locationId }) => {
           marginTop: 10,
         }}
       >
-        {location.getItemById(12)?.albumElements.map((element) => {
+        {currentLocation?.albumElements.map((element) => {
           if (element.type2 == "picture")
             return <Picture key={element.id} id={element.id} />
           else if (element.type2 == "log_book_entry")

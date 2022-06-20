@@ -28,6 +28,7 @@ export default function MapGl({
   movingStep,
   setMovingStep,
   exploring = false,
+  displayAlbum = false
 }) {
   const { t } = useTranslation("translation", { keyPrefix: "map" });
   const poiSuccess = () => toast.success(t("poi_created"));
@@ -82,19 +83,19 @@ export default function MapGl({
     isError: isErrorLocation,
     error: errorLocation,
     data: dataLocation,
-  } = locations(token, id, setLocationSource);
+  } = locations(token, id, setLocationSource, displayAlbum);
 
   const [imageList, setImageList] = useState([]);
-  const {
-    isLoading: isLoadingPictures,
-    isError: isErrorPictures,
-    data: dataPictures,
-  } = pictures(token, selectedLocation, setImageList, exploring);
-  const {
-    isLoading: isLoadingLogBook,
-    isError: isErrorLogBook,
-    data: dataLogBook,
-  } = logBookEntries(selectedLocation, exploring);
+  /*   const {
+      isLoading: isLoadingPictures,
+      isError: isErrorPictures,
+      data: dataPictures,
+    } = pictures(token, selectedLocation, setImageList, exploring); */
+  /*   const {
+      isLoading: isLoadingLogBook,
+      isError: isErrorLogBook,
+      data: dataLogBook,
+    } = logBookEntries(selectedLocation, exploring); */
 
   const mutationStep = useMutation(createStep, {
     onMutate: (data) => {
@@ -179,15 +180,20 @@ export default function MapGl({
       });
     }
     const map = _mapRef.current.getMap();
-    map.loadImage("http://placekitten.com/50/50", (error, image) => {
+    map.loadImage(process.env.PUBLIC_URL + '/red_marker.png', (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("poiImage", image);
     });
-    map.loadImage("http://placekitten.com/50/50", (error, image) => {
+    map.loadImage(process.env.PUBLIC_URL + '/blue_marker.png', (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("stepImage", image);
+    });
+    map.loadImage(process.env.PUBLIC_URL + '/3926045.png', (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage("locationImage", image);
     });
   }, []);
 
@@ -273,8 +279,10 @@ export default function MapGl({
     id: "places",
     type: "symbol",
     layout: {
-      "icon-image": "", // reference the image
+      "icon-image": "poiImage", // reference the image
       "icon-size": 0.25,
+      "icon-anchor": "bottom",
+      "icon-allow-overlap": true
     },
   };
 
@@ -282,17 +290,10 @@ export default function MapGl({
     id: "locations",
     type: "symbol",
     layout: {
-      "icon-image": "poiImage", // reference the image
-      "icon-size": 0.25,
-    },
-  };
-
-  const imageLayer = {
-    id: "images",
-    type: "symbol",
-    layout: {
-      "icon-image": "", // reference the image
-      "icon-size": 0.25,
+      "icon-image": "locationImage", // reference the image
+      "icon-size": 0.5,
+      "icon-anchor": "bottom",
+      "icon-allow-overlap": true
     },
   };
 
@@ -300,8 +301,10 @@ export default function MapGl({
     id: "route2",
     type: "symbol",
     layout: {
-      "icon-image": "", // reference the image
-      "icon-size": 0.25,
+      "icon-image": "stepImage", // reference the image
+      "icon-size": 0.1,
+      "icon-anchor": "bottom",
+      "icon-allow-overlap": true
     },
   };
   const routeLayer = {
@@ -333,11 +336,7 @@ export default function MapGl({
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onClick={(e) => handleClick(e)}
       >
-        {!isLoadingPoi && !isErrorPoi && (
-          <Source id="poi" type="geojson" data={poiSource.templateSource}>
-            <Layer {...poiLayer} />
-          </Source>
-        )}
+
         {!isLoadingLocation && !isErrorLocation && (
           <Source
             id="location"
@@ -361,7 +360,11 @@ export default function MapGl({
             </Source>
           </>
         )}
-
+        {!isLoadingPoi && !isErrorPoi && (
+          <Source id="poi" type="geojson" data={poiSource.templateSource}>
+            <Layer {...poiLayer} />
+          </Source>
+        )}
       </ReactMapGL>
       <ImageModal id={currentImage} show={show} setShow={setShow} />
     </>

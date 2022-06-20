@@ -7,19 +7,19 @@ import { useToken } from "../context/userContext"
 import LogBookEntry from "./LogBookEntry"
 import Picture from "./Picture"
 export default function Album() {
-    const { id, link } = useParams()
+    const { id, link, idAlbum } = useParams()
     const [token] = useToken()
     const { data: dataLogBook, error: errorLogBook,
         hasNextPage: hasNextPageLogBook, isFetching: isFetchingLogBook,
         isFetchingNextPage: isFetchingNextPageLogBook, status: statusLogBook }
-        = useQuery(['album', id], () => getLogBookEntries(token, id), {
+        = useQuery(['album', idAlbum], () => getLogBookEntries(token, idAlbum), {
             getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
         })
 
     const { data: dataPictures, error: errorPictures,
         hasNextPage: hasNextPagePictures, isFetching: isFetchingPictures,
         isFetchingNextPage: isFetchingNextPagePictures, status: statusPictures }
-        = useQuery(['pictures', id], () => getPictures(token, id), {
+        = useQuery(['pictures', idAlbum], () => getPictures(token, idAlbum), {
             // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
         })
     if (statusLogBook === "loading" || statusPictures === "loading") {
