@@ -78,7 +78,14 @@ const TravelsList = ({ setContentPage }) => {
   };
   const displayLstTravel = () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          overflowY: "scroll",
+          maxHeight: 570,
+        }}
+      >
         <div
           style={{
             display: "flex",
