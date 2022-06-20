@@ -1,0 +1,31 @@
+.home-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+}
+
+.home-button {
+    background-color: #5352ed;
+    border-color: white !important;
+    padding: 100px 50px;
+    color: white;
+    font-weight: 500;
+    font-size: 30px;
+    border: 8px solid;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    transition: all .2s ease-in-out;
+}
+
+.home-button:hover {
+    background-color: #5352ed;
+    transform: scale(1.1);
+}
+
+.home-icon {
+    margin-left: 10px;
+}

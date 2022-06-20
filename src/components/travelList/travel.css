@@ -11,14 +11,14 @@
 }
 
 h1.list-title {
-    color: rgb(13, 110, 253, 1);
+    color: var(--primary);
     display: inline;
 }
 
 button.button-new {
     background: none;
     color: white;
-    background-color: rgb(13, 110, 253, 1);
+    background-color: var(--primary);
     border: 0ch;
     border-radius: 5px;
     float: right;
@@ -27,8 +27,8 @@ button.button-new {
 }
 
 .nav-tabs .nav-link.active {
-    color: #0096ff;
-    border-color: #ffffff #ffffff #0096ff;
+    color: var(--primary);
+    border-color: #ffffff #ffffff var(--primary);
 }
 
 .nav-link {

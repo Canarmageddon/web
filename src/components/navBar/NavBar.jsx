@@ -12,15 +12,9 @@ const NavBar = ({ setShowMenu }) => {
   const navigate = useNavigate();
   return (
     <>
-      <FontAwesomeIcon
-        onClick={() => setShowModal(true)}
-        icon={faGlobe}
-        style={{ position: "absolute", top: 8, left: 50, color: "white" }}
-        size={"2x"}
-      />
       <div
         className="d-flex justify-content-between bg-primary nav"
-        style={{ height: "fit-content" }}
+        style={{ height: "5vh" }}
       >
         <FontAwesomeIcon
           className="p-2 nav-icon"
@@ -29,6 +23,12 @@ const NavBar = ({ setShowMenu }) => {
           onClick={() => {
             setShowMenu((oldValue) => !oldValue);
           }}
+        />
+        <FontAwesomeIcon
+          className="p-2"
+          onClick={() => setShowModal(true)}
+          icon={faGlobe}
+          size={"2x"}
         />
         <FontAwesomeIcon
           className="p-2 nav-icon"
