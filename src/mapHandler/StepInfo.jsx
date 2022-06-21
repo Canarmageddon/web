@@ -52,21 +52,21 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
     );
     let date = routeSource.getItemById(stepId)?.date
     if (date != "" && date != null) {
-      date = new Date(routeSource.getItemById(stepId)?.date).toLocaleDateString()
+      date = new Date(
+        routeSource.getItemById(stepId)?.date
+      ).toLocaleDateString();
       date = date.split("/");
-      setdate(`${date[2]}-${date[1]}-${date[0]}`)
-    }
-    else {
-      setdate("")
+      setdate(`${date[2]}-${date[1]}-${date[0]}`);
+    } else {
+      setdate("");
     }
   }, [routeSource, stepId]);
   const handleClick = async () => {
-    let formatedDate
+    let formatedDate;
     if (date != "") {
       let arrayDate = date.split("-");
       formatedDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`;
-    }
-    else {
+    } else {
       formatedDate = "";
     }
     mutationUpdateStep.mutate({

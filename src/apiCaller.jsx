@@ -3,8 +3,7 @@ const url = process.env.REACT_APP_DATABASE_URL;
 /* ------------ STEP -----------------------*/
 
 export const fetchSteps = async (token, id) =>
-  await fetch(`${url}trips/${id}/steps`, {
-  })
+  await fetch(`${url}trips/${id}/steps`, {})
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
@@ -61,7 +60,8 @@ export const updateStep = async ({ token, id, description, date }) => {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      description, date
+      description,
+      date,
     }),
   }).then((res) => res.json());
 };
@@ -71,8 +71,7 @@ export const updateStep = async ({ token, id, description, date }) => {
 /* ------------ POI -----------------------*/
 
 export const fetchPois = async (token, id) =>
-  await fetch(`${url}trips/${id}/poi`, {
-  })
+  await fetch(`${url}trips/${id}/poi`, {})
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
@@ -277,7 +276,7 @@ export const updateUser = async ({ token, id, firstName, lastName }) => {
     },
     body: JSON.stringify({
       firstName,
-      lastName
+      lastName,
     }),
   }).then((res) => res.json());
 };
@@ -380,10 +379,10 @@ export const fetchTrips = async ({ token, user, isEnded }) =>
   await fetch(`${url}users/${user}/trips/${isEnded}/ended`, {
     headers: {
       Authorization: `Bearer ${token}`,
-    }
+    },
   })
-    .then(res => checkStatus(res))
-    .then(res => res.json())
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 export const createTrip = async ({ token, name, user }) => {
   return await fetch(`${url}trips`, {
@@ -445,12 +444,12 @@ export const checkLink = async (id, link) =>
 
 export const cloneTrip = async ({ id, name, creator }) =>
   await fetch(`${url}trips/${id}/clone`, {
-    method: 'PUT',
+    method: "PUT",
     body: JSON.stringify({
-      name, creator
-    })
-  }).then((res) => checkStatus(res))
-
+      name,
+      creator,
+    }),
+  }).then((res) => checkStatus(res));
 
 /* -------------------------------------------*/
 
@@ -458,38 +457,36 @@ export const cloneTrip = async ({ id, name, creator }) =>
 
 export const getAlbum = async (id) =>
   await fetch(`${url}trips/${id}/album`)
-    .then(res => checkStatus(res))
-    .then(res => res.json())
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
 /* -------------- LOGBOOK --------------------------*/
 
 export const getLogBookEntries = async (token, id) =>
-  await fetch(`${url}albums/${id}/logBookEntries`, {
-  })
+  await fetch(`${url}albums/${id}/logBookEntries`, {})
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
 export const getLogBookEntriesByLocation = async (id) =>
   await fetch(`${url}locations/${id}/logBookEntries`)
-    .then(res => checkStatus(res))
-    .then(res => res.json())
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
 /* -------------- PICTURES --------------------------*/
 
 export const getPictures = async (token, id) =>
-  await fetch(`${url}albums/${id}/pictures`, {
-  })
+  await fetch(`${url}albums/${id}/pictures`, {})
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
 export const getPicturesByLocation = async (id) =>
   await fetch(`${url}locations/${id}/pictures`)
-    .then(res => checkStatus(res))
-    .then(res => res.json())
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
