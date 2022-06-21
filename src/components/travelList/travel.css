@@ -79,7 +79,7 @@ ul {
 .travel-item {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     line-height: 3;
     cursor: pointer;
