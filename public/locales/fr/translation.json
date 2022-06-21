@@ -1,114 +1,114 @@
 {
-    "login": {
-        "se_connecter": "Se connecter",
-        "creer_compte": "Créer un compte",
-        "mdp": "Mot de passe",
-        "invalid_email": "Cette adresse e-mail n'est pas valide",
-        "no_password": "Veuilez renseigner un mot de passe",
-        "credentials_error": "E-mail / mot de passe incorrect, veuillez réessayer",
-        "success_log": "Connection réussie"
-    },
-    "create_account": {
-        "invalid_email": "Cette adresse e-mail n'est pas valide",
-        "used_email": "Cette adresse e-mail est déjà utilisée",
-        "no_password": "Veuilez renseigner un mot de passe",
-        "confirm_password": "Veuilez confirmer le mot de passe",
-        "divergent_passwords": "Les mots de passe ne correspondent pas",
-        "success": "Compte créé !",
-        "first_name": "Prénom",
-        "last_name": "Nom",
-        "create_account": "Créer mon compte"
-    },
-    "side_menu": {
-        "map": "Carte",
-        "todo_list": "Listes de tâches",
-        "admin": "Administration",
-        "details": "Details",
-        "disconnect": "Déconnexion"
-    },
-    "list_picker": {
-        "fist_list": "Créez votre première liste !"
-    },
-    "new_trip": {
-        "btn_new_trip": "Nouveau voyage",
-        "new_trip": "Créez un nouveau voyage",
-        "trip_name": "Nom du voyage",
-        "create": "Créer"
-    },
-    "trip_list": {
-        "name": "Nom",
-        "start": "Départ",
-        "end": "Arrivée",
-        "trips": "Voyages",
-        "explore": "Explorer",
-        "planned_trip": "Voyages plannifiés",
-        "history": "Historique",
-        "disconnect": "Déconnexion",
-        "others_trips": "Découvrez les voyages des autres utilisateurs",
-        "empty_album": "Ajoutez des éléments à votre album pour les voir ici",
-        "new_trip": "New trip",
-        "trip_name": "Trip name",
-        "create": "Create",
-        "trip_link": "Un nouveau lien de partage a été généré et copié dans votre press-papier"
-    },
-    "file_uploader": {
-        "added_document": "le document a été ajouté",
-        "not_added_document": "le document n'a pas pu être ajouté",
-        "deleted_document": "document supprimé",
-        "not_deleted_document": "le document n'a pas pu être supprimé",
-        "add_file": "Ajoutez un fichier",
-        "validate_file": "Valider ce fichier"
-    },
-    "editing": "Edition",
-    "reading": "Lecture",
-    "map": {
-        "poi_created": "Point d'intérêt créé !",
-        "step_created": "Etape créée !",
-        "poi_moved": "Point d'intérêt déplacé",
-        "step_moved": "Etape déplacée",
-        "step_not_deleted": "L'étape n'a pas pu être supprimée"
-    },
-    "poi_info": {
-        "poi_deleted": "Point d'intérêt supprimé !",
-        "poi_updated": "Point d'intérêt modifié !",
-        "poi_details": "Détails du point d'intérêt",
-        "associate_step": "Associer à une étape",
-        "move": "Déplacer"
-    },
-    "step_info": {
-        "step_deleted": "Etape supprimée !",
-        "step_updated": "Etape modifiée !",
-        "step_details": "Détails de l'étape",
-        "move": "Déplacer"
-    },
-    "language_selection": {
-        "choose_language": "Choix de la langue"
-    },
-    "edit_user": {
-        "profil": "Profile",
-        "edit": "Editer",
-        "back": "Retour",
-        "success": "utilisateur modifié"
-    },
-    "error_occured": "Une erreur s'est produite. Veuillez réessayer",
-    "step": "Étape",
-    "poi": "Point d'intérêt",
-    "add": "Ajouter",
-    "admin": {
-        "added_user": "l'utilisateur a été ajouté",
-        "not_added_user": "l'utilisateur n'a pas pu être ajouté",
-        "trips_members": "Membres de voyage",
-        "add_member": "Inviter un membre",
-        "add_no_account": "Ajouter un membre qui n'a pas de compte",
-        "invite": "Inviter",
-        "members": "Membres"
-    },
-    "unregistered_home": {
-        "empty_album": "L'album est vide pour l'instant mais vous pouvez toujours regarde leur voyage sur la carte",
-        "map": "Afficher la carte",
-        "album": "Afficher l'album"
-    },
-    "location_info": {
-        "location_details": "Informations de la position"
-    }
+  "login": {
+    "se_connecter": "Se connecter",
+    "creer_compte": "Créer un compte",
+    "mdp": "Mot de passe",
+    "invalid_email": "Cette adresse e-mail n'est pas valide",
+    "no_password": "Veuilez renseigner un mot de passe",
+    "credentials_error": "E-mail / mot de passe incorrect, veuillez réessayer",
+    "success_log": "Connection réussie"
+  },
+  "create_account": {
+    "invalid_email": "Cette adresse e-mail n'est pas valide",
+    "used_email": "Cette adresse e-mail est déjà utilisée",
+    "no_password": "Veuilez renseigner un mot de passe",
+    "confirm_password": "Veuilez confirmer le mot de passe",
+    "divergent_passwords": "Les mots de passe ne correspondent pas",
+    "success": "Compte créé !",
+    "first_name": "Prénom",
+    "last_name": "Nom",
+    "create_account": "Créer mon compte"
+  },
+  "side_menu": {
+    "map": "Carte",
+    "todo_list": "Listes de tâches",
+    "admin": "Administration",
+    "details": "Details",
+    "disconnect": "Déconnexion"
+  },
+  "list_picker": {
+    "fist_list": "Créez votre première liste !"
+  },
+  "new_trip": {
+    "btn_new_trip": "Nouveau voyage",
+    "new_trip": "Créez un nouveau voyage",
+    "trip_name": "Nom du voyage",
+    "create": "Créer"
+  },
+  "trip_list": {
+    "name": "Nom",
+    "start": "Départ",
+    "end": "Arrivée",
+    "trips": "Voyages",
+    "explore": "Explorer",
+    "planned_trip": "Voyages plannifiés",
+    "history": "Historique",
+    "disconnect": "Déconnexion",
+    "others_trips": "Découvrez les voyages des autres utilisateurs",
+    "empty_album": "Ajoutez des éléments à votre album pour les voir ici",
+    "new_trip": "New trip",
+    "trip_name": "Trip name",
+    "create": "Create",
+    "trip_link": "Un nouveau lien de partage a été généré et copié dans votre presse-papier"
+  },
+  "file_uploader": {
+    "added_document": "le document a été ajouté",
+    "not_added_document": "le document n'a pas pu être ajouté",
+    "deleted_document": "document supprimé",
+    "not_deleted_document": "le document n'a pas pu être supprimé",
+    "add_file": "Ajoutez un fichier",
+    "validate_file": "Valider ce fichier"
+  },
+  "editing": "Edition",
+  "reading": "Lecture",
+  "map": {
+    "poi_created": "Point d'intérêt créé !",
+    "step_created": "Etape créée !",
+    "poi_moved": "Point d'intérêt déplacé",
+    "step_moved": "Etape déplacée",
+    "step_not_deleted": "L'étape n'a pas pu être supprimée"
+  },
+  "poi_info": {
+    "poi_deleted": "Point d'intérêt supprimé !",
+    "poi_updated": "Point d'intérêt modifié !",
+    "poi_details": "Détails du point d'intérêt",
+    "associate_step": "Associer à une étape",
+    "move": "Déplacer"
+  },
+  "step_info": {
+    "step_deleted": "Etape supprimée !",
+    "step_updated": "Etape modifiée !",
+    "step_details": "Détails de l'étape",
+    "move": "Déplacer"
+  },
+  "language_selection": {
+    "choose_language": "Choix de la langue"
+  },
+  "edit_user": {
+    "profil": "Profile",
+    "edit": "Editer",
+    "back": "Retour",
+    "success": "utilisateur modifié"
+  },
+  "error_occured": "Une erreur s'est produite. Veuillez réessayer",
+  "step": "Étape",
+  "poi": "Point d'intérêt",
+  "add": "Ajouter",
+  "admin": {
+    "added_user": "l'utilisateur a été ajouté",
+    "not_added_user": "l'utilisateur n'a pas pu être ajouté",
+    "trips_members": "Membres de voyage",
+    "add_member": "Inviter un membre",
+    "add_no_account": "Ajouter un membre qui n'a pas de compte",
+    "invite": "Inviter",
+    "members": "Membres"
+  },
+  "unregistered_home": {
+    "empty_album": "L'album est vide pour l'instant mais vous pouvez toujours regarde leur voyage sur la carte",
+    "map": "Afficher la carte",
+    "album": "Afficher l'album"
+  },
+  "location_info": {
+    "location_details": "Informations de la position"
+  }
 }

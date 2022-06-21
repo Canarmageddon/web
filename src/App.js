@@ -52,11 +52,9 @@ function App() {
                   element={
                     <div
                       style={{
-                        width: "100%",
                         height: "100vh",
-                        overflow: "hidden",
-                        position: "relative",
                       }}
+                      className="map-container"
                     >
                       <ExploringMapNavBar setContentPage={setContentPage} />
                       <MapGl
@@ -129,11 +127,9 @@ function App() {
                                   contentPage === "admin"
                                 ? 0
                                 : 0.7,
-                            width: "100%",
                             height: "95vh",
-                            overflow: "hidden",
-                            position: "relative",
                           }}
+                          className="map-container"
                         >
                           <MapGl
                             setContentPage={setContentPage}
@@ -182,11 +178,9 @@ function App() {
                                 contentPage === "admin"
                               ? 0
                               : 0.7,
-                          width: "100%",
                           height: "93vh",
-                          overflow: "hidden",
-                          position: "absolute",
                         }}
+                        className="map-container"
                       >
                         <MapGl
                           exploring={true}
@@ -206,17 +200,17 @@ function App() {
               <Route
                 path="map/:id/discovery"
                 element={
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100vh",
-                      overflow: "hidden",
-                      position: "relative",
-                    }}
-                  >
+                  <>
                     <ExploringMapNavBar setContentPage={setContentPage} />
-                    <MapGl exploring={true} setContentPage={setContentPage} />
-                  </div>
+                    <div
+                      style={{
+                        height: "100vh",
+                      }}
+                      className="map-container"
+                    >
+                      <MapGl exploring={true} setContentPage={setContentPage} />
+                    </div>
+                  </>
                 }
               />
               <Route
@@ -230,25 +224,32 @@ function App() {
               <Route
                 path="map/"
                 element={
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100vh",
-                      overflow: "hidden",
-                      position: "relative",
-                    }}
-                  >
+                  <>
                     <UnregisteredNavBar
                       map={true}
                       setContentPage={setContentPage}
                     />
-                    <MapGl
-                      exploring={true}
-                      setContentPage={setContentPage}
-                      displayAlbum={true}
-                      setLocationId={setLocationId}
-                    />
-                  </div>
+                    <div style={{ display: "flex" }}>
+                      <LocationInformation
+                        display={contentPage === "locationInfo"}
+                        locationId={locationId}
+                      />
+                      <div
+                        style={{
+                          height: "100vh",
+                          flex: contentPage === "map" ? 1 : 0.7,
+                        }}
+                        className="map-container"
+                      >
+                        <MapGl
+                          exploring={true}
+                          setContentPage={setContentPage}
+                          displayAlbum={true}
+                          setLocationId={setLocationId}
+                        />
+                      </div>
+                    </div>
+                  </>
                 }
               />
               <Route

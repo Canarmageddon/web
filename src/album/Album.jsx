@@ -2,13 +2,11 @@ import React from "react";
 import { useInfiniteQuery, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getLogBookEntries, getPictures } from "../apiCaller";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import ScreenLogo from "../components/loadingScreen/ScreenLogo";
 import { useToken } from "../context/userContext";
 import LogBookEntry from "./LogBookEntry";
 import Picture from "./Picture";
+import { renderNextArrow, renderPrevArrow } from "../Functions";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./album.css";
@@ -41,28 +39,6 @@ export default function Album() {
     return <ScreenLogo />;
   }
 
-  const renderPrevArrow = (prevClickhandler) => {
-    return (
-      <FontAwesomeIcon
-        icon={faChevronLeft}
-        onClick={prevClickhandler}
-        size={"4x"}
-        className="arrow prev-carousel-arrow"
-      />
-    );
-  };
-
-  const renderNextArrow = (nextClickhandler) => {
-    return (
-      <FontAwesomeIcon
-        icon={faChevronRight}
-        onClick={nextClickhandler}
-        size={"4x"}
-        className="arrow next-carousel-arrow"
-      />
-    );
-  };
-
   return (
     <>
       <div className="album-container">
@@ -77,7 +53,7 @@ export default function Album() {
           >
             {dataPictures.map((image, index) => (
               <div className="carousel-item">
-                <Picture id={image.id} key={index} />
+                <Picture id={image.id} key={index} width={"25vw"} />
                 {dataLogBook[index] && (
                   <p className="pic-legend">{dataLogBook[index]?.content}</p>
                 )}
