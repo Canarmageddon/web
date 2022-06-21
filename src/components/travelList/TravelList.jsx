@@ -133,7 +133,6 @@ const TravelsList = ({ setContentPage }) => {
         {!isLoadingHistory &&
           dataHistory?.map((t, index) => (
             <React.Fragment key={index}>
-              {console.log(t.albumElements)}
               <div>
                 <div className="travel-item">
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
