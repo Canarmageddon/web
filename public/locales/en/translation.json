@@ -48,7 +48,8 @@
         "empty_album": "Add elements to your album to see them here",
         "new_trip": "Nouveau voyage",
         "trip_name": "Nom du voyage",
-        "create": "Créer"
+        "create": "Créer",
+        "trip_link": "New link was generated in your clipboard"
     },
     "file_uploader": {
         "added_document": "The document was added",

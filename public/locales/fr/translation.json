@@ -48,7 +48,8 @@
         "empty_album": "Ajoutez des éléments à votre album pour les voir ici",
         "new_trip": "New trip",
         "trip_name": "Trip name",
-        "create": "Create"
+        "create": "Create",
+        "trip_link": "Un nouveau lien de partage a été généré et copié dans votre press-papier"
     },
     "file_uploader": {
         "added_document": "le document a été ajouté",
