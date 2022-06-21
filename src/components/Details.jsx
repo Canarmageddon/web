@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { useToken } from "../context/userContext";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import "./details.css";
 
 export default function ({ display, setContentPage }) {
   const { t } = useTranslation("translation", { keyPrefix: "map" });
@@ -25,15 +26,16 @@ export default function ({ display, setContentPage }) {
       setRoute(route.removeItem(data.id));
     },
     onError: (data) => {
-      toast.warning(t("step_not_deleted"))
+      toast.warning(t("step_not_deleted"));
     },
     onSuccess: (data) => {
-      toast.warning(t("step_deleted"))
+      toast.warning(t("step_deleted"));
     },
     onSettled: (data) => {
       queryClient.invalidateQueries(["steps", id]);
     },
   });
+
   const mutationDeletePoi = useMutation(deletePoi, {
     onMutate: (data) => {
       setRoute(poi.removeItem(data.id));
@@ -42,6 +44,7 @@ export default function ({ display, setContentPage }) {
       queryClient.invalidateQueries(["poi", id]);
     },
   });
+
   const handleClick = (id) => {
     if (currentRoute == id) {
       setCurrentRoute(null);
@@ -60,28 +63,23 @@ export default function ({ display, setContentPage }) {
   return (
     <div
       style={{
-        display: display ? "block" : "none",
-        flex: 1,
+        display: display ? "flex" : "none",
       }}
+      className="locations-container"
     >
       {route.listLocations.map((step) => {
         return (
           <div
             key={step.id}
             onClick={() => handleClick(step.id)}
-            style={{ cursor: "pointer" }}
+            className="location-item"
           >
-            {" "}
-            {step.description}
+            <p style={{ minWidth: 200 }}>{step.description ?? "-"}</p>
             <FontAwesomeIcon
               icon={faPen}
               onClick={() => setContentPage("stepInfo")}
-              style={{
-                backgroundColor: "white",
-                color: "#000000",
-                marginLeft: 30,
-                marginTop: 10,
-              }}
+              size="2x"
+              className="edit-icon"
             />
             {TrashAlt(handleDeleteStep, step.id)}
             {currentRoute == step.id && (
@@ -91,25 +89,18 @@ export default function ({ display, setContentPage }) {
                     style={{ display: "flex", flexDirection: "row" }}
                     key={e.id}
                   >
-                    <p>{e.title}</p>
+                    <p>{e.title ?? "-"}</p>
                     <FontAwesomeIcon
                       icon={faPen}
+                      size="2x"
                       onClick={() => setContentPage("poiInfo")}
-                      style={{
-                        backgroundColor: "white",
-                        color: "#000000",
-                        marginLeft: 30,
-                        marginTop: 10,
-                      }}
+                      className="edit-icon"
                     />
                     {TrashAlt(handleDeletePoi, e.id)}
                   </div>
                 ))}
               </div>
             )}
-            <Dropdown.Divider
-              style={{ backgroundColor: "#0096ff", height: 4 }}
-            />
           </div>
         );
       })}

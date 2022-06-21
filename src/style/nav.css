@@ -30,7 +30,7 @@
 }
 
 .sidenav a:hover {
-    background-color: var(--primary);
+    background-color: rgba(189, 195, 199, 0.3);
 }
 
 .sidenav .closebtn {
