@@ -246,6 +246,7 @@ function App() {
                       exploring={true}
                       setContentPage={setContentPage}
                       displayAlbum={true}
+                      setLocationId={setLocationId}
                     />
                   </div>
                 }

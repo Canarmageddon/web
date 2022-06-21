@@ -360,7 +360,6 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
-
   return (
     <>
       {!exploring && (
