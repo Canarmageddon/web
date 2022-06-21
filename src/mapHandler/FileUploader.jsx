@@ -1,69 +1,76 @@
+import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap/";
 import { addDocument, deleteDocument, getDocument } from "../apiCaller";
 import { useToken, useUser } from "../context/userContext";
 import Button from "react-bootstrap/Button";
-import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import TrashAlt from "../components/icons/TrashAlt";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 export default function FileUploader({
   file,
   setFile,
   mapElement,
   getDocumentFromElement,
 }) {
-  const { t } = useTranslation('translation', { "keyPrefix": "file_uploader" });
+  const { t } = useTranslation("translation", { keyPrefix: "file_uploader" });
   const [token] = useToken();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const [user] = useUser();
   const handleUpload = (file) => {
     setFile(file);
   };
-  const { isLoading, isError, error, data: dataDocuments } = useQuery(["document", mapElement?.id], () =>
-    getDocumentFromElement(token, mapElement.id),
+  const {
+    isLoading,
+    isError,
+    error,
+    data: dataDocuments,
+  } = useQuery(
+    ["document", mapElement?.id],
+    () => getDocumentFromElement(token, mapElement.id),
     {
       enabled: mapElement != undefined,
     }
-  )
+  );
   const mutationAddDocument = useMutation(addDocument, {
-    onMutate: (data) => {
-    },
+    onMutate: (data) => {},
     onSuccess: () => {
       toast.success(t("added_document"));
     },
     onError: () => {
-      toast.error(t("not_added_document"))
+      toast.error(t("not_added_document"));
     },
     onSettled: (data) => {
-      setFile([])
-      queryClient.invalidateQueries(["document", mapElement.id])
-    }
+      setFile([]);
+      queryClient.invalidateQueries(["document", mapElement.id]);
+    },
   });
   const mutationDeleteDocument = useMutation(deleteDocument, {
     onMutate: (data) => {
-      const oldData = queryClient.getQueryData(["document", mapElement.id])
-      queryClient.setQueryData(["document", mapElement.id], () => oldData.filter(element => element.id != mapElement.id))
-      return { oldData }
+      const oldData = queryClient.getQueryData(["document", mapElement.id]);
+      queryClient.setQueryData(["document", mapElement.id], () =>
+        oldData.filter((element) => element.id != mapElement.id)
+      );
+      return { oldData };
     },
     onSuccess: () => {
-      toast.success(t("deleted_document"))
+      toast.success(t("deleted_document"));
     },
     onError: () => {
-      toast.error()
+      toast.error();
     },
     onSettled: (data) => {
-      queryClient.invalidateQueries(["document", mapElement.id])
-    }
+      queryClient.invalidateQueries(["document", mapElement.id]);
+    },
   });
 
   const handleDelete = (e, id) => {
-    mutationDeleteDocument.mutate({ token, id })
-  }
+    mutationDeleteDocument.mutate({ token, id });
+  };
 
-  if (isLoading || isError || dataDocuments == undefined) return <></>
+  if (isLoading || isError || dataDocuments == undefined) return <></>;
   return (
     <>
       {dataDocuments.map((document) => (
@@ -73,6 +80,7 @@ export default function FileUploader({
             icon={faDownload}
             size="2x"
             style={{
+              cursor: "pointer",
               backgroundColor: "white",
               color: "#dc3545",
               marginLeft: 30,
@@ -92,11 +100,17 @@ export default function FileUploader({
         <Button
           type="button"
           onClick={() =>
-            mutationAddDocument.mutate({ token, file, creator: parseInt(user), mapElement: mapElement.id, name: file.name })
+            mutationAddDocument.mutate({
+              token,
+              file,
+              creator: parseInt(user),
+              mapElement: mapElement.id,
+              name: file.name,
+            })
           }
           style={{ marginTop: 10 }}
         >
-          {t('validate_file')}
+          {t("validate_file")}
         </Button>
       </Form.Group>
     </>

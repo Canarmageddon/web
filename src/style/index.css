@@ -13,7 +13,7 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-button {
+button:not(.nav-link) {
     color: white !important;
     cursor: pointer;
 }

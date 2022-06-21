@@ -49,3 +49,10 @@
     padding: 8px 15px;
     font-size: 20px;
 }
+
+.warning-missing {
+    background-color: rgb(241, 196, 15);
+    border-radius: 6px;
+    padding: 15px 20px;
+    font-size: 20px;
+}
