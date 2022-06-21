@@ -9,8 +9,9 @@ import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
 import { useToken, useUser } from "../../context/userContext";
 import { useMutation, useQueryClient } from "react-query";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
-  const { t } = useTranslation("translation");
+  const { t } = useTranslation("translation", { keyPrefix: "task" });
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState("");
@@ -23,6 +24,12 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
             queryClient.setQueryData(["toDoLists", idTrip], old => old.filter(item => item.id != data))
             return oldData */
     },
+    onSuccess: () => {
+      toast.success(t("deleted_list"))
+    },
+    onError: () => {
+      toast.warning(t("not_deleted_list"))
+    },
     onSettled: () => {
       setCurrentIndex((old) => old - 1);
       queryClient.invalidateQueries(["toDoLists", idTrip]);
@@ -34,6 +41,12 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
             queryClient.setQueryData(["toDoLists", idTrip], [...old, { title: data.title, data: data.date }])
             return oldData */
     },
+    onSuccess: () => {
+      toast.success(t("created"))
+    },
+    onError: () => {
+      toast.warning(t("not_created"))
+    },
     onSettled: () => {
       queryClient.invalidateQueries(["toDoLists", idTrip]);
     },
@@ -43,6 +56,12 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
       const oldData = queryClient.getQueryData(["toDoLists", idTrip]);
       // queryClient.setQueryData(["toDoLists", idTrip], [...old, { title: data.title, data: data.date }])
       return oldData;
+    },
+    onSuccess: () => {
+      toast.success(t("deleted"))
+    },
+    onError: () => {
+      toast.warning(t("not_deleted"))
     },
     onSettled: () => {
       queryClient.invalidateQueries(["toDoLists", idTrip]);
