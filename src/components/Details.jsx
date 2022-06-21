@@ -8,8 +8,11 @@ import TrashAlt from "./icons/TrashAlt";
 import { useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 import { useToken } from "../context/userContext";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export default function ({ display, setContentPage }) {
+  const { t } = useTranslation("translation", { keyPrefix: "map" });
   const [token] = useToken();
   const { id } = useParams();
   const [poi, setPoi] = usePoi();
@@ -20,6 +23,12 @@ export default function ({ display, setContentPage }) {
   const mutationDeleteStep = useMutation(deleteStep, {
     onMutate: (data) => {
       setRoute(route.removeItem(data.id));
+    },
+    onError: (data) => {
+      toast.warning(t("step_not_deleted"))
+    },
+    onSuccess: (data) => {
+      toast.warning(t("step_deleted"))
     },
     onSettled: (data) => {
       queryClient.invalidateQueries(["steps", id]);
@@ -82,8 +91,7 @@ export default function ({ display, setContentPage }) {
                     style={{ display: "flex", flexDirection: "row" }}
                     key={e.id}
                   >
-                    {" "}
-                    <p>{e.description}</p>
+                    <p>{e.title}</p>
                     <FontAwesomeIcon
                       icon={faPen}
                       onClick={() => setContentPage("poiInfo")}

@@ -42,13 +42,13 @@ function App() {
       <UserProvider>
         <TravelProvider>
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/home/" element={<RequireAuth />}>
-              <Route path="explore/" element={<ExploreRoute />}>
-                <Route path="list" element={<ExploreTrips />} />
+            <Route path='/' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/home/' element={<RequireAuth />}>
+              <Route path='explore/' element={<ExploreRoute />}>
+                <Route path='list' element={<ExploreTrips />} />
                 <Route
-                  path="map/:id"
+                  path='map/:id'
                   element={
                     <div
                       style={{
@@ -69,13 +69,13 @@ function App() {
                 />
               </Route>
               <Route
-                path="trips"
+                path='trips'
                 element={<TravelsList setContentPage={setContentPage} />}
               />
-              <Route path="profile" element={<Profile />} />
-              <Route path="album/:idAlbum" element={<Album />} />
+              <Route path='profile' element={<Profile />} />
+              <Route path='album/:idAlbum' element={<Album />} />
               <Route
-                path="map/:id"
+                path='map/:id'
                 element={
                   <>
                     <div
@@ -149,8 +149,7 @@ function App() {
                 }
               />
               <Route
-                path="map/:id/discovery"
-                path="map/:id/history"
+                path='map/:id/history'
                 element={
                   <>
                     <div
@@ -197,7 +196,7 @@ function App() {
                 }
               />
               <Route
-                path="map/:id/discovery"
+                path='map/:id/discovery'
                 element={
                   <div
                     style={{
@@ -213,15 +212,15 @@ function App() {
                 }
               />
               <Route
-                path="/home/*"
-                element={<te to="trips" />}
+                path='/home/*'
+                element={<te to='trips' />}
                 replace={true}
               />
             </Route>
-            <Route path="/unregistered/:id/:link/" element={<CheckLink />}>
-              <Route path="home/" element={<Home />} />
+            <Route path='/unregistered/:id/:link/' element={<CheckLink />}>
+              <Route path='home/' element={<Home />} />
               <Route
-                path="map/"
+                path='map/'
                 element={
                   <div
                     style={{
@@ -244,7 +243,7 @@ function App() {
                 }
               />
               <Route
-                path="album/:idAlbum"
+                path='album/:idAlbum'
                 element={
                   <>
                     <UnregisteredNavBar
@@ -256,7 +255,7 @@ function App() {
                 }
               />
             </Route>
-            <Route path="*" element={<Navigate to="/" />} replace={true} />
+            <Route path='*' element={<Navigate to='/' />} replace={true} />
           </Routes>
           <Background display={!contentPage} />
         </TravelProvider>

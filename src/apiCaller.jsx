@@ -416,7 +416,7 @@ export const deleteTrip = async ({ token, id }) =>
       Authorization: `Bearer ${token}`,
     },
     method: "DELETE",
-  }).then((res) => res.json());
+  }).then((res) => checkStatus(res));
 
 export const fetchAllTrips = async (page) =>
   await fetch(`${url}trips?page=${page}`, {

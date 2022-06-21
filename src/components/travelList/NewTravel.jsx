@@ -6,6 +6,7 @@ import { createTrip } from "../../apiCaller";
 import { useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 export default function ({ lstTrips, setLstTrips }) {
   const { t } = useTranslation("translation", { keyPrefix: "new_trip" });
   const [show, setShow] = useState(false);
@@ -35,7 +36,9 @@ export default function ({ lstTrips, setLstTrips }) {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    mutationNewTrip.mutate({ token, name, user });
+    if (name.length > 0)
+      mutationNewTrip.mutate({ token, name, user });
+    else toast.warning(t("name_empty"))
   };
   return (
     <>
