@@ -20,10 +20,8 @@ const ExploringMapNavBar = () => {
   const handleClose = () => setShow(false);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name.length > 0)
-      mutationClone.mutate({ id, name, creator: user });
-    else toast.warning(t("name_empty"))
-
+    if (name.length > 0) mutationClone.mutate({ id, name, creator: user });
+    else toast.warning(t("name_empty"));
   };
   const mutationClone = useMutation(cloneTrip, {
     onSuccess: () => {
@@ -55,7 +53,7 @@ const ExploringMapNavBar = () => {
       />
 
       <div
-        className="d-flex justify-content-between bg-primary nav"
+        className="d-flex justify-content-between bg-primary navbar"
         style={{ height: "fit-content" }}
       >
         <FontAwesomeIcon

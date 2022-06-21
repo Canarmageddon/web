@@ -12,7 +12,7 @@ const NavBar = ({ setShowMenu }) => {
   const navigate = useNavigate();
   return (
     <>
-      <div className="nav" style={{ height: "5vh" }}>
+      <div className="navbar" style={{ height: "5vh" }}>
         <FontAwesomeIcon
           className="nav-icon bars-icon"
           icon={faBars}

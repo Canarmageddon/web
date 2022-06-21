@@ -1,8 +1,8 @@
-.nav {
+.navbar {
     border-bottom: 3px solid white;
     background-color: var(--primary);
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -50,7 +50,7 @@
     }
 }
 
-.nav>svg {
+.navbar>svg {
     color: white;
 }
 
