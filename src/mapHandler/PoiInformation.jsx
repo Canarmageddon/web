@@ -69,7 +69,6 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
       successDelete();
     },
   });
-
   const handleDelete = async () => {
     mutationDeletePoi.mutate({ token, id: currentPoi.id });
   };
