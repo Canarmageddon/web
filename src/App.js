@@ -72,7 +72,15 @@ function App() {
                 path="trips"
                 element={<TravelsList setContentPage={setContentPage} />}
               />
-              <Route path="profile" element={<Profile />} />
+              <Route
+                path="profile"
+                element={
+                  <Profile
+                    contentPage={contentPage}
+                    setContentPage={setContentPage}
+                  />
+                }
+              />
               <Route path="album/:idAlbum" element={<Album />} />
               <Route
                 path="map/:id"
