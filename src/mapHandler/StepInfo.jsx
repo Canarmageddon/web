@@ -51,7 +51,6 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
         : ""
     );
     let date = routeSource.getItemById(stepId)?.date
-    console.log(date)
     if (date != "" && date != null) {
       date = new Date(routeSource.getItemById(stepId)?.date).toLocaleDateString()
       date = date.split("/");
@@ -78,7 +77,6 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
     });
   };
   const handleDelete = async () => {
-    console.log(stepId)
     mutationDeleteStep.mutate({ token, id: stepId })
   };
   return (

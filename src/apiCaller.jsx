@@ -53,7 +53,6 @@ export const getDocumentsFromStep = async (token, id) =>
     .then((res) => res.json());
 
 export const updateStep = async ({ token, id, description, date }) => {
-  console.log(token, id, description, date)
   return await fetch(`${url}steps/${id}`, {
     method: "PUT",
     headers: {

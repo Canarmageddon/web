@@ -152,7 +152,7 @@ export default function MapGl({
   });
 
   const mutationPoiLocation = useMutation(movePoi, {
-    onMutate: () => {
+    onMutate: (data) => {
       let poi = poiSource.getItemById(data.id);
       poi.longitude = data.longitude;
       poi.latitude = data.latitude;
