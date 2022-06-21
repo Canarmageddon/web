@@ -33,6 +33,8 @@ const TravelsList = ({ setContentPage }) => {
   const [token] = useToken();
   const generatedLink = (message) => toast.success(message);
   const queryClient = useQueryClient();
+  const emptyAlbum = () => toast.warning(t("empty_album"));
+
   const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
     "trips",
     () => fetchTrips({ token, user, isEnded: 0 }),
@@ -163,6 +165,7 @@ const TravelsList = ({ setContentPage }) => {
         {!isLoadingHistory &&
           dataHistory?.map((t, index) => (
             <React.Fragment key={index}>
+              {console.log(t.albumElements)}
               <div>
                 <div
                   style={{
@@ -188,7 +191,10 @@ const TravelsList = ({ setContentPage }) => {
                   style={{
                     cursor: "pointer",
                   }}
-                  onClick={() => navigate(`/home/map/${t.id}/history`)}
+                  onClick={() => {
+                    if (t.albumElements.length == 0) emptyAlbum()
+                    else navigate(`/home/map/${t.id}/history`)
+                  }}
                 />
                 <FontAwesomeIcon
                   icon={faImage}
@@ -197,8 +203,7 @@ const TravelsList = ({ setContentPage }) => {
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    if (t.album == null)
-                      toast.warning("Il n'y a rien à voir ici pour l'instant");
+                    if (t.albumElements.length == 0) emptyAlbum()
                     else navigate(`/home/album/${t.album.id}`);
                   }}
                 />

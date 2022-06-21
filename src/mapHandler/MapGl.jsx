@@ -38,7 +38,7 @@ export default function MapGl({
 }) {
   const { t } = useTranslation("translation", { keyPrefix: "map" });
   const poiSuccess = () => toast.success(t("poi_created"));
-  const stepSuccess = () => toast.success(t("screp_created"));
+  const stepSuccess = () => toast.success(t("step_created"));
   const successPoiMoved = () => toast.info(t("poi_moved"));
   const successStepMoved = () => toast.info(t("step_moved"));
 
@@ -122,7 +122,7 @@ export default function MapGl({
     onSettled: (data) => {
       queryClient.invalidateQueries(["steps", id]);
       stepSuccess();
-      setContentPage("stepInfo");
+      //setContentPage("stepInfo");
       setStepId(data.id);
     },
   });
