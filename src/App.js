@@ -18,8 +18,8 @@ import Signup from "./components/login/Signup";
 import Details from "./components/Details";
 import StepInfo from "./mapHandler/StepInfo";
 import RequireAuth from "./context/requireAuth";
-import ExploreTrips from "./explore/ExploreTrips";
-import ExploreRoute from "./explore/ExploreRoute";
+import ExploreTrips from "./components/explore/ExploreTrips";
+import ExploreRoute from "./components/explore/ExploreRoute";
 import ExploringMapNavBar from "./components/navBar/ExploringMapNavBar";
 import Album from "./album/Album";
 import CheckLink from "./album/unregistered/CheckLink";
@@ -149,8 +149,7 @@ function App() {
                 }
               />
               <Route
-                path="map/:id/discovery"
-                path='map/:id/history'
+                path="map/:id/history"
                 element={
                   <>
                     <div
@@ -197,7 +196,7 @@ function App() {
                 }
               />
               <Route
-                path='map/:id/discovery'
+                path="map/:id/discovery"
                 element={
                   <div
                     style={{

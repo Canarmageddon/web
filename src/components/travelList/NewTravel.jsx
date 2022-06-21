@@ -6,6 +6,7 @@ import { createTrip } from "../../apiCaller";
 import { useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 export default function ({ lstTrips, setLstTrips }) {
   const { t } = useTranslation("translation", { keyPrefix: "new_trip" });
   const [show, setShow] = useState(false);
@@ -23,7 +24,10 @@ export default function ({ lstTrips, setLstTrips }) {
       setShow(false);
       setName("");
       const oldData = queryClient.getQueryData("trips");
-      queryClient.setQueryData("trips", (old) => [...old, { name: data.name }]);
+      queryClient.setQueryData("trips", (old) => [
+        ...old,
+        { name: data.name, steps: [], pointOfInterests: [], id: null },
+      ]);
       return { oldData };
     },
     onSettled: () => {
@@ -32,11 +36,15 @@ export default function ({ lstTrips, setLstTrips }) {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    mutationNewTrip.mutate({ token, name, user });
+    if (name.length > 0)
+      mutationNewTrip.mutate({ token, name, user });
+    else toast.warning(t("name_empty"))
   };
   return (
     <>
-      <Button onClick={handleShow}>{t("btn_new_trip")}</Button>
+      <Button onClick={handleShow} style={{ marginLeft: 20 }}>
+        {t("btn_new_trip")}
+      </Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{t("new_trip")}</Modal.Title>
@@ -51,7 +59,6 @@ export default function ({ lstTrips, setLstTrips }) {
               name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && checkConnexionInfo()}
             />
             <Button type="submit" style={{ marginTop: 5 }}>
               {t("btn_new_trip")}

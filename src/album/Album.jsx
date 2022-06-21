@@ -66,23 +66,29 @@ export default function Album() {
   return (
     <>
       <div className="album-container">
-        <Carousel
-          showStatus={false}
-          showIndicators={false}
-          renderArrowNext={renderNextArrow}
-          renderArrowPrev={renderPrevArrow}
-          showThumbs={false}
-          style={{ width: "100%" }}
-        >
-          {dataPictures.map((image, index) => (
-            <div className="carousel-item">
-              <Picture id={image.id} key={index} />
-              {dataLogBook[index] && (
-                <p className="pic-legend">{dataLogBook[index]?.content}</p>
-              )}
-            </div>
-          ))}
-        </Carousel>
+        {dataPictures.length > 0 ? (
+          <Carousel
+            showStatus={false}
+            showIndicators={false}
+            renderArrowNext={renderNextArrow}
+            renderArrowPrev={renderPrevArrow}
+            showThumbs={false}
+            style={{ width: "100%" }}
+          >
+            {dataPictures.map((image, index) => (
+              <div className="carousel-item">
+                <Picture id={image.id} key={index} />
+                {dataLogBook[index] && (
+                  <p className="pic-legend">{dataLogBook[index]?.content}</p>
+                )}
+              </div>
+            ))}
+          </Carousel>
+        ) : (
+          <p className="warning-missing">
+            Aucunes photos enregitrées dans ce voyage
+          </p>
+        )}
       </div>
     </>
   );

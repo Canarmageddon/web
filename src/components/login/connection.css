@@ -34,6 +34,7 @@
         position: absolute;
         top: 26px;
         left: 5px;
+        color: var(--primary);
     }
     
     .input-label {

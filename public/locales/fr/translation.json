@@ -44,7 +44,11 @@
         "planned_trip": "Voyages plannifiés",
         "history": "Historique",
         "disconnect": "Déconnexion",
-        "others_trips": "Découvrez les voyages des autres utilisateurs"
+        "others_trips": "Découvrez les voyages des autres utilisateurs",
+        "empty_album": "Ajoutez des éléments à votre album pour les voir ici",
+        "new_trip": "New trip",
+        "trip_name": "Trip name",
+        "create": "Create"
     },
     "file_uploader": {
         "added_document": "le document a été ajouté",
@@ -60,7 +64,8 @@
         "poi_created": "Point d'intérêt créé !",
         "step_created": "Etape créée !",
         "poi_moved": "Point d'intérêt déplacé",
-        "step_moved": "Etape déplacée"
+        "step_moved": "Etape déplacée",
+        "step_not_deleted": "L'étape n'a pas pu être supprimée"
     },
     "poi_info": {
         "poi_deleted": "Point d'intérêt supprimé !",
@@ -93,7 +98,16 @@
         "not_added_user": "l'utilisateur n'a pas pu être ajouté",
         "trips_members": "Membres de voyage",
         "add_member": "Inviter un membre",
+        "add_no_account": "Ajouter un membre qui n'a pas de compte",
         "invite": "Inviter",
         "members": "Membres"
+    },
+    "unregistered_home": {
+        "empty_album": "L'album est vide pour l'instant mais vous pouvez toujours regarde leur voyage sur la carte",
+        "map": "Afficher la carte",
+        "album": "Afficher l'album"
+    },
+    "location_info": {
+        "location_details": "Informations de la position"
     }
 }

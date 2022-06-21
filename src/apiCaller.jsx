@@ -53,6 +53,7 @@ export const getDocumentsFromStep = async (token, id) =>
     .then((res) => res.json());
 
 export const updateStep = async ({ token, id, description, date }) => {
+  console.log(token, id, description, date)
   return await fetch(`${url}steps/${id}`, {
     method: "PUT",
     headers: {
@@ -416,7 +417,7 @@ export const deleteTrip = async ({ token, id }) =>
       Authorization: `Bearer ${token}`,
     },
     method: "DELETE",
-  }).then((res) => res.json());
+  }).then((res) => checkStatus(res));
 
 export const fetchAllTrips = async (page) =>
   await fetch(`${url}trips?page=${page}`, {

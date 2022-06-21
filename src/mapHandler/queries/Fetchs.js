@@ -8,7 +8,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
 
-export function steps(token, id, setRouteSource, setViewport) {
+export function steps(token, id, routeSource, setRouteSource, setViewport) {
   return useQuery(["steps", id], () => fetchSteps(token, id), {
     retry: false,
     onSuccess: (data) => {
@@ -22,17 +22,19 @@ export function steps(token, id, setRouteSource, setViewport) {
             longitude: item.location.longitude,
             latitude: item.location.latitude,
             step: item?.step?.id,
+            date: item?.date == null ? "" : item.date,
           }),
         );
       });
+      if (routeSource.listLocations.length == 0)
+        setViewport({
+          latitude: data[data?.length - 1]?.location?.latitude,
+          longitude: data[data?.length - 1]?.location?.longitude,
+          zoom: 7,
+          bearing: 0,
+          pitch: 0,
+        });
       setRouteSource(new LayerUtile(lstStep));
-      setViewport({
-        latitude: data[data?.length - 1]?.location?.latitude,
-        longitude: data[data?.length - 1]?.location?.longitude,
-        zoom: 7,
-        bearing: 0,
-        pitch: 0,
-      });
     },
   });
 }
@@ -43,7 +45,6 @@ export function pois(token, id, setPoiSource) {
     onSuccess: (data) => {
       let lstPoi = [];
       data.map((item) => {
-        console.log(item.step);
         lstPoi.push(
           new Location({
             id: item.id,

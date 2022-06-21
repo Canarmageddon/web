@@ -4,11 +4,16 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../context/userContext";
+import { usePoi, useRoute } from "../../context/TravelContext";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+
 const SideMenu = ({ setContentPage, showMenu }) => {
   const { t } = useTranslation("translation", { keyPrefix: "side_menu" });
 
+  const [poiSource] = usePoi();
+  const [routeSource] = useRoute();
   const [user, setUser] = useUser();
   const navigate = useNavigate();
 
@@ -18,6 +23,16 @@ const SideMenu = ({ setContentPage, showMenu }) => {
     setUser(undefined);
   };
 
+  const handleClickDetails = () => {
+    if (
+      poiSource?.listLocations?.length === 0 &&
+      routeSource?.listLocations?.length === 0
+    ) {
+      toast.warning("Créez d'abord un point d'intérêt ou une étape");
+    } else {
+      setContentPage("details");
+    }
+  };
   return (
     <div className="sidenav" style={{ width: showMenu ? 200 : 0 }}>
       <FontAwesomeIcon
@@ -36,7 +51,7 @@ const SideMenu = ({ setContentPage, showMenu }) => {
       <a onClick={() => setContentPage("map")}>{t("map")}</a>
       <a onClick={() => setContentPage("toDoLists")}>{t("todo_list")}</a>
       <a onClick={() => setContentPage("admin")}>{t("admin")}</a>
-      <a onClick={() => setContentPage("details")}>{t("details")}</a>
+      <a onClick={handleClickDetails}>{t("details")}</a>
       <Button
         variant="danger"
         onClick={logout}

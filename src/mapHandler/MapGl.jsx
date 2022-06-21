@@ -38,7 +38,7 @@ export default function MapGl({
 }) {
   const { t } = useTranslation("translation", { keyPrefix: "map" });
   const poiSuccess = () => toast.success(t("poi_created"));
-  const stepSuccess = () => toast.success(t("screp_created"));
+  const stepSuccess = () => toast.success(t("step_created"));
   const successPoiMoved = () => toast.info(t("poi_moved"));
   const successStepMoved = () => toast.info(t("step_moved"));
 
@@ -75,8 +75,7 @@ export default function MapGl({
     isError: isErrorSteps,
     error: errorSteps,
     data: dataSteps,
-  } = steps(token, id, setRouteSource, setViewport);
-
+  } = steps(token, id, routeSource, setRouteSource, setViewport);
   const {
     isLoading: isLoadingPoi,
     isError: isErrorPoi,
@@ -123,7 +122,7 @@ export default function MapGl({
     onSettled: (data) => {
       queryClient.invalidateQueries(["steps", id]);
       stepSuccess();
-      setContentPage("stepInfo");
+      //setContentPage("stepInfo");
       setStepId(data.id);
     },
   });
@@ -155,6 +154,10 @@ export default function MapGl({
 
   const mutationPoiLocation = useMutation(movePoi, {
     onMutate: () => {
+      let poi = poiSource.getItemById(data.id);
+      poi.longitude = data.longitude;
+      poi.latitude = data.latitude;
+      setPoiSource(poiSource.updateItem(poi));
       setMovingPoi(null);
     },
     onSettled: () => {
@@ -166,6 +169,8 @@ export default function MapGl({
   const mutationStepLocation = useMutation(moveStep, {
     onMutate: (data) => {
       let step = routeSource.getItemById(data.id);
+      step.longitude = data.longitude;
+      step.latitude = data.latitude;
       setRouteSource(routeSource.updateItem(step));
       setMovingStep(null);
     },
@@ -174,13 +179,17 @@ export default function MapGl({
       successStepMoved();
     },
   });
+  useEffect(() => {
+    //Sinon la carte risque de rester plus petite lorsqu'on ouvre d'autres fenêtres
+    setViewport({ ...viewport, width: "100%", height: "100%" })
+  }, [contentPage])
 
   useEffect(async () => {
     if (dataSteps != undefined) {
       setViewport({
         latitude: dataSteps[dataSteps?.length - 1]?.location?.latitude,
         longitude: dataSteps[dataSteps?.length - 1]?.location?.longitude,
-        zoom: 7,
+        zoom: 3,
         bearing: 0,
         pitch: 0,
       });
@@ -200,6 +209,14 @@ export default function MapGl({
         if (error) throw error;
         // Add the loaded image to the style's sprite with the ID 'poiImage'.
         map.addImage("stepImage", image);
+      }
+    );
+    map.loadImage(
+      process.env.PUBLIC_URL + "/finish-flag.jpg",
+      (error, image) => {
+        if (error) throw error;
+        // Add the loaded image to the style's sprite with the ID 'poiImage'.
+        map.addImage("lastStepImage", image);
       }
     );
     map.loadImage(process.env.PUBLIC_URL + "/3926045.png", (error, image) => {
@@ -322,6 +339,17 @@ export default function MapGl({
       "icon-allow-overlap": true,
     },
   };
+  const routeLayer3 = {
+    id: "route3",
+    type: "symbol",
+    layout: {
+      "icon-image": "lastStepImage", // reference the image
+      "icon-size": 0.1,
+      "icon-allow-overlap": true,
+      "icon-anchor": "bottom-left",
+
+    },
+  };
   const routeLayer = {
     id: "theRoute",
     type: "line",
@@ -332,6 +360,7 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
+
   return (
     <>
       {!exploring && (
@@ -369,8 +398,11 @@ export default function MapGl({
             <Source id="routeLine" type="geojson" data={routeSource.route}>
               <Layer {...routeLayer} />
             </Source>
-            <Source id="route" type="geojson" data={routeSource.templateSource}>
+            <Source id="route" type="geojson" data={routeSource.templateSourceRoute}>
               <Layer {...routeLayer2} />
+            </Source>
+            <Source id="routeEnd" type="geojson" data={routeSource.templateSourceLast}>
+              <Layer {...routeLayer3} />
             </Source>
           </>
         )}

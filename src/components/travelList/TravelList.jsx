@@ -33,6 +33,8 @@ const TravelsList = ({ setContentPage }) => {
   const [token] = useToken();
   const generatedLink = (message) => toast.success(message);
   const queryClient = useQueryClient();
+  const emptyAlbum = () => toast.warning(t("empty_album"));
+
   const { isLoading: isLoadingTravels, data: dataTravels } = useQuery(
     "trips",
     () => fetchTrips({ token, user, isEnded: 0 }),
@@ -78,17 +80,8 @@ const TravelsList = ({ setContentPage }) => {
   };
   const displayLstTravel = () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div
-          style={{
-            display: "flex",
-            marginBottom: 1,
-            marginTop: 10,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          className="nav-item"
-        >
+      <div className="list-container">
+        <div className="travel-list-header">
           <p className="travel-text">{t("name")}</p>
           <p className="travel-text">{t("start")}</p>
           <p className="travel-text">{t("end")}</p>
@@ -98,33 +91,28 @@ const TravelsList = ({ setContentPage }) => {
         {!isLoadingTravels &&
           dataTravels?.map((t, index) => (
             <React.Fragment key={index}>
-              <div className="travel-list-item" onClick={(e) => handleClick(t)}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+              <div onClick={(e) => handleClick(t)}>
+                <div className="travel-item">
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                     {t.name}
                   </p>
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                    {t.steps[0]?.description ?? "-"}
+                    {t?.steps[0]?.description ?? "-"}
                   </p>
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                    {t.steps[t.steps.length - 1]?.description ?? "-"}
+                    {t?.steps[t?.steps.length - 1]?.description ?? "-"}
                   </p>
+                  {TrashAlt(handleDelete, t)}
+                  <FontAwesomeIcon
+                    className="list-icon"
+                    icon={faShareAlt}
+                    size="2x"
+                    style={{
+                      marginLeft: 10,
+                    }}
+                    onClick={(e) => createLink(e, t.id)}
+                  />
                 </div>
-                {TrashAlt(handleDelete, t)}
-                <FontAwesomeIcon
-                  icon={faShareAlt}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={(e) => createLink(e, t.id)}
-                />
               </div>
               <Dropdown.Divider />
             </React.Fragment>
@@ -134,17 +122,8 @@ const TravelsList = ({ setContentPage }) => {
   };
   const displayHistory = () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div
-          style={{
-            display: "flex",
-            marginBottom: 1,
-            marginTop: 10,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          className="nav-item"
-        >
+      <div className="list-container">
+        <div className="travel-list-header">
           <p className="travel-text">{t("name")}</p>
           <p className="travel-text">{t("start")}</p>
           <p className="travel-text">{t("end")}</p>
@@ -154,15 +133,9 @@ const TravelsList = ({ setContentPage }) => {
         {!isLoadingHistory &&
           dataHistory?.map((t, index) => (
             <React.Fragment key={index}>
+              {console.log(t.albumElements)}
               <div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+                <div className="travel-item">
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                     {t.name}
                   </p>
@@ -172,34 +145,37 @@ const TravelsList = ({ setContentPage }) => {
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                     {t.steps[t.steps.length - 1]?.description}
                   </p>
+                  <FontAwesomeIcon
+                    className="list-icon"
+                    icon={faGlobe}
+                    size="2x"
+                    onClick={() => {
+                      if (t.albumElements.length == 0) emptyAlbum();
+                      else navigate(`/home/map/${t.id}/history`);
+                    }}
+                  />
+                  <FontAwesomeIcon
+                    className="list-icon"
+                    icon={faImage}
+                    size="2x"
+                    style={{
+                      marginLeft: 10,
+                    }}
+                    onClick={() => {
+                      if (t.albumElements.length == 0) emptyAlbum();
+                      else navigate(`/home/album/${t.album.id}`);
+                    }}
+                  />
+                  <FontAwesomeIcon
+                    className="list-icon"
+                    icon={faShareAlt}
+                    size="2x"
+                    style={{
+                      marginLeft: 10,
+                    }}
+                    onClick={(e) => createLink(e, t.id)}
+                  />
                 </div>
-                <FontAwesomeIcon
-                  icon={faGlobe}
-                  size="2x"
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => navigate(`/home/map/${t.id}/history`)}
-                />
-                <FontAwesomeIcon
-                  icon={faImage}
-                  size="2x"
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    if (t.album == null)
-                      toast.warning("Il n'y a rien à voir ici pour l'instant");
-                    else navigate(`/home/album/${t.album.id}`);
-                  }}
-                />
-                <FontAwesomeIcon
-                  icon={faShareAlt}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  onClick={(e) => createLink(e, t.id)}
-                />
               </div>
               <Dropdown.Divider />
             </React.Fragment>
@@ -217,9 +193,13 @@ const TravelsList = ({ setContentPage }) => {
       />
       <div className="travellist-container">
         <h1 className="list-title">{t("trips")}</h1>
-        <Button onClick={() => navigate("/home/explore/list")}>
+        <Button
+          className="explore-btn"
+          onClick={() => navigate("/home/explore/list")}
+        >
           {t("explore")}
         </Button>
+        <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
         <FontAwesomeIcon
           className="p-2 nav-icon"
           icon={faUser}
@@ -233,19 +213,16 @@ const TravelsList = ({ setContentPage }) => {
           }}
           onClick={() => navigate("/home/profile")}
         />
-        <NewTravel lstTrips={lstTrips} setLstTrips={setLstTrips} />
-        <hr style={{ marginBottom: 5 + "px" }} />
+        <hr style={{ marginBottom: 5 }} />
         <Tabs
           id="tabs-timing"
           activeKey={timing}
           onSelect={(k) => setTiming(k)}
-          className="tabs-travel"
         >
           <Tab eventKey="planned" title={t("planned_trip")}></Tab>
           <Tab eventKey="past" title={t("history")}></Tab>
         </Tabs>
         {timing == "planned" ? displayLstTravel() : displayHistory()}
-        <LanguageModal showModal={showModal} setShowModal={setShowModal} />
       </div>
       <Button
         variant="danger"
@@ -254,6 +231,7 @@ const TravelsList = ({ setContentPage }) => {
       >
         {t("disconnect")}
       </Button>
+      <LanguageModal showModal={showModal} setShowModal={setShowModal} />
     </>
   );
 };

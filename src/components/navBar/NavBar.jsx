@@ -12,18 +12,9 @@ const NavBar = ({ setShowMenu }) => {
   const navigate = useNavigate();
   return (
     <>
-      <FontAwesomeIcon
-        onClick={() => setShowModal(true)}
-        icon={faGlobe}
-        className="language-icon"
-        size={"2x"}
-      />
-      <div
-        className="d-flex justify-content-between bg-primary nav"
-        style={{ height: "5vh" }}
-      >
+      <div className="navbar" style={{ height: "5vh" }}>
         <FontAwesomeIcon
-          className="p-2 nav-icon"
+          className="nav-icon bars-icon"
           icon={faBars}
           size="2x"
           onClick={() => {
@@ -31,7 +22,13 @@ const NavBar = ({ setShowMenu }) => {
           }}
         />
         <FontAwesomeIcon
-          className="p-2 nav-icon"
+          className="nav-icon"
+          onClick={() => setShowModal(true)}
+          icon={faGlobe}
+          size={"2x"}
+        />
+        <FontAwesomeIcon
+          className="nav-icon"
           icon={faUser}
           size="2x"
           onClick={() => navigate("/home/profile")}

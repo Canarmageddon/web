@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.5
+    # Enables the web UI and tells Traefik to listen to docker
+    command: 
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--entrypoints.entrypma.address=:8081"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.front.address=:81"
+
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+      - "8081:8081"
+      - "81:81"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=false"
+  frontend:
+    image: nginx:1.21.4-alpine
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    labels:
+      - "traefik.http.routers.frontend.rule=Host(`${HOST}`)"
+      - "traefik.http.routers.frontend.entrypoints=front"
+    volumes:
+      - ./reactBuild:/usr/share/nginx/html
+

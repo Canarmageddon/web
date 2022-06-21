@@ -25,6 +25,24 @@ export default class LayerUtile {
     return { type: "FeatureCollection", features: res };
   }
 
+  get templateSourceRoute() {
+    let res = [];
+    for (let i = 0; i < this.listLocations.length - 1; i++) {
+      res = [...res, this.listLocations[i].formated];
+    }
+    return { type: "FeatureCollection", features: res };
+    this.listLocations.forEach((element) => {
+      res = [...res, element.formated];
+    });
+  }
+
+  get templateSourceLast() {
+    let res = [];
+    if (this.listLocations.length > 1)
+      res = this.listLocations[this.listLocations.length - 1].formated;
+    return { type: "FeatureCollection", features: [res] };
+  }
+
   get route() {
     let res = [];
     this.listLocations.forEach((element) => {
@@ -78,6 +96,9 @@ export default class LayerUtile {
   }
 
   updateItem(item) {
+    let index = this.listLocations.findIndex((obj) => obj.id == item.id);
+    this.listLocations[index] = item;
+    return this;
     return new LayerUtile([
       ...this.listLocations.filter((elt) => elt.id != item.id),
       item,
