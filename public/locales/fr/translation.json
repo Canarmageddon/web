@@ -112,6 +112,7 @@
         "location_details": "Informations de la position"
     },
     "task": {
+        "task_name": "Nom de la tâche",
         "created": "Tâche créé",
         "not_created": "La tâche n'a pas pu être créé",
         "deleted": "Tâche supprimée",

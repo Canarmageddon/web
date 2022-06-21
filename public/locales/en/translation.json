@@ -112,6 +112,7 @@
         "location_details": "Location's details"
     },
     "task": {
+        "task_name": "Task name",
         "created": "Task created",
         "not_created": "Could not create task",
         "deleted": "Task deleted",

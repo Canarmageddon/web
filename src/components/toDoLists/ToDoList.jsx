@@ -87,7 +87,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
         {showForm && (
           <div>
             <FormControl
-              placeholder={t("create_account.last_name")}
+              placeholder={t("task_name")}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               style={{ flex: 0.1 }}
