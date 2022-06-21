@@ -62,7 +62,10 @@ export default function ExploreTrips({ context }) {
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutationClone.mutate({ id: selectedTrip, name, creator: user });
+    if (name.length > 0)
+      mutationClone.mutate({ id: selectedTrip, name, creator: user });
+    else toast.warning(t("name_empty"))
+
   };
 
   const displayTrips = () => {
