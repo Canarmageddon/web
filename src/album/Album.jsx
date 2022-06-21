@@ -10,6 +10,7 @@ import { renderNextArrow, renderPrevArrow } from "../Functions";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./album.css";
+import RotatingDuck from "../components/loadingScreen/RotatingDuck";
 
 export default function Album() {
   const { id, link, idAlbum } = useParams();
@@ -36,7 +37,7 @@ export default function Album() {
     statusLogBook === "error" ||
     statusPictures === "error"
   ) {
-    return <ScreenLogo />;
+    return <RotatingDuck />;
   }
 
   return (
