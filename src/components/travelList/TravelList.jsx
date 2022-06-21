@@ -71,7 +71,7 @@ const TravelsList = ({ setContentPage }) => {
     navigator.clipboard.writeText(
       `${window.location.hostname}:${location.port}/unregistered/${id}/${res.message}/home`
     ); //TODO
-    generatedLink("lien de pd: artage copier dans le press-papier");
+    generatedLink(t("trip_link"));
   };
   const logout = () => {
     setContentPage();
