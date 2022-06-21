@@ -27,7 +27,7 @@ const AppStart = () => {
     <React.StrictMode>
       <Suspense fallback={<ScreenLogo />}>
         <ToastContainer
-          position="top-right"
+          position='top-right'
           autoClose={3000}
           hideProgressBar={false}
           newestOnTop
