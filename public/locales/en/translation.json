@@ -98,6 +98,7 @@
         "not_added_user": "The user could not be added",
         "trips_members": "Trip's members",
         "add_member": "Invite a member",
+        "add_no_account": "Add a member with no account",
         "invite": "Invite",
         "members": "Members"
     },

@@ -211,6 +211,14 @@ export default function MapGl({
         map.addImage("stepImage", image);
       }
     );
+    map.loadImage(
+      process.env.PUBLIC_URL + "/finish-flag.jpg",
+      (error, image) => {
+        if (error) throw error;
+        // Add the loaded image to the style's sprite with the ID 'poiImage'.
+        map.addImage("lastStepImage", image);
+      }
+    );
     map.loadImage(process.env.PUBLIC_URL + "/3926045.png", (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
@@ -331,6 +339,17 @@ export default function MapGl({
       "icon-allow-overlap": true,
     },
   };
+  const routeLayer3 = {
+    id: "route3",
+    type: "symbol",
+    layout: {
+      "icon-image": "lastStepImage", // reference the image
+      "icon-size": 0.1,
+      "icon-allow-overlap": true,
+      "icon-anchor": "bottom-left",
+
+    },
+  };
   const routeLayer = {
     id: "theRoute",
     type: "line",
@@ -341,6 +360,7 @@ export default function MapGl({
       "line-blur": 0.5,
     },
   };
+
   return (
     <>
       {!exploring && (
@@ -378,8 +398,11 @@ export default function MapGl({
             <Source id="routeLine" type="geojson" data={routeSource.route}>
               <Layer {...routeLayer} />
             </Source>
-            <Source id="route" type="geojson" data={routeSource.templateSource}>
+            <Source id="route" type="geojson" data={routeSource.templateSourceRoute}>
               <Layer {...routeLayer2} />
+            </Source>
+            <Source id="routeEnd" type="geojson" data={routeSource.templateSourceLast}>
+              <Layer {...routeLayer3} />
             </Source>
           </>
         )}

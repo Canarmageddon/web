@@ -98,6 +98,7 @@
         "not_added_user": "l'utilisateur n'a pas pu être ajouté",
         "trips_members": "Membres de voyage",
         "add_member": "Inviter un membre",
+        "add_no_account": "Ajouter un membre qui n'a pas de compte",
         "invite": "Inviter",
         "members": "Membres"
     },
