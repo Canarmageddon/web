@@ -91,8 +91,7 @@ export default function ({ display, setContentPage }) {
                     style={{ display: "flex", flexDirection: "row" }}
                     key={e.id}
                   >
-                    {" "}
-                    <p>{e.description}</p>
+                    <p>{e.title}</p>
                     <FontAwesomeIcon
                       icon={faPen}
                       onClick={() => setContentPage("poiInfo")}

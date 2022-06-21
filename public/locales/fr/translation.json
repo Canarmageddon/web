@@ -45,7 +45,10 @@
         "history": "Historique",
         "disconnect": "Déconnexion",
         "others_trips": "Découvrez les voyages des autres utilisateurs",
-        "empty_album": "Ajoutez des éléments à votre album pour les voir ici"
+        "empty_album": "Ajoutez des éléments à votre album pour les voir ici",
+        "new_trip": "New trip",
+        "trip_name": "Trip name",
+        "create": "Create"
     },
     "file_uploader": {
         "added_document": "le document a été ajouté",
@@ -102,5 +105,8 @@
         "empty_album": "L'album est vide pour l'instant mais vous pouvez toujours regarde leur voyage sur la carte",
         "map": "Afficher la carte",
         "album": "Afficher l'album"
+    },
+    "location_info": {
+        "location_details": "Informations de la position"
     }
 }
