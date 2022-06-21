@@ -6,7 +6,8 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-
+import "./form.css"
+import { FormControl } from "react-bootstrap";
 const Admin = ({ display }) => {
   const { t } = useTranslation("translation");
   const noEmail = () =>
@@ -71,15 +72,14 @@ const Admin = ({ display }) => {
     >
       <h2 className="main-title">{t("admin.trips_members")}</h2>
       <form className="admin-form" onSubmit={(e) => handleSubmit(e)}>
-        <span className="invite-title">{t("admin.add_member")}</span>
-        <hr />
+        <span className="invite-title ">{t("admin.add_member")}</span>
+        <hr className="blue-hr" />
         <div className="invite-div">
-          <input
+          <FormControl
             placeholder="email"
-            type="email"
-            className="invite-input"
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
+            type="email"
           />
           <button type="submit" className="button-new">
             Inviter
@@ -88,22 +88,22 @@ const Admin = ({ display }) => {
       </form>
       <form className="admin-form" onSubmit={(e) => handleSubmitNoAccount(e)}>
         <span className="invite-title">{t("admin.add_no_account")}</span>
-        <hr />
+        <hr className="blue-hr" />
         <div className="invite-div">
-          <input
+          <FormControl
             placeholder={t("create_account.first_name")}
-            type="text"
-            className="invite-input"
             value={firstname}
             onChange={(e) => setfirstname(e.target.value)}
-          />
-          <input
-            placeholder={t("create_account.last_name")}
             type="text"
-            className="invite-input"
+          />
+          <br></br>
+          <FormControl
+            placeholder={t("create_account.last_name")}
             value={lastname}
             onChange={(e) => setLastname(e.target.value)}
+            type="text"
           />
+
           <button type="submit" className="button-new">
             Inviter
           </button>
