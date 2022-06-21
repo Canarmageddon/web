@@ -58,7 +58,6 @@ export default function MapGl({
   const [viewport, setViewport] = useState({
     latitude: 0,
     longitude: 0,
-    zoom: 7,
     bearing: 0,
     pitch: 0,
   });
@@ -153,7 +152,7 @@ export default function MapGl({
   });
 
   const mutationPoiLocation = useMutation(movePoi, {
-    onMutate: () => {
+    onMutate: (data) => {
       let poi = poiSource.getItemById(data.id);
       poi.longitude = data.longitude;
       poi.latitude = data.latitude;
@@ -185,15 +184,16 @@ export default function MapGl({
   }, [contentPage])
 
   useEffect(async () => {
-    if (dataSteps != undefined) {
-      setViewport({
-        latitude: dataSteps[dataSteps?.length - 1]?.location?.latitude,
-        longitude: dataSteps[dataSteps?.length - 1]?.location?.longitude,
-        zoom: 3,
-        bearing: 0,
-        pitch: 0,
-      });
-    }
+    /*  if (dataSteps != undefined) {
+       if (dataSteps.length > 0)
+         setViewport({
+           latitude: dataSteps[dataSteps?.length - 1]?.location?.latitude,
+           longitude: dataSteps[dataSteps?.length - 1]?.location?.longitude,
+           zoom: 3,
+           bearing: 0,
+           pitch: 0,
+         });
+     } */
     const map = _mapRef.current.getMap();
     map.loadImage(
       process.env.PUBLIC_URL + "/red_marker.png",
@@ -380,7 +380,7 @@ export default function MapGl({
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onClick={(e) => handleClick(e)}
       >
-        {!isLoadingLocation && !isErrorLocation && (
+        {!isLoadingLocation && !isErrorLocation && displayAlbum && (
           <Source
             id="location"
             type="geojson"

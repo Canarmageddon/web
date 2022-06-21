@@ -29,6 +29,19 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
       successEdit();
     },
   });
+  const mutationDeleteStep = useMutation(deleteStep, {
+    onMutate: () => {
+      setRouteSource(routeSource.removeItem(stepId));
+    },
+    onSettled: () => {
+
+    },
+    onSuccess: () => {
+      setContentPage("map");
+      successDelete();
+
+    }
+  })
   useEffect(() => {
     setCurrentRoute(routeSource.getItemById(stepId));
 
@@ -37,8 +50,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
         ? routeSource.getItemById(stepId).description
         : ""
     );
-    let date = routeSource.getItemById(stepId)?.date;
-
+    let date = routeSource.getItemById(stepId)?.date
     if (date != "" && date != null) {
       date = new Date(
         routeSource.getItemById(stepId)?.date
@@ -65,10 +77,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
     });
   };
   const handleDelete = async () => {
-    setRouteSource(routeSource.removeItem(stepId));
-    setContentPage("map");
-    let res = await deleteStep(stepId);
-    successDelete();
+    mutationDeleteStep.mutate({ token, id: stepId })
   };
   return (
     <div
