@@ -26,7 +26,7 @@ export function steps(token, id, routeSource, setRouteSource, setViewport) {
           }),
         );
       });
-      if (routeSource.listLocations.length == 0)
+      if (routeSource.listLocations.length == 0 && data.length > 0)
         setViewport({
           latitude: data[data?.length - 1]?.location?.latitude,
           longitude: data[data?.length - 1]?.location?.longitude,

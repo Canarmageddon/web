@@ -27,7 +27,11 @@ export default class LayerUtile {
 
   get templateSourceRoute() {
     let res = [];
-    for (let i = 0; i < this.listLocations.length - 1; i++) {
+    let lastIndex =
+      this.listLocations.length > 1
+        ? this.listLocations.length - 1
+        : this.listLocations.length;
+    for (let i = 0; i < lastIndex; i++) {
       res = [...res, this.listLocations[i].formated];
     }
     return { type: "FeatureCollection", features: res };

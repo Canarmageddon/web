@@ -77,11 +77,12 @@ export const fetchPois = async (token, id) =>
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
-export const deletePoi = async ({ token, id }) =>
-  await fetch(`${url}point_of_interests/${id}`, {
-    Authorization: `Bearer ${token}`,
+export const deletePoi = async ({ token, id }) => {
+  return await fetch(`${url}point_of_interests/${id}`, {
+    headers: { Authorization: `Bearer ${token}`, },
     method: "DELETE",
   }).then((res) => checkStatus(res));
+}
 
 export const createPoi = async ({
   token,
