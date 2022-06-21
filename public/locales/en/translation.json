@@ -110,5 +110,15 @@
     },
     "location_info": {
         "location_details": "Location's details"
+    },
+    "task": {
+        "task_name": "Task name",
+        "created": "Task created",
+        "not_created": "Could not create task",
+        "deleted": "Task deleted",
+        "not_deleted": "Could not delete task",
+        "delete_list": "Task list deleted",
+        "not_deleted_list": "Could not delete task list",
+        "add": "Add"
     }
 }
