@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import Modal from "react-bootstrap/Modal";
+import React, { useState } from "react";
 import { cloneTrip, fetchAllTrips } from "../../apiCaller";
 import "./explore.css";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -20,6 +19,8 @@ import { useTranslation } from "react-i18next";
 import { useUser } from "../../context/userContext";
 import { toast } from "react-toastify";
 import ImportModal from "./ImportModal";
+import "./exploreTrips.css";
+
 export default function ExploreTrips({ context }) {
   const { t } = useTranslation("translation", { keyPrefix: "trip_list" });
   const queryClient = useQueryClient();
@@ -64,19 +65,25 @@ export default function ExploreTrips({ context }) {
     e.preventDefault();
     if (name.length > 0)
       mutationClone.mutate({ id: selectedTrip, name, creator: user });
-    else toast.warning(t("name_empty"))
-
+    else toast.warning(t("name_empty"));
   };
 
   const displayTrips = () => {
     if (isLoading || isError) return "";
     return data["hydra:member"].map((t) => (
       <React.Fragment key={t.id}>
-        <div className="travel-list-item">
-          <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>{t.name}</p>
-          <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>{t.start}</p>
-          <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>{t.end}</p>
+        <div className="explore-item">
+          <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+            {t.name ?? "-"}
+          </p>
+          <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+            {t.start ?? "-"}
+          </p>
+          <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
+            {t.end ?? "-"}
+          </p>
           <FontAwesomeIcon
+            className="list-icon"
             icon={faAdd}
             size={"2x"}
             onClick={() => {
@@ -85,8 +92,12 @@ export default function ExploreTrips({ context }) {
             }}
           />
           <FontAwesomeIcon
+            className="list-icon"
             icon={faEye}
             size={"2x"}
+            style={{
+              marginLeft: 10,
+            }}
             onClick={() => navigate(`/home/explore/map/${t.id}`)}
           />
         </div>
@@ -116,17 +127,8 @@ export default function ExploreTrips({ context }) {
   };
   const displayLstTravel = () => {
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <div
-          style={{
-            display: "flex",
-            marginBottom: 1,
-            marginTop: 10,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          className="nav-item"
-        >
+      <div className="list-container">
+        <div className="travel-list-header">
           <p className="travel-text">{t("name")}</p>
           <p className="travel-text">{t("start")}</p>
           <p className="travel-text">{t("end")}</p>
@@ -176,12 +178,15 @@ export default function ExploreTrips({ context }) {
   };
 
   return (
-    <div
-      className="root-list"
-      style={{
-        flex: 0.4,
-      }}
-    >
+    <>
+      <div className="explore-trips-container">
+        <div style={{ display: "flex" }}>
+          <ExploringNavBar />
+          <h1 className="list-title">{t("others_trips")}</h1>
+        </div>
+        <hr style={{ marginBottom: 5 }} />
+        {displayLstTravel()}
+      </div>
       <ImportModal
         show={show}
         setShow={setShow}
@@ -190,11 +195,6 @@ export default function ExploreTrips({ context }) {
         name={name}
         setName={setName}
       />
-
-      <ExploringNavBar />
-      <h1 className="list-title">{t("others_trips")}</h1>
-      <hr style={{ marginBottom: 5 + "px" }} />
-      {displayLstTravel()}
-    </div>
+    </>
   );
 }

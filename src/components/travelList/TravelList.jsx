@@ -94,7 +94,7 @@ const TravelsList = ({ setContentPage }) => {
               <div onClick={(e) => handleClick(t)}>
                 <div className="travel-item">
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
-                    {t.name}
+                    {t.name ?? "-"}
                   </p>
                   <p style={{ marginTop: 0, marginBottom: 0, flex: 0.3 }}>
                     {t?.steps[0]?.description ?? "-"}

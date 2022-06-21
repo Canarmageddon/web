@@ -54,13 +54,6 @@
     color: white;
 }
 
-.home-nav-icon {
-    width: min-content;
-    color: white;
-    padding: 10px;
-    border-radius: 18px;
-}
-
 .back-arrow-unregistered {
     position: absolute;
     top: 20px;
