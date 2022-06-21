@@ -97,5 +97,10 @@
         "add_member": "Inviter un membre",
         "invite": "Inviter",
         "members": "Membres"
+    },
+    "unregistered_home": {
+        "empty_album": "L'album est vide pour l'instant mais vous pouvez toujours regarde leur voyage sur la carte",
+        "map": "Afficher la carte",
+        "album": "Afficher l'album"
     }
 }

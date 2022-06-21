@@ -97,5 +97,10 @@
         "add_member": "Invite a member",
         "invite": "Invite",
         "members": "Members"
+    },
+    "unregistered_home": {
+        "empty_album": "The album is empty but you can still see the trip on the map",
+        "map": "Display the map",
+        "album": "Display the album"
     }
 }
