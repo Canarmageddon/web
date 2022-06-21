@@ -149,7 +149,6 @@ function App() {
                 }
               />
               <Route
-                path='map/:id/discovery'
                 path='map/:id/history'
                 element={
                   <>

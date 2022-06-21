@@ -44,7 +44,8 @@
         "planned_trip": "Planned trips",
         "history": "History",
         "disconnect": "Disconnect",
-        "others_trips": "See others trips"
+        "others_trips": "See others trips",
+        "empty_album": "Add elements to your album to see them here"
     },
     "file_uploader": {
         "added_document": "The document was added",
