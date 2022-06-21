@@ -169,8 +169,8 @@ const CreateAccount = () => {
         navigate("/");
       } catch (error) {
         emailNotAvailable();
+        setIsCheckingCredentials(false);
       }
-      setIsCheckingCredentials(false);
     }
   }
 };
