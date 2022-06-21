@@ -35,7 +35,21 @@ const Admin = ({ display }) => {
     },
     onSettled: () => queryClient.invalidateQueries(["members", intId])
   });
+  const mutationAddUserNoAccount = useMutation(addUser, {
+    onSuccess: () => {
+      toast.success(t("admin.added_user"))
+      setLastname("");
+      setfirstname("");
+    }, onError: (error) => {
+      //TODO Handle member already in trip
+      toast.warning(t("admin.not_added_user"))
+      console.log(error);
+    },
+    onSettled: () => queryClient.invalidateQueries(["members", intId])
 
+  })
+  const [firstname, setfirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,6 +58,10 @@ const Admin = ({ display }) => {
     }
     mutationAddUser.mutate({ token, email: newEmail, id: intId });
   };
+  const handleSubmitNoAccount = (e) => {
+    e.preventDefault();
+
+  }
   return (
     <div
       style={{
@@ -62,6 +80,29 @@ const Admin = ({ display }) => {
             className="invite-input"
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
+          />
+          <button type="submit" className="button-new">
+            Inviter
+          </button>
+        </div>
+      </form>
+      <form className="admin-form" onSubmit={(e) => handleSubmitNoAccount(e)}>
+        <span className="invite-title">{t("admin.add_no_account")}</span>
+        <hr />
+        <div className="invite-div">
+          <input
+            placeholder={t("create_account.first_name")}
+            type="text"
+            className="invite-input"
+            value={firstname}
+            onChange={(e) => setfirstname(e.target.value)}
+          />
+          <input
+            placeholder={t("create_account.last_name")}
+            type="text"
+            className="invite-input"
+            value={lastname}
+            onChange={(e) => setLastname(e.target.value)}
           />
           <button type="submit" className="button-new">
             Inviter
