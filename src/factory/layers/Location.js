@@ -7,6 +7,7 @@ export default class Location {
     latitude,
     albumElements,
     step,
+    date,
   }) {
     this.id = id;
     this.longitude = longitude;
@@ -15,6 +16,7 @@ export default class Location {
     this.description = description;
     this.title = title;
     this.step = step;
+    this.date = date;
   }
   get formated() {
     return {

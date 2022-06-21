@@ -116,11 +116,10 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
                 overflowWrap: "break-word",
               }}
             >
-              {t.date && (
-                <p style={{ margin: 5 }}>
-                  {new Date(t.date).toLocaleDateString()} : {t.name}
-                </p>
-              )}
+              <p style={{ margin: 5 }}>
+                {t.date && `${new Date(t.date).toLocaleDateString()} :`}  {t.name}
+              </p>
+
               <FontAwesomeIcon
                 icon={faTimesCircle}
                 size="lg"

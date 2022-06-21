@@ -31,20 +31,32 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
   });
   useEffect(() => {
     setCurrentRoute(routeSource.getItemById(stepId));
+
     setDescription(
       routeSource.getItemById(stepId)?.description
         ? routeSource.getItemById(stepId).description
         : ""
     );
-    setdate(
-      routeSource.getItemById(stepId)?.date
-        ? routeSource.getItemById(stepId)?.date
-        : ""
-    );
+    let date = routeSource.getItemById(stepId)?.date
+    console.log(date)
+    if (date != "" && date != null) {
+      date = new Date(routeSource.getItemById(stepId)?.date).toLocaleDateString()
+      date = date.split("/");
+      setdate(`${date[2]}-${date[1]}-${date[0]}`)
+    }
+    else {
+      setdate("")
+    }
   }, [routeSource, stepId]);
   const handleClick = async () => {
-    let arrayDate = date.split("-");
-    let formatedDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`;
+    let formatedDate
+    if (date != "") {
+      let arrayDate = date.split("-");
+      formatedDate = `${arrayDate[2]}-${arrayDate[1]}-${arrayDate[0]}`;
+    }
+    else {
+      formatedDate = "";
+    }
     mutationUpdateStep.mutate({
       token,
       id: currentRoute.id,
@@ -85,6 +97,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
         />
         <Form.Control
           type="date"
+          value={date}
           placeholder="date"
           className="mb-3"
           onChange={(e) => setdate(e.target.value)}
