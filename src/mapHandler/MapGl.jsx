@@ -380,7 +380,7 @@ export default function MapGl({
         mapStyle="mapbox://styles/mapbox/streets-v11"
         onClick={(e) => handleClick(e)}
       >
-        {!isLoadingLocation && !isErrorLocation && (
+        {!isLoadingLocation && !isErrorLocation && displayAlbum && (
           <Source
             id="location"
             type="geojson"
