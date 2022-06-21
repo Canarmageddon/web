@@ -1,4 +1,13 @@
+.nav {
+    border-bottom: 3px solid white;
+    background-color: var(--primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .sidenav {
+    border-right: 3px solid white;
     height: 100%;
     position: fixed;
     z-index: 1;
@@ -83,4 +92,8 @@
     top: 8px;
     left: 50px;
     color: white;
+}
+
+.bars-icon {
+    margin-left: 5px;
 }
