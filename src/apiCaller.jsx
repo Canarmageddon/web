@@ -77,10 +77,10 @@ export const fetchPois = async (token, id) =>
 
 export const deletePoi = async ({ token, id }) => {
   return await fetch(`${url}point_of_interests/${id}`, {
-    headers: { Authorization: `Bearer ${token}`, },
+    headers: { Authorization: `Bearer ${token}` },
     method: "DELETE",
   }).then((res) => checkStatus(res));
-}
+};
 
 export const createPoi = async ({
   token,
@@ -156,8 +156,8 @@ export const fetchLocations = async (token, id) =>
 
 export const fetchAlbumElementLocations = async (token, id) =>
   await fetch(`${url}trips/${id}/albumElements/locations`)
-    .then(res => checkStatus(res))
-    .then(res => res.json())
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
 
 /* -------------------------------------------*/
 
@@ -230,7 +230,8 @@ export const addUser = async ({ token, email, name, id }) => {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      email, name
+      email,
+      name,
     }),
   })
     .then((res) => checkStatus(res))
@@ -462,6 +463,11 @@ export const cloneTrip = async ({ id, name, creator }) =>
 
 export const getAlbum = async (id) =>
   await fetch(`${url}trips/${id}/album`)
+    .then((res) => checkStatus(res))
+    .then((res) => res.json());
+
+export const getAlbumElements = async (id, albumId) =>
+  await fetch(`${url}albums/${albumId}/data`)
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
