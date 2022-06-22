@@ -154,6 +154,11 @@ export const fetchLocations = async (token, id) =>
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
+export const fetchAlbumElementLocations = async (token, id) =>
+  await fetch(`${url}trips/${id}/albumElements/locations`)
+    .then(res => checkStatus(res))
+    .then(res => res.json())
+
 /* -------------------------------------------*/
 
 /* ------------ USER -----------------------*/
