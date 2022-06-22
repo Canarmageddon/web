@@ -30,7 +30,7 @@ const ListPicker = ({
               currentIndex === 0 ? 0 : oldIndex - 1
             )
           }
-          style={{ color: "var(--primary)" }}
+          style={{ color: "black" }}
         />
       )}
       <h4
@@ -40,7 +40,7 @@ const ListPicker = ({
           maxWidth: 350,
           minWidth: 350,
           userSelect: "none",
-          color: "var(--primary)",
+          color: "black",
         }}
       >
         {listLength > 0 ? listTitle : t("fist_list")}
@@ -55,7 +55,7 @@ const ListPicker = ({
             )
           }
           disabled={currentIndex === listLength - 1}
-          style={{ color: "var(--primary)" }}
+          style={{ color: "black" }}
         />
       )}
     </div>

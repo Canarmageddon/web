@@ -25,10 +25,10 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
             return oldData */
     },
     onSuccess: () => {
-      toast.success(t("deleted_list"))
+      toast.success(t("deleted_list"));
     },
     onError: () => {
-      toast.warning(t("not_deleted_list"))
+      toast.warning(t("not_deleted_list"));
     },
     onSettled: () => {
       setCurrentIndex((old) => old - 1);
@@ -42,10 +42,10 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
             return oldData */
     },
     onSuccess: () => {
-      toast.success(t("created"))
+      toast.success(t("created"));
     },
     onError: () => {
-      toast.warning(t("not_created"))
+      toast.warning(t("not_created"));
     },
     onSettled: () => {
       queryClient.invalidateQueries(["toDoLists", idTrip]);
@@ -58,10 +58,10 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
       return oldData;
     },
     onSuccess: () => {
-      toast.success(t("deleted"))
+      toast.success(t("deleted"));
     },
     onError: () => {
-      toast.warning(t("not_deleted"))
+      toast.warning(t("not_deleted"));
     },
     onSettled: () => {
       queryClient.invalidateQueries(["toDoLists", idTrip]);
@@ -104,30 +104,30 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
             <Button
               onClick={() => {
                 if (title !== "") {
-                  let formatedDate = date
+                  let formatedDate = date;
                   if (date != "") {
                     let splitDate = date.split("-");
-                    formatedDate = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`
+                    formatedDate = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`;
                   }
                   mutationAddTask.mutate({
                     token,
                     title,
                     id: toDoList.id,
                     date: formatedDate,
-                    creator: user
+                    creator: user,
                   });
                   setTitle("");
                   setDate("");
                   setShowForm(false);
                 }
               }}
-              style={{ flex: 0.1 }}
+              className="add-to-do-list-btn"
             >
               {t("add")}
             </Button>
           </div>
         )}
-        <div>
+        <div style={{ overflowY: "scroll", height: "65vh" }}>
           {toDoList?.tasks?.map((t) => (
             <CardItem
               key={t.id}
@@ -141,7 +141,8 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
               }}
             >
               <p style={{ margin: 5 }}>
-                {t.date && `${new Date(t.date).toLocaleDateString()} :`}  {t.name}
+                {t.date && `${new Date(t.date).toLocaleDateString()} :`}{" "}
+                {t.name}
               </p>
 
               <FontAwesomeIcon

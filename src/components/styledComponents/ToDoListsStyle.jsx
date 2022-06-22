@@ -33,6 +33,6 @@ export const CardItem = styled.div`
   border: 3px solid var(--primary);
   border-radius: 1rem;
   user-select: none;
-  color: var(--primary);
+  color: black;
   font-size: 0.8em;
 `;
