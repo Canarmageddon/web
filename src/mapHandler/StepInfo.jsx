@@ -19,7 +19,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
   const [file, setFile] = useState([]);
   const [date, setdate] = useState("");
   const successEdit = () => toast.success(t("step_updated"));
-  const successDelete = () => toast.success(t("step_deleted"))
+  const successDelete = () => toast.success(t("step_deleted"));
   const mutationUpdateStep = useMutation(updateStep, {
     onMutate: () => {
       currentRoute.description = description;
@@ -34,14 +34,12 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
     onMutate: () => {
       setRouteSource(routeSource.removeItem(stepId));
     },
-    onSettled: () => {
-
-    },
+    onSettled: () => {},
     onSuccess: () => {
       setContentPage("map");
       successDelete();
-    }
-  })
+    },
+  });
   useEffect(() => {
     setCurrentRoute(routeSource.getItemById(stepId));
 
@@ -50,7 +48,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
         ? routeSource.getItemById(stepId).description
         : ""
     );
-    let date = routeSource.getItemById(stepId)?.date
+    let date = routeSource.getItemById(stepId)?.date;
     if (date != "" && date != null) {
       date = new Date(
         routeSource.getItemById(stepId)?.date
@@ -77,7 +75,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
     });
   };
   const handleDelete = async () => {
-    mutationDeleteStep.mutate({ token, id: stepId })
+    mutationDeleteStep.mutate({ token, id: stepId });
   };
   return (
     <div
@@ -118,16 +116,19 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
           mapElement={currentRoute}
           getDocumentFromElement={getDocumentsFromStep}
         />
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Button type="button" onClick={handleClick} style={{ marginTop: 10 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <Button type="button" onClick={handleClick}>
             Enregistrer
           </Button>
           {TrashAlt(handleDelete)}
-          <Button
-            type="button"
-            onClick={() => setMovingStep(currentRoute.id)}
-            style={{ marginTop: 10 }}
-          >
+          <Button type="button" onClick={() => setMovingStep(currentRoute.id)}>
             {t("move")}
           </Button>
         </div>

@@ -14,7 +14,7 @@ code {
 }
 
 button:not(.nav-link) {
-    color: white !important;
+    color: black !important;
     cursor: pointer;
 }
 
