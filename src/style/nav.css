@@ -14,18 +14,19 @@
     left: 0;
     background-color: #5352ed;
     overflow-x: hidden;
-    padding-top: 30px;
+    padding-top: 20px;
     transition: 0.5s;
 }
 
 .sidenav a {
     user-select: none;
-    padding: 8px 8px 8px 32px;
+    padding: 8px 8px 8px 8px;
     text-decoration: none;
     font-size: 25px;
     color: white !important;
     display: block;
     transition: 0.3s;
+    white-space: nowrap;
 }
 
 .sidenav a:hover {
