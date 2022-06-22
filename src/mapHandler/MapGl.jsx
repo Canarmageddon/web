@@ -55,6 +55,7 @@ export default function MapGl({
   const [token] = useToken();
   const [currentImage, setCurrentImage] = useState(null);
   const [show, setShow] = useState(false);
+  const [firstFetch, setFirstFetch] = useState(true)
   const [viewport, setViewport] = useState({
     latitude: 0,
     longitude: 0,
@@ -74,7 +75,7 @@ export default function MapGl({
     isError: isErrorSteps,
     error: errorSteps,
     data: dataSteps,
-  } = steps(token, id, routeSource, setRouteSource, setViewport);
+  } = steps(token, id, routeSource, setRouteSource, setViewport, firstFetch, setFirstFetch);
   const {
     isLoading: isLoadingPoi,
     isError: isErrorPoi,
