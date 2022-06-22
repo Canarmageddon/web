@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 import { ReactQueryDevtools } from "react-query/devtools";
 import "react-toastify/dist/ReactToastify.min.css";
 import i18n from "./translation/i18n";
-import ScreenLogo from "./components/loadingScreen/ScreenLogo";
+import RotatingDuck from "./components/loadingScreen/RotatingDuck";
 
 const AppStart = () => {
   const queryClient = new QueryClient({
@@ -25,7 +25,7 @@ const AppStart = () => {
 
   return (
     <React.StrictMode>
-      <Suspense fallback={<ScreenLogo />}>
+      <Suspense fallback={<RotatingDuck />}>
         <ToastContainer
           position='top-right'
           autoClose={3000}
