@@ -21,6 +21,7 @@ import { useToken, useUser } from "../../context/userContext";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import LanguageModal from "../LanguageModal";
+import { generateLink } from "../../Functions";
 
 const TravelsList = ({ setContentPage }) => {
   const { t } = useTranslation("translation", { keyPrefix: "trip_list" });
@@ -68,9 +69,7 @@ const TravelsList = ({ setContentPage }) => {
     event.stopPropagation();
     const res = await generateTripLink(token, id);
 
-    navigator.clipboard.writeText(
-      `${window.location.hostname}:${location.port}/unregistered/${id}/${res.message}/home`
-    ); //TODO
+    navigator.clipboard.writeText(generateLink(id, res.message)); //TODO
     generatedLink(t("trip_link"));
   };
   const logout = () => {

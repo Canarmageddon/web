@@ -38,8 +38,8 @@ export default function Member({ member, id, refetchMembers }) {
       setRole(e.target.value);
     }
   };
-  const handleClick = async (email) => {
-    mutationRemoveUser.mutate({ token, email, id });
+  const handleClick = async (email, name) => {
+    mutationRemoveUser.mutate({ token, email, name, id });
   };
   return (
     <li key={member.user.id}>
@@ -49,7 +49,7 @@ export default function Member({ member, id, refetchMembers }) {
             <option value="editor">Editeur</option>
             <option value="guest">Invité</option>
         </select> */}
-      <button className="delete" onClick={() => handleClick(member.user.email)}>
+      <button className="delete" onClick={() => handleClick(member.user.email, member.user.name)}>
         {t("delete")}
       </button>
       <hr className="bar" />
