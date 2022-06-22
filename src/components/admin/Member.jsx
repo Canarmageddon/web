@@ -4,7 +4,9 @@ import { useMutation, useQueryClient } from "react-query";
 import { useToken } from "../../context/userContext";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 export default function Member({ member, id, refetchMembers }) {
+  const { t } = useTranslation("translation");
   const queryClient = useQueryClient();
   const [role, setRole] = useState(member.role);
   const [token] = useToken();
@@ -48,7 +50,7 @@ export default function Member({ member, id, refetchMembers }) {
             <option value="guest">Invité</option>
         </select> */}
       <button className="delete" onClick={() => handleClick(member.user.email)}>
-        Supprimer {/* TODO */}
+        {t("delete")}
       </button>
       <hr className="bar" />
     </li>

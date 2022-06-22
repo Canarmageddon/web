@@ -82,7 +82,7 @@ const Admin = ({ display }) => {
             type="email"
           />
           <button type="submit" className="button-new">
-            Inviter
+            {t("admin.invite")}
           </button>
         </div>
       </form>
@@ -97,7 +97,7 @@ const Admin = ({ display }) => {
             type="text"
           />
           <button type="submit" className="button-new">
-            Inviter
+            {t("admin.invite")}
           </button>
         </div>
       </form>
