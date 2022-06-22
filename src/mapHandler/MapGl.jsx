@@ -304,7 +304,7 @@ export default function MapGl({
         setContentPage("poiInfo");
         setPoiId(e.features[0].id);
         return true;
-      } else if (e.features[0].source === "route") {
+      } else if (e.features[0].source === "route" || e.features[0].source === "routeEnd") {
         setContentPage("stepInfo");
         setStepId(e.features[0].id);
         return true;
