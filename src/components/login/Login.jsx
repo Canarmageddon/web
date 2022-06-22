@@ -126,7 +126,6 @@ const Login = () => {
         });
         queryClient.invalidateQueries("whoami");
       } catch (error) {
-        console.log(error);
         credentialsError();
       }
       setIsCheckingCredentials(false);
