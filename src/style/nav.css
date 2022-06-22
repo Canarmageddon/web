@@ -49,7 +49,8 @@
     }
 }
 
-.navbar>svg {
+.navbar>svg,
+.navbar>div>svg {
     color: white;
 }
 
@@ -87,5 +88,10 @@
 }
 
 .bars-icon {
-    margin-left: 5px;
+    margin-left: 15px;
+}
+
+.user-nav-icon {
+    margin-left: 10px;
+    margin-right: 15px;
 }

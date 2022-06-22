@@ -26,3 +26,7 @@
     border-radius: 8px;
     padding: 6px 0;
 }
+
+.logbook-entry>p {
+    margin-bottom: 0 !important;
+}

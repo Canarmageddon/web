@@ -21,19 +21,21 @@ const NavBar = ({ setShowMenu }) => {
             setShowMenu((oldValue) => !oldValue);
           }}
         />
-        <FontAwesomeIcon
-          className="nav-icon"
-          onClick={() => setShowModal(true)}
-          icon={faGlobe}
-          size={"2x"}
-        />
-        <FontAwesomeIcon
-          className="nav-icon"
-          icon={faUser}
-          size="2x"
-          onClick={() => navigate("/home/profile")}
-          style={{ cursor: "pointer" }}
-        />
+        <div>
+          <FontAwesomeIcon
+            className="nav-icon"
+            onClick={() => setShowModal(true)}
+            icon={faGlobe}
+            size={"2x"}
+          />
+          <FontAwesomeIcon
+            className="user-nav-icon"
+            icon={faUser}
+            size="2x"
+            onClick={() => navigate("/home/profile")}
+            style={{ cursor: "pointer" }}
+          />
+        </div>
         <LanguageModal showModal={showModal} setShowModal={setShowModal} />
       </div>
     </>
