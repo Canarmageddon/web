@@ -3,6 +3,7 @@ import {
   fetchSteps,
   fetchLocations,
   getPictures,
+  fetchAlbumElementLocations,
 } from "../../apiCaller";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import LayerUtile from "../../factory/layers/LayerUtile";
@@ -62,13 +63,15 @@ export function pois(token, id, setPoiSource) {
 }
 
 export function locations(token, id, setLocationSource, enabled) {
-  return useQuery(["locations", id], () => fetchLocations(token, id), {
-    enabled: enabled,
-    retry: false,
-    onSuccess: (data) => {
-      let locationsList = [];
-      data["hydra:member"].map((item) => {
-        if (item.albumElements.length > 0)
+  return useQuery(
+    ["locations", id],
+    () => fetchAlbumElementLocations(token, id),
+    {
+      enabled: enabled,
+      retry: false,
+      onSuccess: (data) => {
+        let locationsList = [];
+        data.map((item) => {
           locationsList.push(
             new Location({
               id: item.id,
@@ -77,10 +80,11 @@ export function locations(token, id, setLocationSource, enabled) {
               albumElements: item.albumElements,
             }),
           );
-      });
-      setLocationSource(new LayerUtile(locationsList));
+        });
+        setLocationSource(new LayerUtile(locationsList));
+      },
     },
-  });
+  );
 }
 
 export function pictures(token, id, setImageList, enabled) {

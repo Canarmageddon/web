@@ -94,6 +94,7 @@
     "step": "Étape",
     "poi": "Point d'intérêt",
     "add": "Ajouter",
+    "delete": "Supprimer",
     "admin": {
         "added_user": "l'utilisateur a été ajouté",
         "not_added_user": "l'utilisateur n'a pas pu être ajouté",

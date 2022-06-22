@@ -94,6 +94,7 @@
     "step": "Step",
     "poi": "Point of interest",
     "add": "Add",
+    "delete": "Delete",
     "admin": {
         "added_user": "The user was added",
         "not_added_user": "The user could not be added",

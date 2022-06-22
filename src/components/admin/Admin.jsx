@@ -28,6 +28,7 @@ const Admin = ({ display }) => {
     onSuccess: () => {
       toast.success(t("admin.added_user"))
       setNewEmail("");
+      setLastname("");
     },
     onError: (error) => {
       //TODO Handle member already in trip
@@ -49,7 +50,6 @@ const Admin = ({ display }) => {
     onSettled: () => queryClient.invalidateQueries(["members", intId])
 
   })
-  const [firstname, setfirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const handleSubmit = async (e) => {
@@ -61,7 +61,7 @@ const Admin = ({ display }) => {
   };
   const handleSubmitNoAccount = (e) => {
     e.preventDefault();
-
+    mutationAddUser.mutate({ token, name: lastname, id: intId });
   }
   return (
     <div
@@ -82,7 +82,7 @@ const Admin = ({ display }) => {
             type="email"
           />
           <button type="submit" className="button-new">
-            Inviter
+            {t("admin.invite")}
           </button>
         </div>
       </form>
@@ -91,21 +91,13 @@ const Admin = ({ display }) => {
         <hr className="blue-hr" />
         <div className="invite-div">
           <FormControl
-            placeholder={t("create_account.first_name")}
-            value={firstname}
-            onChange={(e) => setfirstname(e.target.value)}
-            type="text"
-          />
-          <br></br>
-          <FormControl
             placeholder={t("create_account.last_name")}
             value={lastname}
             onChange={(e) => setLastname(e.target.value)}
             type="text"
           />
-
           <button type="submit" className="button-new">
-            Inviter
+            {t("admin.invite")}
           </button>
         </div>
       </form>
