@@ -14,8 +14,14 @@ code {
 }
 
 button:not(.nav-link) {
-    color: white !important;
+    color: black !important;
     cursor: pointer;
+}
+
+button.btn-secondary,
+button.btn-danger,
+button.home-button {
+    color: white !important;
 }
 
 .map-container {

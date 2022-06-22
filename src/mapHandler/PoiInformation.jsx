@@ -10,10 +10,10 @@ import { useMutation, useQueryClient } from "react-query";
 import { useToken } from "../context/userContext";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
-  const { t } = useTranslation('translation', { "keyPrefix": "poi_info" });
+  const { t } = useTranslation("translation", { keyPrefix: "poi_info" });
   const successDelete = () => toast.info(t("poi_deleted"));
   const successEdit = () => toast.success(t("poi_updated"));
 
@@ -116,26 +116,34 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
           getDocumentFromElement={getDocumentsFromPoi}
         />
         {t("associate_step")}
-        <select value={selectedStep} onChange={(e) => handleChange(e)}>
+        <Form.Select
+          value={selectedStep}
+          onChange={(e) => handleChange(e)}
+          style={{ width: "70%" }}
+        >
           <option value={null}></option>
           {routeSource.listLocations.map((step) => {
             return (
               <option key={step.id} value={step.id}>
-                {step.description}
+                {step.description ?? "-"}
               </option>
             );
           })}
-        </select>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Button type="button" onClick={handleClick} style={{ marginTop: 10 }}>
+        </Form.Select>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            justifyContent: "space-evenly",
+            marginTop: 25,
+          }}
+        >
+          <Button type="button" onClick={handleClick}>
             Enregistrer
           </Button>
           {TrashAlt(handleDelete)}
-          <Button
-            type="button"
-            onClick={() => setMovingPoi(currentPoi.id)}
-            style={{ marginTop: 10 }}
-          >
+          <Button type="button" onClick={() => setMovingPoi(currentPoi.id)}>
             {t("move")}
           </Button>
         </div>

@@ -1,11 +1,5 @@
-import {
-  fetchPois,
-  fetchSteps,
-  fetchLocations,
-  getPictures,
-  fetchAlbumElementLocations,
-} from "../../apiCaller";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import {fetchPois, fetchSteps, fetchLocations, getPictures, fetchAlbumElementLocations} from "../../apiCaller";
+import {useQuery, useMutation, useQueryClient} from "react-query";
 import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
 import { distanceInKmBetweenEarthCoordinates } from "../../Functions";
@@ -21,20 +15,23 @@ export function steps(
 ) {
   return useQuery(["steps", id], () => fetchSteps(token, id), {
     retry: false,
-    onSuccess: (data) => {
+    onSuccess: data => {
       let lstStep = [];
-      data.map((item) => {
-        lstStep.push(
-          new Location({
-            id: item.id,
-            description: item.description,
-            title: item.title,
-            longitude: item.location.longitude,
-            latitude: item.location.latitude,
-            step: item?.step?.id,
-            date: item?.date == null ? "" : item.date,
-          }),
-        );
+      data.map(item => {
+        lstStep.push(new Location({
+          id: item.id,
+          description: item.description,
+          title: item.title,
+          longitude: item.location.longitude,
+          latitude: item.location.latitude,
+          step: item
+            ?.step
+              ?.id,
+          date: item
+            ?.date == null
+              ? ""
+              : item.date
+        }));
       });
       if (
         routeSource.listLocations.length == 0 &&
@@ -42,37 +39,49 @@ export function steps(
         firstFetch
       )
         setViewport({
-          latitude: data[data?.length - 1]?.location?.latitude,
-          longitude: data[data?.length - 1]?.location?.longitude,
+          latitude: data[
+            data
+              ?.length - 1
+          ]
+            ?.location
+              ?.latitude,
+          longitude: data[
+            data
+              ?.length - 1
+          ]
+            ?.location
+              ?.longitude,
           zoom: 7,
           bearing: 0,
-          pitch: 0,
+          pitch: 0
         });
       setFirstFetch(false);
       setRouteSource(new LayerUtile(lstStep));
-    },
+    }
   });
 }
 
 export function pois(token, id, setPoiSource) {
-  return useQuery(["poi", id], () => fetchPois(token, id), {
+  return useQuery([
+    "poi", id
+  ], () => fetchPois(token, id), {
     retry: false,
-    onSuccess: (data) => {
+    onSuccess: data => {
       let lstPoi = [];
-      data.map((item) => {
-        lstPoi.push(
-          new Location({
-            id: item.id,
-            description: item.description,
-            title: item.title,
-            longitude: item.location.longitude,
-            latitude: item.location.latitude,
-            step: item?.step?.id,
-          }),
-        );
+      data.map(item => {
+        lstPoi.push(new Location({
+          id: item.id,
+          description: item.description,
+          title: item.title,
+          longitude: item.location.longitude,
+          latitude: item.location.latitude,
+          step: item
+            ?.step
+              ?.id
+        }));
       });
       setPoiSource(new LayerUtile(lstPoi));
-    },
+    }
   });
 }
 
@@ -124,25 +133,29 @@ export function locations(token, id, setLocationSource, enabled) {
 }
 
 export function pictures(token, id, setImageList, enabled) {
-  return useQuery(["explorePictures", id], () => getPictures(token, id), {
+  return useQuery([
+    "explorePictures", id
+  ], () => getPictures(token, id), {
     enabled: enabled,
-    onSuccess: (data) => {
+    onSuccess: data => {
       let formatedList = [];
-      data.map((picture) => {
+      data.map(picture => {
         formatedList = [
-          ...formatedList,
-          {
+          ...formatedList, {
             type: "Feature",
             id: picture.id,
             geometry: {
               type: "Point",
-              coordinates: [picture.id * 2, picture.id * 2], //TODO
-            },
-          },
+              coordinates: [
+                picture.id * 2,
+                picture.id * 2
+              ] //TODO
+            }
+          }
         ];
       });
-      setImageList({ type: "FeatureCollection", features: formatedList });
-    },
+      setImageList({type: "FeatureCollection", features: formatedList});
+    }
   });
 }
 
@@ -157,11 +170,9 @@ export function pictures(token, id, setImageList, enabled) {
 }
  */
 export function logBookEntries(idLocation, enabled) {
-  return useQuery(
-    ["LogBookEntriesByLocations", idLocation],
-    () => getLogBookEntriesByLocation(idLocation),
-    {
-      enabled: enabled && idLocation != null,
-    },
-  );
+  return useQuery([
+    "LogBookEntriesByLocations", idLocation
+  ], () => getLogBookEntriesByLocation(idLocation), {
+    enabled: enabled && idLocation != null
+  });
 }

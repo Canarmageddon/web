@@ -6,7 +6,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import "./form.css"
+import "./form.css";
 import { FormControl } from "react-bootstrap";
 import { generateLink } from "../../Functions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,30 +30,27 @@ const Admin = ({ display }) => {
   } = useQuery(["members", intId], () => fetchAllUser({ token, id }));
   const mutationAddUser = useMutation(addUser, {
     onSuccess: () => {
-      toast.success(t("admin.added_user"))
+      toast.success(t("admin.added_user"));
       setNewEmail("");
       setLastname("");
     },
     onError: (error) => {
-      //TODO Handle member already in trip
-      toast.warning(t("admin.not_added_user"))
-      console.log(error);
+      toast.warning(t("admin.not_added_user"));
     },
-    onSettled: () => queryClient.invalidateQueries(["members", intId])
+    onSettled: () => queryClient.invalidateQueries(["members", intId]),
   });
   const mutationAddUserNoAccount = useMutation(addUser, {
     onSuccess: () => {
-      toast.success(t("admin.added_user"))
+      toast.success(t("admin.added_user"));
       setLastname("");
       setfirstname("");
-    }, onError: (error) => {
-      //TODO Handle member already in trip
-      toast.warning(t("admin.not_added_user"))
-      console.log(error);
     },
-    onSettled: () => queryClient.invalidateQueries(["members", intId])
+    onError: (error) => {
+      toast.warning(t("admin.not_added_user"));
+    },
+    onSettled: () => queryClient.invalidateQueries(["members", intId]),
   });
-  const { data: dataLink } = useQuery(["link", id], () => getLink(id))
+  const { data: dataLink } = useQuery(["link", id], () => getLink(id));
   const [lastname, setLastname] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const handleSubmit = async (e) => {
@@ -66,15 +63,36 @@ const Admin = ({ display }) => {
   const handleSubmitNoAccount = (e) => {
     e.preventDefault();
     mutationAddUser.mutate({ token, name: lastname, id: intId });
-  }
+  };
   return (
     <div
       style={{
         display: display ? "block" : "none",
+        marginLeft: 30,
+        marginRight: 30,
         flex: 1,
       }}
     >
-      <h2 className="main-title">{t("admin.trips_members")}</h2>
+      <div className="title-link-container">
+        <h2 className="main-title">{t("admin.trips_members")}</h2>
+        <div className="link-container">
+          {t("link_share")} :{" "}
+          <a
+            target="_blank"
+            href={"http://" + generateLink(id, dataLink?.link)}
+          >
+            {generateLink(id, dataLink?.link)}
+          </a>
+          <FontAwesomeIcon
+            icon={faPaperclip}
+            className="paper-clip-icon"
+            onClick={
+              () =>
+                navigator.clipboard.writeText(generateLink(id, dataLink?.link)) //TODO
+            }
+          />
+        </div>
+      </div>
       <form className="admin-form" onSubmit={(e) => handleSubmit(e)}>
         <span className="invite-title ">{t("admin.add_member")}</span>
         <hr className="blue-hr" />
@@ -105,24 +123,7 @@ const Admin = ({ display }) => {
           </button>
         </div>
       </form>
-      {t("link_share")} : <a>{generateLink(id, dataLink?.link)}</a>
-      <FontAwesomeIcon
-        icon={faPaperclip}
-        size="2x"
-        onClick={() => {
-          console.log("aa")
-          toast.success(t("trip_list.trip_link_found"));
-          navigator.clipboard.writeText(generateLink(id, dataLink?.link))
-        } //TODO
-        }
-        style={{
-          cursor: "pointer",
-          marginLeft: "10px"
-        }}
-      />
       <h3 className="sub-title">{t("admin.members")} </h3>
-      <hr className="bar" />
-      <span className="nom">{t("trip_list.name")}</span>
       <hr className="bar" />
       {!isLoadingMembers && !isErrorMembers && (
         <ul className="list">

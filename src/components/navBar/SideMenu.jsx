@@ -41,11 +41,11 @@ const SideMenu = ({ setContentPage, showMenu }) => {
           setContentPage();
           navigate("/trips");
         }}
-        size="2x"
+        size="3x"
         style={{
           color: "red",
-          marginLeft: 30,
-          marginTop: 10,
+          marginLeft: 8,
+          marginTop: 0,
         }}
       />
       <a onClick={() => setContentPage("map")}>{t("map")}</a>
