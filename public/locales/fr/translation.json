@@ -10,14 +10,16 @@
   },
   "create_account": {
     "invalid_email": "Cette adresse e-mail n'est pas valide",
-    "used_email": "Cette adresse e-mail est déjà utilisée",
+    "user_email": "Cette adresse e-mail est déjà utilisée",
     "no_password": "Veuilez renseigner un mot de passe",
     "confirm_password": "Veuilez confirmer le mot de passe",
     "divergent_passwords": "Les mots de passe ne correspondent pas",
     "success": "Compte créé !",
     "first_name": "Prénom",
     "last_name": "Nom",
-    "create_account": "Créer mon compte"
+    "create_account": "Créer mon compte",
+    "no_firstname": "Veuillez entrer un prénom",
+    "no_lastname": "Veuillez entrer un nom"
   },
   "side_menu": {
     "map": "Carte",
@@ -109,7 +111,7 @@
     "guest": "Invité"
   },
   "unregistered_home": {
-    "empty_album": "L'album est vide pour l'instant mais vous pouvez toujours regarde leur voyage sur la carte",
+    "empty_album": "L'album est vide pour l'instant mais vous pouvez toujours regarder leur voyage sur la carte",
     "map": "Afficher la carte",
     "album": "Afficher l'album"
   },
@@ -119,7 +121,7 @@
   "task": {
     "task_name": "Nom de la tâche",
     "created": "Tâche créé",
-    "not_created": "La tâche n'a pas pu être créé",
+    "not_created": "La tâche n'a pas pu être créée",
     "deleted": "Tâche supprimée",
     "not_deleted": "La tâche n'a pas pu être supprimée",
     "deleted_list": "La liste de tâche a été supprimée",
@@ -128,5 +130,6 @@
   },
   "todolist_created": "La liste des tâches a été créée",
   "todolist_not_created": "La liste des tâches n'a  pas pu être créée",
-  "link_share": "Envoyez ce lien à vos proches pour qu'ils puissent suivre vos aventures"
+  "link_share": "Envoyez ce lien à vos proches pour qu'ils puissent suivre vos aventures",
+  "todolist_name": "Nom de la liste de tâches"
 }

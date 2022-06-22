@@ -118,7 +118,7 @@ const ToDoLists = ({ display }) => {
         />
         {showForm && (
           <FormControl
-            placeholder={t("create_account.last_name")}
+            placeholder={t("todolist_name")}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             onKeyPress={(e) => handleKeyPress(e)}
