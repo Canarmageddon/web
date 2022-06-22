@@ -53,6 +53,7 @@ const CreateAccount = () => {
         className="language-icon"
         size={"3x"}
       />
+      <h1 className="h1-title">Duck-Trotter</h1>
       <form className="form-connection">
         <div className="input-container">
           <label htmlFor="email" className="input-label">
