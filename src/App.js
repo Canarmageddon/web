@@ -36,7 +36,31 @@ function App() {
   const [travelers, setTravelers] = useState([]);
   const [movingStep, setMovingStep] = useState(null);
   const [movingPoi, setMovingPoi] = useState(null);
-
+  const displayMapForAlbum = () => (
+    <>
+      <UnregisteredNavBar map={true} setContentPage={setContentPage} />
+      <div style={{ display: "flex" }}>
+        <LocationInformation
+          display={contentPage === "locationInfo"}
+          locationId={locationId}
+        />
+        <div
+          style={{
+            height: "100vh",
+            flex: contentPage === "map" ? 1 : 0.7,
+          }}
+          className='map-container'
+        >
+          <MapGl
+            exploring={true}
+            setContentPage={setContentPage}
+            displayAlbum={true}
+            setLocationId={setLocationId}
+          />
+        </div>
+      </div>
+    </>
+  );
   return (
     <BrowserRouter>
       <UserProvider>
@@ -159,7 +183,8 @@ function App() {
                 exact
                 path='map/:id/history'
                 element={
-                  <>
+                  displayMapForAlbum()
+                  /*                   <>
                     <div
                       style={{
                         marginLeft: showMenu ? 200 : 0,
@@ -178,11 +203,10 @@ function App() {
                           flex:
                             contentPage === "map"
                               ? 1
-                              : contentPage === "details" ||
-                                contentPage === "admin"
+                              : contentPage === "locationInfo"
                               ? 0
                               : 0.7,
-                          height: "93vh",
+                          height: "95vh",
                         }}
                         className='map-container'
                       >
@@ -198,7 +222,7 @@ function App() {
                       showMenu={showMenu}
                       setContentPage={setContentPage}
                     />
-                  </>
+                  </> */
                 }
               />
               <Route
@@ -225,37 +249,7 @@ function App() {
             </Route>
             <Route path='/unregistered/:id/:link/' element={<CheckLink />}>
               <Route path='home/' element={<Home />} />
-              <Route
-                path='map/'
-                element={
-                  <>
-                    <UnregisteredNavBar
-                      map={true}
-                      setContentPage={setContentPage}
-                    />
-                    <div style={{ display: "flex" }}>
-                      <LocationInformation
-                        display={contentPage === "locationInfo"}
-                        locationId={locationId}
-                      />
-                      <div
-                        style={{
-                          height: "100vh",
-                          flex: contentPage === "map" ? 1 : 0.7,
-                        }}
-                        className='map-container'
-                      >
-                        <MapGl
-                          exploring={true}
-                          setContentPage={setContentPage}
-                          displayAlbum={true}
-                          setLocationId={setLocationId}
-                        />
-                      </div>
-                    </div>
-                  </>
-                }
-              />
+              <Route path='map/' element={displayMapForAlbum()} />
               <Route
                 path='album/:idAlbum'
                 element={
