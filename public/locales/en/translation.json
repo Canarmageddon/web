@@ -102,7 +102,9 @@
         "add_member": "Invite a member",
         "add_no_account": "Add a member with no account",
         "invite": "Invite",
-        "members": "Members"
+        "members": "Members",
+        "member": "Member",
+        "guest": "guest"
     },
     "unregistered_home": {
         "empty_album": "The album is empty but you can still see the trip on the map",
@@ -123,5 +125,6 @@
         "add": "Add"
     },
     "todolist_created": "The todo list was created",
-    "todolist_not_created": "Could not created the todo list"
+    "todolist_not_created": "Could not created the todo list",
+    "link_share": "Send this link to anyone for them to follow your adventures"
 }

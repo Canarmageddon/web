@@ -105,7 +105,7 @@ const Admin = ({ display }) => {
           </button>
         </div>
       </form>
-      Envoyez ce lien à vos proches pour qu'ils puissent suivre vos aventures : {generateLink(id, dataLink?.link)}
+      {t("link_share")} : <a>{generateLink(id, dataLink?.link)}</a>
       <FontAwesomeIcon
         icon={faPaperclip}
         size="2x"
