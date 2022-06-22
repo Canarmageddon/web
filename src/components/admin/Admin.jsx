@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Member from "./Member";
-import { addUser, fetchAllUser } from "../../apiCaller";
+import { addUser, fetchAllUser, getLink } from "../../apiCaller";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
@@ -8,6 +8,10 @@ import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import "./form.css"
 import { FormControl } from "react-bootstrap";
+import { generateLink } from "../../Functions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
+
 const Admin = ({ display }) => {
   const { t } = useTranslation("translation");
   const noEmail = () =>
@@ -48,8 +52,8 @@ const Admin = ({ display }) => {
       console.log(error);
     },
     onSettled: () => queryClient.invalidateQueries(["members", intId])
-
-  })
+  });
+  const { data: dataLink } = useQuery(["link", id], () => getLink(id))
   const [lastname, setLastname] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const handleSubmit = async (e) => {
@@ -101,6 +105,17 @@ const Admin = ({ display }) => {
           </button>
         </div>
       </form>
+      {t("link_share")} : <a>{generateLink(id, dataLink?.link)}</a>
+      <FontAwesomeIcon
+        icon={faPaperclip}
+        size="2x"
+        onClick={() => navigator.clipboard.writeText(generateLink(id, dataLink?.link)) //TODO
+        }
+        style={{
+          cursor: "pointer",
+          marginLeft: "10px"
+        }}
+      />
       <h3 className="sub-title">{t("admin.members")} </h3>
       <hr className="bar" />
       <span className="nom">{t("trip_list.name")}</span>

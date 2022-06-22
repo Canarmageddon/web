@@ -238,7 +238,7 @@ export const addUser = async ({ token, email, name, id }) => {
     .then((res) => res.json());
 };
 
-export const removeUser = async ({ token, email, id }) => {
+export const removeUser = async ({ token, email, name, id }) => {
   return await fetch(`${url}trips/${id}/removeUser`, {
     method: "PUT",
     headers: {
@@ -247,8 +247,10 @@ export const removeUser = async ({ token, email, id }) => {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      email: email,
+      email,
+      name,
       trip: id,
+
     }),
   }).then((res) => res.json);
 };
@@ -456,6 +458,11 @@ export const cloneTrip = async ({ id, name, creator }) =>
       creator,
     }),
   }).then((res) => checkStatus(res));
+
+export const getLink = async (id) =>
+  await fetch(`${url}trips/${id}/link`)
+    .then(res => checkStatus(res))
+    .then(res => res.json())
 
 /* -------------------------------------------*/
 

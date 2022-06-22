@@ -46,7 +46,7 @@ const Profile = ({ contentPage, setContentPage }) => {
       queryClient.invalidateQueries("user");
     },
     onSuccess: () => {
-      toast.success(t(edit_user("success")));
+      toast.success(t("edit_user.success"));
     },
     onError: () => {
       toast.warning("Erreur s'est produit");
