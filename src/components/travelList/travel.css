@@ -12,7 +12,7 @@
 }
 
 h1.list-title {
-    color: var(--primary);
+    color: #5352ed;
     display: inline;
 }
 
@@ -28,8 +28,8 @@ button.button-new {
 }
 
 .nav-tabs .nav-link.active {
-    color: var(--primary);
-    border-color: #ffffff #ffffff var(--primary);
+    color: #5352ed;
+    border-color: #ffffff #ffffff #5352ed;
 }
 
 .nav-link {
