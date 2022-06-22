@@ -140,7 +140,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
                 overflowWrap: "break-word",
               }}
             >
-              <p style={{ margin: 5 }}>
+              <p style={{ lineHeight: 2 }}>
                 {t.date && `${new Date(t.date).toLocaleDateString()} :`}{" "}
                 {t.name}
               </p>
