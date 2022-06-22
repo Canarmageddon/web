@@ -3,7 +3,6 @@ import { usePoi, useRoute } from "../context/TravelContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { deleteStep, deletePoi } from "../apiCaller";
-import Dropdown from "react-bootstrap/Dropdown";
 import TrashAlt from "./icons/TrashAlt";
 import { useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
@@ -78,8 +77,8 @@ export default function ({ display, setContentPage, setStepId, setPoiId }) {
             <FontAwesomeIcon
               icon={faPen}
               onClick={() => {
-                setStepId(step.id)
-                setContentPage("stepInfo")
+                setStepId(step.id);
+                setContentPage("stepInfo");
               }}
               size="2x"
               className="edit-icon"
@@ -98,7 +97,7 @@ export default function ({ display, setContentPage, setStepId, setPoiId }) {
                       size="2x"
                       onClick={() => {
                         setPoiId(e.id);
-                        setContentPage("poiInfo")
+                        setContentPage("poiInfo");
                       }}
                       className="edit-icon"
                     />
