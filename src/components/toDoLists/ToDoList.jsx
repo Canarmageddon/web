@@ -25,7 +25,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
             return oldData */
     },
     onSuccess: () => {
-      toast.success(t("deleted_list"));
+      toast.error(t("deleted_list"));
     },
     onError: () => {
       toast.warning(t("not_deleted_list"));
@@ -58,7 +58,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
       return oldData;
     },
     onSuccess: () => {
-      toast.success(t("deleted"));
+      toast.error(t("deleted"));
     },
     onError: () => {
       toast.warning(t("not_deleted"));

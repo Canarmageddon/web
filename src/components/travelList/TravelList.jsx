@@ -65,16 +65,14 @@ const TravelsList = ({ setContentPage }) => {
     mutationDeleteTrip.mutate({ token, id: t.id });
   };
   const copyLink = async (event, trip) => {
-    console.log(trip.id)
-    event.stopPropagation()
+    event.stopPropagation();
     if (trip.link == null) {
-      createLink(event, trip.id)
-    }
-    else {
+      createLink(event, trip.id);
+    } else {
       navigator.clipboard.writeText(generateLink(trip.id, trip.link)); //TODO
       generatedLink(t("trip_link_found"));
     }
-  }
+  };
   const createLink = async (event, id) => {
     event.stopPropagation();
 
@@ -86,7 +84,7 @@ const TravelsList = ({ setContentPage }) => {
   const logout = () => {
     setContentPage();
     window.localStorage.clear();
-    queryClient.clear()
+    queryClient.clear();
     setUser(undefined);
   };
   const displayLstTravel = () => {

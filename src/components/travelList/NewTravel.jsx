@@ -36,9 +36,8 @@ export default function ({ lstTrips, setLstTrips }) {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (name.length > 0)
-      mutationNewTrip.mutate({ token, name, user });
-    else toast.warning(t("name_empty"))
+    if (name.length > 0) mutationNewTrip.mutate({ token, name, user });
+    else toast.warning(t("name_empty"));
   };
   return (
     <>
@@ -61,7 +60,7 @@ export default function ({ lstTrips, setLstTrips }) {
               onChange={(e) => setName(e.target.value)}
             />
             <Button type="submit" style={{ marginTop: 5 }}>
-              {t("btn_new_trip")}
+              {t("create")}
             </Button>
           </form>
         </Modal.Body>

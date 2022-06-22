@@ -7,8 +7,7 @@
 
 .location-item {
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
+    flex-direction: column;
     cursor: pointer;
     font-size: 18px;
     width: 75%;
@@ -19,6 +18,28 @@
     padding: 15px 0;
 }
 
+.location-poi-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.location-poi-info svg {
+    font-size: 1.5em;
+}
+
+.step-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 .edit-icon {
+    color: #5352ed;
+}
+
+.location-poi-title {
+    margin-left: 5px;
+    font-size: 22px;
     color: #5352ed;
 }
