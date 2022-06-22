@@ -13,7 +13,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import "./details.css";
 
 export default function ({ display, setContentPage, setStepId, setPoiId }) {
-  const { t } = useTranslation("translation", { keyPrefix: "map" });
+  const { t } = useTranslation("translation");
   const [token] = useToken();
   const { id } = useParams();
   const [poi, setPoi] = usePoi();
@@ -26,10 +26,10 @@ export default function ({ display, setContentPage, setStepId, setPoiId }) {
       setRoute(route.removeItem(data.id));
     },
     onError: (data) => {
-      toast.warning(t("step_not_deleted"));
+      toast.warning(t("map.step_not_deleted"));
     },
     onSuccess: (data) => {
-      toast.warning(t("step_deleted"));
+      toast.warning(t("map.step_deleted"));
     },
     onSettled: (data) => {
       queryClient.invalidateQueries(["steps", id]);
@@ -38,10 +38,13 @@ export default function ({ display, setContentPage, setStepId, setPoiId }) {
 
   const mutationDeletePoi = useMutation(deletePoi, {
     onMutate: (data) => {
-      setRoute(poi.removeItem(data.id));
+      setCurrentPoi(poi.getPoiByStep(data.id));
     },
     onSettled: (data) => {
+      queryClient.invalidateQueries(["steps", id]);
       queryClient.invalidateQueries(["poi", id]);
+      //setCurrentPoi(poi.getPoiByStep(id));
+
     },
   });
 
@@ -58,7 +61,9 @@ export default function ({ display, setContentPage, setStepId, setPoiId }) {
     //await deleteStep(id)
   };
   const handleDeletePoi = async (e, id) => {
-    setPoi(poi.removeItem({ token, id }));
+    e.stopPropagation()
+    mutationDeletePoi.mutate({ token, id })
+    //setPoi(poi.removeItem({ token, id }));
   };
   return (
     <div

@@ -33,7 +33,6 @@ const LocationInformation = ({ display, locationId }) => {
 
   let pictures = [];
   let logBooks = [];
-
   currentLocation?.albumElements.map((element, index) => {
     if (element.type2 === "picture") {
       pictures.push(element);
