@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import "./details.css";
 
-export default function ({ display, setContentPage }) {
+export default function ({ display, setContentPage, setStepId, setPoiId }) {
   const { t } = useTranslation("translation", { keyPrefix: "map" });
   const [token] = useToken();
   const { id } = useParams();
@@ -77,7 +77,10 @@ export default function ({ display, setContentPage }) {
             <p style={{ minWidth: 200 }}>{step.description ?? "-"}</p>
             <FontAwesomeIcon
               icon={faPen}
-              onClick={() => setContentPage("stepInfo")}
+              onClick={() => {
+                setStepId(step.id)
+                setContentPage("stepInfo")
+              }}
               size="2x"
               className="edit-icon"
             />
@@ -93,7 +96,10 @@ export default function ({ display, setContentPage }) {
                     <FontAwesomeIcon
                       icon={faPen}
                       size="2x"
-                      onClick={() => setContentPage("poiInfo")}
+                      onClick={() => {
+                        setPoiId(e.id);
+                        setContentPage("poiInfo")
+                      }}
                       className="edit-icon"
                     />
                     {TrashAlt(handleDeletePoi, e.id)}
