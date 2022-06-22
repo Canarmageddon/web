@@ -109,7 +109,11 @@ const Admin = ({ display }) => {
       <FontAwesomeIcon
         icon={faPaperclip}
         size="2x"
-        onClick={() => navigator.clipboard.writeText(generateLink(id, dataLink?.link)) //TODO
+        onClick={() => {
+          console.log("aa")
+          toast.success(t("trip_list.trip_link_found"));
+          navigator.clipboard.writeText(generateLink(id, dataLink?.link))
+        } //TODO
         }
         style={{
           cursor: "pointer",

@@ -60,13 +60,24 @@ const TravelsList = ({ setContentPage }) => {
       queryClient.invalidateQueries("trips");
     },
   });
-
   const handleDelete = async (event, t) => {
     event.stopPropagation();
     mutationDeleteTrip.mutate({ token, id: t.id });
   };
+  const copyLink = async (event, trip) => {
+    console.log(trip.id)
+    event.stopPropagation()
+    if (trip.link == null) {
+      createLink(event, trip.id)
+    }
+    else {
+      navigator.clipboard.writeText(generateLink(trip.id, trip.link)); //TODO
+      generatedLink(t("trip_link_found"));
+    }
+  }
   const createLink = async (event, id) => {
     event.stopPropagation();
+
     const res = await generateTripLink(token, id);
 
     navigator.clipboard.writeText(generateLink(id, res.message)); //TODO
@@ -109,7 +120,7 @@ const TravelsList = ({ setContentPage }) => {
                     style={{
                       marginLeft: 10,
                     }}
-                    onClick={(e) => createLink(e, t.id)}
+                    onClick={(e) => copyLink(e, t)}
                   />
                 </div>
               </div>
@@ -171,7 +182,7 @@ const TravelsList = ({ setContentPage }) => {
                     style={{
                       marginLeft: 10,
                     }}
-                    onClick={(e) => createLink(e, t.id)}
+                    onClick={(e) => copyLink(e, t)}
                   />
                 </div>
               </div>

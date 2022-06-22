@@ -49,7 +49,8 @@
         "new_trip": "Nouveau voyage",
         "trip_name": "Nom du voyage",
         "create": "Créer",
-        "trip_link": "New link was generated in your clipboard"
+        "trip_link": "New link was generated in your clipboard",
+        "trip_link_found": "The link was copied in your clipboard"
     },
     "file_uploader": {
         "added_document": "The document was added",

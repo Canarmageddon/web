@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import { useQuery } from "react-query";
 import { refresh, whoAmI } from "../apiCaller";
 import RotatingDuck from "../components/loadingScreen/RotatingDuck";
-import ScreenLogo from "../components/loadingScreen/ScreenLogo";
 import updateToken from "../updateTokens";
 const UserContext = React.createContext();
 const TokenContext = React.createContext();
