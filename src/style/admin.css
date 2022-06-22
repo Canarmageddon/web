@@ -11,6 +11,10 @@ form.admin-form {
     margin: 5px;
 }
 
+form.admin-form:first-of-type {
+    margin-bottom: 20px;
+}
+
 div.invite-div {
     display: flex;
     flex-direction: column;
@@ -87,6 +91,7 @@ li button.delete {
 }
 
 .link-container {
+    line-height: 3;
     font-size: 18px;
 }
 
