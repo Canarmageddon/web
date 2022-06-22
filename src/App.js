@@ -42,23 +42,21 @@ function App() {
       <UserProvider>
         <TravelProvider>
           <Routes>
-            <Route path='/' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/home/' element={<RequireAuth />}>
-              <Route path='explore/' element={<ExploreRoute />}>
-                <Route path='list' element={<ExploreTrips />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/home/" element={<RequireAuth />}>
+              <Route path="explore/" element={<ExploreRoute />}>
+                <Route path="list" element={<ExploreTrips />} />
                 <Route
-                  path='map/:id'
+                  path="map/:id"
                   element={
                     <div
                       style={{
-                        width: "100%",
-                        height: "93vh",
-                        overflow: "hidden",
-                        position: "relative",
+                        height: "100vh",
                       }}
+                      className="map-container"
                     >
-                      <ExploringMapNavBar />
+                      <ExploringMapNavBar setContentPage={setContentPage} />
                       <MapGl
                         exploring={true}
                         setContentPage={setContentPage}
@@ -69,11 +67,11 @@ function App() {
                 />
               </Route>
               <Route
-                path='trips'
+                path="trips"
                 element={<TravelsList setContentPage={setContentPage} />}
               />
               <Route
-                path='profile'
+                path="profile"
                 element={
                   <Profile
                     contentPage={contentPage}
@@ -81,9 +79,9 @@ function App() {
                   />
                 }
               />
-              <Route path='album/:idAlbum' element={<Album />} />
+              <Route path="album/:idAlbum" element={<Album />} />
               <Route
-                path='map/:id'
+                path="map/:id"
                 element={
                   <>
                     <div
@@ -129,11 +127,9 @@ function App() {
                                   contentPage === "admin"
                                 ? 0
                                 : 0.7,
-                            width: "100%",
                             height: "95vh",
-                            overflow: "hidden",
-                            position: "relative",
                           }}
+                          className="map-container"
                         >
                           <MapGl
                             setContentPage={setContentPage}
@@ -157,7 +153,7 @@ function App() {
                 }
               />
               <Route
-                path='map/:id/history'
+                path="map/:id/history"
                 element={
                   <>
                     <div
@@ -182,11 +178,9 @@ function App() {
                                 contentPage === "admin"
                               ? 0
                               : 0.7,
-                          width: "100%",
                           height: "93vh",
-                          overflow: "hidden",
-                          position: "absolute",
                         }}
+                        className="map-container"
                       >
                         <MapGl
                           exploring={true}
@@ -204,55 +198,62 @@ function App() {
                 }
               />
               <Route
-                path='map/:id/discovery'
+                path="map/:id/discovery"
                 element={
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "93vh",
-                      overflow: "hidden",
-                      position: "relative",
-                    }}
-                  >
-                    <ExploringMapNavBar />
-                    <MapGl exploring={true} setContentPage={setContentPage} />
-                  </div>
+                  <>
+                    <ExploringMapNavBar setContentPage={setContentPage} />
+                    <div
+                      style={{
+                        height: "100vh",
+                      }}
+                      className="map-container"
+                    >
+                      <MapGl exploring={true} setContentPage={setContentPage} />
+                    </div>
+                  </>
                 }
               />
               <Route
-                path='/home/*'
-                element={<te to='trips' />}
+                path="/home/*"
+                element={<te to="trips" />}
                 replace={true}
               />
             </Route>
-            <Route path='/unregistered/:id/:link/' element={<CheckLink />}>
-              <Route path='home/' element={<Home />} />
+            <Route path="/unregistered/:id/:link/" element={<CheckLink />}>
+              <Route path="home/" element={<Home />} />
               <Route
-                path='map/'
+                path="map/"
                 element={
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100vh",
-                      overflow: "hidden",
-                      position: "relative",
-                    }}
-                  >
+                  <>
                     <UnregisteredNavBar
                       map={true}
                       setContentPage={setContentPage}
                     />
-                    <MapGl
-                      exploring={true}
-                      setContentPage={setContentPage}
-                      displayAlbum={true}
-                      setLocationId={setLocationId}
-                    />
-                  </div>
+                    <div style={{ display: "flex" }}>
+                      <LocationInformation
+                        display={contentPage === "locationInfo"}
+                        locationId={locationId}
+                      />
+                      <div
+                        style={{
+                          height: "100vh",
+                          flex: contentPage === "map" ? 1 : 0.7,
+                        }}
+                        className="map-container"
+                      >
+                        <MapGl
+                          exploring={true}
+                          setContentPage={setContentPage}
+                          displayAlbum={true}
+                          setLocationId={setLocationId}
+                        />
+                      </div>
+                    </div>
+                  </>
                 }
               />
               <Route
-                path='album/:idAlbum'
+                path="album/:idAlbum"
                 element={
                   <>
                     <UnregisteredNavBar
@@ -264,7 +265,7 @@ function App() {
                 }
               />
             </Route>
-            <Route path='*' element={<Navigate to='/' />} replace={true} />
+            <Route path="*" element={<Navigate to="/" />} replace={true} />
           </Routes>
           <Background display={!contentPage} />
         </TravelProvider>

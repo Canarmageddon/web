@@ -17,3 +17,9 @@ button:not(.nav-link) {
     color: white !important;
     cursor: pointer;
 }
+
+.map-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}

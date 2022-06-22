@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useUser } from "../../context/userContext";
 import { toast } from "react-toastify";
 
-const ExploringMapNavBar = () => {
+const ExploringMapNavBar = ({ setContentPage }) => {
   const [user] = useUser();
   const { t } = useTranslation("translation", { keyPrefix: "trip_list" });
   const { id } = useParams();
@@ -60,7 +60,10 @@ const ExploringMapNavBar = () => {
           className="p-2 nav-icon"
           icon={faBackward}
           size="2x"
-          onClick={() => navigate(-1)}
+          onClick={() => {
+            setContentPage();
+            navigate(-1);
+          }}
         />
         <FontAwesomeIcon
           className="p-2 nav-icon"

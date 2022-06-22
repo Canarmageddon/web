@@ -105,7 +105,11 @@ export default function MapGl({
     onMutate: (data) => {
       setRouteSource(
         routeSource.addItem(
-          new Location({ id: data.id, longitude: data.longitude, latitude: data.latitude })
+          new Location({
+            id: data.id,
+            longitude: data.longitude,
+            latitude: data.latitude,
+          })
         )
       );
       const oldData = queryClient.getQueryData(["steps", id]);
@@ -130,7 +134,12 @@ export default function MapGl({
     onMutate: (data) => {
       setPoiSource(
         poiSource.addItem(
-          new Location({ id: data.id, longitude: data.longitude, latitude: data.latitude, step: data.step })
+          new Location({
+            id: data.id,
+            longitude: data.longitude,
+            latitude: data.latitude,
+            step: data.step,
+          })
         )
       );
       const oldData = queryClient.getQueryData(["poi", id]);
@@ -181,9 +190,8 @@ export default function MapGl({
 
   useEffect(() => {
     //Sinon la carte risque de rester plus petite lorsqu'on ouvre d'autres fenêtres
-    setViewport({ ...viewport, width: "100%", height: "100%" })
-
-  }, [contentPage])
+    setViewport({ ...viewport, width: "100%", height: "100%" });
+  }, [contentPage]);
 
   useEffect(async () => {
     /*  if (dataSteps != undefined) {
@@ -231,12 +239,11 @@ export default function MapGl({
 
   const handleClick = async (e) => {
     if (displayAlbum) {
-      if (e.features[0].source === "location") {
+      if (e?.features[0]?.source === "location") {
         setContentPage("locationInfo");
-        setLocationId(e.features[0].id);
-      }
-      else {
-        setContentPage("map")
+        setLocationId(e?.features[0]?.id);
+      } else {
+        setContentPage("map");
       }
       return;
     }
@@ -350,7 +357,6 @@ export default function MapGl({
       "icon-size": 0.1,
       "icon-allow-overlap": true,
       "icon-anchor": "bottom-left",
-
     },
   };
   const routeLayer = {
@@ -400,10 +406,18 @@ export default function MapGl({
             <Source id="routeLine" type="geojson" data={routeSource.route}>
               <Layer {...routeLayer} />
             </Source>
-            <Source id="route" type="geojson" data={routeSource.templateSourceRoute}>
+            <Source
+              id="route"
+              type="geojson"
+              data={routeSource.templateSourceRoute}
+            >
               <Layer {...routeLayer2} />
             </Source>
-            <Source id="routeEnd" type="geojson" data={routeSource.templateSourceLast}>
+            <Source
+              id="routeEnd"
+              type="geojson"
+              data={routeSource.templateSourceLast}
+            >
               <Layer {...routeLayer3} />
             </Source>
           </>
