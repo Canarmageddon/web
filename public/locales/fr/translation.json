@@ -49,7 +49,8 @@
         "new_trip": "New trip",
         "trip_name": "Trip name",
         "create": "Create",
-        "trip_link": "Un nouveau lien de partage a été généré et copié dans votre press-papier"
+        "trip_link": "Un nouveau lien de partage a été généré et copié dans votre presse-papier",
+        "trip_link_found": "Le lien de partage a été copié dans votre presse-papier"
     },
     "file_uploader": {
         "added_document": "le document a été ajouté",
