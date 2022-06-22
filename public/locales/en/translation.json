@@ -67,7 +67,8 @@
         "step_created": "Step created !",
         "poi_moved": "Point of interrest moved",
         "step_moved": "Step moved",
-        "step_not_deleted": "The step could not be deleted"
+        "step_not_deleted": "The step could not be deleted",
+        "step_deleted": "Step deleted !"
     },
     "poi_info": {
         "poi_deleted": "Point of interrest deleted !",

@@ -86,6 +86,7 @@ const TravelsList = ({ setContentPage }) => {
   const logout = () => {
     setContentPage();
     window.localStorage.clear();
+    queryClient.clear()
     setUser(undefined);
   };
   const displayLstTravel = () => {
