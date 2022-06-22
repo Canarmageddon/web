@@ -19,6 +19,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
   const [file, setFile] = useState([]);
   const [date, setdate] = useState("");
   const successEdit = () => toast.success(t("step_updated"));
+  const successDelete = () => toast.success(t("step_deleted"))
   const mutationUpdateStep = useMutation(updateStep, {
     onMutate: () => {
       currentRoute.description = description;
@@ -39,7 +40,6 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
     onSuccess: () => {
       setContentPage("map");
       successDelete();
-
     }
   })
   useEffect(() => {

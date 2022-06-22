@@ -221,7 +221,7 @@ export const fetchAllUser = async ({ token, id }) =>
     .then((res) => checkStatus(res))
     .then((res) => res.json());
 
-export const addUser = async ({ token, email, id }) => {
+export const addUser = async ({ token, email, name, id }) => {
   return await fetch(`${url}trips/${id}/addUser`, {
     method: "PUT",
     headers: {
@@ -230,7 +230,7 @@ export const addUser = async ({ token, email, id }) => {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      email,
+      email, name
     }),
   })
     .then((res) => checkStatus(res))

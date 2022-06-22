@@ -40,8 +40,8 @@ export default function Member({ member, id, refetchMembers }) {
     mutationRemoveUser.mutate({ token, email, id });
   };
   return (
-    <li key={member.user.name}>
-      {member.user.firstName} {member.user.lastName}
+    <li key={member.user.id}>
+      {member.user.firstName ? member.user.firstName : member.user.name} {member.user.lastName}
       {member.user.tripUsers && member.user.tripUsers[0].role}
       {/*  <select value={role} onChange={handleRoleChange} className="list-role">
             <option value="editor">Editeur</option>
