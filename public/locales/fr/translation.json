@@ -126,5 +126,5 @@
     },
     "todolist_created": "La liste des tâches a été créée",
     "todolist_not_created": "La liste des tâches n'a  pas pu être créée",
-    "share_link": "Envoyez ce lien à vos proches pour qu'ils puissent suivre vos aventures"
+    "link_share": "Envoyez ce lien à vos proches pour qu'ils puissent suivre vos aventures"
 }
