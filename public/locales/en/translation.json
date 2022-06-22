@@ -17,7 +17,9 @@
         "success": "Account created !",
         "first_name": "Firstname",
         "last_name": "Lastname",
-        "create_account": "Created an account"
+        "create_account": "Created an account",
+        "no_firstname": "Please, enter a firstname",
+        "no_lastname": "Please, enter a lastname"
     },
     "side_menu": {
         "map": "Map",
@@ -128,5 +130,6 @@
     },
     "todolist_created": "The todo list was created",
     "todolist_not_created": "Could not created the todo list",
-    "link_share": "Send this link to anyone for them to follow your adventures"
+    "link_share": "Send this link to anyone for them to follow your adventures",
+    "todolist_name": "Todo list name"
 }

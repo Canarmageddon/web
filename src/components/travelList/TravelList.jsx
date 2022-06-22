@@ -160,8 +160,7 @@ const TravelsList = ({ setContentPage }) => {
                     icon={faGlobe}
                     size="2x"
                     onClick={() => {
-                      if (t.albumElements.length == 0) emptyAlbum();
-                      else navigate(`/home/map/${t.id}/history`);
+                      navigate(`/home/map/${t.id}/history`);
                     }}
                   />
                   <FontAwesomeIcon

@@ -22,6 +22,8 @@ const CreateAccount = () => {
   const [showModal, setShowModal] = useState(false);
   const invalidEmail = () => toast.warning(t("invalid_email"));
   const emailNotAvailable = () => toast.error(t("user_email"));
+  const noFirstName = () => toast.warning(t("no_firstname"));
+  const noLastName = () => toast.warning(t("no_lastname"));
   const noPassword = () => toast.warning(t("no_password"));
   const noConfirmPassword = () => toast.warning(t("confirm_password"));
   const divergentPasswords = () => toast.warning(t("divergent_passwords"));
@@ -157,7 +159,14 @@ const CreateAccount = () => {
       invalidEmail();
     } else if (!password) {
       noPassword();
-    } else if (!confirmPassword) {
+    }
+    else if (firstName.length == 0) {
+      noFirstName();
+    }
+    else if (lastName.length == 0) {
+      noLastName();
+    }
+    else if (!confirmPassword) {
       noConfirmPassword();
     } else if (password !== confirmPassword) {
       divergentPasswords();
