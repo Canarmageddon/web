@@ -188,7 +188,7 @@ const TravelsList = ({ setContentPage }) => {
         onClick={() => setShowModal(true)}
         icon={faGlobe}
         className="language-icon"
-        size={"2x"}
+        size={"3x"}
       />
       <div className="travellist-container">
         <h1 className="list-title">{t("trips")}</h1>

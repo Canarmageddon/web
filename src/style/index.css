@@ -18,6 +18,12 @@ button:not(.nav-link) {
     cursor: pointer;
 }
 
+button.btn-secondary,
+button.btn-danger,
+button.home-button {
+    color: white !important;
+}
+
 .map-container {
     width: 100%;
     overflow: hidden;
