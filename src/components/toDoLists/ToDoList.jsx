@@ -127,7 +127,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
             </Button>
           </div>
         )}
-        <div style={{ overflowY: "scroll", height: "65vh" }}>
+        <div style={{ overflowY: "scroll", height: "57vh" }}>
           {toDoList?.tasks?.map((t) => (
             <CardItem
               key={t.id}
@@ -140,7 +140,7 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
                 overflowWrap: "break-word",
               }}
             >
-              <p style={{ lineHeight: 2 }}>
+              <p style={{ lineHeight: 2, fontSize: 15 }}>
                 {t.date && `${new Date(t.date).toLocaleDateString()} :`}{" "}
                 {t.name}
               </p>
