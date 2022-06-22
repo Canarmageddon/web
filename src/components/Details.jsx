@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { useToken } from "../context/userContext";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import Dropdown from "react-bootstrap/Dropdown";
 import "./details.css";
 
 export default function ({ display, setContentPage, setStepId, setPoiId }) {
@@ -73,36 +74,45 @@ export default function ({ display, setContentPage, setStepId, setPoiId }) {
             onClick={() => handleClick(step.id)}
             className="location-item"
           >
-            <p style={{ minWidth: 200 }}>{step.description ?? "-"}</p>
-            <FontAwesomeIcon
-              icon={faPen}
-              onClick={() => {
-                setStepId(step.id);
-                setContentPage("stepInfo");
-              }}
-              size="2x"
-              className="edit-icon"
-            />
-            {TrashAlt(handleDeleteStep, step.id)}
+            <div className="step-info">
+              <p style={{ minWidth: 200 }}>{step.description ?? "-"}</p>
+              <FontAwesomeIcon
+                icon={faPen}
+                onClick={() => {
+                  setStepId(step.id);
+                  setContentPage("stepInfo");
+                }}
+                size="2x"
+                className="edit-icon"
+              />
+              {TrashAlt(handleDeleteStep, step.id)}
+            </div>
             {currentRoute == step.id && (
-              <div style={{ marginLeft: "2rem" }}>
+              <div>
+                <Dropdown.Divider
+                  style={{ backgroundColor: "black", height: 4 }}
+                />
+                <h4 className="location-poi-title">
+                  Points d'intérêts liées :{" "}
+                </h4>
                 {currentPoi.map((e) => (
-                  <div
-                    style={{ display: "flex", flexDirection: "row" }}
-                    key={e.id}
-                  >
-                    <p>{e.title ?? "-"}</p>
-                    <FontAwesomeIcon
-                      icon={faPen}
-                      size="2x"
-                      onClick={() => {
-                        setPoiId(e.id);
-                        setContentPage("poiInfo");
-                      }}
-                      className="edit-icon"
+                  <>
+                    <div className="location-poi-info">
+                      <p>{e.title ?? "-"}</p>
+                      <FontAwesomeIcon
+                        icon={faPen}
+                        onClick={() => {
+                          setPoiId(e.id);
+                          setContentPage("poiInfo");
+                        }}
+                        className="edit-icon"
+                      />
+                      {TrashAlt(handleDeletePoi, e.id)}
+                    </div>
+                    <Dropdown.Divider
+                      style={{ backgroundColor: "black", height: 4 }}
                     />
-                    {TrashAlt(handleDeletePoi, e.id)}
-                  </div>
+                  </>
                 ))}
               </div>
             )}
