@@ -81,6 +81,7 @@ function App() {
               />
               <Route path='album/:idAlbum' element={<Album />} />
               <Route
+                exact
                 path='map/:id'
                 element={
                   <>
@@ -155,6 +156,7 @@ function App() {
                 }
               />
               <Route
+                exact
                 path='map/:id/history'
                 element={
                   <>
