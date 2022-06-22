@@ -10,12 +10,12 @@
 
 .add-list-icon {
     font-size: 3em;
-    color: var(--primary);
+    color: #5352ed;
     cursor: pointer;
 }
 
 .add-list-input {
-    color: var(--primary);
+    color: #5352ed;
     flex: 0.1;
     width: auto;
     height: 60px;
