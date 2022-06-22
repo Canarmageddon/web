@@ -27,7 +27,7 @@
         "disconnect": "Disconnection"
     },
     "list_picker": {
-        "first_list": "Create your first list !"
+        "fist_list": "Create your first list !"
     },
     "new_trip": {
         "btn_new_trip": "Create trip",
@@ -102,7 +102,9 @@
         "add_member": "Invite a member",
         "add_no_account": "Add a member with no account",
         "invite": "Invite",
-        "members": "Members"
+        "members": "Members",
+        "member": "Member",
+        "guest": "guest"
     },
     "unregistered_home": {
         "empty_album": "The album is empty but you can still see the trip on the map",
@@ -121,5 +123,8 @@
         "delete_list": "Task list deleted",
         "not_deleted_list": "Could not delete task list",
         "add": "Add"
-    }
+    },
+    "todolist_created": "The todo list was created",
+    "todolist_not_created": "Could not created the todo list",
+    "link_share": "Send this link to anyone for them to follow your adventures"
 }

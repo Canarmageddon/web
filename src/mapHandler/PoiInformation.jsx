@@ -57,6 +57,7 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
     onSettled: () => {
       successEdit();
       queryCLient.invalidateQueries(["poi", id]);
+      queryCLient.invalidateQueries(["steps", id]);
     },
   });
   const mutationDeletePoi = useMutation(deletePoi, {
@@ -66,6 +67,7 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
     },
     onSettled: (data) => {
       queryCLient.invalidateQueries(["poi", id]);
+      queryCLient.invalidateQueries(["steps", id]);
       successDelete();
     },
   });

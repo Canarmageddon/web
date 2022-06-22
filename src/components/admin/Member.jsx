@@ -41,10 +41,10 @@ export default function Member({ member, id, refetchMembers }) {
   const handleClick = async (email, name) => {
     mutationRemoveUser.mutate({ token, email, name, id });
   };
+
   return (
     <li key={member.user.id}>
-      {member.user.firstName ? member.user.firstName : member.user.name} {member.user.lastName}
-      {member.user.tripUsers && member.user.tripUsers[0].role}
+      {member.user.firstName ? member.user.firstName : member.user.name} {member.user.lastName} : {member.user.firstName ? t("admin.member") : t("admin.guest")}
       {/*  <select value={role} onChange={handleRoleChange} className="list-role">
             <option value="editor">Editeur</option>
             <option value="guest">Invité</option>

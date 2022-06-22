@@ -42,19 +42,19 @@ function App() {
       <UserProvider>
         <TravelProvider>
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/home/" element={<RequireAuth />}>
-              <Route path="explore/" element={<ExploreRoute />}>
-                <Route path="list" element={<ExploreTrips />} />
+            <Route path='/' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/home/' element={<RequireAuth />}>
+              <Route path='explore/' element={<ExploreRoute />}>
+                <Route path='list' element={<ExploreTrips />} />
                 <Route
-                  path="map/:id"
+                  path='map/:id'
                   element={
                     <div
                       style={{
                         height: "100vh",
                       }}
-                      className="map-container"
+                      className='map-container'
                     >
                       <ExploringMapNavBar setContentPage={setContentPage} />
                       <MapGl
@@ -67,11 +67,11 @@ function App() {
                 />
               </Route>
               <Route
-                path="trips"
+                path='trips'
                 element={<TravelsList setContentPage={setContentPage} />}
               />
               <Route
-                path="profile"
+                path='profile'
                 element={
                   <Profile
                     contentPage={contentPage}
@@ -79,9 +79,9 @@ function App() {
                   />
                 }
               />
-              <Route path="album/:idAlbum" element={<Album />} />
+              <Route path='album/:idAlbum' element={<Album />} />
               <Route
-                path="map/:id"
+                path='map/:id'
                 element={
                   <>
                     <div
@@ -117,6 +117,8 @@ function App() {
                         <Details
                           display={contentPage === "details"}
                           setContentPage={setContentPage}
+                          setPoiId={setPoiId}
+                          setStepId={setStepId}
                         />
                         <div
                           style={{
@@ -129,7 +131,7 @@ function App() {
                                 : 0.7,
                             height: "95vh",
                           }}
-                          className="map-container"
+                          className='map-container'
                         >
                           <MapGl
                             setContentPage={setContentPage}
@@ -153,7 +155,7 @@ function App() {
                 }
               />
               <Route
-                path="map/:id/history"
+                path='map/:id/history'
                 element={
                   <>
                     <div
@@ -180,7 +182,7 @@ function App() {
                               : 0.7,
                           height: "93vh",
                         }}
-                        className="map-container"
+                        className='map-container'
                       >
                         <MapGl
                           exploring={true}
@@ -198,7 +200,7 @@ function App() {
                 }
               />
               <Route
-                path="map/:id/discovery"
+                path='map/:id/discovery'
                 element={
                   <>
                     <ExploringMapNavBar setContentPage={setContentPage} />
@@ -206,7 +208,7 @@ function App() {
                       style={{
                         height: "100vh",
                       }}
-                      className="map-container"
+                      className='map-container'
                     >
                       <MapGl exploring={true} setContentPage={setContentPage} />
                     </div>
@@ -214,15 +216,15 @@ function App() {
                 }
               />
               <Route
-                path="/home/*"
-                element={<te to="trips" />}
+                path='/home/*'
+                element={<te to='trips' />}
                 replace={true}
               />
             </Route>
-            <Route path="/unregistered/:id/:link/" element={<CheckLink />}>
-              <Route path="home/" element={<Home />} />
+            <Route path='/unregistered/:id/:link/' element={<CheckLink />}>
+              <Route path='home/' element={<Home />} />
               <Route
-                path="map/"
+                path='map/'
                 element={
                   <>
                     <UnregisteredNavBar
@@ -239,7 +241,7 @@ function App() {
                           height: "100vh",
                           flex: contentPage === "map" ? 1 : 0.7,
                         }}
-                        className="map-container"
+                        className='map-container'
                       >
                         <MapGl
                           exploring={true}
@@ -253,7 +255,7 @@ function App() {
                 }
               />
               <Route
-                path="album/:idAlbum"
+                path='album/:idAlbum'
                 element={
                   <>
                     <UnregisteredNavBar
@@ -265,7 +267,7 @@ function App() {
                 }
               />
             </Route>
-            <Route path="*" element={<Navigate to="/" />} replace={true} />
+            <Route path='*' element={<Navigate to='/' />} replace={true} />
           </Routes>
           <Background display={!contentPage} />
         </TravelProvider>

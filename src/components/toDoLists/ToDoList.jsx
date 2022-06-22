@@ -104,11 +104,16 @@ const ToDoList = ({ toDoList, setCurrentIndex, idTrip }) => {
             <Button
               onClick={() => {
                 if (title !== "") {
+                  let formatedDate = date
+                  if (date != "") {
+                    let splitDate = date.split("-");
+                    formatedDate = `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`
+                  }
                   mutationAddTask.mutate({
                     token,
                     title,
                     id: toDoList.id,
-                    date,
+                    date: formatedDate,
                     creator: user
                   });
                   setTitle("");

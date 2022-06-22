@@ -10,7 +10,15 @@ import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
 import { distanceInKmBetweenEarthCoordinates } from "../../Functions";
 
-export function steps(token, id, routeSource, setRouteSource, setViewport) {
+export function steps(
+  token,
+  id,
+  routeSource,
+  setRouteSource,
+  setViewport,
+  firstFetch,
+  setFirstFetch,
+) {
   return useQuery(["steps", id], () => fetchSteps(token, id), {
     retry: false,
     onSuccess: (data) => {
@@ -28,7 +36,11 @@ export function steps(token, id, routeSource, setRouteSource, setViewport) {
           }),
         );
       });
-      if (routeSource.listLocations.length == 0 && data.length > 0)
+      if (
+        routeSource.listLocations.length == 0 &&
+        data.length > 0 &&
+        firstFetch
+      )
         setViewport({
           latitude: data[data?.length - 1]?.location?.latitude,
           longitude: data[data?.length - 1]?.location?.longitude,
@@ -36,6 +48,7 @@ export function steps(token, id, routeSource, setRouteSource, setViewport) {
           bearing: 0,
           pitch: 0,
         });
+      setFirstFetch(false);
       setRouteSource(new LayerUtile(lstStep));
     },
   });

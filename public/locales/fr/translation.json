@@ -102,7 +102,9 @@
         "add_member": "Inviter un membre",
         "add_no_account": "Ajouter un membre qui n'a pas de compte",
         "invite": "Inviter",
-        "members": "Membres"
+        "members": "Membres",
+        "member": "Membre",
+        "guest": "Invité"
     },
     "unregistered_home": {
         "empty_album": "L'album est vide pour l'instant mais vous pouvez toujours regarde leur voyage sur la carte",
@@ -121,5 +123,8 @@
         "delete_list": "La liste de tâche a été supprimée",
         "not_deleted_list": "La liste de tâche n'a pu être supprimée",
         "add": "Ajouter"
-    }
+    },
+    "todolist_created": "La liste des tâches a été créée",
+    "todolist_not_created": "La liste des tâches n'a  pas pu être créée",
+    "share_link": "Envoyez ce lien à vos proches pour qu'ils puissent suivre vos aventures"
 }
