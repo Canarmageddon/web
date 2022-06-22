@@ -458,6 +458,11 @@ export const cloneTrip = async ({ id, name, creator }) =>
     }),
   }).then((res) => checkStatus(res));
 
+export const getLink = async (id) =>
+  await fetch(`${url}trips/${id}/link`)
+    .then(res => checkStatus(res))
+    .then(res => res.json())
+
 /* -------------------------------------------*/
 
 /* -------------- ALBUM --------------------------*/

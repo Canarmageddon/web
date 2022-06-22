@@ -8,6 +8,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import LayerUtile from "../../factory/layers/LayerUtile";
 import Location from "../../factory/layers/Location";
+import { distanceInKmBetweenEarthCoordinates } from "../../Functions";
 
 export function steps(token, id, routeSource, setRouteSource, setViewport) {
   return useQuery(["steps", id], () => fetchSteps(token, id), {
@@ -72,14 +73,36 @@ export function locations(token, id, setLocationSource, enabled) {
       onSuccess: (data) => {
         let locationsList = [];
         data.map((item) => {
-          locationsList.push(
-            new Location({
-              id: item.id,
-              longitude: item.longitude,
-              latitude: item.latitude,
-              albumElements: item.albumElements,
-            }),
-          );
+          let i = 0;
+          let found = false;
+          let distance;
+          while (i < locationsList.length && !found) {
+            distance = distanceInKmBetweenEarthCoordinates(
+              item.latitude,
+              item.longitude,
+              locationsList[i].latitude,
+              locationsList[i].longitude,
+            );
+            i++;
+            if (distance < 1) {
+              found = true;
+            }
+          }
+          if (found) {
+            let location = locationsList[i - 1];
+            location.albumElements = location.albumElements.concat(
+              item.albumElements,
+            );
+          } else {
+            locationsList.push(
+              new Location({
+                id: item.id,
+                longitude: item.longitude,
+                latitude: item.latitude,
+                albumElements: item.albumElements,
+              }),
+            );
+          }
         });
         setLocationSource(new LayerUtile(locationsList));
       },
