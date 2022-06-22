@@ -13,6 +13,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import Task from "../../factory/lists/Task";
 import { useToken } from "../../context/userContext";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 const ToDoLists = ({ display }) => {
   const { t } = useTranslation("translation");
   const { id } = useParams();
@@ -56,6 +57,12 @@ const ToDoLists = ({ display }) => {
         ...old,
         { id: id, name: title },
       ]);
+    },
+    onSuccess: () => {
+      toast.success(t("todolist_created"))
+    },
+    onError: () => {
+      toast.success(t("todolist_not_created"))
     },
     onSettled: () => {
       queryClient.invalidateQueries(["toDoLists", id]);
