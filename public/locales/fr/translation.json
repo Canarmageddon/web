@@ -67,7 +67,8 @@
         "step_created": "Etape créée !",
         "poi_moved": "Point d'intérêt déplacé",
         "step_moved": "Etape déplacée",
-        "step_not_deleted": "L'étape n'a pas pu être supprimée"
+        "step_not_deleted": "L'étape n'a pas pu être supprimée",
+        "step_deleted": "Etape supprimée !"
     },
     "poi_info": {
         "poi_deleted": "Point d'intérêt supprimé !",

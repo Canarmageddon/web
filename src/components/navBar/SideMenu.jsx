@@ -8,10 +8,11 @@ import { usePoi, useRoute } from "../../context/TravelContext";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useQueryClient } from "react-query";
 
 const SideMenu = ({ setContentPage, showMenu }) => {
   const { t } = useTranslation("translation", { keyPrefix: "side_menu" });
-
+  const queryClient = useQueryClient()
   const [poiSource] = usePoi();
   const [routeSource] = useRoute();
   const [user, setUser] = useUser();
@@ -21,6 +22,7 @@ const SideMenu = ({ setContentPage, showMenu }) => {
     setContentPage();
     window.localStorage.clear();
     setUser(undefined);
+    queryClient.clear()
   };
 
   const handleClickDetails = () => {
