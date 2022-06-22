@@ -32,7 +32,7 @@
         "fist_list": "Create your first list !"
     },
     "new_trip": {
-        "btn_new_trip": "Create trip",
+        "btn_new_trip": "Create a trip",
         "new_trip": "Create a new trip",
         "trip_name": "Trip name",
         "create": "Create"
@@ -48,9 +48,9 @@
         "disconnect": "Disconnect",
         "others_trips": "See others trips",
         "empty_album": "Add elements to your album to see them here",
-        "new_trip": "Nouveau voyage",
-        "trip_name": "Nom du voyage",
-        "create": "Créer",
+        "new_trip": "New trip",
+        "trip_name": "Trip name",
+        "create": "Create",
         "trip_link": "New link was generated in your clipboard",
         "trip_link_found": "The link was copied in your clipboard"
     },
@@ -67,8 +67,8 @@
     "map": {
         "poi_created": "Point of interrest created !",
         "step_created": "Step created !",
-        "poi_moved": "Point of interrest moved",
-        "step_moved": "Step moved",
+        "poi_moved": "The point of interrest was moved",
+        "step_moved": "The step was moved",
         "step_not_deleted": "The step could not be deleted",
         "step_deleted": "Step deleted !"
     },
@@ -120,9 +120,9 @@
     },
     "task": {
         "task_name": "Task name",
-        "created": "Task created",
-        "not_created": "Could not create task",
-        "deleted": "Task deleted",
+        "created": "The task was created",
+        "not_created": "Could not create the task",
+        "deleted": "The task was deleted",
         "not_deleted": "Could not delete task",
         "delete_list": "Task list deleted",
         "not_deleted_list": "Could not delete task list",

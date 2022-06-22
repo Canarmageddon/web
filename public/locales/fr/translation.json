@@ -111,7 +111,7 @@
         "guest": "Invité"
     },
     "unregistered_home": {
-        "empty_album": "L'album est vide pour l'instant mais vous pouvez toujours regarde leur voyage sur la carte",
+        "empty_album": "L'album est vide pour l'instant mais vous pouvez toujours regarder leur voyage sur la carte",
         "map": "Afficher la carte",
         "album": "Afficher l'album"
     },
@@ -121,7 +121,7 @@
     "task": {
         "task_name": "Nom de la tâche",
         "created": "Tâche créé",
-        "not_created": "La tâche n'a pas pu être créé",
+        "not_created": "La tâche n'a pas pu être créée",
         "deleted": "Tâche supprimée",
         "not_deleted": "La tâche n'a pas pu être supprimée",
         "delete_list": "La liste de tâche a été supprimée",
@@ -131,5 +131,5 @@
     "todolist_created": "La liste des tâches a été créée",
     "todolist_not_created": "La liste des tâches n'a  pas pu être créée",
     "link_share": "Envoyez ce lien à vos proches pour qu'ils puissent suivre vos aventures",
-    "todolist_name": "Nom de la liste de tâche"
+    "todolist_name": "Nom de la liste de tâches"
 }
