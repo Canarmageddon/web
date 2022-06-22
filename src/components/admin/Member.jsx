@@ -44,7 +44,7 @@ export default function Member({ member, id, refetchMembers }) {
 
   return (
     <li key={member.user.id}>
-      {member.user.firstName ? member.user.firstName : member.user.name} {member.user.lastName} : {member.user.firstName ? t("member") : t("guest")}
+      {member.user.firstName ? member.user.firstName : member.user.name} {member.user.lastName} : {member.user.firstName ? t("admin.member") : t("admin.guest")}
       {/*  <select value={role} onChange={handleRoleChange} className="list-role">
             <option value="editor">Editeur</option>
             <option value="guest">Invité</option>
