@@ -85,7 +85,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
         textAlign: "center",
       }}
     >
-      <h2>Détails de l'étape</h2>
+      <h2>{t("title")}</h2>
       <Form
         style={{
           display: "flex",
