@@ -77,13 +77,15 @@
     "poi_updated": "Point d'intérêt modifié !",
     "poi_details": "Détails du point d'intérêt",
     "associate_step": "Associer à une étape",
-    "move": "Déplacer"
+    "move": "Déplacer",
+    "save": "Enregistrer"
   },
   "step_info": {
     "step_deleted": "Etape supprimée !",
     "step_updated": "Etape modifiée !",
     "step_details": "Détails de l'étape",
-    "move": "Déplacer"
+    "move": "Déplacer",
+    "save": "Enregistrer"
   },
   "language_selection": {
     "choose_language": "Choix de la langue"
@@ -131,5 +133,6 @@
   "todolist_created": "La liste des tâches a été créée",
   "todolist_not_created": "La liste des tâches n'a  pas pu être créée",
   "link_share": "Envoyez ce lien à vos proches pour qu'ils puissent suivre vos aventures",
-  "todolist_name": "Nom de la liste de tâches"
+  "todolist_name": "Nom de la liste de tâches",
+  "linked_poi": "Points d'intérêts liées"
 }

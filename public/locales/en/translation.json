@@ -77,13 +77,15 @@
     "poi_updated": "Point of interest modifed !",
     "poi_details": "Point of interest's details",
     "associate_step": "Associate a step",
-    "move": "Move"
+    "move": "Move",
+    "save": "Save"
   },
   "step_info": {
     "step_deleted": "Step deleted !",
     "step_updated": "Step modified !",
     "step_details": "Step's details",
-    "move": "Move"
+    "move": "Move",
+    "save": "Save"
   },
   "language_selection": {
     "choose_language": "Choose language"
@@ -131,5 +133,6 @@
   "todolist_created": "The todo list was created",
   "todolist_not_created": "Could not created the todo list",
   "link_share": "Send this link to anyone for them to follow your adventures",
-  "todolist_name": "Todo list name"
+  "todolist_name": "Todo list name",
+  "linked_poi": "Linked point of interest"
 }

@@ -34,7 +34,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
     onMutate: () => {
       setRouteSource(routeSource.removeItem(stepId));
     },
-    onSettled: () => {},
+    onSettled: () => { },
     onSuccess: () => {
       setContentPage("map");
       successDelete();
@@ -125,7 +125,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
           }}
         >
           <Button type="button" onClick={handleClick}>
-            Enregistrer
+            {t("save")}
           </Button>
           {TrashAlt(handleDelete)}
           <Button type="button" onClick={() => setMovingStep(currentRoute.id)}>
