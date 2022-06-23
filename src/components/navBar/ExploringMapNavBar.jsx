@@ -69,7 +69,10 @@ const ExploringMapNavBar = ({ setContentPage }) => {
           className="p-2 nav-icon"
           icon={faHome}
           size="2x"
-          onClick={() => navigate("/home/trips")}
+          onClick={() => {
+            setContentPage();
+            navigate("/home/trips");
+          }}
         />
         <FontAwesomeIcon
           className="p-2 nav-icon"
