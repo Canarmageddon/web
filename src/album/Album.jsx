@@ -47,7 +47,10 @@ export default function Album() {
               </div>
             ) : data.type2 === "log_book_entry" ? (
               <div className="logbook-item" key={index}>
-                <p>{data.creator ?? "-"}</p>
+                <p>
+                  {data?.creator?.firstName + " " + data?.creator?.lastName ??
+                    "-"}
+                </p>
                 <p>{data.content ?? "-"}</p>
                 <p>
                   {new Date(data?.creationDate).toLocaleDateString() ?? "-"}

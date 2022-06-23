@@ -53,7 +53,6 @@ const CreateAccount = () => {
         className="language-icon"
         size={"3x"}
       />
-      <h1 className="h1-title">Duck-Trotter</h1>
       <form className="form-connection">
         <div className="input-container">
           <label htmlFor="email" className="input-label">
@@ -160,14 +159,11 @@ const CreateAccount = () => {
       invalidEmail();
     } else if (!password) {
       noPassword();
-    }
-    else if (firstName.length == 0) {
+    } else if (firstName.length == 0) {
       noFirstName();
-    }
-    else if (lastName.length == 0) {
+    } else if (lastName.length == 0) {
       noLastName();
-    }
-    else if (!confirmPassword) {
+    } else if (!confirmPassword) {
       noConfirmPassword();
     } else if (password !== confirmPassword) {
       divergentPasswords();

@@ -6,7 +6,7 @@
     "invalid_email": "Cette adresse e-mail n'est pas valide",
     "no_password": "Veuilez renseigner un mot de passe",
     "credentials_error": "E-mail / mot de passe incorrect, veuillez réessayer",
-    "success_log": "Connection réussie"
+    "success_log": "Connexion réussie"
   },
   "create_account": {
     "invalid_email": "Cette adresse e-mail n'est pas valide",
@@ -48,9 +48,9 @@
     "disconnect": "Déconnexion",
     "others_trips": "Découvrez les voyages des autres utilisateurs",
     "empty_album": "Ajoutez des éléments à votre album pour les voir ici",
-    "new_trip": "New trip",
-    "trip_name": "Trip name",
-    "create": "Create",
+    "new_trip": "Créez un nouveau voyage",
+    "trip_name": "Nom du voyage",
+    "create": "Créer",
     "trip_link": "Un nouveau lien de partage a été généré et copié dans votre presse-papier",
     "trip_link_found": "Le lien de partage a été copié dans votre presse-papier"
   },

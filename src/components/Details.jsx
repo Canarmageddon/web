@@ -44,7 +44,6 @@ export default function ({ display, setContentPage, setStepId, setPoiId }) {
       queryClient.invalidateQueries(["steps", id]);
       queryClient.invalidateQueries(["poi", id]);
       //setCurrentPoi(poi.getPoiByStep(id));
-
     },
   });
 
@@ -61,8 +60,8 @@ export default function ({ display, setContentPage, setStepId, setPoiId }) {
     //await deleteStep(id)
   };
   const handleDeletePoi = async (e, id) => {
-    e.stopPropagation()
-    mutationDeletePoi.mutate({ token, id })
+    e.stopPropagation();
+    mutationDeletePoi.mutate({ token, id });
     //setPoi(poi.removeItem({ token, id }));
   };
   return (

@@ -32,7 +32,7 @@ const Profile = ({ contentPage, setContentPage }) => {
     }
   );
   useEffect(() => {
-    if (contentPage === "map") {
+    if (contentPage) {
       setContentPage();
       setRenderFromMap(true);
     }
