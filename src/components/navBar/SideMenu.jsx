@@ -37,6 +37,10 @@ const SideMenu = ({ setContentPage, showMenu }) => {
   };
   return (
     <div className="sidenav" style={{ width: showMenu ? 200 : 0 }}>
+      <a onClick={() => setContentPage("map")}>{t("map")}</a>
+      <a onClick={() => setContentPage("toDoLists")}>{t("todo_list")}</a>
+      <a onClick={() => setContentPage("admin")}>{t("admin")}</a>
+      <a onClick={handleClickDetails}>{t("details")}</a>
       <FontAwesomeIcon
         icon={faArrowLeft}
         onClick={() => {
@@ -50,10 +54,6 @@ const SideMenu = ({ setContentPage, showMenu }) => {
           marginTop: 0,
         }}
       />
-      <a onClick={() => setContentPage("map")}>{t("map")}</a>
-      <a onClick={() => setContentPage("toDoLists")}>{t("todo_list")}</a>
-      <a onClick={() => setContentPage("admin")}>{t("admin")}</a>
-      <a onClick={handleClickDetails}>{t("details")}</a>
       <Button
         variant="danger"
         onClick={logout}

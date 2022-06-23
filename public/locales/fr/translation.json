@@ -85,7 +85,8 @@
     "step_updated": "Etape modifiée !",
     "step_details": "Détails de l'étape",
     "move": "Déplacer",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "title": "Détails de l'étape"
   },
   "language_selection": {
     "choose_language": "Choix de la langue"

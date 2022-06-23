@@ -85,7 +85,8 @@
     "step_updated": "Step modified !",
     "step_details": "Step's details",
     "move": "Move",
-    "save": "Save"
+    "save": "Save",
+    "title": "Step information"
   },
   "language_selection": {
     "choose_language": "Choose language"
