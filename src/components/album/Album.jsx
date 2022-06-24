@@ -1,16 +1,20 @@
 import React from "react";
 import { useInfiniteQuery, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import { getLogBookEntries, getPictures, getAlbumElements } from "../apiCaller";
-import ScreenLogo from "../components/loadingScreen/ScreenLogo";
-import { useToken } from "../context/userContext";
+import {
+  getLogBookEntries,
+  getPictures,
+  getAlbumElements,
+} from "../../apiCaller";
+import ScreenLogo from "../../components/loadingScreen/ScreenLogo";
+import { useToken } from "../../context/userContext";
 import LogBookEntry from "./LogBookEntry";
 import Picture from "./Picture";
-import { renderNextArrow, renderPrevArrow } from "../Functions";
+import { renderNextArrow, renderPrevArrow } from "../../Functions";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./album.css";
-import RotatingDuck from "../components/loadingScreen/RotatingDuck";
+import RotatingDuck from "../../components/loadingScreen/RotatingDuck";
 import { logBookEntries } from "../mapHandler/queries/Fetchs";
 
 export default function Album() {

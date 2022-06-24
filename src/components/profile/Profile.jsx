@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import FormControl from "react-bootstrap/FormControl";
 import { useToken } from "../../context/userContext";
 import { useUser } from "../../context/userContext";
-import "../../style/profile.css";
+import "./profile.css";
 import { fetchUser, updateUser } from "../../apiCaller";
 import { toast } from "react-toastify";
 import { useMutation, useQuery, useQueryClient } from "react-query";

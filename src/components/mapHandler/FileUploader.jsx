@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap/";
-import { addDocument, deleteDocument, getDocument } from "../apiCaller";
-import { useToken, useUser } from "../context/userContext";
+import { addDocument, deleteDocument, getDocument } from "../../apiCaller";
+import { useToken, useUser } from "../../context/userContext";
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
-import TrashAlt from "../components/icons/TrashAlt";
+import TrashAlt from "../../components/icons/TrashAlt";
 import { useTranslation } from "react-i18next";
 export default function FileUploader({
   file,

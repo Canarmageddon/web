@@ -1,19 +1,13 @@
-import {fetchPois, fetchSteps, fetchLocations, getPictures, fetchAlbumElementLocations} from "../../apiCaller";
+import {fetchPois, fetchSteps, fetchLocations, getPictures, fetchAlbumElementLocations} from "../../../apiCaller";
 import {useQuery, useMutation, useQueryClient} from "react-query";
-import LayerUtile from "../../factory/layers/LayerUtile";
-import Location from "../../factory/layers/Location";
-import { distanceInKmBetweenEarthCoordinates } from "../../Functions";
+import LayerUtile from "../../../factory/layers/LayerUtile";
+import Location from "../../../factory/layers/Location";
+import {distanceInKmBetweenEarthCoordinates} from "../../../Functions";
 
-export function steps(
-  token,
-  id,
-  routeSource,
-  setRouteSource,
-  setViewport,
-  firstFetch,
-  setFirstFetch,
-) {
-  return useQuery(["steps", id], () => fetchSteps(token, id), {
+export function steps(token, id, routeSource, setRouteSource, setViewport, firstFetch, setFirstFetch) {
+  return useQuery([
+    "steps", id
+  ], () => fetchSteps(token, id), {
     retry: false,
     onSuccess: data => {
       let lstStep = [];
@@ -33,11 +27,7 @@ export function steps(
               : item.date
         }));
       });
-      if (
-        routeSource.listLocations.length == 0 &&
-        data.length > 0 &&
-        firstFetch
-      )
+      if (routeSource.listLocations.length == 0 && data.length > 0 && firstFetch) 
         setViewport({
           latitude: data[
             data
@@ -86,50 +76,34 @@ export function pois(token, id, setPoiSource) {
 }
 
 export function locations(token, id, setLocationSource, enabled) {
-  return useQuery(
-    ["locations", id],
-    () => fetchAlbumElementLocations(token, id),
-    {
-      enabled: enabled,
-      retry: false,
-      onSuccess: (data) => {
-        let locationsList = [];
-        data.map((item) => {
-          let i = 0;
-          let found = false;
-          let distance;
-          while (i < locationsList.length && !found) {
-            distance = distanceInKmBetweenEarthCoordinates(
-              item.latitude,
-              item.longitude,
-              locationsList[i].latitude,
-              locationsList[i].longitude,
-            );
-            i++;
-            if (distance < 1) {
-              found = true;
-            }
+  return useQuery([
+    "locations", id
+  ], () => fetchAlbumElementLocations(token, id), {
+    enabled: enabled,
+    retry: false,
+    onSuccess: data => {
+      let locationsList = [];
+      data.map(item => {
+        let i = 0;
+        let found = false;
+        let distance;
+        while (i < locationsList.length && !found) {
+          distance = distanceInKmBetweenEarthCoordinates(item.latitude, item.longitude, locationsList[i].latitude, locationsList[i].longitude);
+          i++;
+          if (distance < 1) {
+            found = true;
           }
-          if (found) {
-            let location = locationsList[i - 1];
-            location.albumElements = location.albumElements.concat(
-              item.albumElements,
-            );
-          } else {
-            locationsList.push(
-              new Location({
-                id: item.id,
-                longitude: item.longitude,
-                latitude: item.latitude,
-                albumElements: item.albumElements,
-              }),
-            );
-          }
-        });
-        setLocationSource(new LayerUtile(locationsList));
-      },
-    },
-  );
+        }
+        if (found) {
+          let location = locationsList[i - 1];
+          location.albumElements = location.albumElements.concat(item.albumElements);
+        } else {
+          locationsList.push(new Location({id: item.id, longitude: item.longitude, latitude: item.latitude, albumElements: item.albumElements}));
+        }
+      });
+      setLocationSource(new LayerUtile(locationsList));
+    }
+  });
 }
 
 export function pictures(token, id, setImageList, enabled) {

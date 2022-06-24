@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBackward } from "@fortawesome/free-solid-svg-icons";
-import "../../style/nav.css";
+import "./nav.css";
 import { useNavigate } from "react-router-dom";
 
 const UnregisteredNavBar = ({ setContentPage, map }) => {

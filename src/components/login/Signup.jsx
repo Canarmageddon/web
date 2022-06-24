@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
-import imgLoader from "../../resources/images/loader-blue.svg";
+import imgLoader from "../../resources/loader-blue.svg";
 import { useTranslation } from "react-i18next";
 import LanguageModal from "../LanguageModal";
 

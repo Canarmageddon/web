@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
-import { usePoi, useRoute } from "../context/TravelContext";
+import { usePoi, useRoute } from "../../context/TravelContext";
 import Form from "react-bootstrap/Form";
-import "../style/destinationInput.css";
-import { deletePoi, getDocumentsFromPoi, updatePoi } from "../apiCaller";
+import "./destinationInput.css";
+import { deletePoi, getDocumentsFromPoi, updatePoi } from "../../apiCaller";
 import FileUploader from "./FileUploader";
-import TrashAlt from "../components/icons/TrashAlt";
+import TrashAlt from "../../components/icons/TrashAlt";
 import { useMutation, useQueryClient } from "react-query";
-import { useToken } from "../context/userContext";
+import { useToken } from "../../context/userContext";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";

@@ -1,5 +1,5 @@
 import React from "react";
-import "../../style/nav.css";
+import "./nav.css";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ import { useQueryClient } from "react-query";
 
 const SideMenu = ({ setContentPage, showMenu }) => {
   const { t } = useTranslation("translation", { keyPrefix: "side_menu" });
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const [poiSource] = usePoi();
   const [routeSource] = useRoute();
   const [user, setUser] = useUser();
@@ -22,7 +22,7 @@ const SideMenu = ({ setContentPage, showMenu }) => {
     setContentPage();
     window.localStorage.clear();
     setUser(undefined);
-    queryClient.clear()
+    queryClient.clear();
   };
 
   const handleClickDetails = () => {

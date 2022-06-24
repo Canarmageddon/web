@@ -2,8 +2,6 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import "./style/bootstrapOverride.scss";
 import "./style/index.css";
-import "./style/list.css";
-import "./style/admin.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -27,7 +25,7 @@ const AppStart = () => {
     <React.StrictMode>
       <Suspense fallback={<RotatingDuck />}>
         <ToastContainer
-          position='top-right'
+          position="top-right"
           autoClose={3000}
           hideProgressBar={false}
           newestOnTop
@@ -38,8 +36,7 @@ const AppStart = () => {
           pauseOnHover
         />
         <QueryClientProvider client={queryClient} contextSharing={true}>
-          <App />
-          <ReactQueryDevtools />
+          <App /> <ReactQueryDevtools />
         </QueryClientProvider>
       </Suspense>
     </React.StrictMode>

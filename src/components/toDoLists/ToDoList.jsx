@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
-import "../../style/toDoLists.css";
+import "./toDoLists.css";
 import { CardToDoList, CardItem } from "../styledComponents/ToDoListsStyle";
 import { deleteTodoList, deleteTask, createTask } from "../../apiCaller";
 import { useToken, useUser } from "../../context/userContext";

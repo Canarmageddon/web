@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "../context/TravelContext";
-import "../style/destinationInput.css";
+import { useLocation } from "../../context/TravelContext";
+import "./destinationInput.css";
 import { useTranslation } from "react-i18next";
 import Picture from "../album/Picture";
 import LogBookEntry from "../album/LogBookEntry";
 import "./locationInformation.css";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { renderNextArrow, renderPrevArrow } from "../Functions";
+import { renderNextArrow, renderPrevArrow } from "../../Functions";
 
 const LocationInformation = ({ display, locationId }) => {
   const { t } = useTranslation("translation", { keyPrefix: "location_info" });

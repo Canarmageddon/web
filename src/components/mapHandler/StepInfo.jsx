@@ -1,12 +1,12 @@
 import Button from "react-bootstrap/Button";
 import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
-import { deleteStep, getDocumentsFromStep, updateStep } from "../apiCaller";
+import { deleteStep, getDocumentsFromStep, updateStep } from "../../apiCaller";
 import { useMutation } from "react-query";
-import { useRoute } from "../context/TravelContext";
-import { useToken } from "../context/userContext";
+import { useRoute } from "../../context/TravelContext";
+import { useToken } from "../../context/userContext";
 import FileUploader from "./FileUploader";
-import TrashAlt from "../components/icons/TrashAlt";
+import TrashAlt from "../icons/TrashAlt";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 

@@ -1,27 +1,26 @@
 import ReactMapGL, { Layer, Source } from "react-map-gl";
 import { useState, useEffect } from "react";
-import { useLocation, usePoi, useRoute } from "../context/TravelContext";
-import Location from "../factory/layers/Location";
+import { useLocation, usePoi, useRoute } from "../../context/TravelContext";
+import Location from "../../factory/layers/Location";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
-import { createPoi, createStep, movePoi, moveStep } from "../apiCaller";
+import { createPoi, createStep, movePoi, moveStep } from "../../apiCaller";
 import { createRef } from "react";
 import mapboxgl from "mapbox-gl";
 import { useParams } from "react-router-dom";
-import {
-  pictures,
-  pois,
-  steps,
-  locations,
-  logBookEntries,
-} from "./queries/Fetchs";
+import { pois, steps, locations } from "./queries/Fetchs";
+import pictureIcon from "../../resources/3926045.png";
 mapboxgl.workerClass =
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 import LocationFinder from "./LocationFinder";
-import { useUser, useToken } from "../context/userContext";
+import { useUser, useToken } from "../../context/userContext";
 import { toast } from "react-toastify";
 import ImageModal from "./ImageModal";
 import { useTranslation } from "react-i18next";
+import blueMarker from "../../resources/blue_marker.png";
+import redMarker from "../../resources/red_marker.png";
+import finishFlag from "../../resources/finish-flag.jpg";
+import "./map.css";
 
 export default function MapGl({
   setContentPage,
@@ -55,7 +54,7 @@ export default function MapGl({
   const [token] = useToken();
   const [currentImage, setCurrentImage] = useState(null);
   const [show, setShow] = useState(false);
-  const [firstFetch, setFirstFetch] = useState(true)
+  const [firstFetch, setFirstFetch] = useState(true);
   const [viewport, setViewport] = useState({
     latitude: 0,
     longitude: 0,
@@ -75,7 +74,15 @@ export default function MapGl({
     isError: isErrorSteps,
     error: errorSteps,
     data: dataSteps,
-  } = steps(token, id, routeSource, setRouteSource, setViewport, firstFetch, setFirstFetch);
+  } = steps(
+    token,
+    id,
+    routeSource,
+    setRouteSource,
+    setViewport,
+    firstFetch,
+    setFirstFetch
+  );
   const {
     isLoading: isLoadingPoi,
     isError: isErrorPoi,
@@ -205,33 +212,26 @@ export default function MapGl({
            pitch: 0,
          });
      } */
-    window.addEventListener("resize", () => setViewport({ ...viewport, width: "100%", height: "100%" }));
+    window.addEventListener("resize", () =>
+      setViewport({ ...viewport, width: "100%", height: "100%" })
+    );
     const map = _mapRef.current.getMap();
-    map.loadImage(
-      process.env.PUBLIC_URL + "/red_marker.png",
-      (error, image) => {
-        if (error) throw error;
-        // Add the loaded image to the style's sprite with the ID 'poiImage'.
-        map.addImage("poiImage", image);
-      }
-    );
-    map.loadImage(
-      process.env.PUBLIC_URL + "/blue_marker.png",
-      (error, image) => {
-        if (error) throw error;
-        // Add the loaded image to the style's sprite with the ID 'poiImage'.
-        map.addImage("stepImage", image);
-      }
-    );
-    map.loadImage(
-      process.env.PUBLIC_URL + "/finish-flag.jpg",
-      (error, image) => {
-        if (error) throw error;
-        // Add the loaded image to the style's sprite with the ID 'poiImage'.
-        map.addImage("lastStepImage", image);
-      }
-    );
-    map.loadImage(process.env.PUBLIC_URL + "/3926045.png", (error, image) => {
+    map.loadImage(redMarker, (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage("poiImage", image);
+    });
+    map.loadImage(blueMarker, (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage("stepImage", image);
+    });
+    map.loadImage(finishFlag, (error, image) => {
+      if (error) throw error;
+      // Add the loaded image to the style's sprite with the ID 'poiImage'.
+      map.addImage("lastStepImage", image);
+    });
+    map.loadImage(pictureIcon, (error, image) => {
       if (error) throw error;
       // Add the loaded image to the style's sprite with the ID 'poiImage'.
       map.addImage("locationImage", image);
@@ -305,7 +305,10 @@ export default function MapGl({
         setContentPage("poiInfo");
         setPoiId(e.features[0].id);
         return true;
-      } else if (e.features[0].source === "route" || e.features[0].source === "routeEnd") {
+      } else if (
+        e.features[0].source === "route" ||
+        e.features[0].source === "routeEnd"
+      ) {
         setContentPage("stepInfo");
         setStepId(e.features[0].id);
         return true;

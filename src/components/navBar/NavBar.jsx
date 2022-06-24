@@ -4,7 +4,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import "../../style/nav.css";
+import "./nav.css";
 import LanguageModal from "../LanguageModal";
 
 const NavBar = ({ setShowMenu }) => {

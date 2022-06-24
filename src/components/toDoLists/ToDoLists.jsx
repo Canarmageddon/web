@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useTaskList } from "../../context/TravelContext";
 import FormControl from "react-bootstrap/FormControl";
-import "../../style/toDoLists.css";
+import "./toDoLists.css";
 import TaskListUtile from "../../factory/lists/TaskListUtile";
 import ListPicker from "./ListPicker";
 import { createTodoList, fetchTodoLists } from "../../apiCaller";
@@ -59,10 +59,10 @@ const ToDoLists = ({ display }) => {
       ]);
     },
     onSuccess: () => {
-      toast.success(t("todolist_created"))
+      toast.success(t("todolist_created"));
     },
     onError: () => {
-      toast.success(t("todolist_not_created"))
+      toast.success(t("todolist_not_created"));
     },
     onSettled: () => {
       queryClient.invalidateQueries(["toDoLists", id]);

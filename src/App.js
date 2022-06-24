@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
-import "./style/map.css";
 import ToDoLists from "./components/toDoLists/ToDoLists";
 import TravelsList from "./components/travelList/TravelList";
 import NavBar from "./components/navBar/NavBar";
@@ -10,21 +9,21 @@ import { TravelProvider } from "./context/TravelContext";
 import Profile from "./components/profile/Profile";
 import { UserProvider } from "./context/userContext";
 import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
-import MapGl from "./mapHandler/MapGl";
-import PoiInformation from "./mapHandler/PoiInformation";
-import LocationInformation from "./mapHandler/LocationInformation";
+import MapGl from "./components/mapHandler/MapGl";
+import PoiInformation from "./components/mapHandler/PoiInformation";
+import LocationInformation from "./components/mapHandler/LocationInformation";
 import Login from "./components/login/Login";
 import Signup from "./components/login/Signup";
-import Details from "./components/Details";
-import StepInfo from "./mapHandler/StepInfo";
+import Details from "./components/details/Details";
+import StepInfo from "./components/mapHandler/StepInfo";
 import RequireAuth from "./context/requireAuth";
 import ExploreTrips from "./components/explore/ExploreTrips";
 import ExploreRoute from "./components/explore/ExploreRoute";
 import ExploringMapNavBar from "./components/navBar/ExploringMapNavBar";
-import Album from "./album/Album";
-import CheckLink from "./album/unregistered/CheckLink";
+import Album from "./components/album/Album";
+import CheckLink from "./components/album/unregistered/CheckLink";
 import Background from "./components/Background";
-import Home from "./album/Home";
+import Home from "./components/album/Home";
 import UnregisteredNavBar from "./components/navBar/UnregisteredNavBar";
 
 function App() {
@@ -49,7 +48,7 @@ function App() {
             height: "100vh",
             flex: contentPage === "map" ? 1 : 0.7,
           }}
-          className='map-container'
+          className="map-container"
         >
           <MapGl
             exploring={true}
@@ -66,19 +65,19 @@ function App() {
       <UserProvider>
         <TravelProvider>
           <Routes>
-            <Route path='/' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/home/' element={<RequireAuth />}>
-              <Route path='explore/' element={<ExploreRoute />}>
-                <Route path='list' element={<ExploreTrips />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/home/" element={<RequireAuth />}>
+              <Route path="explore/" element={<ExploreRoute />}>
+                <Route path="list" element={<ExploreTrips />} />
                 <Route
-                  path='map/:id'
+                  path="map/:id"
                   element={
                     <div
                       style={{
                         height: "100vh",
                       }}
-                      className='map-container'
+                      className="map-container"
                     >
                       <ExploringMapNavBar setContentPage={setContentPage} />
                       <MapGl
@@ -91,11 +90,11 @@ function App() {
                 />
               </Route>
               <Route
-                path='trips'
+                path="trips"
                 element={<TravelsList setContentPage={setContentPage} />}
               />
               <Route
-                path='profile'
+                path="profile"
                 element={
                   <Profile
                     contentPage={contentPage}
@@ -103,10 +102,10 @@ function App() {
                   />
                 }
               />
-              <Route path='album/:idAlbum' element={<Album />} />
+              <Route path="album/:idAlbum" element={<Album />} />
               <Route
                 exact
-                path='map/:id'
+                path="map/:id"
                 element={
                   <>
                     <div
@@ -156,7 +155,7 @@ function App() {
                                 : 0.7,
                             height: "95vh",
                           }}
-                          className='map-container'
+                          className="map-container"
                         >
                           <MapGl
                             setContentPage={setContentPage}
@@ -181,7 +180,7 @@ function App() {
               />
               <Route
                 exact
-                path='map/:id/history'
+                path="map/:id/history"
                 element={
                   displayMapForAlbum()
                   /*                   <>
@@ -226,7 +225,7 @@ function App() {
                 }
               />
               <Route
-                path='map/:id/discovery'
+                path="map/:id/discovery"
                 element={
                   <>
                     <ExploringMapNavBar setContentPage={setContentPage} />
@@ -234,7 +233,7 @@ function App() {
                       style={{
                         height: "100vh",
                       }}
-                      className='map-container'
+                      className="map-container"
                     >
                       <MapGl exploring={true} setContentPage={setContentPage} />
                     </div>
@@ -242,16 +241,16 @@ function App() {
                 }
               />
               <Route
-                path='/home/*'
-                element={<te to='trips' />}
+                path="/home/*"
+                element={<te to="trips" />}
                 replace={true}
               />
             </Route>
-            <Route path='/unregistered/:id/:link/' element={<CheckLink />}>
-              <Route path='home/' element={<Home />} />
-              <Route path='map/' element={displayMapForAlbum()} />
+            <Route path="/unregistered/:id/:link/" element={<CheckLink />}>
+              <Route path="home/" element={<Home />} />
+              <Route path="map/" element={displayMapForAlbum()} />
               <Route
-                path='album/:idAlbum'
+                path="album/:idAlbum"
                 element={
                   <>
                     <UnregisteredNavBar
@@ -263,7 +262,7 @@ function App() {
                 }
               />
             </Route>
-            <Route path='*' element={<Navigate to='/' />} replace={true} />
+            <Route path="*" element={<Navigate to="/" />} replace={true} />
           </Routes>
           <Background display={!contentPage} />
         </TravelProvider>

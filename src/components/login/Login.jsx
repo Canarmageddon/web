@@ -10,11 +10,10 @@ import Button from "react-bootstrap/Button";
 import { useUser } from "../../context/userContext";
 import { checkCredentials } from "../../apiCaller";
 import { useToken } from "../../context/userContext";
-import updateToken from "../../updateTokens";
 import { useQueryClient } from "react-query";
 import { toast } from "react-toastify";
-import { validateEmail } from "../../Functions";
-import imgLoader from "../../resources/images/loader-blue.svg";
+import { validateEmail, updateToken } from "../../Functions";
+import imgLoader from "../../resources/loader-blue.svg";
 import { useTranslation } from "react-i18next";
 import LanguageModal from "../LanguageModal";
 

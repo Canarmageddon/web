@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBackward, faAdd, faHome } from "@fortawesome/free-solid-svg-icons";
-import "../../style/nav.css";
+import "./nav.css";
 import { useNavigate, useParams } from "react-router-dom";
 import ImportModal from "../explore/ImportModal";
 import { useMutation, useQueryClient } from "react-query";

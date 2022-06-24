@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { usePoi, useRoute } from "../context/TravelContext";
+import { usePoi, useRoute } from "../../context/TravelContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
-import { deleteStep, deletePoi } from "../apiCaller";
-import TrashAlt from "./icons/TrashAlt";
+import { deleteStep, deletePoi } from "../../apiCaller";
+import TrashAlt from "../icons/TrashAlt";
 import { useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
-import { useToken } from "../context/userContext";
+import { useToken } from "../../context/userContext";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import Dropdown from "react-bootstrap/Dropdown";

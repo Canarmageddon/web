@@ -6,7 +6,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useToken, useUser } from "../../context/userContext";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-import "./form.css";
+import "./admin.css";
 import { FormControl } from "react-bootstrap";
 import { generateLink } from "../../Functions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
