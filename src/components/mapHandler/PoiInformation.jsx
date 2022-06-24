@@ -140,7 +140,7 @@ const PoiInformation = ({ display, poiId, setContentPage, setMovingPoi }) => {
           }}
         >
           <Button type="button" onClick={handleClick}>
-            Enregistrer
+            {t("save")}
           </Button>
           {TrashAlt(handleDelete)}
           <Button type="button" onClick={() => setMovingPoi(currentPoi.id)}>

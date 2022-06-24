@@ -34,7 +34,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
     onMutate: () => {
       setRouteSource(routeSource.removeItem(stepId));
     },
-    onSettled: () => {},
+    onSettled: () => { },
     onSuccess: () => {
       setContentPage("map");
       successDelete();
@@ -85,7 +85,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
         textAlign: "center",
       }}
     >
-      <h2>Détails de l'étape</h2>
+      <h2>{t("title")}</h2>
       <Form
         style={{
           display: "flex",
@@ -125,7 +125,7 @@ export default function ({ display, stepId, setContentPage, setMovingStep }) {
           }}
         >
           <Button type="button" onClick={handleClick}>
-            Enregistrer
+            {t("save")}
           </Button>
           {TrashAlt(handleDelete)}
           <Button type="button" onClick={() => setMovingStep(currentRoute.id)}>

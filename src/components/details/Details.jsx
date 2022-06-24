@@ -97,7 +97,7 @@ export default function ({ display, setContentPage, setStepId, setPoiId }) {
                   style={{ backgroundColor: "black", height: 4 }}
                 />
                 <h4 className="location-poi-title">
-                  Points d'intérêts liés :{" "}
+                  {t("linked_poi")}
                 </h4>
                 {currentPoi.map((e) => (
                   <>
