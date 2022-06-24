@@ -15,7 +15,6 @@ mapboxgl.workerClass =
 import LocationFinder from "./LocationFinder";
 import { useUser, useToken } from "../../context/userContext";
 import { toast } from "react-toastify";
-import ImageModal from "./ImageModal";
 import { useTranslation } from "react-i18next";
 import blueMarker from "../../resources/blue_marker.png";
 import redMarker from "../../resources/red_marker.png";
@@ -432,7 +431,6 @@ export default function MapGl({
           </Source>
         )}
       </ReactMapGL>
-      <ImageModal id={currentImage} show={show} setShow={setShow} />
     </>
   );
 }
